@@ -1,0 +1,52 @@
+<?php
+namespace minepark\command;
+
+use pocketmine\Player;
+use pocketmine\event\Event;
+
+use minepark\Permission;
+
+class DonateCommand extends Command
+{
+    public const CURRENT_COMMAND = "donate";
+
+    public function getCommand() : array
+    {
+        return [
+            self::CURRENT_COMMAND
+        ];
+    }
+
+    public function getPermissions() : array
+    {
+        return [
+            Permission::ANYBODY
+        ];
+    }
+
+    public function getFileSource() : string
+    {
+        return $this->getCore()->getTargetDirectory() . "strings/donate.txt";
+    }
+
+    public function execute(Player $player, array $args = array(), Event $event = null)
+    {
+        $file = $this->getFileSource();
+        $content = file_exists($file) ? $this->clearData(file_get_contents($file)) : "*";
+		$player->sendMessage($content);
+    }
+
+    private function clearData($str) : string
+	{
+		$lines = explode("\r",$str);
+		$result = array();
+		
+		foreach($lines as $line)
+		{
+			array_push($result, mb_strcut($line, 2));
+        }
+        
+		return implode("\n", $result);
+    }
+}
+?>

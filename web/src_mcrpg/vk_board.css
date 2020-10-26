@@ -1,0 +1,71 @@
+
+.vk_panel {
+    margin-bottom: 21px;
+    background-color: #ffffff;
+    border: 1px solid transparent;
+    border-radius: 0;
+    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05)
+}
+
+.vk_panel-body {
+    padding: 15px
+}
+
+.vk_panel-heading {
+    padding: 10px 15px;
+    border-bottom: 1px solid transparent;
+    border-top-right-radius: -1;
+    border-top-left-radius: -1
+}
+
+.vk_panel-primary {
+    border-color: #2780e3
+}
+
+.vk_panel-primary > .vk_panel-heading {
+    color: #ffffff;
+    background-color: #2780e3;
+    border-color: #2780e3
+}
+
+/* OLADIK777 */
+.vk-board-panel .panel-heading {
+    color: #fff;
+}
+.img-circle{border-radius:50%}
+.vk_avatar {
+    width: 100%;
+}
+.vk-board-panel .panel-body {
+    padding-bottom: 20px;
+}
+
+.vk-board-panel .vk-board-comment-name {
+    padding-bottom: 5px;
+    color: #42649a;
+    font-weight: bold;
+}
+
+.vk-board-panel .vk-board-comment-text {
+    color: #3b3b3b;
+}
+
+.vk-board-panel hr.vk-board-hr {
+    border-top: 1px solid #e5e5e5;
+    margin: 0 15px;
+}
+
+.vk-board-panel hr.vk-board-hr:last-of-type {
+    border-top: none;
+}
+
+.vk-board-panel .vk-board-about {
+    padding: 0 15px 5px 0;
+    text-align: right;
+    color: #d7d7d7;
+}
+
+.vk-board-panel .vk-board-about a {
+    color: #7d7d7d;
+}

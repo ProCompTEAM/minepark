@@ -1,0 +1,31 @@
+name: MCRPG
+main: Kirill_Poroh\MCRPG
+version: 25.03.2020
+api: 1.12.2
+author: Kirill_Poroh
+
+
+commands:
+ a:
+  default: true
+  permissions: mcrpg.admin
+ setgroup:
+  default: op
+  permissions: mcrpg.operator
+ pa:
+  default: op
+  permissions: mcrpg.operator
+ game:
+  default: true
+  permissions: mcrpg.user
+ exit:
+  default: true
+  permissions: mcrpg.user
+  
+permissions:
+  mcrpg.admin:
+   default: true
+  mcrpg.user:
+   default: true
+  mcrpg.operator:
+   default: op

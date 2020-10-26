@@ -1,0 +1,132 @@
+<?php
+namespace minepark\player;
+
+use minepark\Core;
+
+use pocketmine\Player;
+use pocketmine\math\Vector3;
+use pocketmine\network\SourceInterface;
+use pocketmine\network\mcpe\protocol\PlaySoundPacket;
+use pocketmine\network\mcpe\protocol\ModalFormRequestPacket;
+
+class ImplementedPlayer extends Player
+{	
+	public function __construct(SourceInterface $interface, string $ip, int $port)
+	{
+		parent::__construct($interface, $ip, $port);
+	}
+	
+	public function __get($name) 
+	{
+		if(!isset($this->$name)) return null;
+		
+		return $this->$name;
+	}
+	
+	public function __set($name, $value) 
+	{
+		$this->$name = $value;
+	}
+	
+	public function sendWindowMessage($text, $title = "")
+	{
+		$data = [];
+		
+		$data["type"] = "form";
+		$data["title"] = $title;
+		$data["content"] = $text;
+		$data["buttons"] = [];
+		
+		$pk = new ModalFormRequestPacket();
+		$pk->formId = 999;
+		$pk->formData = json_encode($data);
+		$this->dataPacket($pk);
+    }
+    
+	public function sendSound(string $soundname, Vector3 $vector3 = null, int $volume = 500, int $pitch = 1)
+	{
+		if($vector3 == null) {
+            $vector3 = $this->getPosition()->add(0, 1, 0);
+        }
+		
+		$pk = new PlaySoundPacket();
+		$pk->soundName = $soundname;
+		$pk->x = $vector3->getX();
+		$pk->y = $vector3->getY();
+		$pk->z = $vector3->getZ();
+		$pk->volume = $volume;
+		$pk->pitch = $pitch;
+		
+		$this->dataPacket($pk);
+	}
+	
+	public function hasPermissionIn(array $permissions)
+	{
+		foreach($permissions as $permission) {
+			if($this->hasPermission($permission)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/*
+		Localization
+	*/
+
+	public function sendMessage($message)
+	{
+		parent::sendMessage(Core::getActive()->getLocalizer()->take($this->locale, $message) ?? $message);
+	}
+
+	public function sendLocalizedMessage(string $message)
+	{
+		parent::sendMessage(Core::getActive()->getLocalizer()->translateFrom($this->locale, $message));
+	}
+
+	public function sendTip(string $message)
+	{
+		parent::sendTip(Core::getActive()->getLocalizer()->take($this->locale, $message) ?? $message);
+	}
+
+	public function sendLocalizedTip(string $message)
+	{
+		parent::sendTip(Core::getActive()->getLocalizer()->translateFrom($this->locale, $message));
+	}
+
+	public function sendWhisper(string $sender, string $message)
+	{
+		parent::sendWhisper($sender, Core::getActive()->getLocalizer()->take($this->locale, $message) ?? $message);
+	}
+
+	public function sendPopup(string $message, string $subtitle = "")
+	{
+		parent::sendPopup(Core::getActive()->getLocalizer()->take($this->locale, $message) ?? $message);
+	}
+
+	public function sendLocalizedPopup(string $message)
+	{
+		parent::sendPopup(Core::getActive()->getLocalizer()->translateFrom($this->locale, $message));
+	}
+
+	public function kick(string $reason = "", bool $isAdmin = true, $quitMessage = null) : bool
+	{
+		if($reason === "") {
+			return parent::kick();
+		}
+
+		$reason = Core::getActive()->getLocalizer()->take($this->locale, $reason) ?? $reason;
+
+		return parent::kick($reason, $isAdmin, $quitMessage);
+	}
+
+	public function addTitle(string $title, string $subtitle = "", int $fadeIn = -1, int $stay = -1, int $fadeOut = -1)
+	{
+		$title = Core::getActive()->getLocalizer()->take($this->locale, $title) ?? $title;
+		$subtitle = Core::getActive()->getLocalizer()->take($this->locale, $subtitle) ?? $subtitle;
+
+		parent::addTitle($title, $subtitle, $fadeIn, $stay, $fadeOut);
+	}
+}
+?>

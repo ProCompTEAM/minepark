@@ -1,0 +1,70 @@
+<input id="box_command" placeholder="Команда без / затем [enter], например: help">
+
+<span class="main_label">Журнал работы сервера (server.log):</span>
+<select class="main_selector" id="box_srvlog_selector">
+	<option>5</option>
+	<option>10</option>
+	<option>20</option>
+	<option>50</option>
+	<option>100</option>
+	<option>200</option>
+</select>
+
+<div id="box_srvlog" class="box_log">
+	<div>
+		<span class="unlisted">Дата и время</span>
+		<span class="unlisted">Описание строки журнала</span>
+	</div>
+
+</div>
+
+<span class="main_label">Журнал системной информации:</span>
+<select class="main_selector" id="box_syslog_selector">
+	<option>5</option>
+	<option>10</option>
+	<option>20</option>
+	<option>50</option>
+	<option>100</option>
+	<option>200</option>
+</select>
+
+<div id="box_syslog" class="box_log">
+	<div>
+		<span class="unlisted">Дата и время</span>
+		<span class="unlisted">Описание строки журнала</span>
+	</div>
+</div>
+
+<span class="main_label">Журнал посещений панели:</span>
+<select class="main_selector" id="box_evtlog_selector">
+	<option>5</option>
+	<option>10</option>
+	<option>20</option>
+	<option>50</option>
+	<option>100</option>
+	<option>200</option>
+</select>
+
+<div id="box_evtlog" class="box_log">
+	<div>
+		<span class="unlisted">Дата и время</span>
+		<span class="unlisted">Описание строки журнала</span>
+	</div>
+</div>
+
+<script>
+query_srvlog();
+
+$("#box_command").keyup(function(event){
+    if(event.keyCode == 13){
+        event.preventDefault();
+		query_com($(this).val());
+		window.setTimeout(function(){
+			query_srvlog($("#box_srvlog_selector").val());
+		}, 2000);
+		$(this).val('');
+    }
+});
+
+$("#box_srvlog_selector").change(function(){ query_srvlog($(this).val()); });
+</script>

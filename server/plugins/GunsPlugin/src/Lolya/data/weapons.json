@@ -1,0 +1,56 @@
+{
+	"id-271": {
+		"name": "Desert Deagle",
+		"burst": 12,
+		"damage": 7,
+		"sound": "mob.ghast.fireball"
+	},
+	"id-258": {
+		"name": "MP-7",
+		"burst": "AUTO",
+		"damage": 1,
+		"sound": "mob.ghast.fireball"
+	},
+	"id-269": {
+		"name": "Glock-19",
+		"burst": 4,
+		"damage": 3,
+		"sound": "mob.ghast.fireball"
+	},
+	"id-270": {
+		"name": "Desert Deagle",
+		"burst": 10,
+		"damage": 8,
+		"sound": "mob.ghast.fireball"
+	},
+	"id-277": {
+		"name": "Barrett XM108",
+		"burst": 35,
+		"damage": 14,
+		"sound": "item.trident.thunder"
+	},
+	"id-256": {
+		"name": "AK-47",
+		"burst": "AUTO",
+		"damage": 2,
+		"sound": "item.trident.hit_ground"
+	},
+	"id-290": {
+		"name": "Makarov",
+		"burst": 3,
+		"damage": 2,
+		"sound": "mob.ghast.fireball"
+	},
+	"id-292": {
+		"name": "SPR EI",
+		"burst": 6,
+		"damage": 5,
+		"sound": "mob.ghast.fireball"
+	},
+	"id-293": {
+		"name": "M110",
+		"burst": 30,
+		"damage": 10,
+		"sound": "item.trident.thunder"
+	}
+}

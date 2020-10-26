@@ -1,0 +1,13 @@
+﻿name: lifts
+api: [3.10.1]
+version: 1.3
+author: Kirill Poroh
+main: lifts\Control
+
+commands:
+ lift:
+  permission: lifts.command 
+  description: установка и удаление лифтов
+permissions:
+  lifts.command:
+   default: op
