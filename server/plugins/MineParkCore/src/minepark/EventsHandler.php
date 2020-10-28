@@ -1,15 +1,16 @@
 <?php
 namespace minepark;
 
-use minepark\player\Chatter;
-use minepark\utils\FixSignEvent;
-use minepark\player\ImplementedPlayer;
-
 use pocketmine\Player;
 use pocketmine\tile\Sign;
+use minepark\player\Chatter;
+
 use pocketmine\block\SignPost;
 use pocketmine\block\WallSign;
 use pocketmine\event\Listener;
+use minepark\utils\FixSignEvent;
+use minepark\player\ImplementedPlayer;
+use pocketmine\event\level\ChunkLoadEvent;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\block\SignChangeEvent;
@@ -187,6 +188,15 @@ class EventsHandler implements Listener
 		
 		if($cancel) {
 			$event->setCancelled();
+		}
+	}
+
+	public function chunkLoadEvent(ChunkLoadEvent $event) {
+		if($event->isNewChunk()) {
+			$x = $event->getChunk()->getX();
+			$z = $event->getChunk()->getZ();
+			
+			$event->getLevel()->unloadChunk($x, $z);
 		}
 	}
 
