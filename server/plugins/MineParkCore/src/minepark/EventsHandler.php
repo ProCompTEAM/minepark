@@ -134,17 +134,6 @@ class EventsHandler implements Listener
 			}
 		}
 	}
-
-	private function ignoreTapForItems(PlayerInteractEvent $event)
-	{
-		$itemId = $event->getPlayer()->getInventory()->getItemInHand()->getId();
-		
-		$items = [269, 273, 277, 321, 199, 284, 325];
-
-		if(in_array($itemId, $items) and !$event->getPlayer()->isOp()) {
-			$event->setCancelled();
-		}
-	}
 	
 	public function signChangeEvent($ev)
 	{
@@ -197,6 +186,17 @@ class EventsHandler implements Listener
 			$z = $event->getChunk()->getZ();
 			
 			$event->getLevel()->unloadChunk($x, $z);
+		}
+	}
+
+	private function ignoreTapForItems(PlayerInteractEvent $event)
+	{
+		$itemId = $event->getPlayer()->getInventory()->getItemInHand()->getId();
+		
+		$items = [269, 273, 277, 321, 199, 284, 325];
+
+		if(in_array($itemId, $items) and !$event->getPlayer()->isOp()) {
+			$event->setCancelled();
 		}
 	}
 
