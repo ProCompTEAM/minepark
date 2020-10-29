@@ -105,10 +105,6 @@ class MCRPG extends PluginBase implements Listener
 	public function playerQuitEvent(PlayerQuitEvent $e)
 	{
 		$id = $this->getPlayerID($e->getPlayer());
-
-		$playerPosition = $this->positionIntoArray($e->getPlayer()->getPosition());
-
-		$this->players_params[$id]["position"] = $playerPosition;
 	}
 
 	public function playerJoinEvent(PlayerJoinEvent $e)
@@ -120,14 +116,6 @@ class MCRPG extends PluginBase implements Listener
 			$this->players_params[$id]["coins"] = 10;
 			$this->players_params[$id]["group"] = null;
 			$this->players_params[$id]["registered"] = time();
-		}
-		
-		if (!empty($this->players_params[$id]["position"]))
-		{
-			$arrayPosition = $this->players_params[$id]["position"];
-			$pos = $this->getPlayerPosition($arrayPosition['x'], $arrayPosition['y'], $arrayPosition['z']);
-			
-			$e->getPlayer()->setPosition($pos);
 		}
 		
 		$this->players_params[$id]["logintime"] = time();
