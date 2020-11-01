@@ -2,10 +2,9 @@
 namespace minepark\database;
 
 use minepark\Core;
-use minepark\database\model\Model;
-use minepark\database\model\AuthModel;
 
-use mysqli_result;
+use minepark\database\dao\AuthDao;
+use minepark\database\dao\BaseDao;
 
 class Database
 {
@@ -17,7 +16,7 @@ class Database
     public $enableLogging;
 
     private $db;
-    private $models;
+    private $daos;
 
     public static function getDatabase() : Database
     {
@@ -32,12 +31,12 @@ class Database
 
         $this->enableLogging = true;
 
-        $this->models = [
-            AuthModel::NAME => new AuthModel
+        $this->daos = [
+            AuthDao::NAME => new AuthDao
         ];
 
-        foreach($this->models as $model) {
-            $model->initialize();
+        foreach($this->daos as $dao) {
+            $dao->initialize();
         }
 
         $this->info("Database ready for work.");
@@ -50,14 +49,14 @@ class Database
 
     public function resetAll()
     {
-        foreach($this->models as $model) {
-            $model->drop();
+        foreach($this->daos as $dao) {
+            $dao->drop();
         }
     }
 
-    public function from(string $name) : ?Model
+    public function from(string $name) : ?BaseDao
     {
-        return $this->models[$name];
+        return $this->daos[$name];
     }
 
     public function sql(string $query, bool $ignoreErrors = false)

@@ -1,10 +1,10 @@
 <?php
-namespace minepark\database\model;
+namespace minepark\database\dao;
 
 use minepark\database\Database;
 use minepark\database\QueryBuilder;
 
-abstract class Model
+abstract class BaseDao
 {
     abstract public function create();
 

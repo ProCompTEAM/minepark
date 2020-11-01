@@ -1,10 +1,10 @@
 <?php
-namespace minepark\database\model;
+namespace minepark\database\dao;
 
-use minepark\Core;
+use minepark\database\dao\BaseDao;
 use minepark\database\QueryBuilder;
 
-class AuthModel extends Model
+class AuthDao extends BaseDao
 {
     public const NAME = "Auth";
 
