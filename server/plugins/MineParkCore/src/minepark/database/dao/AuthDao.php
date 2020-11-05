@@ -19,6 +19,10 @@ class AuthDao extends BaseDao
         $this->build(self::NAME, $this->columns);
     }
 
+    public function getKeyHash(string $userName) : string {
+        return QueryBuilder::single(self::NAME, "KeyHash", "UserName = $userName");
+    }
+
     public function drop()
     {
         $this->unset(self::NAME);

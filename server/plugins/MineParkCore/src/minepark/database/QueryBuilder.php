@@ -33,6 +33,12 @@ class QueryBuilder
         }
     }
 
+    public static function single(string $tableName, string $column, string $filter = "") : string
+    {
+        $filterQuery = empty($filter) ? "" : "where $filter";
+        return (string) Database::getDatabase()->sql("SELECT $column from $tableName $filterQuery". self::SEPERATOR);
+    }
+
     public function getQuery()
     {
         return $this->query;
