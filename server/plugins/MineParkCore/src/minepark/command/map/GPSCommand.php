@@ -83,8 +83,6 @@ class GPSCommand extends Command
         $form .= "\n§7> §6Общественные места: §a" . implode(', ', $this->getCore()->getMapper()->getPointsByGroup(Mapper::UNKNOWN_POINT_TYPE));
         $form .= "\n§7> §6Торговые площадки: §a" . implode(', ', $this->getCore()->getMapper()->getPointsByGroup(Mapper::MARKETPLACE_POINT_TYPE));
         $form .= "\n§7> §6Арендная недвижимость: §a" . implode(', ', $this->getCore()->getMapper()->getPointsByGroup(Mapper::REALTY_POINT_TYPE));
-        $form .= "\n§7> §6ЖД станции: §a".implode(', ', $this->getCore()->getMapper()->getPointsByGroup(Mapper::TRAINSTATION_POINT_TYPE));
-        $form .= "\n§7> §6Вольеры животных: §a".implode(', ', $this->getCore()->getMapper()->getPointsByGroup(Mapper::ZOO_POINT_TYPE));
 
         $player->sendWindowMessage($form, "§9|============#НАВИГАТОР#============|");
     }

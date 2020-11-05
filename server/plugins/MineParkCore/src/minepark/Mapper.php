@@ -22,8 +22,6 @@ class Mapper
 	public const PHONESTREAM_POINT_TYPE = 4;
 	public const WORK1_POINT_TYPE = 5;
 	public const WORK2_POINT_TYPE = 6;
-	public const TRAINSTATION_POINT_TYPE = 7;
-	public const ZOO_POINT_TYPE = 8;
 
 	public function getCore() : Core
 	{
