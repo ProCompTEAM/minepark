@@ -8,10 +8,7 @@ use Kirill_Poroh\StructMap;
 use Kirill_Poroh\CallbackTask;
 
 use pocketmine\Player;
-use pocketmine\math\Vector3;
-use pocketmine\item\Item;
 use pocketmine\event\Listener;
-use pocketmine\level\Position;
 
 use pocketmine\command\Command;
 use pocketmine\entity\Painting;
@@ -123,23 +120,6 @@ class MCRPG extends PluginBase implements Listener
 		$e->getPlayer()->sm = new StructMap($this, $e->getPlayer());
 		
 		$this->checkGroup($e->getPlayer());
-		
-		//GIVING ITEMS DEFAULT KIT
-		$phone = Item::get(336, 0, 1); //336 - phone
-		$phone->setCustomName("Телефон");
-		$passport = Item::get(340, 0, 1); //340 - passport
-		$passport->setCustomName("Паспорт");
-		$gps = Item::get(405, 0, 1); //405 - gps
-		$gps->setCustomName("Навигатор");
-		
-		if(!$e->getPlayer()->getInventory()->contains($phone)) 
-			$e->getPlayer()->getInventory()->setItem(0,$phone);
-		
-		if(!$e->getPlayer()->getInventory()->contains($passport)) 
-			$e->getPlayer()->getInventory()->setItem(1,$passport);
-		
-		if(!$e->getPlayer()->getInventory()->contains($gps)) 
-			$e->getPlayer()->getInventory()->setItem(2,$gps);
 	}
 	
 	public function playerPlaceBlock(BlockPlaceEvent $e)
@@ -352,22 +332,6 @@ class MCRPG extends PluginBase implements Listener
 	{
 		$json = json_encode($this->players_params,  JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT | JSON_NUMERIC_CHECK);
 		file_put_contents($this->getDirectory() . "players.auto.json", $json);
-	}
-	
-	public function getPlayerPosition($x=0, $y=0, $z=0) : Vector3
-	{
-		$position = new Vector3();
-		$position->add($x, $y, $z);
-		return $position;
-	}
-	
-	public function positionIntoArray(Position $pos) : array
-	{
-		return array(
-			"x" => $pos->getX(),
-			"y" => $pos->getY(),
-			"z" => $pos->getZ(),
-		);
 	}
 	
 	public function load()

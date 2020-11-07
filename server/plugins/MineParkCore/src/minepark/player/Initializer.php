@@ -58,7 +58,9 @@ class Initializer
 
         if(!$player->hasPlayedBefore() and $player->isnew) {
 			$this->handleNewPlayer($player);
-		}
+        }
+        
+        $this->addInventoryItems($player);
 		
 		if($player->org == 4) {
 			$item = Item::get(280, 0, 1);
@@ -77,6 +79,29 @@ class Initializer
 		$config->setNested("$pname.temp", $player->temp);
 		$config->setNested("$pname.people", $player->people);
 		$config->save();
+    }
+
+    private function addInventoryItems(Player $player)
+	{
+        //GIVING ITEMS DEFAULT KIT
+		$phone = Item::get(336, 0, 1); //336 - phone
+		$phone->setCustomName("Телефон");
+		$passport = Item::get(340, 0, 1); //340 - passport
+		$passport->setCustomName("Паспорт");
+		$gps = Item::get(405, 0, 1); //405 - gps
+		$gps->setCustomName("Навигатор");
+		
+		if(!$player->getInventory()->contains($phone)) {
+            $player->getInventory()->setItem(0,$phone);
+        }
+		
+		if(!$player->getInventory()->contains($passport)) {
+            $player->getInventory()->setItem(1,$passport);
+        }
+		
+		if(!$player->getInventory()->contains($gps)) {
+            $player->getInventory()->setItem(2,$gps);
+        }
     }
     
     private function getPlayerSaves(Player $player)

@@ -7,8 +7,6 @@ use pocketmine\event\Event;
 use minepark\Permission;
 use minepark\command\Command;
 
-use minepark\utils\CallbackTask;
-
 class CloseCommand extends Command
 {
     public const CURRENT_COMMAND = "close";

@@ -1,0 +1,7 @@
+Migrations documentation:
+- https://docs.microsoft.com/ru-ru/ef/core/managing-schemas/migrations/?tabs=vs
+- https://docs.microsoft.com/en-us/ef/core/managing-schemas/migrations/projects?tabs=dotnet-core-cli
+- https://coding.abel.nu/2012/03/ef-migrations-command-reference/
+
+Init db history:
+CREATE TABLE `__EFMigrationsHistory` ( `MigrationId` nvarchar(150) NOT NULL, `ProductVersion` nvarchar(32) NOT NULL, PRIMARY KEY (`MigrationId`) );

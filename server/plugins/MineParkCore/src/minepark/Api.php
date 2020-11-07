@@ -8,7 +8,7 @@ class Api
 	public const ATTRIBUTE_HAS_PASSPORT = 'P';
 	public const ATTRIBUTE_ARRESTED = 'A';
 	public const ATTRIBUTE_WANTED = 'W';
-	public const ATTRIBUTE_BOSS = 'L';
+	public const ATTRIBUTE_BOSS = 'B';
 
 	public function getCore() : Core
 	{
@@ -17,7 +17,7 @@ class Api
 	
 	public function getName() : string
 	{
-		return "Dino Park";
+		return "MinePark";
 	}
 	
 	public function getColor($textspace) : string
@@ -44,11 +44,7 @@ class Api
 			default: return "§f"; break;
 		}
 
-		if($withColor) {
-			return $form;
-		} else {
-			return substr($form, 2);
-		}
+		$withColor ? $form : substr($form, 2);
 	}
 	
 	public function getRegionPlayers(float $x1, float $y1, float $z1, int $rad) : array
