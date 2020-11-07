@@ -33,6 +33,11 @@ namespace MDC.Infrastructure.Services
             return databaseProvider.SingleOrDefault<User>(u => u.Name == userName);
         }
 
+        public User GetUser(int userId)
+        {
+            return databaseProvider.GetById<User>(userId);
+        }
+
         public UserDto GetUserDto(string userName)
         {
             User user = GetUser(userName);
@@ -75,7 +80,8 @@ namespace MDC.Infrastructure.Services
 
         public void Update(UserDto userDto)
         {
-            User user = mapper.Map<User>(userDto);
+            User user = GetUser(userDto.Id);
+            UpdateProperties(user, userDto);
             databaseProvider.Update(user);
             databaseProvider.Commit();
         }
@@ -132,6 +138,28 @@ namespace MDC.Infrastructure.Services
                 Builder = false,
                 Realtor = false
             };
+        }
+
+        private User UpdateProperties(User target, UserDto source)
+        {
+            target.FullName = source.FullName;
+            target.People = source.People;
+            target.Tag = source.Tag;
+            target.FullName = source.FullName;
+            target.Attributes = source.Attributes;
+            target.Licenses = source.Licenses;
+            target.Level = source.Level;
+            target.X = source.X;
+            target.Y = source.Y;
+            target.Z = source.Z;
+            target.Organisation = source.Organisation;
+            target.Bonus = source.Bonus;
+            target.Vip = source.Vip;
+            target.Administrator = source.Administrator;
+            target.Builder = source.Builder;
+            target.Realtor = source.Realtor;
+
+            return target;
         }
     }
 }

@@ -73,7 +73,7 @@ namespace MDC.Data
         {
             if(!General.IsMainUnit)
             {
-                return Environment.CurrentDirectory + @"\Data\Migrations\DB.properties";
+                return Environment.CurrentDirectory + @"\..\MDC\Data\Migrations\DB.properties";
             }
 
             return Defaults.PropertiesDatabaseFilename;

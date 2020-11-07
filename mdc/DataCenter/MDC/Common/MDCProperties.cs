@@ -19,7 +19,7 @@ namespace MDC.Common
             Dictionary<string, string> defaults = new Dictionary<string, string>()
             {
                 { "web-listener-addr", "127.0.0.1" },
-                { "web-listener-port", "8080" }
+                { "web-listener-port", "19000" }
             };
             SetDefaults(defaults, true);
         }

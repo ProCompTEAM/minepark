@@ -9,6 +9,8 @@ namespace MDC.Infrastructure.Services.Interfaces
 
         User GetUser(string userName);
 
+        User GetUser(int userId);
+
         UserDto GetUserDto(string userName);
 
         string GetPassword(string userName);
