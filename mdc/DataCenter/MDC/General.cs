@@ -5,6 +5,7 @@ using MDC.Data;
 using MDC.Infrastructure;
 using MDC.Infrastructure.Generic;
 using MDC.Infrastructure.Generic.Interfaces;
+using MDC.Infrastructure.Providers;
 using System;
 using System.Reflection;
 
@@ -69,6 +70,13 @@ namespace MDC
 
             Log("Loading web services...");
             NetSets.Initialize();
+
+            LoadContextData();
+        }
+
+        private static void LoadContextData()
+        {
+            Store.GetProvider<ContextProvider>().RestoreCredentials();
         }
     }
 }

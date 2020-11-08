@@ -4,6 +4,7 @@ using MDC.Data.Models;
 using MDC.Infrastructure.Providers;
 using MDC.Infrastructure.Providers.Interfaces;
 using MDC.Infrastructure.Services.Interfaces;
+using MDC.Utilities;
 using System;
 
 namespace MDC.Infrastructure.Services
@@ -81,7 +82,17 @@ namespace MDC.Infrastructure.Services
         public void Update(UserDto userDto)
         {
             User user = GetUser(userDto.Id);
-            UpdateProperties(user, userDto);
+
+            user = ObjectComparer.Merge(user, userDto, 
+                    u => u.Id,
+                    u => u.Name,
+                    u => u.MinutesPlayed,
+                    u => u.JoinedDate,
+                    u => u.LeftDate,
+                    u => u.CreatedDate,
+                    u => u.UpdatedDate
+                );
+            
             databaseProvider.Update(user);
             databaseProvider.Commit();
         }
@@ -138,28 +149,6 @@ namespace MDC.Infrastructure.Services
                 Builder = false,
                 Realtor = false
             };
-        }
-
-        private User UpdateProperties(User target, UserDto source)
-        {
-            target.FullName = source.FullName;
-            target.People = source.People;
-            target.Tag = source.Tag;
-            target.FullName = source.FullName;
-            target.Attributes = source.Attributes;
-            target.Licenses = source.Licenses;
-            target.Level = source.Level;
-            target.X = source.X;
-            target.Y = source.Y;
-            target.Z = source.Z;
-            target.Organisation = source.Organisation;
-            target.Bonus = source.Bonus;
-            target.Vip = source.Vip;
-            target.Administrator = source.Administrator;
-            target.Builder = source.Builder;
-            target.Realtor = source.Realtor;
-
-            return target;
         }
     }
 }

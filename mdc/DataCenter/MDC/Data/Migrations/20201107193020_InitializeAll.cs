@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 using MySql.Data.EntityFrameworkCore.Metadata;
 
-namespace MDC.Migrations
+namespace MDC.Data.Migrations
 {
     public partial class InitializeAll : Migration
     {

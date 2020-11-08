@@ -6,6 +6,8 @@
 
         string AccessToken { get; }
 
+        void RestoreCredentials();
+
         bool Authorize();
     }
 }
