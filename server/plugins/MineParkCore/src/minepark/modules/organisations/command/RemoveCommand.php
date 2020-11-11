@@ -1,5 +1,5 @@
 <?php
-namespace minepark\modules\organizations\command;
+namespace minepark\modules\organisations\command;
 
 use minepark\Permission;
 use minepark\Api;
@@ -7,10 +7,10 @@ use minepark\Api;
 use pocketmine\Player;
 use pocketmine\event\Event;
 
-class AddCommand extends OrganizationsCommand
+class RemoveCommand extends OrganisationsCommand
 {
-    public const CURRENT_COMMAND = "add";
-    public const CURRENT_COMMAND_ALIAS = "join";
+    public const CURRENT_COMMAND = "remove";
+    public const CURRENT_COMMAND_ALIAS = "reject";
 
     public function getCommand() : array
     {
@@ -29,6 +29,8 @@ class AddCommand extends OrganizationsCommand
 
     public function execute(Player $player, array $args = array(), Event $event = null)
     {
+        $organModule = $this->getCore()->getOrganisationsModule();
+
         if (!$this->isBoss($player)) {
             $player->sendMessage("§6Эту команду могут использовать только главы фракций!");
             return;
@@ -45,16 +47,20 @@ class AddCommand extends OrganizationsCommand
             $player->sendMessage("§6Рядом слишком много людей!");
         }
 
-        $this->tryChangeOrganization($plrs[0], $player);
+        $this->tryRejectGuy($plrs[0], $player);
     }
 
-    private function tryChangeOrganization(Player $player, Player $boss)
+    private function tryRejectGuy(Player $player, Player $boss)
     {
-        $player->org = $boss->org;
-        $this->getCore()->getInitializer()->updatePlayerSaves($player);
+        if ($player->getProfile()->organisation != $boss->getProfile()->organisation) {
+            $boss->sendMessage("§6Вы не можете уволить данного гражданина, так как он не находится в вашей организации!");
+        }
 
-		$boss->sendMessage("Вы приняли на работу гражданина " . $player->fullname);
-		$player->sendMessage("Теперь вы ".$this->core->getOrganisationsModule()->getName($player->org));
+        $player->getProfile()->organisation = 0;
+        $this->core->getInitializer()->updatePlayerSaves($player);
+
+        $boss->sendMessage("Вы уволили гражданина " . $player->getProfile()->fullName);
+        $player->sendMessage("Вас уволил с работы начальник ". $boss->getProfile()->fullName ."!");
     }
 
     private function isBoss(Player $p) : bool
@@ -71,7 +77,6 @@ class AddCommand extends OrganizationsCommand
         $allplayers = $this->getCore()->getApi()->getRegionPlayers($x, $y, $z, 5);
 
         $players = array();
-
         foreach ($allplayers as $currp) {
             if ($currp->getName() != $p->getName()) {
                 $players[] = $currp;

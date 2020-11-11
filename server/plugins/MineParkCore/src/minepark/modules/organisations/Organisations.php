@@ -1,16 +1,16 @@
 <?php
-namespace minepark\modules\organizations;
+namespace minepark\modules\organisations;
 
 use minepark\Core;
 
-use minepark\modules\organizations\Shop;
-use minepark\modules\organizations\Workers;
-use minepark\modules\organizations\Farm;
-use minepark\modules\organizations\NoFire;
+use minepark\modules\organisations\Shop;
+use minepark\modules\organisations\Workers;
+use minepark\modules\organisations\Farm;
+use minepark\modules\organisations\NoFire;
 
-use minepark\modules\organizations\OrganizationsCommandHandler;
+use minepark\modules\organisations\OrganisationsCommandHandler;
 
-class Organizations
+class Organisations
 {
     public $shop;
     public $workers;
@@ -33,7 +33,7 @@ class Organizations
         $this->workers = new Workers;
         $this->farm = new Farm;
         $this->noFire = new NoFire;
-        $this->cmdHandler = new OrganizationsCommandHandler;
+        $this->cmdHandler = new OrganisationsCommandHandler;
     }
 
     public function getName($id, $withColor = true)
@@ -70,7 +70,7 @@ class Organizations
         return $this->noFire;
     }
 
-    public function getCommandHandler() : OrganizationsCommandHandler
+    public function getCommandHandler() : OrganisationsCommandHandler
     {
         return $this->cmdHandler;
     }

@@ -44,6 +44,7 @@ namespace MDC.Infrastructure
 
         private static void InitializeControllers()
         {
+            RegisterController(new SettingsController());
             RegisterController(new UsersController());
         }
 

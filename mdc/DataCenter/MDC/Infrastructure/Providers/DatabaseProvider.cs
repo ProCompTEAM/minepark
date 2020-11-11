@@ -40,7 +40,7 @@ namespace MDC.Infrastructure.Providers
 
         public T LastOrDefault<T>(Expression<Func<T, bool>> predicate) where T : class, IEntity => Database.Context.Set<T>().LastOrDefault(predicate);
 
-        public bool Null<T>(Expression<Func<T, bool>> predicate) where T : class, IEntity => Database.Context.Set<T>().Any(predicate);
+        public bool Any<T>(Expression<Func<T, bool>> predicate) where T : class, IEntity => Database.Context.Set<T>().Any(predicate);
 
         public int Count<T>(Expression<Func<T, bool>> predicate) where T : class, IEntity => Database.Context.Set<T>().Count(predicate);
 

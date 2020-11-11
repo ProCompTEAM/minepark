@@ -107,7 +107,7 @@ class AdminCommand extends Command
             return;
         }
 
-        $targetPlayer->org = $oid; 
+        $targetPlayer->getProfile()->organisation = $oid; 
         $this->getCore()->getInitializer()->updatePlayerSaves($targetPlayer);
 
 		$player->sendMessage("[!] Организация игрока изменена на $oid");
@@ -141,7 +141,7 @@ class AdminCommand extends Command
 
         $this->getCore()->getApi()->arest($targetPlayer);
         
-        $this->getCore()->getServer()->broadcastMessage("§7[§eA§7] §6Администратор " . $player->fullname . " арестовал " . $targetPlayer->fullname);
+        $this->getCore()->getServer()->broadcastMessage("§7[§eA§7] §6Администратор " . $player->getProfile()->fullName . " арестовал " . $targetPlayer->getProfile()->fullName);
     }
 
     public function commandTags(Player $player, array $args)
@@ -156,7 +156,7 @@ class AdminCommand extends Command
             return;
         }
 
-		$player->sendMessage($targetPlayer->temp);
+		$player->sendMessage($targetPlayer->getProfile()->attributes);
     }
 
     public function commandAddTag(Player $player, array $args)

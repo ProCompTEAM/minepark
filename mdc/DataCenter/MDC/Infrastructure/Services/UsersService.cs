@@ -26,12 +26,12 @@ namespace MDC.Infrastructure.Services
 
         public bool Exist(string userName)
         {
-            return databaseProvider.Null<User>(u => u.Name == userName);
+            return databaseProvider.Any<User>(u => u.Name == userName);
         }
 
         public User GetUser(string userName)
         {
-            return databaseProvider.SingleOrDefault<User>(u => u.Name == userName);
+            return databaseProvider.SingleOrDefault<User>(u => u.Name.ToLower() == userName.ToLower());
         }
 
         public User GetUser(int userId)
@@ -81,7 +81,7 @@ namespace MDC.Infrastructure.Services
 
         public void Update(UserDto userDto)
         {
-            User user = GetUser(userDto.Id);
+            User user = GetUser(userDto.Name);
 
             user = ObjectComparer.Merge(user, userDto, 
                     u => u.Id,

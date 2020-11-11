@@ -1,11 +1,11 @@
 <?php
-namespace minepark\modules\organizations;
+namespace minepark\modules\organisations;
 
 use pocketmine\block\Block;
 use pocketmine\level\Position;
 
 use minepark\Core;
-use minepark\modules\organizations\Organizations;
+use minepark\modules\organisations\Organisations;
 use minepark\utils\CallbackTask;
 
 class NoFire
@@ -41,7 +41,7 @@ class NoFire
 
 	public function clean($player)
 	{
-		if($player->org == Organizations::EMERGENCY_WORK) {
+		if($player->getProfile()->organisation == Organisations::EMERGENCY_WORK) {
             $this->core->getChatter()->send($player, "§8(§dв руках огнетушитель§8)", "§d : ", 10);
             
 			if($this->clearPlace($player->getPosition(), 5)) {
@@ -75,7 +75,7 @@ class NoFire
         $list = [];
 
         foreach ($this->getCore()->getServer()->getOnlinePlayers() as $plr) {
-            if ($plr->org == Organizations::EMERGENCY_WORK) {
+            if ($plr->getProfile()->organisation == Organisations::EMERGENCY_WORK) {
                 $list[] = $plr;
             }
         }

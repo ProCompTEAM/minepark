@@ -1,5 +1,5 @@
 <?php
-namespace minepark\modules\organizations\command;
+namespace minepark\modules\organisations\command;
 
 use minepark\Permission;
 use minepark\Api;
@@ -7,10 +7,10 @@ use minepark\Api;
 use pocketmine\Player;
 use pocketmine\event\Event;
 
-class RemoveCommand extends OrganizationsCommand
+class AddCommand extends OrganisationsCommand
 {
-    public const CURRENT_COMMAND = "remove";
-    public const CURRENT_COMMAND_ALIAS = "reject";
+    public const CURRENT_COMMAND = "add";
+    public const CURRENT_COMMAND_ALIAS = "join";
 
     public function getCommand() : array
     {
@@ -29,8 +29,6 @@ class RemoveCommand extends OrganizationsCommand
 
     public function execute(Player $player, array $args = array(), Event $event = null)
     {
-        $organModule = $this->getCore()->getOrganisationsModule();
-
         if (!$this->isBoss($player)) {
             $player->sendMessage("§6Эту команду могут использовать только главы фракций!");
             return;
@@ -47,20 +45,16 @@ class RemoveCommand extends OrganizationsCommand
             $player->sendMessage("§6Рядом слишком много людей!");
         }
 
-        $this->tryRejectGuy($plrs[0], $player);
+        $this->tryChangeOrganisation($plrs[0], $player);
     }
 
-    private function tryRejectGuy(Player $player, Player $boss)
+    private function tryChangeOrganisation(Player $player, Player $boss)
     {
-        if ($player->org != $boss->org) {
-            $boss->sendMessage("§6Вы не можете уволить данного гражданина, так как он не находится в вашей организации!");
-        }
+        $player->getProfile()->organisation = $boss->getProfile()->organisation;
+        $this->getCore()->getInitializer()->updatePlayerSaves($player);
 
-        $player->org = 0;
-        $this->core->getInitializer()->updatePlayerSaves($player);
-
-        $boss->sendMessage("Вы уволили гражданина " . $player->fullname);
-        $player->sendMessage("Вас уволил с работы начальник ". $boss->fullname ."!");
+		$boss->sendMessage("Вы приняли на работу гражданина " . $player->getProfile()->fullName);
+		$player->sendMessage("Теперь вы ".$this->core->getOrganisationsModule()->getName($player->getProfile()->organisation));
     }
 
     private function isBoss(Player $p) : bool
@@ -77,6 +71,7 @@ class RemoveCommand extends OrganizationsCommand
         $allplayers = $this->getCore()->getApi()->getRegionPlayers($x, $y, $z, 5);
 
         $players = array();
+
         foreach ($allplayers as $currp) {
             if ($currp->getName() != $p->getName()) {
                 $players[] = $currp;

@@ -1,25 +1,25 @@
 <?php
-namespace minepark\modules\organizations;
+namespace minepark\modules\organisations;
 
 use pocketmine\Player;
 use pocketmine\event\Event;
 
 use minepark\Permission;
 
-use minepark\modules\organizations\command\OrganizationsCommand;
-use minepark\modules\organizations\command\AddCommand;
-use minepark\modules\organizations\command\ArestCommand;
-use minepark\modules\organizations\command\ChangeNameCommand;
-use minepark\modules\organizations\command\GiveLicCommand;
-use minepark\modules\organizations\command\HealCommand;
-use minepark\modules\organizations\command\InfoCommand;
-use minepark\modules\organizations\command\NoFireCommand;
-use minepark\modules\organizations\command\RadioCommand;
-use minepark\modules\organizations\command\RemoveCommand;
-use minepark\modules\organizations\command\SellCommand;
-use minepark\modules\organizations\command\ShowCommand;
+use minepark\modules\organisations\command\OrganisationsCommand;
+use minepark\modules\organisations\command\AddCommand;
+use minepark\modules\organisations\command\ArestCommand;
+use minepark\modules\organisations\command\ChangeNameCommand;
+use minepark\modules\organisations\command\GiveLicCommand;
+use minepark\modules\organisations\command\HealCommand;
+use minepark\modules\organisations\command\InfoCommand;
+use minepark\modules\organisations\command\NoFireCommand;
+use minepark\modules\organisations\command\RadioCommand;
+use minepark\modules\organisations\command\RemoveCommand;
+use minepark\modules\organisations\command\SellCommand;
+use minepark\modules\organisations\command\ShowCommand;
 
-class OrganizationsCommandHandler
+class OrganisationsCommandHandler
 {
 	private $commands;
 
@@ -80,7 +80,7 @@ class OrganizationsCommandHandler
 		$command->execute($player, $arguments, $event);
 	}
 
-	private function getCommand(string $commandName) : ?OrganizationsCommand
+	private function getCommand(string $commandName) : ?OrganisationsCommand
 	{
 		foreach($this->commands as $command) {
 			foreach($command->getCommand() as $currentCommandName) {
@@ -93,7 +93,7 @@ class OrganizationsCommandHandler
 		return null;
 	}
 
-	private function hasPermissions(Player $player, OrganizationsCommand $command) : bool
+	private function hasPermissions(Player $player, OrganisationsCommand $command) : bool
 	{
 		$permissions = $command->getPermissions();
 

@@ -2,12 +2,13 @@
 namespace minepark\player;
 
 use minepark\Api;
-use minepark\command\JailExitCommand;
-use minepark\utils\CallbackTask;
 use minepark\Core;
-
-use pocketmine\utils\Config;
 use pocketmine\Player;
+
+use minepark\utils\CallbackTask;
+use minepark\command\JailExitCommand;
+use minepark\mdc\dto\PasswordDto;
+use minepark\mdc\sources\UsersSource;
 
 class Auth
 {
@@ -17,38 +18,37 @@ class Auth
 
 	public const WELCOME_MESSAGE_TIMEOUT = 2;
 
-	public $config;
-	public $dir;
-	
-	public function __construct()
-	{
-		$this->dir = $this->getCore()->getTargetDirectory();
-		$this->config = new Config($this->dir."logins.json", Config::JSON);
-	}
-	
-	public function checkState(Player $p) : int
-	{
-		$c = $this->config;
-		$name = strtolower($p->getName());
+	private $ips = [];
 
-		if(!$c->exists($name)) {
-			return self::STATE_REGISTER;
-		} else {
-			if($c->getNested($name.".ip") == $p->getAddress()) return self::STATE_AUTO;
-			else return self::STATE_NEED_AUTH;
-		}
-	}
-	
 	public function getCore() : Core
 	{
 		return Core::getActive();
+	}
+
+	public function getRemoteSource() : UsersSource
+    {
+        return $this->getCore()->getMDC()->getSource("users");
+    }
+	
+	public function checkState(Player $player) : int
+	{
+		if($player->isnew) {
+			return self::STATE_REGISTER;
+		} else {
+			if(isset($this->ips[$player->getName()]) and $this->ips[$player->getName()] == $player->getAddress()) {
+				return self::STATE_AUTO;
+			}
+			else {
+				return self::STATE_NEED_AUTH;
+			}
+		}
 	}
 	
 	public function preLogin(Player $player)
 	{
 		$state = $this->checkState($player);
 
-		$this->setMove($player, false);
+		$this->setMovenment($player, false);
 
 		switch($state) {
 			case self::STATE_REGISTER:
@@ -68,7 +68,6 @@ class Auth
 	
 	public function login(Player $player, string $password)
 	{
-		$name = strtolower($player->getName());
 		$state = $this->checkState($player);
 
 		if($state == self::STATE_REGISTER) {
@@ -80,7 +79,7 @@ class Auth
 		} elseif($state == self::STATE_NEED_AUTH) {
 			if(strlen($password) < 6) {
 				$player->kick("AuthLen");
-			} elseif($password == $this->config->getNested($name.".key")) {
+			} elseif(md5($password) == $this->getRemoteSource()->getUserPassword($player->getName())) {
 				$this->logInUser($player);
 			} else {
 				$player->kick("AuthInvalid");
@@ -88,7 +87,7 @@ class Auth
 		}
 	}
 	
-	public function setMove($player, bool $status)
+	public function setMovenment($player, bool $status)
 	{
 		$player->setImmobile(!$status);
 	}
@@ -110,12 +109,10 @@ class Auth
 
 	private function logInUser(Player $player)
 	{
-		$name = strtolower($player->getName());
 		$player->auth = true;
 		$player->bar = null;
 
-		$this->config->setNested($name.".ip", $player->getAddress());
-		$player->save();
+		$this->ips[$player->getName()] = $player->getAddress();
 		
 		if($this->getCore()->getApi()->existsAttr($player, Api::ATTRIBUTE_ARRESTED)) {
 			$this->getCore()->getMapper()->teleportPoint($player, JailExitCommand::JAIL_POINT_NAME);
@@ -123,17 +120,13 @@ class Auth
 			$this->sendWelcomeText($player);
 		}
 		
-		$this->setMove($player, true);
+		$this->setMovenment($player, true);
 	}
 
 	private function registerUser(Player $player, string $password)
 	{
-		$name = strtolower($player->getName());
-		$c = $this->config;
-
-		$c->setNested($name.".key", $password);
-		$c->setNested($name.".ip", $player->getAddress());
-		$c->save();
+		$this->updatePassword($player, $password);
+		$this->ips[$player->getName()] = $player->getAddress();
 
 		$player->auth = true;
 		$player->bar = null; 
@@ -141,7 +134,16 @@ class Auth
 		$this->sendWelcomeText($player);
 		$player->sendLocalizedMessage("{AuthStart}" . $password);
 
-		$this->setMove($player, true);
+		$this->setMovenment($player, true);
+	}
+
+	private function updatePassword(Player $player, string $password) 
+	{
+		$passwordDto = new PasswordDto();
+		$passwordDto->name = $player->getName();
+		$passwordDto->password = md5($password);
+
+		$this->getRemoteSource()->setUserPassword($passwordDto);
 	}
 
 	private function autoLogInUser(Player $player)
@@ -149,7 +151,7 @@ class Auth
 		$player->auth = true; 
 		$player->bar = null;
 
-		$this->setMove($player, true);
+		$this->setMovenment($player, true);
 
 		$this->getCore()->getScheduler()->scheduleDelayedTask(
 			new CallbackTask(array($this, "sendWelcomeText"), array($player)), 20 * self::WELCOME_MESSAGE_TIMEOUT);

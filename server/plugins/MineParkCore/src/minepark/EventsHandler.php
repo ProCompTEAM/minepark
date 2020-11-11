@@ -9,6 +9,7 @@ use pocketmine\block\SignPost;
 use pocketmine\block\WallSign;
 use pocketmine\event\Listener;
 use minepark\utils\FixSignEvent;
+use minepark\mdc\sources\UsersSource;
 use minepark\player\ImplementedPlayer;
 use pocketmine\event\level\ChunkLoadEvent;
 use pocketmine\event\block\BlockBreakEvent;
@@ -63,6 +64,8 @@ class EventsHandler implements Listener
 
 		$this->getCore()->getTrackerModule()->enableTrack($event->getPlayer());
 
+		$this->getUsersSource()->updateUserJoinStatus($event->getPlayer()->getName());
+
 		$event->setJoinMessage(null);
 	}
 	
@@ -90,19 +93,21 @@ class EventsHandler implements Listener
 		}
 	}
 	
-	public function quitEvent(PlayerQuitEvent $e)
+	public function quitEvent(PlayerQuitEvent $event)
 	{
-		$e->setQuitMessage(null);
+		$event->setQuitMessage(null);
 		
-		$this->getCore()->getApi()->sendToMessagesLog($e->getPlayer()->getName(), "*** Выход из игры");
+		$this->getCore()->getApi()->sendToMessagesLog($event->getPlayer()->getName(), "*** Выход из игры");
 		
-		if($e->getPlayer()->phoneRcv != null) {
-			$this->getCore()->getPhone()->breakCall($e->getPlayer());
+		if($event->getPlayer()->phoneRcv != null) {
+			$this->getCore()->getPhone()->breakCall($event->getPlayer());
 		}
 
-		if ($this->getCore()->getTrackerModule()->isTracked($e->getPlayer())) {
-			$this->getCore()->getTrackerModule()->disableTrack($e->getPlayer());
+		if ($this->getCore()->getTrackerModule()->isTracked($event->getPlayer())) {
+			$this->getCore()->getTrackerModule()->disableTrack($event->getPlayer());
 		}
+
+		$this->getUsersSource()->updateUserQuitStatus($event->getPlayer()->getName());
 	}
 	
 	public function preLoginEvent(PlayerPreLoginEvent $event)
@@ -212,5 +217,10 @@ class EventsHandler implements Listener
 		
 		return false;
 	}
+
+	private function getUsersSource() : UsersSource
+    {
+        return $this->getCore()->getMDC()->getSource("users");
+    }
 }
 ?>

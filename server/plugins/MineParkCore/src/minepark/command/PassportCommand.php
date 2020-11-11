@@ -38,10 +38,10 @@ class PassportCommand extends Command
 		
 		$list = $this->getCore()->getApi()->getRegionPlayers($player->getX(), $player->getY(), $player->getZ(), 4);
 		foreach($list as $p) {
-			$p->sendWindowMessage($form, "Паспорт " . $player->fullname);
+			$p->sendWindowMessage($form, "Паспорт " . $player->getProfile()->fullName);
 				
-			if(strpos($p->people, strtolower($player->getName())) === false and $p !== $player) {
-				$p->people .= strtolower($player->getName());
+			if(strpos($p->getProfile()->people, strtolower($player->getName())) === false and $p !== $player) {
+				$p->getProfile()->people .= strtolower($player->getName());
 				$this->getCore()->getInitializer()->updatePlayerSaves($p);
 			}
         }
@@ -51,12 +51,12 @@ class PassportCommand extends Command
 
     private function getPassportForm(Player $player) : string
     {
-        $outputOrg = $this->getCore()->getOrganisationsModule()->getName($player->org);
+        $outputOrg = $this->getCore()->getOrganisationsModule()->getName($player->getProfile()->organisation);
         $outputRank = (($this->getCore()->getApi()->existsAttr($player, Api::ATTRIBUTE_BOSS)) ? " §7[§bНачальник§7]" : "");
         $outputPhone = $this->getCore()->getPhone()->getNumber($player);
         
 		$f = "§5Паспортные данные | Печать | WorldDoc";
-		$f .= "\n§d★ §eИмя§6: §3" . $player->fullname;
+		$f .= "\n§d★ §eИмя§6: §3" . $player->getProfile()->fullName;
 		$f .= "\n§d★ §eОрганизация§6: ". $outputOrg . $outputRank;
 			
         if(isset($player->subtag)) {

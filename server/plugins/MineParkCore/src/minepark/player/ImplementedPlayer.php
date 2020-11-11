@@ -2,6 +2,7 @@
 namespace minepark\player;
 
 use minepark\Core;
+use minepark\mdc\dto\UserDto;
 
 use pocketmine\Player;
 use pocketmine\math\Vector3;
@@ -11,6 +12,8 @@ use pocketmine\network\mcpe\protocol\ModalFormRequestPacket;
 
 class ImplementedPlayer extends Player
 {	
+	public UserDto $profile;
+
 	public function __construct(SourceInterface $interface, string $ip, int $port)
 	{
 		parent::__construct($interface, $ip, $port);
@@ -69,6 +72,11 @@ class ImplementedPlayer extends Player
 		}
 
 		return false;
+	}
+
+	public function getProfile() : UserDto
+	{
+		return $this->profile;
 	}
 
 	/*

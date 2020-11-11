@@ -139,12 +139,12 @@ class Phone
 				{
 					foreach($this->getCore()->getServer()->getOnlinePlayers() as $p)
 					{
-						if($p->org == $oid) 
+						if($p->getProfile()->organisation == $oid) 
 						{
 							if(count($ps) == 0) $p->sendMessage("§6[➪] !!! <=== ЭКСТРЕННЫЙ ВЫЗОВ (ПОЗВОНИТЕ) ===>");
 							else $p->sendMessage("§d[➪] !!! <=== ЭКСТРЕННЫЙ ВЫЗОВ (ОТПРАВЛЯЙТЕСЬ) ===>");
 							$p->sendMessage("§9[➪] !!! Номер вызова: §e".$this->getNumber($player));
-							$p->sendMessage("§9[➪] !!! Зарегистрирован на: §e".$player->fullname);
+							$p->sendMessage("§9[➪] !!! Зарегистрирован на: §e".$player->getProfile()->fullName);
 							$p->sendMessage("§9[➪] !!! Адреса проживания: §3".implode(", ",$player->property));
 							if(count($ps) == 0) $p->sendMessage("§c[➪] Место происшествия не определено");
 							else $p->sendMessage("§6[➪] !!! МЕСТО ПРОИСШЕСТВИЯ: §7/gps §e".$ps[0]);

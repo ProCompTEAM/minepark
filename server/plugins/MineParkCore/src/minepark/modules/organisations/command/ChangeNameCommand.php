@@ -1,15 +1,15 @@
 <?php
-namespace minepark\modules\organizations\command;
+namespace minepark\modules\organisations\command;
 
-use minepark\modules\organizations\Organizations;
+use minepark\modules\organisations\Organisations;
 use minepark\Permission;
 
 use pocketmine\Player;
 use pocketmine\event\Event;
 
-class GiveLicCommand extends OrganizationsCommand
+class ChangeNameCommand extends OrganisationsCommand
 {
-    public const CURRENT_COMMAND = "givelic";
+    public const CURRENT_COMMAND = "changename";
 
     public const POINT_NAME = "Мэрия";
 
@@ -29,8 +29,6 @@ class GiveLicCommand extends OrganizationsCommand
 
     public function execute(Player $player, array $args = array(), Event $event = null)
     {
-        $organModule = $this->getCore()->getOrganisationsModule();
-
         if (!$this->canGiveDocuments($player)) {
             $player->sendMessage("§cВы не документовед!");
             return;
@@ -53,33 +51,41 @@ class GiveLicCommand extends OrganizationsCommand
             return;
         }
 
-        $this->tryGiveLicense($plrs[0], $player);
+        if (!self::argumentsMin(2, $args)) {
+            $player->sendMessage("§cФормат: /o changename <имя> <псевдоним>");
+            return;
+        }
+
+        $this->tryChangeName($plrs[0], $player, $args[0], $args[1]);
     }
 
-    private function tryGiveLicense(Player $toPlayer, Player $government)
+    private function tryChangeName(Player $toPlayer, Player $government, string $name, string $surname)
     {
-        $this->getCore()->getChatter()->send($government, "§8(§dв руках ключи от сейфа§8)", "§d : ", 10);
+        
+        $oldname = $toPlayer->getProfile()->fullName;
+        $toPlayer->getProfile()->fullName = $name . ' ' . $surname;
 
-        $government->sendMessage("§7В данный момент лицензий нет!");
-        $toPlayer->sendMessage("§bВ данный момент отсутсвуют лицензии в наличии.");
+        $this->getCore()->getInitializer()->updatePlayerSaves($toPlayer);
+        $toPlayer->setTip("§aпоздравляем!","§9$oldname §7>>> §e".$toPlayer->getProfile()->fullName, 5);
+
+        $this->getCore()->getBank()->givePlayerMoney($government, 10);
+        $government->sendMessage("§bВы изменили имя клиента с §9$oldname §7на §e".$toPlayer->getProfile()->fullName);
     }
 
     private function moveThemOut(array $plrs, Player $government)
     {
         $this->getCore()->getChatter()->send($government, "Граждане, не мешайте проведению процесса!");
-
         foreach($plrs as $id => $p) {
             if($id > 1) {
                 $p->sendMessage("§6Вы мешаете проведению операции, отойдите дальше!");
             }
         }
-
         $government->sendMessage("§6Операция требует приватности, поэтому не была произведена!");
     }
 
     private function canGiveDocuments(Player $p) : bool
     {
-        return $p->org == Organizations::GOVERNMENT_WORK or $p->org == Organizations::LAWYER_WORK;
+        return $p->getProfile()->organisation == Organisations::GOVERNMENT_WORK or $p->getProfile()->organisation == Organisations::LAWYER_WORK;
     }
 
     private function isNearPoint(Player $p) : bool

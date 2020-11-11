@@ -99,15 +99,15 @@ class Api
 	
 	public function existsAttr(Player $player, string $key) : bool
 	{
-		return (preg_match('/'.strtoupper($key).'/', $player->temp));
+		return (preg_match('/'.strtoupper($key).'/', $player->getProfile()->attributes));
 	}
 	
 	public function changeAttr(Player $player, string $key, bool $status = true)
 	{
 		if(!$status) {
-			$player->temp = str_replace(strtoupper($key), '', $player->temp);
+			$player->getProfile()->attributes = str_replace(strtoupper($key), '', $player->getProfile()->attributes);
 		} elseif(!$this->existsAttr($player, strtoupper($key))) {
-			$player->temp .= strtoupper($key);
+			$player->getProfile()->attributes .= strtoupper($key);
 		}
 
 		$this->getCore()->getInitializer()->updatePlayerSaves($player);

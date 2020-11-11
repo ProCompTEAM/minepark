@@ -1,14 +1,14 @@
 <?php
-namespace minepark\modules\organizations\command;
+namespace minepark\modules\organisations\command;
 
-use minepark\modules\organizations\Organizations;
+use minepark\modules\organisations\Organisations;
 use minepark\Permission;
 use minepark\Api;
 
 use pocketmine\Player;
 use pocketmine\event\Event;
 
-class InfoCommand extends OrganizationsCommand
+class InfoCommand extends OrganisationsCommand
 {
     public const CURRENT_COMMAND = "info";
 
@@ -51,7 +51,7 @@ class InfoCommand extends OrganizationsCommand
 
     private function canGetInfo(Player $p) : bool
     {
-        return $p->org == Organizations::GOVERNMENT_WORK or $p->org == Organizations::SECURITY_WORK;
+        return $p->getProfile()->organisation == Organisations::GOVERNMENT_WORK or $p->getProfile()->organisation == Organisations::SECURITY_WORK;
     }
 
     private function getPlayersNear(Player $p) : array
@@ -74,7 +74,7 @@ class InfoCommand extends OrganizationsCommand
 
     private function getPlayerInfo(Player $playerToInfo, Player $requestor)
     {
-        $f = "§bДоп.информация о человеке ".$playerToInfo->fullname.":";
+        $f = "§bДоп.информация о человеке ".$playerToInfo->getProfile()->fullName.":";
 
         $f .= "\n§a > §eДокументы: ". ($this->core->getApi()->existsAttr($playerToInfo, Api::ATTRIBUTE_HAS_PASSPORT) ? "§aда" : "§cнет");
         $f .= "\n§a > §eАрестован: ". ($this->core->getApi()->existsAttr($playerToInfo, Api::ATTRIBUTE_ARRESTED) ? "§aда" : "§cнет");

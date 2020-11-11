@@ -38,7 +38,7 @@ class Chatter
 		}
 
 		foreach($this->getCore()->getServer()->getOnlinePlayers() as $target) {
-			$this->sendGlobalMessage($target, $sender->fullname, $message);
+			$this->sendGlobalMessage($target, $sender->getProfile()->fullName, $message);
 		}
 	}
 	
@@ -78,10 +78,10 @@ class Chatter
 	{
 		$nickname = null;
 
-		if(strpos($target->people, $senderName) !== false) {
+		if(strpos($target->getProfile()->people, $senderName) !== false) {
 			$nickname = "§7" . $senderName;
 		} elseif($makeFriends and $senderName != strtolower($target->getName())) {
-			$target->people .= $senderName;
+			$target->getProfile()->people .= $senderName;
 			$this->getCore()->getInitializer()->updatePlayerSaves($target);
 			$nickname = "§2" . $senderName;
 		} elseif($senderName == strtolower($target->getName())) {

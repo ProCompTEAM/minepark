@@ -1,5 +1,5 @@
 <?php
-namespace minepark\modules\organizations\command;
+namespace minepark\modules\organisations\command;
 
 use minepark\Core;
 use minepark\database\model\Model;
@@ -7,7 +7,7 @@ use minepark\database\model\Model;
 use pocketmine\Player;
 use pocketmine\event\Event;
 
-abstract class OrganizationsCommand
+abstract class OrganisationsCommand
 {
     static public function argumentsNo(array $args) : bool
     {

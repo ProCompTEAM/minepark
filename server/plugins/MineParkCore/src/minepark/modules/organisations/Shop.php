@@ -1,5 +1,5 @@
 <?php
-namespace minepark\modules\organizations;
+namespace minepark\modules\organisations;
 
 use minepark\Core;
 use pocketmine\Player;

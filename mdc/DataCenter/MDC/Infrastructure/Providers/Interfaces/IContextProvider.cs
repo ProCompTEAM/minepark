@@ -9,5 +9,9 @@
         void RestoreCredentials();
 
         bool Authorize();
+
+        string GetCurrentUnitId();
+
+        void SetCurrentUnitId(string unitId);
     }
 }

@@ -1,14 +1,14 @@
 <?php
-namespace minepark\modules\organizations\command;
+namespace minepark\modules\organisations\command;
 
-use minepark\modules\organizations\Organizations;
+use minepark\modules\organisations\Organisations;
 use minepark\Permission;
 use minepark\Api;
 
 use pocketmine\Player;
 use pocketmine\event\Event;
 
-class ArestCommand extends OrganizationsCommand
+class ArestCommand extends OrganisationsCommand
 {
     public const CURRENT_COMMAND = "arest";
 
@@ -49,7 +49,7 @@ class ArestCommand extends OrganizationsCommand
 
     private function canArrest(Player $p) : bool
     {
-        return $p->org == Organizations::GOVERNMENT_WORK or $p->org == Organizations::SECURITY_WORK;
+        return $p->getProfile()->organisation == Organisations::GOVERNMENT_WORK or $p->getProfile()->organisation == Organisations::SECURITY_WORK;
     }
 
     private function getPlayersNear(Player $p) : array
@@ -74,15 +74,15 @@ class ArestCommand extends OrganizationsCommand
     private function arrestPlayer(Player $playerToArrest, Player $arrester)
     {
         if(!$this->getCore()->getApi()->existsAttr($playerToArrest, Api::ATTRIBUTE_WANTED)) {
-            $arrester->sendMessage("§9Для ареста вам необходимо оглушить §3".$playerToArrest->fullname);
+            $arrester->sendMessage("§9Для ареста вам необходимо оглушить §3".$playerToArrest->getProfile()->fullName);
             $arrester->sendMessage("§7Чтобы оглушить кого-то, ударьте его дубинкой §8((палкой))§7!");
             return;
         }
 
         $this->getCore()->getApi()->arest($playerToArrest);
 
-        $playerToArrest->sendMessage("§9Вас арестовал §3".$arrester->fullname);
-        $arrester->sendMessage("§9Вы арестовали §3".$playerToArrest->fullname);
+        $playerToArrest->sendMessage("§9Вас арестовал §3".$arrester->getProfile()->fullName);
+        $arrester->sendMessage("§9Вы арестовали §3".$playerToArrest->getProfile()->fullName);
     }
 }
 ?>

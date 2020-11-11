@@ -24,7 +24,7 @@ class PayDay
 			$salary = 0; 
 			$special = 0;
 			
-			switch($p->org)
+			switch($p->getProfile()->organisation)
 			{
 				case 1: $salary = 200; break;
 				case 2: $salary = 600; break;
@@ -39,7 +39,7 @@ class PayDay
 				$special += 200;
 			}
 
-			if($p->org == 0) {
+			if($p->getProfile()->organisation == 0) {
 				$special += 100;
 			}
 

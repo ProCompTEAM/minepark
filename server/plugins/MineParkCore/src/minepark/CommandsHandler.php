@@ -11,7 +11,7 @@ use minepark\command\admin\AdminCommand;
 use minepark\command\AnimationCommand;
 use minepark\command\CasinoCommand;
 use minepark\command\DonateCommand;
-use minepark\command\GetOrganizationCommand;
+use minepark\command\GetOrganisationCommand;
 use minepark\command\GetSellerCommand;
 use minepark\command\JailExitCommand;
 use minepark\command\LevelCommand;
@@ -68,7 +68,7 @@ class CommandsHandler
 			new AnimationCommand,
 			new CasinoCommand,
 			new DonateCommand,
-			new GetOrganizationCommand,
+			new GetOrganisationCommand,
 			new GetSellerCommand,
 			new JailExitCommand,
 			new LevelCommand,

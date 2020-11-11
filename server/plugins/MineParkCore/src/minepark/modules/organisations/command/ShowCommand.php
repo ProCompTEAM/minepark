@@ -1,13 +1,13 @@
 <?php
-namespace minepark\modules\organizations\command;
+namespace minepark\modules\organisations\command;
 
-use minepark\modules\organizations\Organizations;
+use minepark\modules\organisations\Organisations;
 use minepark\Permission;
 
 use pocketmine\Player;
 use pocketmine\event\Event;
 
-class ShowCommand extends OrganizationsCommand
+class ShowCommand extends OrganisationsCommand
 {
     public const CURRENT_COMMAND = "show";
 
@@ -29,9 +29,9 @@ class ShowCommand extends OrganizationsCommand
     {
         $organModule = $this->getCore()->getOrganisationsModule();
 
-        $oid = $player->org;
+        $oid = $player->getProfile()->organisation;
 
-        if($oid == Organizations::NO_WORK) {
+        if($oid == Organisations::NO_WORK) {
             $player->sendMessage("§cУ вас нет удостоверения!");
             return;
         }

@@ -69,7 +69,6 @@ class WebApi
     private function getData() : string
     {
         return json_encode([
-            "codename" => Core::BUILD_CODENAME,
             "api" => self::API_VERSION,
             "online" => $this->getOnline(),
             "max" => $this->getMaxOnline(),

@@ -1,13 +1,13 @@
 <?php
-namespace minepark\modules\organizations\command;
+namespace minepark\modules\organisations\command;
 
-use minepark\modules\organizations\Organizations;
+use minepark\modules\organisations\Organisations;
 use minepark\Permission;
 
 use pocketmine\Player;
 use pocketmine\event\Event;
 
-class HealCommand extends OrganizationsCommand
+class HealCommand extends OrganisationsCommand
 {
     public const CURRENT_COMMAND = "heal";
 
@@ -52,7 +52,7 @@ class HealCommand extends OrganizationsCommand
 
     private function isHealer(Player $plr)
     {
-        return $plr->org == Organizations::DOCTOR_WORK;
+        return $plr->getProfile()->organisation == Organisations::DOCTOR_WORK;
     }
 
     private function isNearPoint(Player $p) : bool

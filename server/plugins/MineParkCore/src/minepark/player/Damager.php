@@ -35,7 +35,7 @@ class Damager
 
     public function kick(Player $player, Player $damager) : bool
     {
-        if($damager->org == 4 and $damager->getInventory()->getItemInHand()->getName() == "Stick") {
+        if($damager->getProfile()->organisation == 4 and $damager->getInventory()->getItemInHand()->getName() == "Stick") {
             $this->getCore()->getChatter()->send($damager, "§8(§dв руках дубинка-электрошокер§8)", "§d : ", 10);
             $this->getCore()->getChatter()->send($player, "§8(§dлежит на полу | ослеплен§8)", "§d : ", 12);
             

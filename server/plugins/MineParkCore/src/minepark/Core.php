@@ -1,40 +1,39 @@
 <?php
 namespace minepark;
 
-use pocketmine\plugin\PluginBase;
-use pocketmine\event\Listener;
-use pocketmine\utils\Config;
-use pocketmine\command\Command;
-use pocketmine\command\CommandSender;
-use pocketmine\command\ConsoleCommandSender;
-
 use minepark\Api;
-use minepark\EventsHandler;
-use minepark\CommandsHandler;
-use minepark\database\Database;
-use minepark\external\WebApi;
-use minepark\external\service\Service;
-use minepark\modules\organizations\Organizations;
-use minepark\modules\FastFood;
-use minepark\modules\Reporter;
-use minepark\modules\Phone;
-use minepark\modules\PayDay;
-use minepark\modules\StatusBar;
-use minepark\modules\NotifyPlayers;
+use minepark\mdc\MDC;
 use minepark\modules\GPS;
-use minepark\modules\Tracker;
-use minepark\player\Localizer;
-use minepark\player\Initializer;
-use minepark\player\Chatter;
-use minepark\player\Damager;
 use minepark\player\Auth;
 use minepark\player\Bank;
+use minepark\EventsHandler;
+
+use minepark\modules\Phone;
+use minepark\modules\PayDay;
+use minepark\player\Chatter;
+use minepark\player\Damager;
+use pocketmine\utils\Config;
+use minepark\CommandsHandler;
+use minepark\external\WebApi;
+use minepark\modules\Tracker;
+use minepark\modules\FastFood;
+use minepark\modules\Reporter;
+use minepark\player\Localizer;
+use pocketmine\event\Listener;
 use jojoe77777\FormAPI\FormAPI;
+use minepark\modules\StatusBar;
+use pocketmine\command\Command;
+use minepark\player\Initializer;
+use pocketmine\plugin\PluginBase;
+use minepark\modules\NotifyPlayers;
+use pocketmine\command\CommandSender;
+use minepark\external\service\Service;
+use minepark\mdc\dto\UserDto;
+use pocketmine\command\ConsoleCommandSender;
+use minepark\modules\organisations\Organisations;
 
 class Core extends PluginBase implements Listener
 {
-	public const BUILD_CODENAME = "MilkyWay";
-
 	public const SERVER_LOBBY_ADDRESS = "minepark.ru";
 	public const SERVER_LOBBY_PORT = 19132;
 
@@ -42,17 +41,17 @@ class Core extends PluginBase implements Listener
 	public const DEFAULT_DIRECTORY_STRINGS = "data/strings/";
 
 	public const MESSAGES_LOG_FILE = "msg-log.txt";
-	public const SQL_LOG_FILE = "sql-log.txt";
 	public const WEBAPI_LOG_FILE = "webapi-log.txt";
 
 	static private $_core;
-	static private $_db;
 
 	private $eventsHandler;
 
+	private $mdc;
+
 	private $sapi;
 	private $scmd;
-	private $org;
+	private $organisations;
 	private $service;
 	private $bank;
 	private $mapper;
@@ -71,30 +70,20 @@ class Core extends PluginBase implements Listener
 
 	public $webapi;
 
-	public $playersConfig;
-
 	public static function getActive() : Core
 	{
 		return self::$_core;
-	}
-
-	public static function getDatabase() : Database
-	{
-		return self::$_db;
 	}
 	
     public function onEnable()
 	{
 		Core::$_core = $this;
-		Core::$_db = new Database();
-
-		$this->playersConfig = new Config($this->getTargetDirectory() . "players.json", Config::JSON);
-
-		self::getDatabase()->loadAll();
 
 		$this->initializeEventsHandler();
 
 		$this->initialize();
+
+		$this->getMDC()->initializeAll();
 
 		if(!file_exists(self::DEFAULT_DIRECTORY)) {
 			mkdir(self::DEFAULT_DIRECTORY);
@@ -110,8 +99,6 @@ class Core extends PluginBase implements Listener
 		foreach($this->getServer()->getOnlinePlayers() as $player) {
 			$player->transfer(self::SERVER_LOBBY_ADDRESS, self::SERVER_LOBBY_PORT);
 		}
-
-		self::getDatabase()->unloadAll();
 	}
 
 	public function initializeEventsHandler()
@@ -122,9 +109,10 @@ class Core extends PluginBase implements Listener
 
 	public function initialize()
 	{
+		$this->mdc = new MDC;
 		$this->sapi = new Api;
 		$this->scmd = new CommandsHandler;
-		$this->org = new Organizations;
+		$this->organisations = new Organisations;
 		$this->service = new Service;
 		$this->bank = new Bank;
 		$this->mapper = new Mapper;
@@ -147,6 +135,11 @@ class Core extends PluginBase implements Listener
 	public function getTargetDirectory(bool $strings = false) : string
 	{
 		return $strings ? self::DEFAULT_DIRECTORY_STRINGS : self::DEFAULT_DIRECTORY;
+	}
+
+	public function getMDC() : MDC
+	{
+		return $this->mdc;
 	}
 
 	public function getEventsHandler() : EventsHandler
@@ -179,9 +172,9 @@ class Core extends PluginBase implements Listener
 		return $this->scmd;
 	}
 
-	public function getOrganisationsModule() : Organizations
+	public function getOrganisationsModule() : Organisations
 	{
-		return $this->org;
+		return $this->organisations;
 	}
 
 	public function getBank() : Bank
@@ -252,11 +245,6 @@ class Core extends PluginBase implements Listener
 	public function getNotifierModule() : NotifyPlayers
 	{
 		return $this->notifier;
-	}
-
-	public function getPlayersConfig() : Config
-	{
-		return $this->playersConfig;
 	}
 
 	public function getFormApi() : FormAPI

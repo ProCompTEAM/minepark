@@ -15,6 +15,8 @@ namespace MDC.Infrastructure.Providers
 
         private List<string> tokens = new List<string>();
 
+        private static Dictionary<string, string> tokenUnitIdPairs = new Dictionary<string, string>();
+
         public ContextProvider()
         {
             databaseProvider = Store.GetProvider<DatabaseProvider>();
@@ -28,6 +30,21 @@ namespace MDC.Infrastructure.Providers
         public bool Authorize()
         {
             return tokens.Contains(AccessToken);
+        }
+
+        public string GetCurrentUnitId()
+        {
+            if(tokenUnitIdPairs.ContainsKey(AccessToken))
+            {
+                return tokenUnitIdPairs[AccessToken];
+            }
+
+            return null;
+        }
+
+        public void SetCurrentUnitId(string unitId)
+        {
+            tokenUnitIdPairs[AccessToken] = unitId;
         }
     }
 }

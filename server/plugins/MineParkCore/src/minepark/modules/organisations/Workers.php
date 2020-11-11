@@ -1,5 +1,5 @@
 <?php
-namespace minepark\modules\organizations;
+namespace minepark\modules\organisations;
 
 use pocketmine\Player;
 use pocketmine\entity\EffectInstance;

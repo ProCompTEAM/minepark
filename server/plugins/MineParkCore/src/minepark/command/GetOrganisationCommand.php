@@ -8,7 +8,7 @@ use minepark\Permission;
 use pocketmine\event\Event;
 use pocketmine\level\Position;
 
-class GetOrganizationCommand extends Command
+class GetOrganisationCommand extends Command
 {
     public const CURRENT_COMMAND = "getorg";
 
@@ -93,7 +93,7 @@ class GetOrganizationCommand extends Command
     {
         $orgName = $this->getCore()->getOrganisationsModule()->getName($orgId);
 
-        $player->org = $orgId; 
+        $player->getProfile()->organisation = $orgId; 
         $this->getCore()->getInitializer()->updatePlayerSaves($player);
 
         $player->sendMessage("Теперь вы $orgName");

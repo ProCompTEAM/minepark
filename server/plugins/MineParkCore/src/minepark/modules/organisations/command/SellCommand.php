@@ -1,14 +1,14 @@
 <?php
-namespace minepark\modules\organizations\command;
+namespace minepark\modules\organisations\command;
 
-use minepark\modules\organizations\Organizations;
+use minepark\modules\organisations\Organisations;
 use minepark\Permission;
 
 use pocketmine\Player;
 use pocketmine\item\Item;
 use pocketmine\event\Event;
 
-class SellCommand extends OrganizationsCommand
+class SellCommand extends OrganisationsCommand
 {
     public const CURRENT_COMMAND = "sell";
 
@@ -59,7 +59,7 @@ class SellCommand extends OrganizationsCommand
 
     public static function isSeller(Player $p) : bool
     {
-        return $p->org == Organizations::SELLER_WORK || $p->isOp();
+        return $p->getProfile()->organisation == Organisations::SELLER_WORK || $p->isOp();
     }
 
     private function noPointsNear(array $points) : bool

@@ -1,12 +1,12 @@
 <?php
-namespace minepark\modules\organizations\command;
+namespace minepark\modules\organisations\command;
 
 use pocketmine\Player;
 use pocketmine\event\Event;
 
 use minepark\Permission;
 
-class RadioCommand extends OrganizationsCommand
+class RadioCommand extends OrganisationsCommand
 {
     public const CURRENT_COMMAND = "r";
 
@@ -30,14 +30,14 @@ class RadioCommand extends OrganizationsCommand
             $player->sendMessage("§eПравильное использование этой команды: /r [ТЕКСТ]");
         }
 
-        $oid = $player->org;
+        $oid = $player->getProfile()->organisation;
 
         $message = implode(" ", $args);
 
         if($oid >= 1) {
             foreach($this->core->getServer()->getOnlinePlayers() as $p) {
-                if($p->org == $oid) {
-                    $p->sendMessage("§d[РАЦИЯ] §7".$player->fullname." §4> §7".$message);
+                if($p->getProfile()->organisation == $oid) {
+                    $p->sendMessage("§d[РАЦИЯ] §7".$player->getProfile()->fullName." §4> §7".$message);
                 }
             }
             return;

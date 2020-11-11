@@ -40,7 +40,7 @@ class GetSellerCommand extends Command
         }
 
         foreach($this->getCore()->getServer()->getOnlinePlayers() as $p){
-            if($p->org == 5) {
+            if($p->getProfile()->organisation == 5) {
                 $p->sendMessage("§eНа торговую площадку §b$shopPoint §eтребуется продавец!");
             }
         }
