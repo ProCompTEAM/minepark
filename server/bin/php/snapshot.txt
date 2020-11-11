@@ -1,7 +1,7 @@
 This snapshot was automatically generated on
-Sun, 21 Jun 2020 18:56:01 +0000
+Tue, 06 Oct 2020 11:58:47 +0000
 
-Version: 7.3.19
+Version: 7.4.11
 Branch: HEAD
 Build: D:\a\1\s\pocketmine-php-sdk\php-src\x64\Release_TS
 
@@ -52,6 +52,7 @@ Module: php7ts.dll
 	nghttp2.dll
 	libsodium.dll
 	yaml.dll
+	imagehlp.dll
 
 Module: libssl-1_1-x64.dll
 ===========================
@@ -73,6 +74,10 @@ Module: php_openssl.dll
 Module: php_pthreads.dll
 ===========================
 	pthreadvc3.dll
+
+Module: php_sqlite3.dll
+===========================
+	libsqlite3.dll
 
 Module: php_crypto.dll
 ===========================
