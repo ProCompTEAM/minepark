@@ -110,8 +110,8 @@ class AdminCommand extends Command
         $targetPlayer->getProfile()->organisation = $oid; 
         $this->getCore()->getInitializer()->updatePlayerSaves($targetPlayer);
 
-		$player->sendMessage("[!] Организация игрока изменена на $oid");
-		$targetPlayer->sendMessage("Теперь вы ". $this->getCore()->getOrganisationsModule()->getName($oid));
+		$player->sendMessage("AdminCmdSetOrg1");
+		$targetPlayer->sendMessage("{AdminCmdSetOrg2}". $this->getCore()->getOrganisationsModule()->getName($oid));
     }
 
     public function commandNear(Player $player)
@@ -120,7 +120,7 @@ class AdminCommand extends Command
         
         $list = $this->getCore()->getApi()->getRegionPlayers($player->getX(), $player->getY(), $player->getZ(), $rad);
 
-        $f = "Игроки в радиусе $rad блоков:";
+        $f = "AdminCmdPlayerNear";
         foreach($list as $p) {
             $f .= " " . $p->getName();
         }
@@ -141,7 +141,7 @@ class AdminCommand extends Command
 
         $this->getCore()->getApi()->arest($targetPlayer);
         
-        $this->getCore()->getServer()->broadcastMessage("§7[§eA§7] §6Администратор " . $player->getProfile()->fullName . " арестовал " . $targetPlayer->getProfile()->fullName);
+        $this->getCore()->getServer()->broadcastMessage("{AdminCmdArestPart1}" . $player->getProfile()->fullName . "{AdminCmdArestPart2}" . $targetPlayer->getProfile()->fullName);
     }
 
     public function commandTags(Player $player, array $args)
@@ -173,7 +173,7 @@ class AdminCommand extends Command
 
         $this->getCore()->getApi()->changeAttr($targetPlayer, strtoupper($args[2]));
 
-        $player->sendMessage("Тег игрока изменен на <TRUE>!");
+        $player->sendMessage("AdminCmdSetTag");
     }
 
     public function commandRemoveTag(Player $player, array $args)
@@ -190,7 +190,7 @@ class AdminCommand extends Command
 
         $this->getCore()->getApi()->changeAttr($targetPlayer, strtoupper($args[2]), false);
 
-        $player->sendMessage("Тег игрока изменен на <FALSE>!");
+        $player->sendMessage("AdminCmdRemoveTag");
     }
 
     public function commandHide(Player $player)
@@ -199,7 +199,7 @@ class AdminCommand extends Command
             $p->hidePlayer($player);
         }
         
-        $player->sendMessage("Теперь вы невидимый! Возврат: /a show");
+        $player->sendMessage("AdminCmdHide");
     }
 
     public function commandShow(Player $player)
@@ -208,7 +208,7 @@ class AdminCommand extends Command
             $p->showPlayer($player);
         }
         
-        $player->sendMessage("Вас снова видят все игроки!");
+        $player->sendMessage("AdminCmdShow");
     }
 
     public function commandTrack(Player $player, array $args)
@@ -256,7 +256,7 @@ class AdminCommand extends Command
     private function countArguments(Player $player, array $args, int $minCount)
     {
         if(count($args) < $minCount + 1) {
-            $player->sendMessage("У этой команды должно быть больше аргументов!");
+            $player->sendMessage("NoArguments");
             return false;
         }
 

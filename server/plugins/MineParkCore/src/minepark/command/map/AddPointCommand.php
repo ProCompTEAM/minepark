@@ -31,7 +31,7 @@ class AddPointCommand extends Command
     public function execute(Player $player, array $args = array(), Event $event = null)
     {
         if(self::argumentsNo($args)) {
-            $player->sendMessage("§cНе указано название точки!");
+            $player->sendMessage("AddPointNoArg");
             return;
         }
 
@@ -40,7 +40,7 @@ class AddPointCommand extends Command
 
         $this->getCore()->getMapper()->addPoint($player->getPosition(), $param1, $param2);
         
-		$player->sendMessage("§3Точка§e $param1 §3добавлена в базу!");
+		$player->sendMessage("AddPoint");
     }
 }
 ?>

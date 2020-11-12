@@ -97,7 +97,7 @@ class Control extends PluginBase implements Listener
 			switch($cmds[0]) { 
 				case "set": 
 				if(!Empty($cmds[1])) { 
-				$this->run->create($cmds[1], $sender->getPosition()); $sender->sendMessage(TextFormat::AQUA."*ЛИФТЫ* В базу добавлена/изменена точка лифта"); 
+				$this->run->create($cmds[1], $sender->getPosition()); $sender->sendMessage(TextFormat::AQUA."{LiftsSet}"); 
 				} 
 				else $this->showError($sender, 1); 
 				break; 
@@ -105,14 +105,14 @@ class Control extends PluginBase implements Listener
 				case "unset": 
 				if(!Empty($cmds[1])) { 
 				$this->run->remove($cmds[1]); 
-				$sender->sendMessage(TextFormat::AQUA."*ЛИФТЫ* из базы удалена(если была в базе) точка лифта"); 
+				$sender->sendMessage(TextFormat::AQUA."{LiftsUnset}"); 
 				} 
 				else $this->showError($sender, 1); 
 				break; 
 				
 				case "reload": 
 				$this->run->loadAll(); 
-				$sender->sendMessage(TextFormat::AQUA."*ЛИФТЫ* Список активных лифтов обновлен"); 
+				$sender->sendMessage(TextFormat::AQUA."{LiftsReload}"); 
 				break; 
 				
 				case "list": 
@@ -121,28 +121,28 @@ class Control extends PluginBase implements Listener
 				foreach($list as $item) { 
 					$text .= substr($item, 0, -4)." ; "; 
 				} 
-				$sender->sendMessage(TextFormat::AQUA."*ЛИФТЫ* Список лифтов: $text"); 
+				$sender->sendMessage(TextFormat::AQUA."{LiftsList}"); 
 				break; 
 				
 				case "speed": 
 				if($cmds[1] > 0 and $cmds[1] < 5) { 
-					$sender->sendMessage(TextFormat::AQUA."*ЛИФТЫ* Скорость кабины изменена. По умолчанию она: 2"); 
-					$sender->sendMessage(TextFormat::AQUA."*ЛИФТЫ* Эти параметры вступят в силу после перезапуска сервера!"); 
+					$sender->sendMessage(TextFormat::AQUA."{LiftsSpeed1}"); 
+					$sender->sendMessage(TextFormat::AQUA."{LiftsSpeed2}"); 
 					$dir = $this->getDefaultDir()."speed.txt"; file_put_contents($dir, $cmds[1]); 
 				} 
 				else $this->showError($sender, 3);
 				break; 
 				
 				case "help": 
-				$menu = "§6ЛИФТЫ §1<- §aСоздатель плагина: §9vk.com/kirillporoh\n"; 
-				$menu .= "§b↕ /lift set <id> - добавить точку лифта\n"; 
-				$menu .= "§b↕ /lift unset <id> - удалить точку лифта\n"; 
-				$menu .= "§b↕ /lift list - вывести список id's установленных лифтов\n"; 
-				$menu .= "§b↕ /lift reload - перезапустить базовую конфигурацию\n"; 
-				$menu .= "§b↕ /lift speed <1:2:3:4> - изменить скорость кабины (2 п.у)\n"; 
-				$menu .= "§eЧтобы прокатиться на лифте, необходимо нажать на его центральный блок;\n"; 
-				$menu .= "§6При установке лифта, нижний блок под ним - это этаж его остановки;\n"; 
-				$menu .= "§cПосле создания точки - она превращается в работоспособную кабину;\n"; 
+				$menu = "LiftsHelp1"; 
+				$menu .= "LiftsHelp2"; 
+				$menu .= "LiftsHelp3"; 
+				$menu .= "LiftsHelp4"; 
+				$menu .= "LiftsHelp5"; 
+				$menu .= "LiftsHelp6"; 
+				$menu .= "LiftsHelp7"; 
+				$menu .= "LiftsHelp8"; 
+				$menu .= "LiftsHelp9"; 
 				$sender->sendMessage($menu); 
 				break; 
 			} 
@@ -171,7 +171,7 @@ class Control extends PluginBase implements Listener
 				$wname = $i->getLevel()->getName(); $form2 = "$x:$y:$z:$wname"; 
 				if($form1 == $form2) { 
 					$this->run->start($i, "down"); 
-					$p->sendMessage(TextFormat::AQUA."*ЛИФТЫ*".TextFormat::GREEN." Лифт начал движение вниз!"); 
+					$p->sendMessage(TextFormat::AQUA."{Lifts}".TextFormat::GREEN."{LiftsDown}"); 
 					return; 
 				} 
 			}
@@ -189,7 +189,7 @@ class Control extends PluginBase implements Listener
 				if($i->getX() == $mpos->getX() and $i->getY() == $mpos->getY() and $i->getZ() == $mpos->getZ() 
 					and $i->getLevel()->getName() == $mpos->getLevel()->getName()) 
 				{ 
-					$this->run->start($mpos, "up"); $p->sendMessage(TextFormat::AQUA."*ЛИФТЫ*".TextFormat::GREEN." Лифт начал движение вверх!"); 
+					$this->run->start($mpos, "up"); $p->sendMessage(TextFormat::AQUA."{Lifts}".TextFormat::GREEN."{LiftsUp}"); 
 				} 
 			}
 		}
@@ -197,13 +197,13 @@ class Control extends PluginBase implements Listener
 	
 	public function showError(Player $p, $e_id = 0) 
 	{ 
-		$text = "произошел сбой в работе плагина"; 
+		$text = "LiftsError"; 
 		switch($e_id) { 
-			case 1: $text = "неверный формат введенных данных команды"; break; 
-			case 2: $text = "элемента с таким id нет в базе данных"; break; 
-			case 3: $text = "допустимая скорость кабины: 1 / 2 / 3 / 4"; break; 
+			case 1: $text = "LiftsError#1"; break; 
+			case 2: $text = "LiftsError#2"; break; 
+			case 3: $text = "LiftsError#3"; break; 
 		} 
-		$p->sendMessage(TextFormat::RED."*ЛИФТЫ*".TextFormat::GOLD." Ошибка: $text"); 
+		$p->sendMessage(TextFormat::RED."{Lifts}".TextFormat::GOLD."{LiftsShowError}"); 
 	} 
 	
 	public function getLocalPlayers(Position $pos) 
