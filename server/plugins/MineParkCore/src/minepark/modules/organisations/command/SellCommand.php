@@ -1,6 +1,7 @@
 <?php
 namespace minepark\modules\organisations\command;
 
+use minepark\Mapper;
 use minepark\modules\organisations\Organisations;
 use minepark\Permission;
 
@@ -12,7 +13,7 @@ class SellCommand extends OrganisationsCommand
 {
     public const CURRENT_COMMAND = "sell";
 
-    public const POINT_GROUP = 2;
+    public const MARKETPLACE_DISTANCE = 15;
 
     public function getCommand() : array
     {
@@ -67,19 +68,9 @@ class SellCommand extends OrganisationsCommand
         return count($points) <= 0;
     }
 
-    private function ifIsNearShops(Player $p)
+    private function ifIsNearShops(Player $player)
     {
-        $plist = $this->getCore()->getMapper()->getNearPoints($p->getPosition(), 15);
-
-        foreach($plist as $point) {
-            $pg = $this->getCore()->getMapper()->getPointGroup($point);
-
-            if($pg == self::POINT_GROUP) {
-                return true;
-            }
-
-            return false;
-        }
+        return $this->getCore()->getMapper()->hasNearPointWithType($player, self::MARKETPLACE_DISTANCE, Mapper::MARKETPLACE_POINT_GROUP);
     }
 
     private function getBuyersNear(Player $player)

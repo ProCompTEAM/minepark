@@ -48,7 +48,7 @@ class Auth
 	{
 		$state = $this->checkState($player);
 
-		$this->setMovenment($player, false);
+		$this->setMovement($player, false);
 
 		switch($state) {
 			case self::STATE_REGISTER:
@@ -87,7 +87,7 @@ class Auth
 		}
 	}
 	
-	public function setMovenment($player, bool $status)
+	public function setMovement($player, bool $status)
 	{
 		$player->setImmobile(!$status);
 	}
@@ -120,7 +120,7 @@ class Auth
 			$this->sendWelcomeText($player);
 		}
 		
-		$this->setMovenment($player, true);
+		$this->setMovement($player, true);
 	}
 
 	private function registerUser(Player $player, string $password)
@@ -134,7 +134,7 @@ class Auth
 		$this->sendWelcomeText($player);
 		$player->sendLocalizedMessage("{AuthStart}" . $password);
 
-		$this->setMovenment($player, true);
+		$this->setMovement($player, true);
 	}
 
 	private function updatePassword(Player $player, string $password) 
@@ -151,7 +151,7 @@ class Auth
 		$player->auth = true; 
 		$player->bar = null;
 
-		$this->setMovenment($player, true);
+		$this->setMovement($player, true);
 
 		$this->getCore()->getScheduler()->scheduleDelayedTask(
 			new CallbackTask(array($this, "sendWelcomeText"), array($player)), 20 * self::WELCOME_MESSAGE_TIMEOUT);

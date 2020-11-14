@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MDC.Data.Models
 {
-    public class Bank : BaseEntity, IUnited, ICreatedDate, IUpdatedDate
+    public class MapPoint : BaseEntity, IUnited, ICreatedDate
     {
         [Required, Unicode(Defaults.DefaultStringLength)]
         public string Name { get; set; }
@@ -14,17 +14,21 @@ namespace MDC.Data.Models
         [Required, Unicode(Defaults.DefaultStringLength)]
         public string UnitId { get; set; }
 
-        [Required]
-        public double Cash { get; set; }
+        [Required, Unicode(Defaults.DefaultStringLength)]
+        public string Level { get; set; }
 
         [Required]
-        public double Debit { get; set; }
+        public double X { get; set; }
 
         [Required]
-        public double Credit { get; set; }
+        public double Y { get; set; }
+
+        [Required]
+        public double Z { get; set; }
+
+        [Required]
+        public int GroupId { get; set; }
 
         public DateTime CreatedDate { get; set; }
-
-        public DateTime UpdatedDate { get; set; }
     }
 }

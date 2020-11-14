@@ -9,6 +9,8 @@ namespace MDC.Common.Mapping
         public MappingProfile()
         {
             CreateMap<User, UserDto>().ReverseMap();
+
+            CreateMap<MapPoint, MapPointDto>().ReverseMap();
         }
     }
 }

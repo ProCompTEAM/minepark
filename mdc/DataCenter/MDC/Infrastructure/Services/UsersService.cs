@@ -65,6 +65,8 @@ namespace MDC.Infrastructure.Services
 
         public void Create(UserDto userDto)
         {
+            ValidateUserExist(userDto.Name);
+
             User user = mapper.Map<User>(userDto);
             databaseProvider.Create(user);
             databaseProvider.Commit();
@@ -72,6 +74,8 @@ namespace MDC.Infrastructure.Services
 
         public UserDto CreateInternal(string userName)
         {
+            ValidateUserExist(userName);
+
             User user = GetDefaultUserTemplate(userName);
             databaseProvider.Create(user);
             databaseProvider.Commit();
@@ -149,6 +153,14 @@ namespace MDC.Infrastructure.Services
                 Builder = false,
                 Realtor = false
             };
+        }
+
+        private void ValidateUserExist(string userName)
+        {
+            if (Exist(userName))
+            {
+                throw new InvalidOperationException("Creation cancelled: user exist.");
+            }
         }
     }
 }

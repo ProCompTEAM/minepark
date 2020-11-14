@@ -1,7 +1,6 @@
 <?php
 namespace minepark\mdc\sources;
 
-use minepark\mdc\dto\BaseDto;
 use minepark\mdc\dto\PasswordDto;
 use minepark\mdc\dto\UserDto;
 
@@ -17,11 +16,11 @@ class UsersSource extends RemoteSource
         return (bool) $this->createRequest("exist", $userName);
     }
 
-    public function getUser(string $userName) : UserDto
+    public function getUser(string $userName) : ?UserDto
     {
         $requestResult = $this->createRequest("get-user", $userName);
 
-        return $this->createDto($requestResult);
+        return $requestResult ? $this->createDto($requestResult) : null;
     }
 
     public function getUserPassword(string $userName) : string
@@ -71,7 +70,7 @@ class UsersSource extends RemoteSource
         $this->createRequest("update-quit-status", $userName);
     }
 
-    protected function createDto(array $data)
+    protected function createDto(array $data) : UserDto
     {
         $dto = new UserDto();
         $dto->set($data);

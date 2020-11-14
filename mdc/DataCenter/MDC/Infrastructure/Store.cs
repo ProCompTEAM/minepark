@@ -46,6 +46,7 @@ namespace MDC.Infrastructure
         {
             RegisterController(new SettingsController());
             RegisterController(new UsersController());
+            RegisterController(new MapController());
         }
 
         private static void InitializeProviders()
@@ -59,6 +60,7 @@ namespace MDC.Infrastructure
         private static void InitializeServices()
         {
             RegisterService(new UsersService());
+            RegisterService(new MapService());
         }
     }
 }

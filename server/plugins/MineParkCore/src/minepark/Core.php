@@ -79,11 +79,11 @@ class Core extends PluginBase implements Listener
 	{
 		Core::$_core = $this;
 
+		$this->initializeMDC();
+
 		$this->initializeEventsHandler();
 
 		$this->initialize();
-
-		$this->getMDC()->initializeAll();
 
 		if(!file_exists(self::DEFAULT_DIRECTORY)) {
 			mkdir(self::DEFAULT_DIRECTORY);
@@ -101,6 +101,12 @@ class Core extends PluginBase implements Listener
 		}
 	}
 
+	public function initializeMDC()
+	{
+		$this->mdc = new MDC;
+		$this->getMDC()->initializeAll();
+	}
+
 	public function initializeEventsHandler()
 	{
 		$this->eventsHandler = new EventsHandler;
@@ -109,7 +115,6 @@ class Core extends PluginBase implements Listener
 
 	public function initialize()
 	{
-		$this->mdc = new MDC;
 		$this->sapi = new Api;
 		$this->scmd = new CommandsHandler;
 		$this->organisations = new Organisations;

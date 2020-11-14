@@ -1,27 +1,34 @@
 <?php
 namespace minepark;
 
+use minepark\mdc\dto\LocalMapPointDto;
+use minepark\mdc\dto\MapPointDto;
+use minepark\mdc\sources\MapSource;
 use pocketmine\Player;
-use pocketmine\math\Vector3;
-use pocketmine\utils\Config;
 use pocketmine\level\Position;
 
 class Mapper
 {
-	public $mappoints;
+	public $source;
 	
 	public function __construct()
 	{
-		$this->mappoints = new Config($this->getCore()->getTargetDirectory() . "points.json", Config::JSON);
+		$this->source = $this->getCore()->getMDC()->getSource("map");
+	}
+
+	private function getSource() : MapSource
+	{
+		return $this->source;
 	}
 	
-	public const UNKNOWN_POINT_TYPE = 0;
-	public const REALTY_POINT_TYPE = 1;
-	public const MARKETPLACE_POINT_TYPE = 2;
-	public const SERVICE_POINT_TYPE = 3;
-	public const PHONESTREAM_POINT_TYPE = 4;
-	public const WORK1_POINT_TYPE = 5;
-	public const WORK2_POINT_TYPE = 6;
+	public const GENERIC_POINT_GROUP = 0;
+	public const REALTY_POINT_GROUP = 1;
+	public const MARKETPLACE_POINT_GROUP = 2;
+	public const SERVICE_POINT_GROUP = 3;
+	public const PHONESTREAM_POINT_GROUP = 4;
+	public const WORK1_POINT_GROUP = 5;
+	public const WORK2_POINT_GROUP = 6;
+	public const FASTFOOD_POINT_GROUP = 7;
 
 	public function getCore() : Core
 	{
@@ -30,138 +37,93 @@ class Mapper
 	
 	public function addPoint(Position $pos, string $name, int $group = 0)
 	{
-		$c = $this->mappoints;
+		$point = new MapPointDto();
+		$point->name = $name;
+		$point->level = $pos->getLevel()->getName();
+		$point->x = $pos->getX();
+		$point->y = $pos->getY();
+		$point->z = $pos->getZ();
+		$point->groupId = $group;
 
-		$c->setNested("$name.x", floor($pos->getX()));
-		$c->setNested("$name.y", floor($pos->getY()));
-		$c->setNested("$name.z", floor($pos->getZ()));
-		$c->setNested("$name.group", $group);
-		$c->save();
+		$this->getSource()->setPoint($point);
 	}
 	
 	public function removePoint(string $name) : bool
 	{
-		$c = $this->mappoints;
-
-		if($c->exists($name)) {
-			$c->remove($name);
-			return true;
-		} else {
-			return false;
-		}
+		return $this->getSource()->deletePoint($name);
 	}
 	
 	public function teleportPoint(Player $player, string $name)
 	{
-		$c = $this->mappoints;
+		$point = $this->getSource()->getPoint($name);
 
-		if(!$c->exists($name)) {
+		if(is_null($point)) {
 			$player->sendMessage("MapperInvalidPoint");
 		} else {
-			$x = $c->getNested("$name.x");
-			$y = $c->getNested("$name.y");
-			$z = $c->getNested("$name.z");
-			$player->teleport(new Vector3($x,$y+1,$z));
+			$level = $this->getCore()->getServer()->getLevelByName($point->level);
+			$player->teleport(new Position($point->x, $point->y + 1, $point->z, $level));
 		}
 	}
 	
 	public function getPointPosition(string $name) : ?Position
 	{
-		$c = $this->mappoints;
+		$point = $this->getSource()->getPoint($name);
 
-		if(!$c->exists($name)) {
+		if(is_null($point)) {
 			return null;
 		} else {
-			$l = $this->getCore()->getServer()->getDefaultLevel();
-			$x = $c->getNested("$name.x");
-			$y = $c->getNested("$name.y");
-			$z = $c->getNested("$name.z");
-
-			return new Position($x,$y,$z,$l);
+			$level = $this->getCore()->getServer()->getLevelByName($point->level);
+			return new Position($point->x, $point->y + 1, $point->z, $level);
 		}
 	}
 	
-	public function getPointGroup(string $name)
+	public function getPointGroup(string $name) : ?int
 	{
-		$c = $this->mappoints;
-
-		if(!$c->exists($name)) {
-			return -1;
-		} else {
-			return $c->getNested("$name.group");
-		}
+		return $this->getSource()->getPointGroup($name);
 	}
 	
-	public function getPointsByGroup($group) : array
+	public function getPointsByGroup(int $group, bool $namesOnly = true) : array
 	{
-		$c = $this->mappoints;
-
-		$data = $c->getAll(true);
-		$list = array();
-
-		foreach($data as $name) {
-			if($this->getPointGroup($name) == $group) array_push($list, $name);
-		}
-
-		return $list;
+		$points = $this->getSource()->getPointsByGroup($group);
+		return $namesOnly ? $this->getPointsNames($points) : $points;
 	}
 	
-	public function getAllPoints() : array
+	public function getNearPoints(Position $pos, int $distance = 7, bool $namesOnly = true) : array
 	{
-		$c = $this->mappoints;
-		
-		$data = $c->getAll(true);
-		$list = array();
-		
-		foreach($data as $name)
-		{
-			$pos = $this->getPointPosition($name);
+		$dto = new LocalMapPointDto();
+		$dto->level = $pos->getLevel()->getName();
+		$dto->x = $pos->getX();
+		$dto->y = $pos->getY();
+		$dto->z = $pos->getZ();
+		$dto->distance = $distance;
 
-			if ($pos == null) {
-				continue;
-			}
-
-			$pos = $pos->asVector3();
-
-			$list[] = array(
-				"name" => $name,
-				"position" => $pos
-			);
-		}
-		
-		return $list;
+		$points = $this->getSource()->getNearPoints($dto);
+		return $namesOnly ? $this->getPointsNames($points) : $points;
 	}
-	
-	public function getNearPoints(Position $pos, int $rad = 7) : array
+
+	public function hasNearPointWithType(Position $pos, int $distance, int $group) : bool
 	{
-		$c = $this->mappoints;
+		$points = $this->getNearPoints($pos, $distance, false);
 
-		$data = $c->getAll(true);
-		$list = array();
 
-		foreach($data as $name) {
-			$x1 = $c->getNested("$name.x");
-			$y1 = $c->getNested("$name.y");
-			$z1 = $c->getNested("$name.z");
-
-			$p_x = $pos->getX();
-			$p_y = $pos->getY();
-			$p_z = $pos->getZ();
-			
-			$x = $x1 - $p_x;
-			$z = $z1 - $p_z;
-			$y = $y1 - $p_y;
-
-			$x = floor($x);
-			$z = floor($z);
-			$y = floor($y);
-
-			if($x < $rad and $z < $rad and $x > $rad * -1 and $z > $rad * -1 and $y < $rad and $y > $rad * -1) {
-				array_push($list,$name);
+		foreach($points as $point) {
+			if($point->groupId == $group) {
+				return true;
 			}
 		}
 
-		return $list;
+		return false;
+	}
+
+	private function getPointsNames(array $points) : array
+	{
+		$names = [];
+
+		foreach($points as $point) {
+			array_push($names, $point->name);
+		}
+
+		return $names;
 	}
 }
 ?>

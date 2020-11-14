@@ -12,6 +12,8 @@ namespace MDC.Data
 
         public DbSet<Bank> Bank { get; set; }
 
+        public DbSet<MapPoint> MapPoints { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if(!MDCDatabase.IsInitialized)

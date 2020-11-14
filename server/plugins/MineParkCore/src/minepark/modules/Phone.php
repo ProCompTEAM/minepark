@@ -11,6 +11,8 @@ use minepark\utils\CallbackTask;
 
 class Phone
 {
+	public const MAX_STREAM_DISTANCE = 200;
+
 	public function __construct()
 	{
 		$this->c = new Config($this->getCore()->getTargetDirectory() . "phone.json", Config::JSON);
@@ -76,15 +78,7 @@ class Phone
 	
 	public function hasStream(Vector3 $pos) : bool
 	{
-		$points = $this->getCore()->getMapper()->getNearPoints($pos, 200);
-
-		foreach($points as $point) {
-			$pg = $this->getCore()->getMapper()->getPointGroup($point);
-			if($pg == Mapper::PHONESTREAM_POINT_TYPE) {
-				return true;
-			}
-		}
-		return false;
+		return $this->getCore()->getMapper()->hasNearPointWithType($pos, self::MAX_STREAM_DISTANCE, Mapper::PHONESTREAM_POINT_GROUP);
 	}
 
 	public function handleInCall(Player $player, string $message) 

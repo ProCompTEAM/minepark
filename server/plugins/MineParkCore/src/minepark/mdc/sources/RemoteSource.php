@@ -2,7 +2,6 @@
 namespace minepark\mdc\sources;
 
 use minepark\Core;
-use minepark\mdc\dto\BaseDto;
 
 abstract class RemoteSource
 {
