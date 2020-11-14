@@ -16,7 +16,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>D:\PROJECTS\PE\MinePark\MAIN\mdc\Output\</OutputPath>
+    <OutputPath>..\..\Build\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>

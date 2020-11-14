@@ -35,9 +35,9 @@ logins.json
 
 
 
-# MDC MDC MDC MDC MDC MDC MDC MDC MDC MDC MDC MDC MDC MDC MDC MDC
+# -= MDC =-
 
-mdc/Output/*
+mdc/Build/*
 mdc/DataCenter/.vs/*
 mdc/DataCenter/MDC/.vs/*
 mdc/DataCenter/Data/Migrations/DB.properties
