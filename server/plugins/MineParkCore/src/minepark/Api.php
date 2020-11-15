@@ -1,6 +1,7 @@
 <?php
 namespace minepark;
 
+use pocketmine\level\Position;
 use pocketmine\Player;
 
 class Api
@@ -18,11 +19,6 @@ class Api
 	public function getName() : string
 	{
 		return "MinePark";
-	}
-	
-	public function getColor($textspace) : string
-	{
-		return "§" . $textspace;
 	}
 	
 	public function getPrefix($pId, $withColor = false) : string
@@ -47,36 +43,17 @@ class Api
 		$withColor ? $form : substr($form, 2);
 	}
 	
-	public function getRegionPlayers(float $x1, float $y1, float $z1, int $rad) : array
+	public function getRegionPlayers(Position $position, int $rad) : array
 	{
-		$plist = array();
+		$players = array();
 
-		foreach($this->getCore()->getServer()->getOnlinePlayers() as $sender) {
-			$p_x = $sender->getX();
-			$p_y = $sender->getY();
-			$p_z = $sender->getZ();
-
-			$x = $x1 - $p_x;
-			$z = $z1 - $p_z;
-			$y = $y1 - $p_y;
-
-			$x = floor($x);
-			$z = floor($z);
-			$y = floor($y);
-
-			if($x < $rad and $z < $rad and $x > $rad*-1 and $z > $rad*-1 and $y < $rad and $y > $rad*-1) {
-				array_push($plist, $sender);
+		foreach($this->getCore()->getServer()->getOnlinePlayers() as $onlinePlayer) {
+			if($onlinePlayer->distance($position)) {
+				array_push($players, $onlinePlayer);
 			}
 		}
 
-		return $plist;
-	}
-	
-	public function localBroadcast(float $x1, float $y1, float $z1, float $rad, string $text)
-	{
-		foreach($this->getRegionPlayers($x1, $y1, $z1, $rad) as $p) {
-			$p->sendMessage($text);
-		}
+		return $players;
 	}
 	
 	public function getFromArray(array $array, int $min, string $split_str = " ") : string
@@ -110,35 +87,18 @@ class Api
 			$player->getProfile()->attributes .= strtoupper($key);
 		}
 
-		$this->getCore()->getInitializer()->updatePlayerSaves($player);
+		$this->getCore()->getProfiler()->saveProfile($player);
 	}
 	
 	public function arest(Player $player)
 	{
-		$this->getCore()->getMapper()->teleportPoint($player, "КПЗ");
+		$this->getCore()->getMapper()->teleportPoint($player, Mapper::POINT_NAME_JAIL);
 		$this->getCore()->getApi()->changeAttr($player, self::ATTRIBUTE_ARRESTED);
 		$this->getCore()->getApi()->changeAttr($player, self::ATTRIBUTE_WANTED, false);
 
 		$player->bar = "§6ВЫ АРЕСТОВАНЫ!";
 
 		$player->setImmobile(false);
-	}
-	
-	public function scndr(string $dir, int $sort = 0) : array
-	{
-		$list = scandir($dir, $sort);
-
-		if (!$list) {
-			return false;
-		}
-
-		if ($sort == 0) {
-			unset($list[0],$list[1]);
-		} else {
-			unset($list[count($list)-1], $list[count($list)-1]);
-		}
-
-		return $list;
 	}
 
 	public function interval(int $value, int $from, int $to)

@@ -70,16 +70,12 @@ class SellCommand extends OrganisationsCommand
 
     private function ifIsNearShops(Player $player)
     {
-        return $this->getCore()->getMapper()->hasNearPointWithType($player, self::MARKETPLACE_DISTANCE, Mapper::MARKETPLACE_POINT_GROUP);
+        return $this->getCore()->getMapper()->hasNearPointWithType($player, self::MARKETPLACE_DISTANCE, Mapper::POINT_GROUP_MARKETPLACE);
     }
 
     private function getBuyersNear(Player $player)
     {
-        $x = $player->getX();
-        $y = $player->getY(); 
-        $z = $player->getZ();
-
-        $players = $this->getCore()->getApi()->getRegionPlayers($x, $y, $z, 7);
+        $players = $this->getCore()->getApi()->getRegionPlayers($player, 7);
         $buyers = array();
 
         foreach($players as $p) {

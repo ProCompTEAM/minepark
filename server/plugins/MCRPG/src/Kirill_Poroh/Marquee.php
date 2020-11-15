@@ -22,7 +22,7 @@ class Marquee
 		
 		$this->marquee_number = 0;
 		
-		$plugin->getScheduler()->scheduleRepeatingTask(new CallbackTask([$this, "sendMarquee"]), 20);
+		//$plugin->getScheduler()->scheduleRepeatingTask(new CallbackTask([$this, "sendMarquee"]), 20);
 		$plugin->getScheduler()->scheduleRepeatingTask(new CallbackTask([$this, "updateMarquee"]), 20 * 60);
 	}
 

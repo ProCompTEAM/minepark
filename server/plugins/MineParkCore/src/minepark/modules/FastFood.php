@@ -18,7 +18,7 @@ class FastFood
 	{
 		$core = $this->getCore();
 
-		if($core->getMapper()->hasNearPointWithType($player, 5, Mapper::FASTFOOD_POINT_GROUP)) {
+		if($core->getMapper()->hasNearPointWithType($player, 5, Mapper::POINT_GROUP_FASTFOOD)) {
 			$core->getChatter()->send($player, "§8(§dрядом автомат с едой§8)", "§d : ", 10);
 
 			if($core->getBank()->getPlayerMoney($player) >= 50) {

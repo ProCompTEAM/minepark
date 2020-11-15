@@ -62,8 +62,6 @@ class EventsHandler implements Listener
 
 		$this->getCore()->getPhone()->init($event->getPlayer());
 
-		$this->getCore()->getTrackerModule()->enableTrack($event->getPlayer());
-
 		$this->getUsersSource()->updateUserJoinStatus($event->getPlayer()->getName());
 
 		$event->setJoinMessage(null);

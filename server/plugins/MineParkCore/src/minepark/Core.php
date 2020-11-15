@@ -54,6 +54,7 @@ class Core extends PluginBase implements Listener
 	private $organisations;
 	private $service;
 	private $bank;
+	private $profiler;
 	private $mapper;
 	private $chatter;
 	private $initializer;
@@ -120,6 +121,7 @@ class Core extends PluginBase implements Listener
 		$this->organisations = new Organisations;
 		$this->service = new Service;
 		$this->bank = new Bank;
+		$this->profiler = new Profiler;
 		$this->mapper = new Mapper;
 		$this->chatter = new Chatter;
 		$this->initializer = new Initializer;
@@ -185,6 +187,11 @@ class Core extends PluginBase implements Listener
 	public function getBank() : Bank
 	{
 		return $this->bank;
+	}
+
+	public function getProfiler() : Profiler
+	{
+		return $this->profiler;
 	}
 
 	public function getMapper() : Mapper

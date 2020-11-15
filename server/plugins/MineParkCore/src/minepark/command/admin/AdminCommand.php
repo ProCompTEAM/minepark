@@ -108,7 +108,7 @@ class AdminCommand extends Command
         }
 
         $targetPlayer->getProfile()->organisation = $oid; 
-        $this->getCore()->getInitializer()->updatePlayerSaves($targetPlayer);
+        $this->getCore()->getProfiler()->saveProfile($targetPlayer);
 
 		$player->sendMessage("AdminCmdSetOrg1");
 		$targetPlayer->sendMessage("{AdminCmdSetOrg2}". $this->getCore()->getOrganisationsModule()->getName($oid));
@@ -118,7 +118,7 @@ class AdminCommand extends Command
     {
         $rad = 7;
         
-        $list = $this->getCore()->getApi()->getRegionPlayers($player->getX(), $player->getY(), $player->getZ(), $rad);
+        $list = $this->getCore()->getApi()->getRegionPlayers($player, $rad);
 
         $f = "AdminCmdPlayerNear";
         foreach($list as $p) {

@@ -22,7 +22,7 @@ class NotifyPlayers
 	
 	public function broadcast()
 	{
-		$points = $this->mapper->getPointsByGroup(Mapper::GENERIC_POINT_GROUP);
+		$points = $this->mapper->getPointsByGroup(Mapper::POINT_GROUP_GENERIC);
 		$pointsCount = array();
 		$playerCounted = array();
 		

@@ -2,10 +2,10 @@
 namespace minepark\player;
 
 use minepark\Core;
-use minepark\mdc\sources\UsersSource;
-use minepark\modules\organisations\Organisations;
+use minepark\Profiler;
 use pocketmine\Player;
 use pocketmine\item\Item;
+use minepark\modules\organisations\Organisations;
 
 class Initializer
 {
@@ -16,30 +16,18 @@ class Initializer
         return Core::getActive();
     }
 
-    public function getRemoteSource() : UsersSource
+    public function getProfiler() : Profiler
     {
-        return $this->getCore()->getMDC()->getSource("users");
+        return Core::getActive()->getProfiler();
     }
     
     public function initialize(Player $player)
     {
-        $playerName = $player->getName();
-        
-        $player->isnew = !$this->getRemoteSource()->isUserExist($playerName);
-        
-        $this->loadProfile($player);
-        
-        $player->auth = false;
+        $player->isnew = $this->getProfiler()->isNewPlayer($player);
 
-        $player->gps = null;
-        $player->bar = null;
-
-		$player->phoneRcv = null;
-		$player->phoneReq = null;	
-		$player->goods = array();
-		$player->wbox = null;
-		$player->nopvp = false;
-        $player->lastTap = time();
+        $this->getProfiler()->initializeProfile($player);
+        
+        $this->setDefaults($player);
         
         $this->showLang($player);
     }
@@ -54,11 +42,21 @@ class Initializer
         }
         
         $this->addInventoryItems($player);
+    }
+
+    private function setDefaults(Player $player)
+	{
+        $player->auth = false;
         
-		if($player->getProfile()->organisation == Organisations::SECURITY_WORK) {
-			$item = Item::get(280, 0, 1);
-			$player->getInventory()->addItem($item);
-        }
+        $player->gps = null;
+        $player->bar = null;
+
+        $player->phoneRcv = null;
+        $player->phoneReq = null;
+        $player->goods = array();
+        $player->wbox = null;
+        $player->nopvp = false;
+        $player->lastTap = time();
     }
 
     private function addInventoryItems(Player $player)
@@ -84,14 +82,10 @@ class Initializer
 		if(!$player->getInventory()->contains($gps)) {
             $player->getInventory()->setItem(2,$gps);
         }
-    }
-    
-    private function loadProfile(Player $player)
-	{
-        if($player->isnew) {
-            $player->profile = $this->getRemoteSource()->createUserInternal($player->getName());
-		} else {
-            $player->profile = $this->getRemoteSource()->getUser($player->getName());
+
+        if($player->getProfile()->organisation == Organisations::SECURITY_WORK) {
+			$item = Item::get(280, 0, 1);
+			$player->getInventory()->addItem($item);
         }
     }
     

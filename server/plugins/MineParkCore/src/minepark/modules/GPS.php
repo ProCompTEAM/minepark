@@ -21,25 +21,25 @@ class GPS
 
 	public function timer()
 	{
-		foreach($this->getCore()->getServer()->getOnlinePlayers() as $p) {
-			if($p->gps != null) {
-				$x = round($p->gps->getX() - $p->getX());
-				$y = round($p->gps->getZ() - $p->getZ());
+		foreach($this->getCore()->getServer()->getOnlinePlayers() as $player) {
+			if($player->gps != null) {
+				$x = round($player->gps->getX() - $player->getX());
+				$y = round($player->gps->getZ() - $player->getZ());
 				
 				$label = "";
 				
 				if($x >= -12 and $x <= 12 and $y >= -12 and $y <= 12) {
-					$p->sendMessage("§aПоздравляем, вы прибыли к месту назначения!");
-					$p->sendMessage("§6Вы можете посмотреть места рядом: §e/gpsnear");
+					$player->sendMessage("§aПоздравляем, вы прибыли к месту назначения!");
+					$player->sendMessage("§6Вы можете посмотреть места рядом: §e/gpsnear");
 
-					$p->gps = null;
-					$p->bar = null;
+					$player->gps = null;
+					$player->bar = null;
 					return;
 				}
 				
 				//head direction
 				
-				$yaw = $p->getYaw();
+				$yaw = $player->getYaw();
 				
 				if(($yaw <= 45 and $yaw >= 0) or ($yaw >= 315 and $yaw <= 359)) {
 					$x = -$x;
@@ -97,7 +97,7 @@ class GPS
 					}
 				}
 				
-				$p->bar = "§7(§9Smart§6Navi§7) §8[" . $this->getL($p->getX(), $p->getZ(), $p->gps->getX(), $p->gps->getZ()) ."m] §a" . $label;
+				$player->bar = "§7(§9Smart§6Navi§7) §8[" . $this->getL($player->getX(), $player->getZ(), $player->gps->getX(), $player->gps->getZ()) ."m] §a" . $label;
 			}
 		}	
 	}

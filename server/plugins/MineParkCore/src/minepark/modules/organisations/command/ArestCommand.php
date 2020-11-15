@@ -52,18 +52,14 @@ class ArestCommand extends OrganisationsCommand
         return $p->getProfile()->organisation == Organisations::GOVERNMENT_WORK or $p->getProfile()->organisation == Organisations::SECURITY_WORK;
     }
 
-    private function getPlayersNear(Player $p) : array
+    private function getPlayersNear(Player $player) : array
     {
-        $x = $p->getX();
-        $y = $p->getY(); 
-        $z = $p->getZ();
-
-        $allplayers = $this->getCore()->getApi()->getRegionPlayers($x, $y, $z, 5);
+        $allplayers = $this->getCore()->getApi()->getRegionPlayers($player, 5);
 
         $players = array();
 
         foreach ($allplayers as $currp) {
-            if ($currp->getName() != $p->getName()) {
+            if ($currp->getName() != $player->getName()) {
                 $players[] = $currp;
             }
         }

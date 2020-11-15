@@ -78,7 +78,7 @@ class Phone
 	
 	public function hasStream(Vector3 $pos) : bool
 	{
-		return $this->getCore()->getMapper()->hasNearPointWithType($pos, self::MAX_STREAM_DISTANCE, Mapper::PHONESTREAM_POINT_GROUP);
+		return $this->getCore()->getMapper()->hasNearPointWithType($pos, self::MAX_STREAM_DISTANCE, Mapper::POINT_GROUP_STREAM);
 	}
 
 	public function handleInCall(Player $player, string $message) 

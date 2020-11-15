@@ -36,7 +36,7 @@ class PayCommand extends Command
             return;
         }
 
-        $players = $this->getCore()->getApi()->getRegionPlayers($player->getX(), $player->getY(), $player->getZ(), self::DISTANCE);
+        $players = $this->getCore()->getApi()->getRegionPlayers($player, self::DISTANCE);
 
         if(count($players) > 2) {
             $player->sendMessage("§сРядом есть посторонние лица. Операция проводится в условиях приватности!");

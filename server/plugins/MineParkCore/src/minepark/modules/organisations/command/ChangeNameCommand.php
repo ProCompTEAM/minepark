@@ -65,7 +65,7 @@ class ChangeNameCommand extends OrganisationsCommand
         $oldname = $toPlayer->getProfile()->fullName;
         $toPlayer->getProfile()->fullName = $name . ' ' . $surname;
 
-        $this->getCore()->getInitializer()->updatePlayerSaves($toPlayer);
+        $this->getCore()->getProfiler()->saveProfile($toPlayer);
         $toPlayer->setTip("§aпоздравляем!","§9$oldname §7>>> §e".$toPlayer->getProfile()->fullName, 5);
 
         $this->getCore()->getBank()->givePlayerMoney($government, 10);
@@ -94,13 +94,9 @@ class ChangeNameCommand extends OrganisationsCommand
 		return in_array(self::POINT_NAME, $plist);
     }
 
-    private function getPlayersNear(Player $p) : array
+    private function getPlayersNear(Player $player) : array
     {
-        $x = $p->getX();
-        $y = $p->getY(); 
-        $z = $p->getZ();
-
-        $allplayers = $this->getCore()->getApi()->getRegionPlayers($x, $y, $z, 5);
+        $allplayers = $this->getCore()->getApi()->getRegionPlayers($player, 5);
 
         $players = array();
         foreach ($allplayers as $currp) {

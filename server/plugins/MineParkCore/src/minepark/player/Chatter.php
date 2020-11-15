@@ -61,7 +61,7 @@ class Chatter
 			}
 		}
 
-		foreach($this->getCore()->getApi()->getRegionPlayers($sender->getX(), $sender->getY(), $sender->getZ(), $rad) as $target) {
+		foreach($this->getCore()->getApi()->getRegionPlayers($sender, $rad) as $target) {
 			$this->sendMessage($target, $senderName, $makeFriends, $message, $prefix);
 		}
 	}
@@ -82,7 +82,7 @@ class Chatter
 			$nickname = "§7" . $senderName;
 		} elseif($makeFriends and $senderName != strtolower($target->getName())) {
 			$target->getProfile()->people .= $senderName;
-			$this->getCore()->getInitializer()->updatePlayerSaves($target);
+			$this->getCore()->getProfiler()->saveProfile($target);
 			$nickname = "§2" . $senderName;
 		} elseif($senderName == strtolower($target->getName())) {
 			$nickname = "{ChatIAm}";

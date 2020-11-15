@@ -36,13 +36,13 @@ class PassportCommand extends Command
 
         $form = $this->getPassportForm($player);
 		
-		$list = $this->getCore()->getApi()->getRegionPlayers($player->getX(), $player->getY(), $player->getZ(), 4);
+		$list = $this->getCore()->getApi()->getRegionPlayers($player, 4);
 		foreach($list as $p) {
 			$p->sendWindowMessage($form, "Паспорт " . $player->getProfile()->fullName);
 				
 			if(strpos($p->getProfile()->people, strtolower($player->getName())) === false and $p !== $player) {
 				$p->getProfile()->people .= strtolower($player->getName());
-				$this->getCore()->getInitializer()->updatePlayerSaves($p);
+				$this->getCore()->getProfiler()->saveProfile($p);
 			}
         }
         

@@ -21,14 +21,16 @@ class Mapper
 		return $this->source;
 	}
 	
-	public const GENERIC_POINT_GROUP = 0;
-	public const REALTY_POINT_GROUP = 1;
-	public const MARKETPLACE_POINT_GROUP = 2;
-	public const SERVICE_POINT_GROUP = 3;
-	public const PHONESTREAM_POINT_GROUP = 4;
-	public const WORK1_POINT_GROUP = 5;
-	public const WORK2_POINT_GROUP = 6;
-	public const FASTFOOD_POINT_GROUP = 7;
+	public const POINT_GROUP_GENERIC =  0;
+	public const POINT_GROUP_REALTY = 1;
+	public const POINT_GROUP_MARKETPLACE = 2;
+	public const POINT_GROUP_SERVICE = 3;
+	public const POINT_GROUP_STREAM = 4;
+	public const POINT_GROUP_WORK1 = 5;
+	public const POINT_GROUP_WORK2 = 6;
+	public const POINT_GROUP_FASTFOOD = 7;
+
+	public const POINT_NAME_JAIL = "КПЗ";
 
 	public function getCore() : Core
 	{

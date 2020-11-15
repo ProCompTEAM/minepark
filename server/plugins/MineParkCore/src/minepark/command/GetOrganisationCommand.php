@@ -94,7 +94,7 @@ class GetOrganisationCommand extends Command
         $orgName = $this->getCore()->getOrganisationsModule()->getName($orgId);
 
         $player->getProfile()->organisation = $orgId; 
-        $this->getCore()->getInitializer()->updatePlayerSaves($player);
+        $this->getCore()->getProfiler()->saveProfile($player);
 
         $player->sendMessage("Теперь вы $orgName");
     }

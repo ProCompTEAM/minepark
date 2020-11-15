@@ -10,7 +10,7 @@ class StatusBar
 	
 	public function __construct()
 	{
-		$this->getCore()->getScheduler()->scheduleRepeatingTask(new CallbackTask([$this, "t"]), 20);
+		$this->getCore()->getScheduler()->scheduleRepeatingTask(new CallbackTask([$this, "timer"]), 20);
 		$this->tmsg = 0;
 	}
 	
@@ -19,12 +19,17 @@ class StatusBar
 		return Core::getActive();
 	}
 
-	public function t()
+	public function timer()
 	{
-		foreach($this->getCore()->getServer()->getOnlinePlayers() as $p)
-		{
-			if($p->bar != null) $p->sendPopup($p->bar);
+		foreach($this->getCore()->getServer()->getOnlinePlayers() as $p) {
+			if($p->bar != null) {
+				$p->sendTip($p->bar);
+			}
 		}
+
+		/* 
+		 /// TODO: rewrite in #73
+
 		//text with information into chat 
 		$this->tmsg++;
 		if($this->tmsg == 60 * 3)
@@ -39,7 +44,7 @@ class StatusBar
 				}
 			}
 			$this->tmsg = 0;
-		}
+		}*/
 	}
 }
 ?>
