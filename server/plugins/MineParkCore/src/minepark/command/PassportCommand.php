@@ -38,7 +38,7 @@ class PassportCommand extends Command
 		
 		$list = $this->getCore()->getApi()->getRegionPlayers($player, 4);
 		foreach($list as $p) {
-			$p->sendWindowMessage($form, "Паспорт " . $player->getProfile()->fullName);
+			$p->sendWindowMessage($form, "Паспорт " . $player->getName());
 				
 			if(strpos($p->getProfile()->people, strtolower($player->getName())) === false and $p !== $player) {
 				$p->getProfile()->people .= strtolower($player->getName());
@@ -55,17 +55,18 @@ class PassportCommand extends Command
         $outputRank = (($this->getCore()->getApi()->existsAttr($player, Api::ATTRIBUTE_BOSS)) ? " §7[§bНачальник§7]" : "");
         $outputPhone = $this->getCore()->getPhone()->getNumber($player);
         
-		$f = "§5Паспортные данные | Печать | WorldDoc";
-		$f .= "\n§d★ §eИмя§6: §3" . $player->getProfile()->fullName;
-		$f .= "\n§d★ §eОрганизация§6: ". $outputOrg . $outputRank;
+		$form = "§5Паспортные данные | Печать | WorldDoc";
+        $form .= "\n§d★ §eПолное имя§6: §3" . $player->getProfile()->fullName
+             . "(" . $player->getName() . ")";
+		$form .= "\n§d★ §eОрганизация§6: ". $outputOrg . $outputRank;
 			
         if(isset($player->subtag)) {
-            $f .= $player->subtag == "§f" ? "\n§d★ §fГостевая карта пропуска" : "\n§d★ §eКарта пропуска§6: " . $player->subtag;
+            $form .= $player->subtag == "§f" ? "\n§d★ §fГостевая карта пропуска" : "\n§d★ §eКарта пропуска§6: " . $player->subtag;
         }
 
-        $f .= "\n§d★ §eТелефонный номер§6: " . $outputPhone;
+        $form .= "\n§d★ §eТелефонный номер§6: " . $outputPhone;
 
-        return $f;
+        return $form;
     }
 }
 ?>

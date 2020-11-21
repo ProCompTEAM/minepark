@@ -43,12 +43,12 @@ class Api
 		$withColor ? $form : substr($form, 2);
 	}
 	
-	public function getRegionPlayers(Position $position, int $rad) : array
+	public function getRegionPlayers(Position $position, int $distance) : array
 	{
 		$players = array();
 
 		foreach($this->getCore()->getServer()->getOnlinePlayers() as $onlinePlayer) {
-			if($onlinePlayer->distance($position)) {
+			if($onlinePlayer->distance($position) < $distance) {
 				array_push($players, $onlinePlayer);
 			}
 		}
@@ -122,6 +122,14 @@ class Api
 	public function sendToMessagesLog(string $prefix, string $message)
 	{
 		file_put_contents(Core::MESSAGES_LOG_FILE, (PHP_EOL . "(" . $prefix . ") - " . $message), FILE_APPEND);
+	}
+
+	public function removeDefaultServerCommand($commandName)
+	{
+		$commandMap = $this->getCore()->getServer()->getCommandMap();
+		$cmd = $commandMap->getCommand($commandName);
+		$cmd->unregister($commandMap);
+		$commandMap->unregister($cmd);
 	}
 }
 ?>
