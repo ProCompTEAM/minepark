@@ -9,7 +9,10 @@ use minepark\Permissions;
 
 class Chatter
 {
+	public const GLOBAL_CHAT_MINIMUM_MINUTES_PLAYED = 60;
+
 	public const GLOBAL_CHAT_SIGNATURE = '!';
+	public const ADMINISTRATION_CHAT_SIGNATURE = '@';
 
 	private $chatUserPrefixes;
 
@@ -27,9 +30,8 @@ class Chatter
 
 	public function sendGlobal(Player $sender, string $message) 
 	{
-		if(!$sender->isOp() and !$sender->hasPermission(Permissions::CUSTOM)) {
-			$site =  $this->getCore()->getApi()->getSite();
-			$sender->sendWindowMessage("§eЧтобы получить доступ к этому чату, необходимо купить подоходящую карту. Сайт: §a$site\n§dПриятной игры! :)");
+		if(!$sender->getProfile()->minutesPlayed < self::GLOBAL_CHAT_MINIMUM_MINUTES_PLAYED) {
+			$sender->sendMessage("§eЭтот чат станет доступен после того, как вы отыграете некоторое время.");
 			return;
 		}
 
@@ -40,6 +42,20 @@ class Chatter
 
 		foreach($this->getCore()->getServer()->getOnlinePlayers() as $target) {
 			$this->sendGlobalMessage($target, $sender->getProfile()->fullName, $message);
+		}
+	}
+
+	public function sendForAdministration(Player $sender, string $message) 
+	{
+		if(!$sender->isAdministrator()) {
+			$sender->sendMessage("§cДоступ к этому чату есть только у администрации проекта!");
+			return;
+		}
+		
+		foreach($this->getCore()->getServer()->getOnlinePlayers() as $target) {
+			if($target->isAdministrator()) {
+				$this->sendMessageForAdministrator($target, $sender->getProfile()->fullName, $message);
+			}
 		}
 	}
 	
@@ -73,6 +89,12 @@ class Chatter
 			$target->sendMessage("§7<§eСмартфон §d: §8Card Community§7> §fпользователь §3" . $senderName . " §fпишет§c: §7" . substr($message, 1));
 			$target->sendSound(Sounds::CHAT_SOUND);
 		}
+	}
+
+	private function sendMessageForAdministrator(Player $target, string $senderName, string $message) 
+	{
+		$target->sendMessage("§7<§aАдминистрация§7> §3" . $senderName . " §fпишет§c: §7" . substr($message, 1));
+		$target->sendSound(Sounds::CHAT_SOUND);
 	}
 
 	private function sendMessage(Player $target, string $senderName, bool $makeFriends, string $message, string $prefix) 

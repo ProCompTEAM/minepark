@@ -86,6 +86,8 @@ class EventsHandler implements Listener
 		
 		if($e->getMessage()[0] == Chatter::GLOBAL_CHAT_SIGNATURE) {
 			$this->getCore()->getChatter()->sendGlobal($e->getPlayer(), $e->getMessage());
+		} elseif($e->getMessage()[0] == Chatter::ADMINISTRATION_CHAT_SIGNATURE) {
+			$this->getCore()->getChatter()->sendForAdministration($e->getPlayer(), $e->getMessage());
 		} else {
 			$this->getCore()->getChatter()->send($e->getPlayer(), $e->getMessage());
 			$this->getCore()->getTrackerModule()->message($e->getPlayer(), $e->getMessage(), 7, "[CHAT]");

@@ -86,6 +86,11 @@ class ImplementedPlayer extends Player
 		$ev->call();
 	}
 
+	public function isAdministrator() : bool
+	{
+		return $this->profile->administrator || $this->isOp();
+	}
+
 	/*
 		Localization
 	*/

@@ -15,11 +15,6 @@ abstract class Script
         return Core::getActive();
     }
 
-    protected function getDataFrom(string $modelName) : ?Model 
-    {
-        return Core::getDatabase()->from($modelName);
-    }
-
     protected function info(string $message) 
     {
         $prefix = "[script: " . $this->getName() . "]";
