@@ -4,9 +4,8 @@ namespace minepark\command\report;
 use pocketmine\Player;
 use pocketmine\event\Event;
 
-use minepark\Permission;
+use minepark\Permissions;
 
-use minepark\utils\CallbackTask;
 use minepark\command\Command;
 
 class ReplyCommand extends Command
@@ -23,7 +22,8 @@ class ReplyCommand extends Command
     public function getPermissions() : array
     {
 		return [
-            Permission::ANYBODY
+            Permissions::OPERATOR,
+            Permissions::ADMINISTRATOR
         ];
     }
 

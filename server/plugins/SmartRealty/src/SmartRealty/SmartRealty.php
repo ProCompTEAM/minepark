@@ -34,13 +34,15 @@ class SmartRealty extends PluginBase implements Listener
 	{
 		$this->getServer()->getPluginManager()->registerEvents($this, $this);
 		
-		if(!file_exists($this->getDirectory())) mkdir($this->getDirectory());
+		if(!file_exists($this->getDirectory())) {
+			mkdir($this->getDirectory());
+		}
 		
-		if(!file_exists($this->getDirectory() . "levels.txt"))
+		if(!file_exists($this->getDirectory() . "levels.txt")) {
 			file_put_contents($this->getDirectory() . "levels.txt", strtolower($this->getServer()->getDefaultLevel()->getName()));
+		}
 				
-		foreach(explode(", ", file_get_contents($this->getDirectory() . "levels.txt")) as $l)
-		{
+		foreach(explode(", ", file_get_contents($this->getDirectory() . "levels.txt")) as $l) {
 			$this->levels[strtolower($l)] = true;
 		}
 		
@@ -56,7 +58,7 @@ class SmartRealty extends PluginBase implements Listener
 		return "plugins/SmartRealtyPE/";
 	}
 	
-	public function getProperty()
+	public function getProperty() : Property
 	{
 		return $this->property;
 	}
@@ -101,9 +103,8 @@ class SmartRealty extends PluginBase implements Listener
 	
 	public function blockPlaceEvent(BlockPlaceEvent $e)
 	{
-		if($e->getPlayer()->hasPermission("group.builder"))
+		if($e->getPlayer()->getProfile()->builder)
 		{
-			$e->setCancelled(false);
 			return;
 		}
 		
@@ -114,13 +115,14 @@ class SmartRealty extends PluginBase implements Listener
 	
 	public function blockBreakEvent(BlockBreakEvent $e)
 	{
-		if($e->getPlayer()->hasPermission("group.builder"))
+		if($e->getPlayer()->getProfile()->builder)
 		{
-			$e->setCancelled(false);
 			return;
 		}
-		
-		if(!isset($this->levels[strtolower($e->getPlayer()->getLevel()->getName())])) return;
+
+		if(!isset($this->levels[strtolower($e->getPlayer()->getLevel()->getName())])) {
+			return;
+		}
 		
 		$this->getProperty()->block($e, "break");
 	}

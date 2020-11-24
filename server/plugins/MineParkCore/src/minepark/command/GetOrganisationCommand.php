@@ -3,7 +3,7 @@ namespace minepark\command;
 
 use minepark\Sounds;
 use pocketmine\Player;
-use minepark\Permission;
+use minepark\Permissions;
 
 use pocketmine\event\Event;
 use pocketmine\level\Position;
@@ -26,7 +26,7 @@ class GetOrganisationCommand extends Command
     public function getPermissions() : array
     {
         return [
-            Permission::ANYBODY
+            Permissions::ANYBODY
         ];
     }
 

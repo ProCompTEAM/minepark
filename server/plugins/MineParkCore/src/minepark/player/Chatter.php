@@ -5,7 +5,7 @@ use pocketmine\Player;
 
 use minepark\Core;
 use minepark\Sounds;
-use minepark\Permission;
+use minepark\Permissions;
 
 class Chatter
 {
@@ -27,8 +27,9 @@ class Chatter
 
 	public function sendGlobal(Player $sender, string $message) 
 	{
-		if(!$sender->isOp() and !$sender->hasPermission(Permission::CUSTOM)) {
-			$sender->sendWindowMessage("§eЧтобы получить доступ к этому чату, необходимо купить подоходящую карту. Сайт: §ahttp://minepark.ru\n§dПриятной игры! :)");
+		if(!$sender->isOp() and !$sender->hasPermission(Permissions::CUSTOM)) {
+			$site =  $this->getCore()->getApi()->getSite();
+			$sender->sendWindowMessage("§eЧтобы получить доступ к этому чату, необходимо купить подоходящую карту. Сайт: §a$site\n§dПриятной игры! :)");
 			return;
 		}
 

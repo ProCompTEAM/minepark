@@ -6,7 +6,7 @@ use pocketmine\Player;
 use minepark\command\Command;
 use pocketmine\event\Event;
 
-use minepark\Permission;
+use minepark\Permissions;
 use minepark\Sounds;
 
 class MeCommand extends Command
@@ -25,7 +25,7 @@ class MeCommand extends Command
     public function getPermissions() : array
     {
         return [
-            Permission::ANYBODY
+            Permissions::ANYBODY
         ];
     }
 

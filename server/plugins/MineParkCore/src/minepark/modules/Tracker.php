@@ -3,7 +3,7 @@ namespace minepark\modules;
 
 use minepark\utils\CallbackTask;
 use minepark\Core;
-use minepark\Permission;
+use minepark\Permissions;
 
 use pocketmine\Player;
 
@@ -28,7 +28,7 @@ class Tracker
         return $this->tracked[$player->getName()] == true;
     }
 
-    public function enableTrack(Player $player, Player $causer=null)
+    public function enableTrack(Player $player, Player $causer = null)
     {
         $playerName = $player->getName();
 
@@ -120,7 +120,7 @@ class Tracker
         $admins = [];
 
         foreach($this->getCore()->getServer()->getOnlinePlayers() as $player) {
-            if ($player->hasPermission(Permission::ADMINISTRATOR)) {
+            if ($player->hasPermission(Permissions::ADMINISTRATOR)) {
                 $admins[] = $player;
             }
         }

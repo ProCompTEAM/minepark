@@ -28,7 +28,6 @@ use pocketmine\plugin\PluginBase;
 use minepark\modules\NotifyPlayers;
 use pocketmine\command\CommandSender;
 use minepark\external\service\Service;
-use minepark\mdc\dto\UserDto;
 use pocketmine\command\ConsoleCommandSender;
 use minepark\modules\organisations\Organisations;
 
@@ -93,6 +92,8 @@ class Core extends PluginBase implements Listener
 		if(!file_exists(self::DEFAULT_DIRECTORY_STRINGS)) {
 			mkdir(self::DEFAULT_DIRECTORY_STRINGS);
 		}
+
+		$this->applyServerSettings();
     }
 	
 	public function onDisable()
@@ -272,6 +273,16 @@ class Core extends PluginBase implements Listener
 		}
 
 		return false;
+	}
+
+	private function applyServerSettings()
+	{
+		$this->getApi()->removeDefaultServerCommand("say");
+		$this->getApi()->removeDefaultServerCommand("defaultgamemode");
+		$this->getApi()->removeDefaultServerCommand("version");
+		$this->getApi()->removeDefaultServerCommand("difficulty");
+		$this->getApi()->removeDefaultServerCommand("tell");
+		$this->getApi()->removeDefaultServerCommand("kill");
 	}
 }
 ?>

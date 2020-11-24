@@ -4,7 +4,7 @@ namespace minepark\modules\organisations\command;
 use pocketmine\Player;
 use pocketmine\event\Event;
 
-use minepark\Permission;
+use minepark\Permissions;
 
 class RadioCommand extends OrganisationsCommand
 {
@@ -20,7 +20,7 @@ class RadioCommand extends OrganisationsCommand
     public function getPermissions() : array
     {
         return [
-            Permission::ANYBODY
+            Permissions::ANYBODY
         ];
     }
 

@@ -1,11 +1,9 @@
 {
-    "// =>": "Общее",
     "Lang": "Перевод предоставлен от FirzMob, Kirill Poroh",
     "NoArguments": "У этой команды должно быть больше аргументов!",
     "NoPermission1": "§cУ вас нет прав на эту команду :(",
     "NoPermission2": "§6Возможно она станет доступна после покупки: /donate",
 
-    "// =>": "Lifts",
     "Lifts": "*ЛИФТЫ*",
     "LiftsSet": "*ЛИФТЫ* В базу добавлена/изменена точка лифта",
     "LiftsUnset": "*ЛИФТЫ* из базы удалена(если была в базе) точка лифта",
@@ -30,7 +28,6 @@
     "LiftsErroe#2": "элемента с таким id нет в базе данных",
     "LiftsError#3": "допустимая скорость кабины: 1 / 2 / 3 / 4",
 
-    "// =>": "AdminCommand",
     "AdminCmdSetOrg1": "[!] Организация игрока изменена на $oid",
     "AdminCmdSetOrg2": "Теперь вы ",
     "AdminCmdPlayerNear": "Игроки в радиусе блоков:",
@@ -40,11 +37,11 @@
     "AdminCmdRemoveTag": "Тег игрока изменен на <FALSE>!",
     "AdminCmsHide": "Теперь вы невидимый! Возврат: /a show",
     "AdminCmdShow": "Вас снова видят все игроки!",
-    "// =>": "AdminCommand - Tracker",
+
     "TrackerPlayerNotExists": "§eДанного игрока не существует!",
     "TrackerAlreadyTracked": "§eЗа этим игроком и так происходит слежка.",
     "TrackerAlreadyUnTracked": "§eЗа этим игроком не происходит слежка :(",
-    "// =>": "Tracker",
+
     "TrackerStopExit1": "§8 Слежка за §b",
     "TrackerStopExit2": "§8прекращена по причине того, что этот игрок вышел из игры :(",
     "TrackerStopAdmin1": "§8 За игроком§b ",
@@ -56,11 +53,9 @@
     "TrackerStartAdmin1": "§8 За игроком§b ",
     "TrackerStartAdmin2": " §8началась слежка. Ее вызвал администратор: §b",
 
-    "// =>": "AddPointCommand",
     "AddPointNoArg": "§cНе указано название точки!",
     "AddPoint": "§3Точка§e $param1 §3добавлена в базу!",
 
-    "// =>": "GPSCommand",
     "CommangGPSnoXZ": "§cУказана неверная позиция X Z",
     "CommandGPSPath1": "§aМаршрут к указанной точке проложен;",
     "CommandGPSNoPointPart1": "§6Места §e",
@@ -68,11 +63,6 @@
     "CommandGPSToPointPart1": "§aМаршрут к точке §e ",
     "CommandGPSToPointPart2": " §aобновлен;",
     "CommandGPSPath2": "§6Следуйте по направлению указателей навигатора!",
-
-
-
-
-
 
     "WelcomeTitle1": "§e§lMine Park",
     "WelcomeTitle2": "§aДобро пожаловать на Mine Park RP сервер",
@@ -170,6 +160,7 @@
     "UserOnline": " §dв сети!",
     "GroupUpdated": "§aВам установлена группа §3",
     "GroupNew": "§6Вы установили группу игроку на §e",
+
     "ScoreBoard1": "§eПосетителей: §a",
     "ScoreBoard2": "§eВремя МСК:  §c",
     "ScoreBoard3": "§eНа карте: §9",

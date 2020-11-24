@@ -2,12 +2,13 @@
 namespace minepark\player;
 
 use minepark\Core;
-use minepark\mdc\dto\UserDto;
-
 use pocketmine\Player;
+
 use pocketmine\math\Vector3;
+use minepark\mdc\dto\UserDto;
 use pocketmine\network\SourceInterface;
 use pocketmine\network\mcpe\protocol\PlaySoundPacket;
+use pocketmine\event\player\PlayerCommandPreprocessEvent;
 use pocketmine\network\mcpe\protocol\ModalFormRequestPacket;
 
 class ImplementedPlayer extends Player
@@ -77,6 +78,12 @@ class ImplementedPlayer extends Player
 	public function getProfile() : UserDto
 	{
 		return $this->profile;
+	}
+
+	public function sendCommand(string $command)
+	{
+		$ev = new PlayerCommandPreprocessEvent($this, $command);
+		$ev->call();
 	}
 
 	/*

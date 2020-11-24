@@ -2,7 +2,6 @@
 namespace minepark\command;
 
 use minepark\Core;
-use minepark\database\model\Model;
 
 use pocketmine\Player;
 use pocketmine\event\Event;
@@ -40,11 +39,6 @@ abstract class Command
     protected function getCore()
     {
         return Core::getActive();
-    }
-
-    protected function getDataFrom(string $modelName) : ?Model 
-    {
-        return Core::getDatabase()->from($modelName);
     }
 }
 ?>

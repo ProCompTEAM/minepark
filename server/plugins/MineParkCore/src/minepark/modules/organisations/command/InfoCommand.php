@@ -2,7 +2,7 @@
 namespace minepark\modules\organisations\command;
 
 use minepark\modules\organisations\Organisations;
-use minepark\Permission;
+use minepark\Permissions;
 use minepark\Api;
 
 use pocketmine\Player;
@@ -22,7 +22,7 @@ class InfoCommand extends OrganisationsCommand
     public function getPermissions() : array
     {
         return [
-            Permission::ANYBODY
+            Permissions::ANYBODY
         ];
     }
 

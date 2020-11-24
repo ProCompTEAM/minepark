@@ -53,7 +53,7 @@ namespace MDC.Infrastructure.Services
         {
             string unitId = contextProvider.GetCurrentUnitId();
             List<MapPoint> points = databaseProvider.GetAll<MapPoint>(p => p.UnitId == unitId && p.Level == dto.Level);
-            points = points.Where(p => (int) MathAggregator.Distance(dto.X, dto.Y, dto.Z, p.X, p.Y, p.Z) <= dto.Distance).ToList();
+            points = points.Where(p => MathAggregator.Distance(dto.X, dto.Y, dto.Z, p.X, p.Y, p.Z) <= dto.Distance).ToList();
 
             return mapper.Map<List<MapPointDto>>(points);
         }

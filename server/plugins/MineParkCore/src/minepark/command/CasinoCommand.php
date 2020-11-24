@@ -5,7 +5,7 @@ use pocketmine\Player;
 use pocketmine\event\Event;
 use pocketmine\level\Position;
 
-use minepark\Permission;
+use minepark\Permissions;
 
 class CasinoCommand extends Command
 {
@@ -29,7 +29,7 @@ class CasinoCommand extends Command
     public function getPermissions() : array
     {
         return [
-            Permission::ANYBODY
+            Permissions::ANYBODY
         ];
     }
 

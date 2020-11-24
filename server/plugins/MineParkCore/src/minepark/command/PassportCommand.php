@@ -2,7 +2,7 @@
 namespace minepark\command;
 
 use minepark\Api;
-use minepark\Permission;
+use minepark\Permissions;
 
 use pocketmine\Player;
 use pocketmine\event\Event;
@@ -26,7 +26,7 @@ class PassportCommand extends Command
     public function getPermissions() : array
     {
         return [
-            Permission::ANYBODY
+            Permissions::ANYBODY
         ];
     }
 

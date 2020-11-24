@@ -5,7 +5,7 @@ use minepark\Mapper;
 
 use minepark\Sounds;
 use pocketmine\Player;
-use minepark\Permission;
+use minepark\Permissions;
 use pocketmine\event\Event;
 
 use minepark\command\Command;
@@ -25,7 +25,7 @@ class GPSCommand extends Command
     public function getPermissions() : array
     {
         return [
-            Permission::ANYBODY
+            Permissions::ANYBODY
         ];
     }
 

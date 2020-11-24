@@ -1,12 +1,13 @@
 <?php
 namespace minepark\command\admin;
 
+use minepark\Sounds;
+
 use pocketmine\Player;
+use minepark\Permissions;
 
-use minepark\command\Command;
 use pocketmine\event\Event;
-
-use minepark\Permission;
+use minepark\command\Command;
 
 class AdminCommand extends Command
 {
@@ -22,8 +23,8 @@ class AdminCommand extends Command
     public function getPermissions() : array
     {
         return [
-            Permission::HIGH_ADMINISTRATOR,
-            Permission::ADMINISTRATOR
+            Permissions::OPERATOR,
+            Permissions::ADMINISTRATOR
         ];
     }
 
@@ -80,6 +81,10 @@ class AdminCommand extends Command
 
             case 'untrack':
                 $this->commandUnTrack($player, $args);
+            break;
+
+            case 'siren':
+                $this->commandSiren();
             break;
 		}
     }
@@ -251,6 +256,13 @@ class AdminCommand extends Command
         }
 
         $this->getCore()->getTrackerModule()->disableTrack($target, $player);
+    }
+
+    public function commandSiren()
+    {
+        foreach($this->getCore()->getServer()->getOnlinePlayers() as $player) {
+            $player->sendSound(Sounds::SIREN_SOUND);
+        }
     }
 
     private function countArguments(Player $player, array $args, int $minCount)

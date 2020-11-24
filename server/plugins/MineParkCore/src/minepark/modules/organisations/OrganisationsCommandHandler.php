@@ -4,7 +4,7 @@ namespace minepark\modules\organisations;
 use pocketmine\Player;
 use pocketmine\event\Event;
 
-use minepark\Permission;
+use minepark\Permissions;
 
 use minepark\modules\organisations\command\OrganisationsCommand;
 use minepark\modules\organisations\command\AddCommand;
@@ -97,11 +97,11 @@ class OrganisationsCommandHandler
 	{
 		$permissions = $command->getPermissions();
 
-		if(in_array(Permission::ANYBODY, $permissions)) {
+		if(in_array(Permissions::ANYBODY, $permissions)) {
 			return true;
 		}
 
-		if(in_array(Permission::HIGH_ADMINISTRATOR, $permissions) and $player->isOp()) {
+		if(in_array(Permissions::OPERATOR, $permissions) and $player->isOp()) {
 			return true;
 		}
 

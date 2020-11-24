@@ -4,7 +4,7 @@ namespace minepark\command;
 use pocketmine\Player;
 use pocketmine\event\Event;
 
-use minepark\Permission;
+use minepark\Permissions;
 
 class LevelCommand extends Command
 {
@@ -20,8 +20,8 @@ class LevelCommand extends Command
     public function getPermissions() : array
     {
         return [
-            Permission::HIGH_ADMINISTRATOR,
-            Permission::ADMINISTRATOR
+            Permissions::OPERATOR,
+            Permissions::ADMINISTRATOR
         ];
     }
 

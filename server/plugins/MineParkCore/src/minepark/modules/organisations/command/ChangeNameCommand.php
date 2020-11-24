@@ -2,7 +2,7 @@
 namespace minepark\modules\organisations\command;
 
 use minepark\modules\organisations\Organisations;
-use minepark\Permission;
+use minepark\Permissions;
 
 use pocketmine\Player;
 use pocketmine\event\Event;
@@ -23,7 +23,7 @@ class ChangeNameCommand extends OrganisationsCommand
     public function getPermissions() : array
     {
         return [
-            Permission::ANYBODY
+            Permissions::ANYBODY
         ];
     }
 

@@ -6,7 +6,7 @@ use pocketmine\Player;
 use minepark\command\Command;
 use pocketmine\event\Event;
 
-use minepark\Permission;
+use minepark\Permissions;
 
 class ToPointCommand extends Command
 {
@@ -22,8 +22,8 @@ class ToPointCommand extends Command
     public function getPermissions() : array
     {
         return [
-            Permission::HIGH_ADMINISTRATOR,
-            Permission::ADMINISTRATOR
+            Permissions::OPERATOR,
+            Permissions::ADMINISTRATOR
         ];
     }
 

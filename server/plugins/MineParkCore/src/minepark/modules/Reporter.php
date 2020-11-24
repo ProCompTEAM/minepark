@@ -3,7 +3,7 @@ namespace minepark\modules;
 
 use minepark\utils\CallbackTask;
 use minepark\Core;
-use minepark\Permission;
+use minepark\Permissions;
 
 use pocketmine\Player;
 use pocketmine\Server;
@@ -67,15 +67,7 @@ class Reporter
 	
 	public static function isHelper(Player $player) : bool
 	{
-		if ($player->hasPermission(Permission::ADMINISTRATOR_MODERATOR)) {
-			return true;
-		}
-
-		if ($player->hasPermission(Permission::ADMINISTRATOR_HELPER)) {
-			return true;
-		}
-		
-		return false;
+		return $player->hasPermission(Permissions::ADMINISTRATOR);
 	}
 	
 	public function generateReportID() : int

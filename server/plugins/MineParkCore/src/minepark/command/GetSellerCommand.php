@@ -1,9 +1,10 @@
 <?php
 namespace minepark\command;
 
+use minepark\modules\organisations\Organisations;
 use minepark\Sounds;
 use pocketmine\Player;
-use minepark\Permission;
+use minepark\Permissions;
 
 use pocketmine\event\Event;
 use pocketmine\level\Position;
@@ -24,7 +25,7 @@ class GetSellerCommand extends Command
     public function getPermissions() : array
     {
         return [
-            Permission::ANYBODY
+            Permissions::ANYBODY
         ];
     }
 
@@ -40,7 +41,7 @@ class GetSellerCommand extends Command
         }
 
         foreach($this->getCore()->getServer()->getOnlinePlayers() as $p){
-            if($p->getProfile()->organisation == 5) {
+            if($p->getProfile()->organisation == Organisations::SELLER_WORK) {
                 $p->sendMessage("§eНа торговую площадку §b$shopPoint §eтребуется продавец!");
             }
         }

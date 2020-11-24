@@ -5,7 +5,7 @@ use pocketmine\Player;
 use pocketmine\event\Event;
 
 use minepark\command\Command;
-use minepark\Permission;
+use minepark\Permissions;
 
 use minepark\utils\CallbackTask;
 
@@ -23,7 +23,7 @@ class ReportCommand extends Command
     public function getPermissions() : array
     {
         return [
-            Permission::ANYBODY
+            Permissions::ANYBODY
         ];
     }
 

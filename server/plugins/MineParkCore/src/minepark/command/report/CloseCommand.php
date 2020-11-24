@@ -4,7 +4,7 @@ namespace minepark\command\report;
 use pocketmine\Player;
 use pocketmine\event\Event;
 
-use minepark\Permission;
+use minepark\Permissions;
 use minepark\command\Command;
 
 class CloseCommand extends Command
@@ -21,8 +21,8 @@ class CloseCommand extends Command
     public function getPermissions() : array
     {
         return [
-            Permission::ADMINISTRATOR_MODERATOR,
-			Permission::ADMINISTRATOR_HELPER
+            Permissions::OPERATOR,
+            Permissions::ADMINISTRATOR
         ];
     }
 

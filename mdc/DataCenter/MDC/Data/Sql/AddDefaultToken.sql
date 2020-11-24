@@ -1,4 +1,2 @@
-﻿USE minepark
-
-INSERT INTO credentials (GeneratedToken, Tag)
+﻿INSERT INTO credentials (GeneratedToken, Tag)
 VALUES ('aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee', 'Default');

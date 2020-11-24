@@ -20,6 +20,16 @@ class Api
 	{
 		return "MinePark";
 	}
+
+	public function getChatLabel() : string
+	{
+		return "§6MINE§aPARK§8.§eRU §7▶ ";
+	}
+
+	public function getSite() : string
+	{
+		return "http://minepark.ru/";
+	}
 	
 	public function getPrefix($pId, $withColor = false) : string
 	{
@@ -111,7 +121,7 @@ class Api
 		$list = [];
 
 		foreach($this->getCore()->getServer()->getOnlinePlayers() as $p) {
-			if ($p->hasPermission(Permission::ADMINISTRATOR)) {
+			if ($p->hasPermission(Permissions::ADMINISTRATOR)) {
 				$namesOnly ? array_push($list, $p->getName()) : array_push($list, $p);
 			}
 		}

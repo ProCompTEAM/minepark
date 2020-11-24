@@ -11,6 +11,7 @@ use pocketmine\event\Listener;
 use minepark\utils\FixSignEvent;
 use minepark\mdc\sources\UsersSource;
 use minepark\player\ImplementedPlayer;
+use pocketmine\entity\object\Painting;
 use pocketmine\event\level\ChunkLoadEvent;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockPlaceEvent;
@@ -119,6 +120,8 @@ class EventsHandler implements Listener
 			return;
 		}
 
+		$this->getCore()->getInitializer()->checkInventoryItems($event->getPlayer());
+
 		if((!$event->getPlayer()->auth or $event->getBlock()->getId() == 71)
 			or (($event->getPlayer()->getInventory()->getItemInHand()->getId() == 259) and !$event->getPlayer()->isOp())) {
 				$event->setCancelled();
@@ -156,6 +159,10 @@ class EventsHandler implements Listener
 		if(!$e->getPlayer()->auth) {
 			$e->setCancelled();
 		}
+
+		if($e->getPlayer()->getProfile()->builder) {
+			$e->setCancelled(false);
+		}
 	}
 	
 	public function blockBreakEvent(BlockBreakEvent $e)
@@ -163,11 +170,20 @@ class EventsHandler implements Listener
 		if(!$e->getPlayer()->auth) {
 			$e->setCancelled();
 		}
+
+		if($e->getPlayer()->getProfile()->builder) {
+			$e->setCancelled(false);
+		}
 	}
 	
 	public function playerDmgEvent(EntityDamageEvent $event)
 	{
 		$cancel = false;
+
+		if(($event instanceof EntityDamageByEntityEvent and $event->getEntity() instanceof Painting) 
+			and ($event->getDamager() instanceof Player and !$event->getDamager()->isOp())) {
+			$cancel = true;
+		}
 
 		if($event instanceof EntityDamageByEntityEvent and $event->getDamager() instanceof Player and $event->getEntity() instanceof Player) {
 			$cancel = $this->getCore()->getDamager()->kick($event->getEntity(), $event->getDamager());

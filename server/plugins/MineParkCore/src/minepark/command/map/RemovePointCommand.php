@@ -6,7 +6,7 @@ use pocketmine\Player;
 use minepark\command\Command;
 use pocketmine\event\Event;
 
-use minepark\Permission;
+use minepark\Permissions;
 
 class RemovePointCommand extends Command
 {
@@ -22,9 +22,8 @@ class RemovePointCommand extends Command
     public function getPermissions() : array
     {
         return [
-            Permission::HIGH_ADMINISTRATOR,
-            Permission::ADMINISTRATOR_BUILDER,
-            Permission::ADMINISTRATOR_TESTER
+            Permissions::OPERATOR,
+            Permissions::ADMINISTRATOR
         ];
     }
 

@@ -3,7 +3,7 @@ namespace minepark\player;
 
 use minepark\Api;
 use minepark\Core;
-use minepark\Permission;
+use minepark\Permissions;
 use pocketmine\Player;
 use pocketmine\utils\Config;
 use pocketmine\entity\Effect;
@@ -66,7 +66,7 @@ class Damager
         $player->sleepOn($player->getPosition()->subtract(0, 1, 0));
         
         foreach($this->getCore()->getServer()->getOnlinePlayers() as $p) {
-            if($p->hasPermission(Permission::ADMINISTRATOR)) {
+            if($p->hasPermission(Permissions::ADMINISTRATOR)) {
                 if($damager instanceof Player) {
                     $p->sendMessage("§7[§6!§7] PvP : §c" . $damager->getName() . " убил " . $player->getName());
                 } else {

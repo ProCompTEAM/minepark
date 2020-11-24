@@ -1,7 +1,7 @@
 <?php
 namespace minepark\modules\organisations\command;
 
-use minepark\Permission;
+use minepark\Permissions;
 use minepark\Api;
 
 use pocketmine\Player;
@@ -23,7 +23,7 @@ class AddCommand extends OrganisationsCommand
     public function getPermissions() : array
     {
         return [
-            Permission::ANYBODY
+            Permissions::ANYBODY
         ];
     }
 

@@ -4,7 +4,7 @@ namespace minepark\command;
 use pocketmine\Player;
 use pocketmine\event\Event;
 
-use minepark\Permission;
+use minepark\Permissions;
 
 class AnimationCommand extends Command
 {
@@ -20,7 +20,7 @@ class AnimationCommand extends Command
     public function getPermissions() : array
     {
         return [
-            Permission::ANYBODY
+            Permissions::ANYBODY
         ];
     }
 

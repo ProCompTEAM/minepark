@@ -1,7 +1,7 @@
 <?php
 namespace minepark;
 
-use minepark\Permission;
+use minepark\Permissions;
 
 use minepark\command\Command;
 use minepark\command\MoneyCommand;
@@ -132,11 +132,11 @@ class CommandsHandler
 	{
 		$permissions = $command->getPermissions();
 
-		if(in_array(Permission::ANYBODY, $permissions)) {
+		if(in_array(Permissions::ANYBODY, $permissions)) {
 			return true;
 		}
 
-		if(in_array(Permission::HIGH_ADMINISTRATOR, $permissions) and $player->isOp()) {
+		if(in_array(Permissions::OPERATOR, $permissions) and $player->isOp()) {
 			return true;
 		}
 

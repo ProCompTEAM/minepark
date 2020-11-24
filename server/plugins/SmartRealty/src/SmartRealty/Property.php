@@ -2,7 +2,6 @@
 namespace SmartRealty;
 
 use pocketmine\level\Position;
-use pocketmine\block\Block;
 use pocketmine\math\Vector3;
 use pocketmine\utils\Config;
 use pocketmine\Player;
@@ -10,7 +9,6 @@ use pocketmine\Player;
 use pocketmine\tile\Sign;
 use pocketmine\block\SignPost;
 use pocketmine\block\WallSign;
-use pocketmine\block\Chest;
 
 class Property
 {
@@ -34,10 +32,15 @@ class Property
 	
 	public function command($player, $args)
 	{
-		$maincmd = null; if(isset($args[0])) $maincmd = $args[0];
+		$maincmd = null; 
 		
-		if(($maincmd == "add" or $maincmd == "setarea" or  $maincmd == "op") and !$player->hasPermission("realt.creator")) {
-			$player->sendMessage("§cАдминистратор не позволяет вам регистрировать недвижимость!"); return;
+		if(isset($args[0])) {
+			$maincmd = $args[0];
+		}
+		
+		if(($maincmd == "add" or $maincmd == "setarea" or  $maincmd == "op") and !$player->getProfile()->realtor) {
+			$player->sendMessage("§cАдминистратор не позволяет вам регистрировать недвижимость!"); 
+			return;
 		}
 		
 		switch($maincmd)
@@ -52,7 +55,8 @@ class Property
 			$p = $this->main->getServer()->getPlayer($args[1]);
 			if($p !== null)
 			{
-				$this->main->setPermission($p, "realt.creator");
+				$p->getProfile()->realtor = true;
+				//TODO: save player profile
 				
 				$this->main->getServer()->broadcastMessage("§8" . $player->getName() .
 					" выдал временные права на реализацию недвижимости для " . $p->getName());
@@ -141,7 +145,7 @@ class Property
 			}
 			
 			if(count($player->property) == 3 and !$player->isOp()) {
-				$player->sendMessage("§6Дабы все жилье не скупили, государство ограничело кол-во квартир на человека до трех.");
+				$player->sendMessage("§6Дабы все жилье не скупили, государство ограничело количество квартир на человека до трех.");
 				$player->sendMessage("§eВы можете дождаться окончание аренды одного из купленного жилья, а затем сюда вернуться!");
 				return;
 			}
@@ -220,7 +224,7 @@ class Property
 	public function sign($event)
 	{
 		$lns = $event->getLines();
-		if(($lns[0] == "[property]" or $lns[0] == "[realty]" or $lns[0] == "realt") and $event->getPlayer()->hasPermission("realt.creator")) 
+		if(($lns[0] == "[property]" or $lns[0] == "[realty]" or $lns[0] == "realt") and $event->getPlayer()->getProfile()->realtor) 
 		{
 			$player = $event->getPlayer();
 			$name = $lns[1];
@@ -248,13 +252,13 @@ class Property
 		}
 	}
 	
-	public function block($event, $action)
+	public function block($event)
 	{
 		if($event->getPlayer()->isOp()) return;
 		
 		$block = $event->getBlock();
 		
-		if(($block instanceof WallSign or $block instanceof SignPost or $block instanceof Sign) and $event->getPlayer()->hasPermission("realt.creator")) {
+		if(($block instanceof WallSign or $block instanceof SignPost or $block instanceof Sign) and $event->getPlayer()->getProfile()->realtor) {
 			$event->setCancelled(false);
 			return;
 		}
