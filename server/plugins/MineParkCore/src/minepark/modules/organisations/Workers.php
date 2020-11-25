@@ -1,19 +1,18 @@
 <?php
 namespace minepark\modules\organisations;
 
-use pocketmine\Player;
-use pocketmine\entity\EffectInstance;
-use pocketmine\entity\Effect;
-use pocketmine\level\Position;
-
 use minepark\Core;
+use minepark\Mapper;
+use pocketmine\Player;
+use pocketmine\event\Event;
+use pocketmine\entity\Effect;
+
+use pocketmine\level\Position;
+use pocketmine\entity\EffectInstance;
 
 class Workers
 {
     public $words;
-    
-    const TAKEBOX_POINT = 5;
-    const PUTBOX_POINT = 6;
 	
 	public function __construct()
 	{
@@ -30,8 +29,8 @@ class Workers
             "Гречка *Мир*","Хотдоги","Масло","Туалетная бумага *Нежность*","Игрушечное яйцо динозавра","Рис","Перец чили",
             "Макароны","Торт *Наполеон*","Яблоки","Респераторы","Бумага","Школьный мел","Сок из оливок","Лимонный сок",
             "Сок из кактусов","Ликер","Коньяк","Специи","Журналы *Черепашки Ниньдзя*","Глина","Учебник по алгебре",
-            "Вазоны","Шаверма","Журнал *Всё о динозаврах*","Маршрутизаторы","Флешкарты","Спец. корм для Травоядных",
-            "Комплектующие к ПК","*Play Station*","Топовый ПК","Микроскоп","Книжная полка","Спец. корм для Хищников"
+            "Вазоны","Шаверма","Журнал *Мирный Мир*","Маршрутизаторы","Флешкарты","Спец. корм для Травоядных",
+            "Комплектующие для ноутбука","*Play Station 5*","Топовый ПК","Микроскоп","Книжная полка","Рачки"
         ];//90
 	}
     
@@ -40,7 +39,7 @@ class Workers
         return Core::getActive();
     }
 
-	public function sign($event)
+	public function sign(Event $event)
 	{
 		$player = $event->getPlayer();
         $lns = $event->getLines();
@@ -52,7 +51,7 @@ class Workers
 		}
     }
     
-    private function handleWorker1($event)
+    private function handleWorker1(Event $event)
     {
         $event->setLine(0, "§eЗдесь можно"); 
 		$event->setLine(1, "§eподзаработать");
@@ -60,7 +59,7 @@ class Workers
 		$event->setLine(3, "§b/takebox");
     }
     
-    private function handleWorker2($event)
+    private function handleWorker2(Event $event)
     {
         $event->setLine(0, "§aЗдесь находится"); 
 		$event->setLine(1, "§aточка разгрузки");
@@ -73,7 +72,7 @@ class Workers
         $points = $this->getCore()->getMapper()->getNearPoints($pos, 5);
 
 		foreach($points as $point) {
-			if($this->core->getMapper()->getPointGroup($point) == $point) {
+			if($this->getCore()->getMapper()->getPointGroup($point) == $point) {
                 return true;
             }
         }
@@ -81,21 +80,21 @@ class Workers
         return false;
     }
 
-	public function takebox(Player $p)
+	public function takebox(Player $player)
 	{
-        $hasPoint = $this->ifPointIsNearPlayer($p->getPosition(), self::TAKEBOX_POINT);
+        $hasPoint = $this->ifPointIsNearPlayer($player->getPosition(), Mapper::POINT_GROUP_WORK1);
 
 		if(!$hasPoint) {
-            $p->sendMessage("§cРядом нет площадки с ящиками!");
+            $player->sendMessage("§cРядом нет площадки с ящиками!");
             return;
         }
 
-        if($p->wbox == null) {
-            $this->handleBoxTake($p);
+        if($player->wbox == null) {
+            $this->handleBoxTake($player);
             return;
         }
 
-        $p->sendMessage("§cСначала положите ящик из ваших рук на склад!");
+        $player->sendMessage("§cСначала положите ящик из ваших рук на склад!");
 	}
     
     private function handleBoxTake(Player $player)
@@ -114,7 +113,7 @@ class Workers
 
 	public function putbox(Player $player)
 	{
-        $hasPoint = $this->ifPointIsNearPlayer($player->getPosition(), self::PUTBOX_POINT);
+        $hasPoint = $this->ifPointIsNearPlayer($player->getPosition(), Mapper::POINT_GROUP_WORK2);
 
 		if(!$hasPoint) {
             $player->sendMessage("§cРядом нет точек для разрузки!");
