@@ -82,15 +82,15 @@ class Initializer
 		$gps->setCustomName("Навигатор");
 		
 		if(!$player->getInventory()->contains($phone)) {
-            $player->getInventory()->setItem(0,$phone);
+            $player->getInventory()->setItem(0, $phone);
         }
 		
 		if(!$player->getInventory()->contains($passport)) {
-            $player->getInventory()->setItem(1,$passport);
+            $player->getInventory()->setItem(1, $passport);
         }
 		
 		if(!$player->getInventory()->contains($gps)) {
-            $player->getInventory()->setItem(2,$gps);
+            $player->getInventory()->setItem(2, $gps);
         }
 
         if($player->getProfile()->organisation == Organisations::SECURITY_WORK) {
@@ -153,7 +153,7 @@ class Initializer
     private function getDonaterLabel(Player $donater)
 	{
         if($donater->isOp()) {
-            return "§7⚑РУКОВОДСТВО ПАРКА ";
+            return "§7⚑РУКОВОДСТВО ПАРКА";
         }
 
         $profile = $donater->getProfile();
