@@ -7,12 +7,10 @@ use minepark\modules\GPS;
 use minepark\player\Auth;
 use minepark\player\Bank;
 use minepark\EventsHandler;
-
 use minepark\modules\Phone;
 use minepark\modules\PayDay;
 use minepark\player\Chatter;
 use minepark\player\Damager;
-use pocketmine\utils\Config;
 use minepark\CommandsHandler;
 use minepark\external\WebApi;
 use minepark\modules\Tracker;
@@ -30,6 +28,7 @@ use pocketmine\command\CommandSender;
 use minepark\external\service\Service;
 use pocketmine\command\ConsoleCommandSender;
 use minepark\modules\organisations\Organisations;
+use minepark\modules\WorldProtector;
 
 class Core extends PluginBase implements Listener
 {
@@ -60,6 +59,7 @@ class Core extends PluginBase implements Listener
 	private $localizer;
 	private $damager;
 	private $reporter;
+	private $protector;
 	private $phone;
 	private $statusbar;
 	private $auth;
@@ -128,6 +128,7 @@ class Core extends PluginBase implements Listener
 		$this->initializer = new Initializer;
 		$this->localizer = new Localizer;
 		$this->damager = new Damager;
+		$this->protector = new WorldProtector;
 		$this->phone = new Phone;
 		$this->statusbar = new StatusBar;
 		$this->auth = new Auth;
@@ -218,6 +219,11 @@ class Core extends PluginBase implements Listener
 	public function getDamager() : Damager
 	{
 		return $this->damager;
+	}
+
+	public function getWorldProtector() : WorldProtector
+	{
+		return $this->protector;
 	}
 
 	public function getPhone() : Phone

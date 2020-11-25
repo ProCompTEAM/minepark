@@ -12,7 +12,7 @@ use pocketmine\entity\EffectInstance;
 
 class Workers
 {
-    public $words;
+    public array $words;
 	
 	public function __construct()
 	{
@@ -67,12 +67,12 @@ class Workers
 		$event->setLine(3, "§6Разгрузиться: §b/putbox");
     }
 
-    public function ifPointIsNearPlayer(Position $pos, int $point)
+    public function ifPointIsNearPlayer(Position $pos, int $group)
     {
-        $points = $this->getCore()->getMapper()->getNearPoints($pos, 5);
+        $points = $this->getCore()->getMapper()->getNearPoints($pos, 6);
 
 		foreach($points as $point) {
-			if($this->getCore()->getMapper()->getPointGroup($point) == $point) {
+			if($this->getCore()->getMapper()->getPointGroup($point) == $group) {
                 return true;
             }
         }

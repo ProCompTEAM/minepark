@@ -12,6 +12,7 @@ webapi-log.txt
 ops.txt
 white-list.txt
 mdc.yml
+world-protector.yml
 /server/worlds/*
 /server/plugins/EconomyAPI/*
 /server/plugins/SmartRealtyPE/*

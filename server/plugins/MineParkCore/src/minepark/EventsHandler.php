@@ -12,6 +12,7 @@ use minepark\utils\FixSignEvent;
 use minepark\mdc\sources\UsersSource;
 use minepark\player\ImplementedPlayer;
 use pocketmine\entity\object\Painting;
+use pocketmine\event\block\BlockEvent;
 use pocketmine\event\level\ChunkLoadEvent;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockPlaceEvent;
@@ -156,26 +157,14 @@ class EventsHandler implements Listener
 		}
 	}
 	
-	public function blockPlaceEvent(BlockPlaceEvent $e)
+	public function blockPlaceEvent(BlockPlaceEvent $event)
 	{
-		if(!$e->getPlayer()->auth) {
-			$e->setCancelled();
-		}
-
-		if($e->getPlayer()->getProfile()->builder) {
-			$e->setCancelled(false);
-		}
+		$this->checkBlockSet($event);
 	}
 	
-	public function blockBreakEvent(BlockBreakEvent $e)
+	public function blockBreakEvent(BlockBreakEvent $event)
 	{
-		if(!$e->getPlayer()->auth) {
-			$e->setCancelled();
-		}
-
-		if($e->getPlayer()->getProfile()->builder) {
-			$e->setCancelled(false);
-		}
+		$this->checkBlockSet($event);
 	}
 	
 	public function playerDmgEvent(EntityDamageEvent $event)
@@ -207,6 +196,28 @@ class EventsHandler implements Listener
 			$z = $event->getChunk()->getZ();
 			
 			$event->getLevel()->unloadChunk($x, $z);
+		}
+	}
+
+	private function checkBlockSet(BlockEvent $event)
+	{
+		$player = $event->getPlayer();
+
+		if(!$player->auth) {
+			$event->setCancelled();
+			return;
+		}
+
+		if($player->isOp()) {
+			$event->setCancelled(false);
+		}
+
+		if($player->getProfile()->builder) {
+			$event->setCancelled(false);
+		}
+
+		if(!$this->getCore()->getWorldProtector()->isInRange($event->getBlock())) {
+			$event->setCancelled(false);
 		}
 	}
 

@@ -37,6 +37,11 @@ class AddPointCommand extends Command
         $param1 = $args[0];
         $param2 = self::argumentsCount(2, $args) ? $args[1] : 0;
 
+        if(!is_numeric($param2)) {
+            $player->sendMessage("Группа указана неверно");
+            return;
+        }
+
         $this->getCore()->getMapper()->addPoint($player->getPosition(), $param1, $param2);
         
 		$player->sendMessage("AddPoint");

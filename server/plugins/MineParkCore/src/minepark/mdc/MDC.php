@@ -75,7 +75,7 @@ class MDC
             "UnitId" => "MilkyWay"
         ]);
         
-        $this->address = $config->get("Address");;
+        $this->address = $config->get("Address");
         $this->token = $config->get("AccessToken");
         $this->unitId = $config->get("UnitId");
     }
