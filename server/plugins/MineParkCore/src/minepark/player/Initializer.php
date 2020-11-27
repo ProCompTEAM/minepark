@@ -42,7 +42,7 @@ class Initializer
 		$player->removeAllEffects();
         $player->setNameTag("");
 
-        if(!$player->isnew) {
+        if($player->isnew) {
 			$this->handleNewPlayer($player);
         }
 

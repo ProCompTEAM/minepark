@@ -25,7 +25,7 @@ class Tracker
     
     public function isTracked(Player $player) : bool
     {
-        return $this->tracked[$player->getName()] == true;
+        return isset($this->tracked[$player->getName()]) and $this->tracked[$player->getName()];
     }
 
     public function enableTrack(Player $player, Player $causer = null)
@@ -52,7 +52,7 @@ class Tracker
     {
         $playerName = $player->getName();
 
-        $this->tracked[$player->getName()] = false;
+        $this->tracked[$playerName] = false;
 
         if ($causer == null) {
             $this->broadcastAdmins([
