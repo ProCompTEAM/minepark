@@ -127,7 +127,15 @@ class Initializer
     private function handleNewPlayer(Player $player)
 	{
         $this->getCore()->getBank()->givePlayerMoney($player, self::DEFAULT_MONEY_PRESENT);
-		$this->getCore()->getTrackerModule()->enableTrack($player);
+        $this->getCore()->getTrackerModule()->enableTrack($player);
+        $this->presentNewPlayer($player);
+    }
+
+    private function presentNewPlayer(Player $newPlayer)
+	{
+        foreach($this->getCore()->getServer()->getOnlinePlayers() as $player) {
+            $player->addTitle("§6" . $newPlayer->getName(), "§aВ парке новый посетитель!", 5);
+        }
     }
     
     private function setPermissions(Player $player)
@@ -146,7 +154,7 @@ class Initializer
         $label = $this->getDonaterLabel($donater);
 
         foreach($this->getCore()->getServer()->getOnlinePlayers() as $player) {
-            $player->addTitle("", $label . " " . $donater->getName() . "{UserOnline}");
+            $player->addTitle("§e" . $donater->getName(), $label . " " . $donater->getName() . "{UserOnline}", 5);
         }
     }
     

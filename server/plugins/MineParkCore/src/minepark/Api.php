@@ -120,9 +120,9 @@ class Api
 	{
 		$list = [];
 
-		foreach($this->getCore()->getServer()->getOnlinePlayers() as $p) {
-			if ($p->hasPermission(Permissions::ADMINISTRATOR)) {
-				$namesOnly ? array_push($list, $p->getName()) : array_push($list, $p);
+		foreach($this->getCore()->getServer()->getOnlinePlayers() as $player) {
+			if ($player->hasPermission(Permissions::ADMINISTRATOR) || $player->isOp()) {
+				$namesOnly ? array_push($list, $player->getName()) : array_push($list, $player);
 			}
 		}
 

@@ -93,63 +93,30 @@ class Tracker
         ], $player);
     }
 
-    private function broadcastAdmins(array $messages=[], Player $sender=null, $rad=7)
+    private function broadcastAdmins(array $messages=[], Player $sender = null, $rad = 7)
     {
-        $admins = $this->getAdmins();
+        $admins = $this->getCore()->getApi()->getAdministration();
 
-        foreach($admins as $admin) {
-            if ($sender != null) {
-                if ($this->playersNear($sender, $admin, $rad)) {
+        if(is_null($sender)) {
+            foreach($admins as $admin) {
+                $this->sendMessage($admin, $messages);
+            }
+        } else {
+            foreach($admins as $admin) {
+                if ($sender->distance($admin) > $rad) {
                     continue;
                 }
+    
+                $this->sendMessage($admin, $messages);
             }
-
-            $this->sendMessage($admin, $messages);
         }
     }
 
     private function sendMessage(Player $player, array $messages=[])
     {
         foreach($messages as $message) {
-            $player->sendLocalizedMessage(self::CHAT_PREFIX.$message);
+            $player->sendLocalizedMessage(self::CHAT_PREFIX . $message);
         }
-    }
-
-    private function getAdmins() : array
-    {
-        $admins = [];
-
-        foreach($this->getCore()->getServer()->getOnlinePlayers() as $player) {
-            if ($player->hasPermission(Permissions::ADMINISTRATOR)) {
-                $admins[] = $player;
-            }
-        }
-
-        return $admins;
-    }
-
-    private function playersNear($sender, $player, $rad=7) : bool
-    {
-        $p_x = $sender->getX();
-		$p_y = $sender->getY();
-        $p_z = $sender->getZ();
-        
-        $x1 = $player->getX();
-        $y1 = $player->getY();
-        $z1 = $player->getZ();
-
-		$x = $x1 - $p_x;
-		$z = $z1 - $p_z;
-		$y = $y1 - $p_y;
-
-		$x = floor($x);
-		$z = floor($z);
-		$y = floor($y);
-
-		if($x < $rad and $z < $rad and $x > $rad*-1 and $z > $rad*-1 and $y < $rad and $y > $rad*-1) {
-			return true;
-        }
-        return false;
     }
 }
 ?>

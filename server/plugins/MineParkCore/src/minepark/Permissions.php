@@ -26,7 +26,8 @@ class Permissions
             "pocketmine.command.kick",
             "pocketmine.command.gamemode",
             "pocketmine.command.ban.player",
-            "pocketmine.command.ban.ip"
+            "pocketmine.command.ban.ip",
+            "pocketmine.command.give"
         ];
     }
 
@@ -34,7 +35,8 @@ class Permissions
     {
         return [
             "pocketmine.command.time",
-            "pocketmine.command.gamemode"
+            "pocketmine.command.gamemode",
+            "pocketmine.command.give"
         ];
     }
 
