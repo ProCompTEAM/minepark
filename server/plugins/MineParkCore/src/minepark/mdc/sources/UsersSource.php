@@ -6,9 +6,11 @@ use minepark\mdc\dto\UserDto;
 
 class UsersSource extends RemoteSource
 {
+    public const ROUTE = "users";
+
     public function getName() : string
     {
-        return "users";
+        return self::ROUTE;
     }
 
     public function isUserExist(string $userName) : bool

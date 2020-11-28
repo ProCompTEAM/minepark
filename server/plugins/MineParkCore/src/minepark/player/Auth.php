@@ -24,11 +24,6 @@ class Auth
 	{
 		return Core::getActive();
 	}
-
-	public function getRemoteSource() : UsersSource
-    {
-        return $this->getCore()->getMDC()->getSource("users");
-    }
 	
 	public function checkState(Player $player) : int
 	{
@@ -155,6 +150,11 @@ class Auth
 
 		$this->getCore()->getScheduler()->scheduleDelayedTask(
 			new CallbackTask(array($this, "sendWelcomeText"), array($player)), 20 * self::WELCOME_MESSAGE_TIMEOUT);
+	}
+
+	private function getRemoteSource() : UsersSource
+	{
+		return $this->getCore()->getMDC()->getSource(UsersSource::ROUTE);
 	}
 }
 ?>

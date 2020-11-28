@@ -10,12 +10,7 @@ class Profiler
 	
 	public function __construct()
 	{
-		$this->source = $this->getCore()->getMDC()->getSource("users");
-	}
-
-	private function getSource() : UsersSource
-	{
-		return $this->source;
+		$this->source = $this->getCore()->getMDC()->getSource(UsersSource::ROUTE);
 	}
 
 	public function getCore() : Core
@@ -45,6 +40,11 @@ class Profiler
 	public function saveProfile(Player $player)
 	{
         $this->getSource()->updateUserData($player->getProfile());
-    }
+	}
+	
+	private function getSource() : UsersSource
+	{
+		return $this->source;
+	}
 }
 ?>

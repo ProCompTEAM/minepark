@@ -6,9 +6,11 @@ use minepark\mdc\dto\LocalMapPointDto;
 
 class MapSource extends RemoteSource
 {
+    public const ROUTE = "map";
+
     public function getName() : string
     {
-        return "map";
+        return self::ROUTE;
     }
 
     public function getPoint(string $name) : ?MapPointDto

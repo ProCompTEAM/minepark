@@ -92,7 +92,7 @@ class MDC
     private function sendUnitId()
     {
         $unitId = $this->getUnitId();
-        $this->getSource("settings")->upgradeUnitId($unitId);
+        $this->getSource(SettingsSource::ROUTE)->upgradeUnitId($unitId);
     }
 }
 ?>

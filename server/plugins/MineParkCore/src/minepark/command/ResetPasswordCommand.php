@@ -45,7 +45,7 @@ class ResetPasswordCommand extends Command
     
     private function getRemoteSource() : UsersSource
     {
-        return $this->getCore()->getMDC()->getSource("users");
+        return $this->getCore()->getMDC()->getSource(UsersSource::ROUTE);
     }
 
     private function resetPassword(Player $sender, string $targetPlayerName)

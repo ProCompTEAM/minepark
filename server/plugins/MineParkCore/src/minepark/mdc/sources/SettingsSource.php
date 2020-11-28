@@ -3,9 +3,11 @@ namespace minepark\mdc\sources;
 
 class SettingsSource extends RemoteSource
 {
+    public const ROUTE = "settings";
+
     public function getName() : string
     {
-        return "settings";
+        return self::ROUTE;
     }
 
     public function upgradeUnitId(string $unitId)

@@ -13,7 +13,7 @@ class Mapper
 	
 	public function __construct()
 	{
-		$this->source = $this->getCore()->getMDC()->getSource("map");
+		$this->source = $this->getCore()->getMDC()->getSource(MapSource::ROUTE);
 	}
 
 	private function getSource() : MapSource

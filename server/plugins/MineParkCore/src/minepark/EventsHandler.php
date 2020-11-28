@@ -246,8 +246,8 @@ class EventsHandler implements Listener
 	}
 
 	private function getUsersSource() : UsersSource
-    {
-        return $this->getCore()->getMDC()->getSource("users");
-    }
+	{
+		return $this->getCore()->getMDC()->getSource(UsersSource::ROUTE);
+	}
 }
 ?>
