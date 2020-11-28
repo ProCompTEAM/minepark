@@ -50,6 +50,11 @@ namespace MDC.Infrastructure.Services
             return GetUser(userName).Password;
         }
 
+        public bool ExistPassword(string userName)
+        {
+            return GetUser(userName).Password != null;
+        }
+
         public void SetPassword(string userName, string password)
         {
             User user = GetUser(userName);

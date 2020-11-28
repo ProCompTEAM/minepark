@@ -117,6 +117,9 @@ commands:
  s:
   default: true
   permissions: minepark.all
+ resetpassword:
+  default: true
+  permissions: minepark.all
  
 permissions:
   minepark.admin:

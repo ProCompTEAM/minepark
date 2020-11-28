@@ -31,6 +31,11 @@ namespace MDC.Infrastructure.Controllers
             return usersService.GetPassword(userName);
         }
 
+        public bool ExistPassword(string userName)
+        {
+            return usersService.ExistPassword(userName);
+        }
+
         public void SetPassword(PasswordDto passwordDto)
         {
             usersService.SetPassword(passwordDto.Name, passwordDto.Password);

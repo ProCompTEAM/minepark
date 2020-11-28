@@ -15,6 +15,8 @@ namespace MDC.Infrastructure.Services.Interfaces
 
         string GetPassword(string userName);
 
+        bool ExistPassword(string userName);
+
         void SetPassword(string userName, string password);
 
         void ResetPassword(string userName);

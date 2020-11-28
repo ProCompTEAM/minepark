@@ -28,6 +28,11 @@ class UsersSource extends RemoteSource
         return (string) $this->createRequest("get-password", $userName);
     }
 
+    public function isUserPasswordExist(string $userName) : bool
+    {
+        return (bool) $this->createRequest("exist-password", $userName);
+    }
+
     public function setUserPassword(PasswordDto $passwordDto)
     {
         $this->createRequest("set-password", $passwordDto);

@@ -32,7 +32,7 @@ class Auth
 	
 	public function checkState(Player $player) : int
 	{
-		if($player->isnew) {
+		if(!$this->getRemoteSource()->isUserPasswordExist($player->getName())) {
 			return self::STATE_REGISTER;
 		} else {
 			if(isset($this->ips[$player->getName()]) and $this->ips[$player->getName()] == $player->getAddress()) {

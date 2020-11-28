@@ -1,44 +1,45 @@
 <?php
 namespace minepark;
 
-use minepark\Permissions;
+use pocketmine\Player;
 
+use minepark\Permissions;
+use pocketmine\event\Event;
 use minepark\command\Command;
-use minepark\command\MoneyCommand;
-use minepark\command\PassportCommand;
 use minepark\command\PayCommand;
-use minepark\command\admin\AdminCommand;
-use minepark\command\AnimationCommand;
+use minepark\command\LevelCommand;
+use minepark\command\MoneyCommand;
 use minepark\command\CasinoCommand;
 use minepark\command\DonateCommand;
-use minepark\command\GetOrganisationCommand;
-use minepark\command\GetSellerCommand;
-use minepark\command\JailExitCommand;
-use minepark\command\LevelCommand;
-use minepark\command\map\AddPointCommand;
-use minepark\command\map\GPSCommand;
-use minepark\command\map\GPSNearCommand;
-use minepark\command\map\RemovePointCommand;
-use minepark\command\map\ToNearPointCommand;
-use minepark\command\map\ToPointCommand;
 use minepark\command\OnlineCommand;
-use minepark\command\phone\CallCommand;
+use minepark\command\map\GPSCommand;
+use minepark\command\JailExitCommand;
+use minepark\command\PassportCommand;
+use minepark\command\AnimationCommand;
+use minepark\command\GetSellerCommand;
 use minepark\command\phone\SmsCommand;
-use minepark\command\report\ReportCommand;
-use minepark\command\report\ReplyCommand;
-use minepark\command\report\CloseCommand;
+use minepark\command\phone\CallCommand;
+use minepark\command\admin\AdminCommand;
+use minepark\command\map\GPSNearCommand;
+use minepark\command\map\ToPointCommand;
 use minepark\command\roleplay\DoCommand;
 use minepark\command\roleplay\MeCommand;
-use minepark\command\roleplay\ShoutCommand;
+use minepark\command\map\AddPointCommand;
+use minepark\command\report\CloseCommand;
+use minepark\command\report\ReplyCommand;
 use minepark\command\roleplay\TryCommand;
-use minepark\command\roleplay\WhisperCommand;
-use minepark\command\workers\GetFarmCommand;
+use minepark\command\report\ReportCommand;
+use minepark\command\ResetPasswordCommand;
+use minepark\command\roleplay\ShoutCommand;
 use minepark\command\workers\PutBoxCommand;
+use minepark\command\GetOrganisationCommand;
+use minepark\command\map\RemovePointCommand;
+use minepark\command\map\ToNearPointCommand;
+use minepark\command\workers\GetFarmCommand;
+
 use minepark\command\workers\PutFarmCommand;
 use minepark\command\workers\TakeBoxCommand;
-
-use pocketmine\Player;
-use pocketmine\event\Event;
+use minepark\command\roleplay\WhisperCommand;
 
 class CommandsHandler
 {
@@ -76,6 +77,7 @@ class CommandsHandler
 			new OnlineCommand,
 			new PassportCommand,
 			new PayCommand,
+			new ResetPasswordCommand,
 			new ReportCommand,
 			new ReplyCommand,
 			new CloseCommand
