@@ -43,12 +43,12 @@ class CasinoCommand extends Command
         {
             if(mt_rand(1, self::CASINO_CHANCE) == 1) {
                 $this->getCore()->getBank()->givePlayerMoney($player, $args[0] * 2);
-                $player->sendMessage("§aПоздравляем с выйгрышем! Теперь эти деньги Ваши!");
+                $player->sendMessage("CommandCasinoWin");
             } else { 
-                $player->sendMessage("§eПройгрыш! Не печальтесь, попробуйте снова!");
+                $player->sendMessage("CommandCasinoLose");
             }
         } else {
-          $player->sendMessage("§сСредства отсутствуют на счете!");  
+          $player->sendMessage("CommandCasinoNoMoney");  
         } 
 
         $event->setCancelled();
@@ -71,17 +71,17 @@ class CasinoCommand extends Command
     private function checkState(Player $player, array $args) : bool
     {
         if(self::argumentsNo($args)) {
-            $player->sendMessage("§6Шанс выйгрыша 50%! Использование: /casino <сумма>");
+            $player->sendMessage("CommandCasinoUse");
             return false;
         }
 
         if($this->getCasinoPoint($player->getPosition()) == null) {
-            $player->sendMessage("§cВам необходимо находиться около игровых автоматов!");
+            $player->sendMessage("CommandCasinoNear");
             return false;
         }
 
         if($args[0] < self::CASINO_MIN_SUM or $args[0] > self::CASINO_MAX_SUM) {
-            $player->sendMessage("§c§cМинимальная сумма должна быть > " . self::CASINO_MIN_SUM . " и < " . self::CASINO_MAX_SUM);
+            $player->sendLocalizedMessage("{CommandCasinoMoneyMin}" . self::CASINO_MIN_SUM . "{CommandCasinoMoneyMax}" . self::CASINO_MAX_SUM);
             return false;
         }
 

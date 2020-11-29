@@ -32,26 +32,26 @@ class SellCommand extends OrganisationsCommand
     public function execute(Player $player, array $args = array(), Event $event = null)
     {
         if (!self::isSeller($player)) {
-            $player->sendMessage("§cВы не продавец!");
+            $player->sendMessage("CommandSellNoSeller");
             return;
         }
         $this->getCore()->getChatter()->send($player, "§8(§dв руках ключ от кассового аппарата§8)", "§d : ", 10);
         $plist = $this->getCore()->getMapper()->getNearPoints($player->getPosition(), 15);
 
         if ($this->noPointsNear($plist)) {
-            $player->sendMessage("§6Вы далеко от торгового учреждения! (/gps)");
+            $player->sendMessage("CommandSellKey");
             return;
         }
 
         if (!$this->ifIsNearShops($player)) {
-            $player->sendMessage("§6Рядом с вами нет кассового аппарата!");
+            $player->sendMessage("CommandSellNoShop");
             return;
         }
 
         $buyers = $this->getBuyersNear($player);
 
         if (self::argumentsNo($buyers)) {
-            $player->sendMessage("§6Рядом с вами нет покупателей!");
+            $player->sendMessage("CommandSellNoCash");
             return;
         }
         
@@ -105,9 +105,9 @@ class SellCommand extends OrganisationsCommand
 
     private function notMuchMoney(Player $buyer, Player $seller, $curr)
     {
-        $seller->sendMessage("§eПокупателю #".($curr + 1)." не хватило денег для покупки!");
-        $buyer->sendMessage("§cСожалеем, но вам не хватило денег для покупки!");
-        $buyer->sendMessage("§eПродавец отобрал у вас корзину с продуктами");
+        $seller->sendLocalizedMessage("CommandSellNoMoney1Part1".($curr + 1)."CommandSellNoMoney1Part2");
+        $buyer->sendMessage("CommandSellNoMoney2");
+        $buyer->sendMessage("CommandSellNoMoney3");
         $buyer->goods = array();
     }
 
@@ -121,10 +121,10 @@ class SellCommand extends OrganisationsCommand
             $receipt .= "§a".$g[2]." §eза §3".$g[1]." руб\n";
         }
         $b->sendMessage($receipt);
-        $b->sendMessage("§eИтого: ".$price." руб");
+        $b->sendLocalizedMessage("{CommandSellFinalPart1}".$price."{CommandSellFinalPart2}");
         $b->goods = array();
         $this->getCore()->getBank()->givePlayerMoney($seller, ceil($price/2));
-        $seller->sendMessage("§aВы продали товар покупателю §e#".($curr + 1));
+        $seller->sendLocalizedMessage("{CommandSellDo}".($curr + 1));
     }
 }
 ?>

@@ -32,19 +32,19 @@ class RemoveCommand extends OrganisationsCommand
         $organModule = $this->getCore()->getOrganisationsModule();
 
         if (!$this->isBoss($player)) {
-            $player->sendMessage("§6Эту команду могут использовать только главы фракций!");
+            $player->sendMessage("CommandRemoveNoBoss");
             return;
         }
 
         $plrs = $this->getPlayersNear($player);
 
         if (self::argumentsNo($plrs)) {
-            $player->sendMessage("§6Подойдите к гражданину поближе!");
+            $player->sendMessage("CommandRemoveNoPlayers");
             return;
         }
 
         if (self::argumentsMin(2, $plrs)) {
-            $player->sendMessage("§6Рядом слишком много людей!");
+            $player->sendMessage("CommandRemoveManyPlayers");
         }
 
         $this->tryRejectGuy($plrs[0], $player);
@@ -53,14 +53,14 @@ class RemoveCommand extends OrganisationsCommand
     private function tryRejectGuy(Player $player, Player $boss)
     {
         if ($player->getProfile()->organisation != $boss->getProfile()->organisation) {
-            $boss->sendMessage("§6Вы не можете уволить данного гражданина, так как он не находится в вашей организации!");
+            $boss->sendMessage("CommandRemoveNoOrg");
         }
 
         $player->getProfile()->organisation = 0;
         $this->core->getInitializer()->updatePlayerSaves($player);
 
-        $boss->sendMessage("Вы уволили гражданина " . $player->getProfile()->fullName);
-        $player->sendMessage("Вас уволил с работы начальник ". $boss->getProfile()->fullName ."!");
+        $boss->sendLocalizedMessage("{CommandRemoveDo1}" . $player->getProfile()->fullName);
+        $player->sendLocalizedMessage("{CommandRemoveDo2}". $boss->getProfile()->fullName ."!");
     }
 
     private function isBoss(Player $p) : bool

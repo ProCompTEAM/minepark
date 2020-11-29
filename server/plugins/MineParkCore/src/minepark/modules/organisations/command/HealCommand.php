@@ -30,12 +30,12 @@ class HealCommand extends OrganisationsCommand
     public function execute(Player $player, array $args = array(), Event $event = null)
     {
         if (!$this->isHealer($player)) {
-            $player->sendMessage("§cВы не сотрудник больницы!");
+            $player->sendMessage("CommandHealNoCanHeal");
             return;
         }
 
 		if (!$this->isNearPoint($player)) {
-            $player->sendMessage("§6Рядом нет больницы! (/gps)");
+            $player->sendMessage("CommandHealNoHospital");
             return;
         }
 
@@ -46,7 +46,7 @@ class HealCommand extends OrganisationsCommand
         } elseif ($plrs > 1) {
             $this->moveThemOut($plrs, $player);
         } else {
-            $player->sendMessage("§6Рядом с вами нет пациентов!");
+            $player->sendMessage("CommandHealNoPlayers");
         }
     }
 
@@ -64,15 +64,15 @@ class HealCommand extends OrganisationsCommand
 
     private function moveThemOut(array $plrs, Player $healer)
     {
-        $this->getCore()->getChatter()->send($healer, "Больные, вас слишком много! В очередь!");
+        $this->getCore()->getChatter()->send($healer, "{CommandHealManyPlayers1}");
 
         foreach($plrs as $id => $p) {
             if($id > 1) {
-                $p->sendMessage("§6Вы мешаете проведению операции, отойдите дальше!");
+                $p->sendMessage("CommandHealManyPlayers2");
             }
         }
 
-        $healer->sendMessage("§6Операция требует приватности, поэтому не была произведена!");
+        $healer->sendMessage("CommandHealManyPlayers3");
     }
 
     private function getPlayersNear(Player $player) : array
@@ -95,7 +95,7 @@ class HealCommand extends OrganisationsCommand
         $playerToHeal->removeAllEffects();
         $playerToHeal->setHealth($playerToHeal->getMaxHealth());
 
-		$this->getCore()->getChatter()->send($healer, "Теперь Вы снова здоровы! Можете идти.");
+		$this->getCore()->getChatter()->send($healer, "{CommandHealDo}");
 		$this->getCore()->getBank()->givePlayerMoney($healer, 500);
     }
 }

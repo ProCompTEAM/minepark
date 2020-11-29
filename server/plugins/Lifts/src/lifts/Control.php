@@ -97,7 +97,7 @@ class Control extends PluginBase implements Listener
 			switch($cmds[0]) { 
 				case "set": 
 				if(!Empty($cmds[1])) { 
-				$this->run->create($cmds[1], $sender->getPosition()); $sender->sendMessage(TextFormat::AQUA."{LiftsSet}"); 
+				$this->run->create($cmds[1], $sender->getPosition()); $sender->sendMessage("LiftsSet"); 
 				} 
 				else $this->showError($sender, 1); 
 				break; 
@@ -105,14 +105,14 @@ class Control extends PluginBase implements Listener
 				case "unset": 
 				if(!Empty($cmds[1])) { 
 				$this->run->remove($cmds[1]); 
-				$sender->sendMessage(TextFormat::AQUA."{LiftsUnset}"); 
+				$sender->sendMessage("LiftsUnset"); 
 				} 
 				else $this->showError($sender, 1); 
 				break; 
 				
 				case "reload": 
 				$this->run->loadAll(); 
-				$sender->sendMessage(TextFormat::AQUA."{LiftsReload}"); 
+				$sender->sendMessage("LiftsReload"); 
 				break; 
 				
 				case "list": 
@@ -121,13 +121,13 @@ class Control extends PluginBase implements Listener
 				foreach($list as $item) { 
 					$text .= substr($item, 0, -4)." ; "; 
 				} 
-				$sender->sendMessage(TextFormat::AQUA."{LiftsList}"); 
+				$sender->sendMessage("LiftsList"); 
 				break; 
 				
 				case "speed": 
 				if($cmds[1] > 0 and $cmds[1] < 5) { 
-					$sender->sendMessage(TextFormat::AQUA."{LiftsSpeed1}"); 
-					$sender->sendMessage(TextFormat::AQUA."{LiftsSpeed2}"); 
+					$sender->sendMessage("LiftsSpeed1"); 
+					$sender->sendMessage("LiftsSpeed2"); 
 					$dir = $this->getDefaultDir()."speed.txt"; file_put_contents($dir, $cmds[1]); 
 				} 
 				else $this->showError($sender, 3);
@@ -171,7 +171,7 @@ class Control extends PluginBase implements Listener
 				$wname = $i->getLevel()->getName(); $form2 = "$x:$y:$z:$wname"; 
 				if($form1 == $form2) { 
 					$this->run->start($i, "down"); 
-					$p->sendMessage(TextFormat::AQUA."{Lifts}".TextFormat::GREEN."{LiftsDown}"); 
+					$p->sendMessage("LiftsDown"); 
 					return; 
 				} 
 			}
@@ -189,7 +189,7 @@ class Control extends PluginBase implements Listener
 				if($i->getX() == $mpos->getX() and $i->getY() == $mpos->getY() and $i->getZ() == $mpos->getZ() 
 					and $i->getLevel()->getName() == $mpos->getLevel()->getName()) 
 				{ 
-					$this->run->start($mpos, "up"); $p->sendMessage(TextFormat::AQUA."{Lifts}".TextFormat::GREEN."{LiftsUp}"); 
+					$this->run->start($mpos, "up"); $p->sendMessage("LiftsUp"); 
 				} 
 			}
 		}
@@ -203,7 +203,7 @@ class Control extends PluginBase implements Listener
 			case 2: $text = "LiftsError#2"; break; 
 			case 3: $text = "LiftsError#3"; break; 
 		} 
-		$p->sendMessage(TextFormat::RED."{Lifts}".TextFormat::GOLD."{LiftsShowError}"); 
+		$p->sendMessage("LiftsShowError"); 
 	} 
 	
 	public function getLocalPlayers(Position $pos) 

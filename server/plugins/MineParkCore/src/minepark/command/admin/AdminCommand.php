@@ -116,7 +116,7 @@ class AdminCommand extends Command
         $this->getCore()->getProfiler()->saveProfile($targetPlayer);
 
 		$player->sendMessage("AdminCmdSetOrg1");
-		$targetPlayer->sendMessage("{AdminCmdSetOrg2}". $this->getCore()->getOrganisationsModule()->getName($oid));
+		$targetPlayer->sendLocalizedMessage("{GroupYou}". $this->getCore()->getOrganisationsModule()->getName($oid));
     }
 
     public function commandNear(Player $player)

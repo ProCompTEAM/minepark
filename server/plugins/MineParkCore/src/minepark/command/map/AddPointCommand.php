@@ -38,7 +38,7 @@ class AddPointCommand extends Command
         $param2 = self::argumentsCount(2, $args) ? $args[1] : 0;
 
         if(!is_numeric($param2)) {
-            $player->sendMessage("Группа указана неверно");
+            $player->sendMessage("AddPointNoGroup");
             return;
         }
 

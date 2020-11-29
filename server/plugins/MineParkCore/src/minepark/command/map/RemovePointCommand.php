@@ -30,13 +30,13 @@ class RemovePointCommand extends Command
     public function execute(Player $player, array $args = array(), Event $event = null)
     {
         if(self::argumentsNo($args)) {
-            $player->sendMessage("§cНе указано название точки!");
+            $player->sendMessage("PointNoArg");
             return;
         }
 
         $status = $this->getCore()->getMapper()->removePoint($args[0]);
         
-		$player->sendMessage($status ? "§eТочка была удалена!" : "§cНе удалось удалить точку!");
+		$player->sendMessage($status ? "CommandRemovePointSuccess" : "CommandRemovePointUnsuccess");
     }
 }
 ?>

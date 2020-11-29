@@ -29,21 +29,21 @@ class InfoCommand extends OrganisationsCommand
     public function execute(Player $player, array $args = array(), Event $event = null)
     {
         if (!$this->canGetInfo($player)) {
-            $player->sendMessage("§cКоманда доступна только сотрудникам правоохранительных органов и юристам!");
+            $player->sendMessage("CommandInfoNoCan");
             return;
         }
 
-        $this->getCore()->getChatter()->send($player, "§8(§dдостал таблицу отпечатков пальцев§8)", "§d : ", 10);
+        $this->getCore()->getChatter()->send($player, "{CommandInfoPrint}", "§d : ", 10);
 
         $plrs = $this->getPlayersNear($player);
 
         if (self::argumentsNo($plrs)) {
-            $player->sendMessage("§6Подойдите к гражданину поближе!");
+            $player->sendMessage("CommandInfoNoPlayer");
             return;
         }
 
         if (self::argumentsMin(2, $plrs)) {
-            $player->sendMessage("§6Рядом слишком много людей!");
+            $player->sendMessage("CommandInfoManyPlayer");
         }
 
         $this->getPlayerInfo($plrs[0], $player);

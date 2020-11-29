@@ -91,7 +91,7 @@ class Phone
 
 	public function breakCall(Player $player) 
 	{
-		$player->phoneRcv->sendMessage("§7[на экране мобильного] §6: §6Связь прервалась!");
+		$player->phoneRcv->sendMessage("PhoneSmsErrorNet");
 		$player->phoneRcv->phoneRcv = null;
 	}
 	
@@ -100,7 +100,7 @@ class Phone
 		$p = $this->getPlayer($number);
 
 		if($p !== null and $this->hasStream($p->getPosition())) {
-			$p->sendMessage("§b[➪] SMS > отправитель: §e".$title);
+			$p->sendLocalizedMessage("{PhoneSend}".$title);
 			$p->sendMessage("§b[➪] ".$text);
 			return true;
 		}
@@ -128,26 +128,26 @@ class Phone
 			{
 				$oid = 4; if($number == "03") $oid = 2;
 				$ps = $this->getCore()->getMapper()->getNearPoints($player->getPosition(), 15);
-				if(count($ps) < 0) $player->sendMessage("§cОшибка выполнения вызова!");
+				if(count($ps) < 0) $player->sendMessage("PhoneErrorCall");
 				else
 				{
 					foreach($this->getCore()->getServer()->getOnlinePlayers() as $p)
 					{
 						if($p->getProfile()->organisation == $oid) 
 						{
-							if(count($ps) == 0) $p->sendMessage("§6[➪] !!! <=== ЭКСТРЕННЫЙ ВЫЗОВ (ПОЗВОНИТЕ) ===>");
-							else $p->sendMessage("§d[➪] !!! <=== ЭКСТРЕННЫЙ ВЫЗОВ (ОТПРАВЛЯЙТЕСЬ) ===>");
-							$p->sendMessage("§9[➪] !!! Номер вызова: §e".$this->getNumber($player));
-							$p->sendMessage("§9[➪] !!! Зарегистрирован на: §e".$player->getProfile()->fullName);
-							$p->sendMessage("§9[➪] !!! Адреса проживания: §3".implode(", ",$player->property));
-							if(count($ps) == 0) $p->sendMessage("§c[➪] Место происшествия не определено");
-							else $p->sendMessage("§6[➪] !!! МЕСТО ПРОИСШЕСТВИЯ: §7/gps §e".$ps[0]);
+							if(count($ps) == 0) $p->sendMessage("PhoneEvent1");
+							else $p->sendMessage("PhoneEvent2");
+							$p->sendLocalizedMessage("{PhoneEvent3}".$this->getNumber($player));
+							$p->sendLocalizedMessage("{PhoneEvent4}".$player->getProfile()->fullName);
+							$p->sendLocalizedMessage("{PhoneEvent5}".implode(", ",$player->property));
+							if(count($ps) == 0) $p->sendMessage("PhoneEvent6");
+							else $p->sendLocalizedMessage("{PhoneEvent7}".$ps[0]);
 						}
 					}
-					$player->sendMessage("§6[➪] Вы вызвали службу экстренной помощи!");
-					$player->sendMessage("§6[➪] Сотрудники прибудут в течении 10 минут!");
-					$player->sendMessage("§6[➪] Ваши личные данные переданы для выяснения обстоятельств!");
-					$player->sendMessage("§6[➪] Пожалуйста оставайтесь на этом же месте!");
+					$player->sendMessage("PhoneEventCallHelp1");
+					$player->sendMessage("PhoneEventCallHelp2");
+					$player->sendMessage("PhoneEventCallHelp3");
+					$player->sendMessage("PhoneEventCallHelp4");
 				}
 			}
 			elseif($number == "action")
@@ -155,9 +155,9 @@ class Phone
 				if($cmds[0] == "sms") return;
 				if($player->phoneReq != null) {
 					foreach(array($player->phoneReq, $player) as $p) {
-						$p->sendMessage("§7[на экране мобильного] §6: §aдиалог с ".$this->getNumber($player->phoneReq).".."); 
-						$p->sendMessage("§7[на экране мобильного] §6: §eтариф 20р минута!");
-						$player->sendMessage("§b[➪] Завершить вызов: §6/c action");
+						$p->sendLocalizedMessage("{PhoneCall1}".$this->getNumber($player->phoneReq).".."); 
+						$p->sendMessage("PhoneCall2");
+						$player->sendMessage("PhoneCall3");
 					}
 					$player->phoneRcv = $player->phoneReq;
 					$player->phoneRcv->phoneRcv = $player;
@@ -166,11 +166,11 @@ class Phone
 				elseif($player->phoneRcv != null) 
 				{
 					foreach(array($player->phoneRcv, $player) as $p) {
-						$p->sendMessage("§7[на экране мобильного] §6: §6Вызов завершен!");
+						$p->sendMessage("PhoneCallEnd");
 						$p->phoneRcv = null;
 					}
 				}
-				else $player->sendMessage("§7[на экране мобильного] §6: §5телефон перезагружен!"); 
+				else $player->sendMessage("PhoneCallReload"); 
 			}
 			else {
 				if($this->hasStream($player->getPosition())) 
@@ -181,32 +181,32 @@ class Phone
 					{
 						if($cmds[0] == "c") 
 						{
-							$player->sendMessage("§b[➪] ..♪гудки♪.. ..♪гудки♪.. ..♪гудки♪..");
+							$player->sendMessage("PhoneBeeps");
 							if($number == $mynumber or !is_numeric($number)) 
-								$player->sendMessage("§b[➪] Проверьте номер, который вы набрали! ..♪гудки♪..");
+								$player->sendMessage("PhoneCheckNum");
 							elseif($player2->phoneRcv == null) {
-								$this->getCore()->getChatter()->send($player2, "♪♪♪Звонит телефон в кармане♪♪♪", "§d : ", 10);
-								$player2->sendMessage("§b[➪] Вам звонит абонент с номером §e".$mynumber.".");
-								$player2->sendMessage("§b[➪] Ответить на этот звонок: §6/c action");
+								$this->getCore()->getChatter()->send($player2, "{PhoneCallingBeep}", "§d : ", 10);
+								$player2->sendLocalizedMessage("{PhoneCalling1}".$mynumber.".");
+								$player2->sendMessage("PhoneCalling2");
 								$player2->phoneReq = $player;
 							}
-							else $player->sendMessage("§b[➪] Линия занята! ..♪короткие гудки♪..");
+							else $player->sendMessage("PhoneCalling3");
 						}
 						else 
 						{
 							if($this->getCore()->getBank()->takePlayerMoney($player, 20)) 
 							{
-								$this->getCore()->getChatter()->send($player2, "♪♪Из кармана слышен звук СМС-ки♪♪", "§d : ", 10);
+								$this->getCore()->getChatter()->send($player2, "{PhoneSmsBeep}", "§d : ", 10);
 								$sms = $this->sendMessage($number, $this->getCore()->getApi()->getFromArray($cmds, 2), $mynumber);
-								if(!$sms) $player->sendMessage("§7[на экране мобильного] §6: §cОшибка при передачи сообщения!");
-								else $player->sendMessage("§7[на экране мобильного] §6: §aСообщение доставлено получателю!");
+								if(!$sms) $player->sendMessage("PhoneSmsError");
+								else $player->sendMessage("PhoneSmsSucces");
 							}
-							else $player->sendMessage("§7[на экране мобильного] §6: §cНедостаточно средств, пополните счет!");
+							else $player->sendMessage("PhoneSmsNoMoney");
 						}
 					}
-					else $player->sendMessage("§b[➪] Абонент вне зоны действия сети! ..♪гудки♪..");
+					else $player->sendMessage("PhoneSmsNoNet");
 				}
-				else $player->sendMessage("§7[на экране мобильного] §6: §c-нет сети рядом-");
+				else $player->sendMessage("PhoneSmsNoNet2");
 			}
 		}
 	}
@@ -221,17 +221,17 @@ class Phone
 				{
 					if(!$this->getCore()->getBank()->takePlayerMoney($p, 20)) 
 					{
-						$p->sendMessage("§b[➪] Для продолжения разговора у вас недостаточно средств! ..♪гудки♪..");
-						$p->sendMessage("§7[на экране мобильного] §6: §6Связь прервалась!");
-						$p->phoneRcv->sendMessage("§7[на экране мобильного] §6: §6Связь прервалась!");
+						$p->sendMessage("PhoneSmsContinueNoMoney");
+						$p->sendMessage("PhoneSmsErrorNet");
+						$p->phoneRcv->sendMessage("PhoneSmsErrorNet");
 						$p->phoneRcv->phoneRcv = null; $p->phoneRcv = null; 
 					}
 				}
 				else 
 				{
-					$p->sendMessage("§b[➪] Абонент вне зоны действия сети! ..♪гудки♪..");
-					$p->sendMessage("§7[на экране мобильного] §6: §6Связь прервалась!");
-					$p->phoneRcv->sendMessage("§7[на экране мобильного] §6: §6Связь прервалась!");
+					$p->sendMessage("PhoneSmsNoNet");
+					$p->sendMessage("PhoneSmsErrorNet");
+					$p->phoneRcv->sendMessage("PhoneSmsErrorNet");
 					$p->phoneRcv->phoneRcv = null; $p->phoneRcv = null; 
 				}
 			}

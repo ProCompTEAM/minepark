@@ -36,18 +36,18 @@ class GetSellerCommand extends Command
         $shopPoint = $this->getShop($player->getPosition());
 
         if($shopPoint == null) {
-            $player->sendMessage("§cРядом нет торговых точек. Возможно стоит подойти к кассе ближе!");
+            $player->sendMessage("CommandGetSellerNoPoint");
             return;
         }
 
         foreach($this->getCore()->getServer()->getOnlinePlayers() as $p){
             if($p->getProfile()->organisation == Organisations::SELLER_WORK) {
-                $p->sendMessage("§eНа торговую площадку §b$shopPoint §eтребуется продавец!");
+                $p->sendMessage("CommandGetSellerCall1");
             }
         }
 
-        $player->sendMessage("§aВы вызвали продавца, пожалуйста ожидайте...");
-        $player->sendMessage("§7Попробуйте снова через пару минут, если продавец не пришел к вам!");
+        $player->sendMessage("CommandGetSellerCall2");
+        $player->sendMessage("CommandGetSellerCall3");
     }
 
     private function getShop(Position $position) : ?string

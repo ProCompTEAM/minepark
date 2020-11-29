@@ -32,11 +32,11 @@ class ShowCommand extends OrganisationsCommand
         $oid = $player->getProfile()->organisation;
 
         if($oid == Organisations::NO_WORK) {
-            $player->sendMessage("§cУ вас нет удостоверения!");
+            $player->sendMessage("CommandShowNoWork");
             return;
         }
 
-		$this->getCore()->getChatter()->send($player, "§8(§dВ руках удостоверение *".$organModule->getName($oid, false)."*§8)", "§d : ", 10);
+		$this->getCore()->getChatter()->send($player, "{CommandShowHandLic}".$organModule->getName($oid, false)."*§8)", "§d : ", 10);
     }
 }
 ?>

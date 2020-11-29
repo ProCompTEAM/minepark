@@ -34,7 +34,7 @@ class ToNearPointCommand extends Command
 		if(count($nearPoints) > 0)  {
             $this->getCore()->getMapper()->teleportPoint($player, $nearPoints[0]);
         } else {
-            $player->sendMessage("§cСистема не нашла точек поблизости!");
+            $player->sendMessage("CommandNoToNearPoint");
         }
     }
 }

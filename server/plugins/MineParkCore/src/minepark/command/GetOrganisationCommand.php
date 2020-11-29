@@ -35,7 +35,7 @@ class GetOrganisationCommand extends Command
         $player->sendSound(Sounds::ROLEPLAY);
 
         if($this->getDefaultPoint($player->getPosition()) == null) {
-            $player->sendMessage("§сВам необходимо находиться в мэрии!");
+            $player->sendMessage("CommandGetOrgNearGov");
             return;
         }
 
@@ -85,7 +85,7 @@ class GetOrganisationCommand extends Command
             
             $this->setOrg($player, $orgId);
         } else {
-            $player->sendMessage("§cНе хватило суммы :("); 
+            $player->sendMessage("CommandGetOrgNoMoney"); 
         }
     }
 
@@ -96,7 +96,7 @@ class GetOrganisationCommand extends Command
         $player->getProfile()->organisation = $orgId; 
         $this->getCore()->getProfiler()->saveProfile($player);
 
-        $player->sendMessage("Теперь вы $orgName");
+        $player->sendMessage("CommandGetOrgGet");
     }
 }
 ?>

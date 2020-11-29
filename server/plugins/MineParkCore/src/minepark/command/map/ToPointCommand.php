@@ -30,7 +30,7 @@ class ToPointCommand extends Command
     public function execute(Player $player, array $args = array(), Event $event = null)
     {
         if(!self::argumentsMin(1, $args)) {
-            $player->sendMessage("§cНе указано название точки!");
+            $player->sendMessage("PointNoArg");
             return;
         }
 

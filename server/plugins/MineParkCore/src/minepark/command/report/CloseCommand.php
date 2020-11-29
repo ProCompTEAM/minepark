@@ -29,7 +29,7 @@ class CloseCommand extends Command
     public function execute(Player $player, array $args = array(), Event $event = null)
     {
 		if (self::argumentsNo($args)) {
-			$player->sendMessage("§eТребуются аргументы.");
+			$player->sendMessage("NoArguments");
 			return;
 		}
 			
@@ -37,7 +37,7 @@ class CloseCommand extends Command
 
 		if (!$response)
 		{
-			$player->sendMessage("§eРепорта с таким айди не существует :(");
+			$player->sendMessage("ReportCloseNoID");
 		}
     }
 }

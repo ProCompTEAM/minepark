@@ -97,17 +97,17 @@ class Reporter
 	public function replyReport(Player $replier, $reportId, $content) : bool
 	{
 		if (!$this->reportExists($reportId)) {
-			$replier->sendMessage("§bДанного тикета не существует :(");
+			$replier->sendMessage("ReporterNoTicket");
 			return false;
 		}
 
 		if (self::symbolsMax($content)) {
-			$replier->sendMessage("§bПревышено количество символов!");
+			$replier->sendMessage("ReporterMaxChars");
 			return false;
 		}
 
 		if (self::getHelpers() == null) {
-			$replier->sendMessage("§bХелперы и модераторы §eне в сети. §bПожалуйста, попробуйте позже!");
+			$replier->sendMessage("ReporterNoAdmins");
 			$this->closeReport($reportId);
 			return false;
 		}
@@ -126,15 +126,15 @@ class Reporter
 		$reporter = $reportInfo['reporter'];
 
 		if ($replier->getName() != $reporter->getName()) {
-			$replier->sendMessage("§bВы не имеете доступ к данному репорту.");
+			$replier->sendMessage("ReporterNoAccess");
 			return true;
 		}
 
-		$replier->sendMessage("§bВы ответили на тикет §e".$reportId." §bхелперам с сообщением:");
+		$replier->sendLocalizedMessage("{ReporterAnswerPart1}".$reportId."{ReporterAnswerPart2}");
 		$replier->sendMessage("§b $reportContent");
 
 		foreach(self::getHelpers() as $helper) {
-			$helper->sendMessage("Игрок §e".$replier->getName()." §bответил §bна тикет ".$reportId." §bс сообщением:");
+			$helper->sendLocalizedMessage("{ReporterAnswerPlayerPart1}".$replier->getName()."{ReporterAnswerPlayerPart2}".$reportId."{ReporterAnswerPlayerPart3}");
 			$helper->sendMessage("§b $reportContent");
 		}
 	}
@@ -143,21 +143,21 @@ class Reporter
 		$reporter = $reportInfo['reporter'];
 
 		if ($replier->getName() == $reporter->getName()) {
-			$replier->sendMessage("§bВы не можете отвечать§e САМОМУ СЕБЕ!");
+			$replier->sendMessage("ReporterSelf");
 			return false;
 		}
 			
 		if (!$reporter->isOnline()) {
 			$this->closeReport($reportId);
-			$replier->sendMessage("§bДанный игрок больше §eНЕ в§b игре. Репорт закрыт.");
+			$replier->sendMessage("ReporterOffline");
 			return false;
 		}
 			
-		$reporter->sendMessage("§bВам ответил хелпер §e".$replier->getName()." §b с содержанием:");
+		$reporter->sendLocalizedMessage("{ReporterAnswerHelper1Part1}".$replier->getName()."{ReporterAnswerHelper1Part2}");
 		$reporter->sendMessage("§b $reportContent");
-		$reporter->sendMessage("§bЧто бы ответить на этот репорт, пропишите: /report reply $reportId <text>");
+		$reporter->sendMessage("ReporterAnswerHelper2");
 
-		$replier->sendMessage("§bВы ответили на тикет §e".$reportId." §bигроку §e ".$reporter->getName()." §b с сообщением:");
+		$replier->sendLocalizedMessage("{ReporterAnswerHelper3Part1}".$reportId."{ReporterAnswerHelper3Part2}".$reporter->getName()."{ReporterAnswerHelper3Part3}");
 		$replier->sendMessage("§b $reportContent");
 
 		foreach(self::getHelpers() as $helper) {
@@ -166,7 +166,7 @@ class Reporter
 				continue;
 			}
 
-			$helper->sendMessage("§Хелпер §e".$replier->getName()." §bответил игроку $reporter §bна тикет ".$reportId."§bс сообщением:");
+			$helper->sendLocalizedMessage("{ReporterAnswerHelper4Part1}".$replier->getName()."{ReporterAnswerHelper4Part2}".$reportId."{ReporterAnswerHelper4Part3}");
 			$helper->sendMessage("§b $reportContent");
 		}
 		return true;
@@ -186,7 +186,7 @@ class Reporter
 		
 		if ($allHelpers !== null) {
 			foreach($allHelpers as $helper) {
-				$helper->sendMessage("§bТикет §e $reportId §bбыл закрыт.");
+				$helper->sendMessage("ReporterTicketClose");
 			}
 		}
 
@@ -194,19 +194,19 @@ class Reporter
 			return true;
 		}
 
-		$reporter->sendMessage("§bВаш тикет с айди §e".$reportId."§b был закрыт.");
+		$reporter->sendLocalizedMessage("{ReporterTicketClose2Part1}".$reportId."{ReporterTicketClose2Part2}");
 		return true;
 	}
 
 	public function playerReport(Player $player, $reportContent)
 	{
 		if (self::getHelpers() == null) {
-			$player->sendMessage("§bХелперы и модераторы §eне в сети. §bПожалуйста, попробуйте позже!");
+			$player->sendMessage("ReporterNoHelpers");
 			return;
 		}
 		
 		if (self::symbolsMax($reportContent)) {
-			$player->sendMessage("§bСлишком много символов в данном тикете. Попробуйте укоротить.");
+			$player->sendMessage("ReporterManyWord");
 			return;
 		}
 		
@@ -219,15 +219,15 @@ class Reporter
 
 		$this->createReport($reportID, $reporter, $reportContent);
 		
-		$reporter->sendMessage("§bВы создали новый тикет с ID §e".$reportID." §bс содержанием:");
+		$reporter->sendLocalizedMessage("{ReporterCreateTicketPart1}".$reportID."{ReporterCreateTicketPart2}");
 		$reporter->sendMessage("§b$reportContent");
 		
 		$helperName = $this->chooseRandomHelper();
 
 		foreach(self::getHelpers() as $helper) {
-			$helper->sendMessage("§bНужна помощь игроку §e".$reporter->getName()."§b. Айди тикета - §e$reportID. Содержание:");
+			$helper->sendLocalizedMessage("{ReporterNeedHelp1Part1}".$reporter->getName()."{ReporterNeedHelp1Part2}");
 			$helper->sendMessage("§b$reportContent");
-			$helper->sendMessage("§bПусть ответит хелпер §e".$helperName);
+			$helper->sendMessage("{ReporterNeedHelp2}".$helperName);
 		}
 	}
 }

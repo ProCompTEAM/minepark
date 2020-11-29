@@ -19,22 +19,22 @@ class FastFood
 		$core = $this->getCore();
 
 		if($core->getMapper()->hasNearPointWithType($player, 5, Mapper::POINT_GROUP_FASTFOOD)) {
-			$core->getChatter()->send($player, "§8(§dрядом автомат с едой§8)", "§d : ", 10);
+			$core->getChatter()->send($player, "{FastFoodNear}", "§d : ", 10);
 
 			if($core->getBank()->getPlayerMoney($player) >= 50) {
 				$core->uiWindows->sendFastfoodWindow($player);
 				if($player->isPC) {
 					$core->getBank()->takePlayerMoney($player, 50);
 					$this->giveItem($player, mt_rand(0, count($this->getAllGoods()) - 1));
-					$player->sendMessage("§a[На табло автомата] §9Спасибо за покупку!");
+					$player->sendMessage("FastFoodBoard");
 				}
 			}
 			else {
-				$player->sendMessage("§cУ вас нет денег для покупки еды в автомате быстрого питания!");
+				$player->sendMessage("FastFoodNoMoney");
 			}
 		}
 		else {
-			$player->sendMessage("§6Вам необходимо подойти ближе к автомату с едой!");
+			$player->sendMessage("FastFoodNoNear");
 		}
 	}
 	

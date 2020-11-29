@@ -32,19 +32,19 @@ class GiveLicCommand extends OrganisationsCommand
         $organModule = $this->getCore()->getOrganisationsModule();
 
         if (!$this->canGiveDocuments($player)) {
-            $player->sendMessage("§cВы не документовед!");
+            $player->sendMessage("CommandGiveLicNoCanGive");
             return;
         }
 
         if (!$this->isNearPoint($player)) {
-            $player->sendMessage("§6Рядом нет мэрии! (/gps)");
+            $player->sendMessage("CommandGiveLicNoGov");
             return;
         }
 
         $plrs = $this->getPlayersNear($player);
 
         if (self::argumentsNo($plrs)) {
-            $player->sendMessage("§6Рядом с вами нет клиентов!");
+            $player->sendMessage("CommandGiveLicNoPlayer");
             return;
         }
 
@@ -58,23 +58,23 @@ class GiveLicCommand extends OrganisationsCommand
 
     private function tryGiveLicense(Player $toPlayer, Player $government)
     {
-        $this->getCore()->getChatter()->send($government, "§8(§dв руках ключи от сейфа§8)", "§d : ", 10);
+        $this->getCore()->getChatter()->send($government, "{CommandGiveLicKeys}", "§d : ", 10);
 
-        $government->sendMessage("§7В данный момент лицензий нет!");
-        $toPlayer->sendMessage("§bВ данный момент отсутсвуют лицензии в наличии.");
+        $government->sendMessage("CommandGiveLicNoLic1");
+        $toPlayer->sendMessage("CommandGiveLicNoLic2");
     }
 
     private function moveThemOut(array $plrs, Player $government)
     {
-        $this->getCore()->getChatter()->send($government, "Граждане, не мешайте проведению процесса!");
+        $this->getCore()->getChatter()->send($government, "{CommandGiveLicManyPlayers1}");
 
         foreach($plrs as $id => $p) {
             if($id > 1) {
-                $p->sendMessage("§6Вы мешаете проведению операции, отойдите дальше!");
+                $p->sendMessage("CommandGiveLicManyPlayers2");
             }
         }
 
-        $government->sendMessage("§6Операция требует приватности, поэтому не была произведена!");
+        $government->sendMessage("CommandGiveLicManyPlayers3");
     }
 
     private function canGiveDocuments(Player $p) : bool

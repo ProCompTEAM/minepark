@@ -46,7 +46,7 @@ class PassportCommand extends Command
 			}
         }
         
-        $this->getCore()->getChatter()->send($player, "достал(а) документы из кармана", "§d", 10);
+        $this->getCore()->getChatter()->send($player, "{CommandPassportTake}", "§d", 10);
     }
 
     private function getPassportForm(Player $player) : string

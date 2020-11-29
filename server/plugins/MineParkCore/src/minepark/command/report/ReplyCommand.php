@@ -30,7 +30,7 @@ class ReplyCommand extends Command
     public function execute(Player $player, array $args = array(), Event $event = null)
     {
 		if (!self::argumentsMin(2, $args)) {
-            $player->sendMessage("§eПравильное использование команды:§b /report <АЙДИ РЕПОРТА> <СОДЕРЖАНИЕ>");
+            $player->sendMessage("ReportReplyNoArgs");
             return;
 		}
 		

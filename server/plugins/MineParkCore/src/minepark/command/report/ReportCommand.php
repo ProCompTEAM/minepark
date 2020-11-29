@@ -30,7 +30,7 @@ class ReportCommand extends Command
     public function execute(Player $player, array $args = array(), Event $event = null)
     {
 		if (self::argumentsNo($args)) {
-			$player->sendMessage("§eТребуются аргументы.");
+			$player->sendMessage("NoArguments2");
 			return;
 		}
 

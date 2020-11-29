@@ -36,12 +36,12 @@ class JailExitCommand extends Command
     public function execute(Player $player, array $args = array(), Event $event = null)
     {
         if($this->getJailPoint($player->getPosition()) == null or !$this->getCore()->getApi()->existsAttr($player, Api::ATTRIBUTE_ARRESTED)) {
-            $player->sendMessage("§сЗдесь не тюрьма или вы не заключенный!");
+            $player->sendMessage("CommandJailExitNoPoint");
             return;
         }
         
         if($this->getCore()->getBank()->takePlayerMoney($player, self::FREE_PRICE)) {
-            $this->getCore()->getChatter()->send($player, "заплатил и покинул камеру", "§d", self::DOOR_DISTANCE);
+            $this->getCore()->getChatter()->send($player, "{CommandJailExit}", "§d", self::DOOR_DISTANCE);
 
             $this->getCore()->getApi()->changeAttr($player, "A", false);
             $this->getCore()->getApi()->changeAttr($player, "W", false);
@@ -50,7 +50,7 @@ class JailExitCommand extends Command
 
             $player->bar = null;
         } else {
-            $player->sendMessage("§сДля освобождения необходимо ". self::FREE_PRICE);
+            $player->sendLocalizedMessage("{CommandJailExitNoMoney}". self::FREE_PRICE);
         }
     }
 

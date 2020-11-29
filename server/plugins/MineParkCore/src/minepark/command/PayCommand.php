@@ -32,32 +32,32 @@ class PayCommand extends Command
         $player->sendSound(Sounds::CHAT_SOUND);
 
         if(self::argumentsNo($args) or !is_numeric($args[0])) {
-            $player->sendMessage("§сНедопустимая операция, /pay <сумма>");
+            $player->sendMessage("CommandPayUse");
             return;
         }
 
         $players = $this->getCore()->getApi()->getRegionPlayers($player, self::DISTANCE);
 
         if(count($players) > 2) {
-            $player->sendMessage("§сРядом есть посторонние лица. Операция проводится в условиях приватности!");
+            $player->sendMessage("CommandPayCountPlayer");
             return;
         }
 
-        $this->getCore()->getChatter()->send($player, "§8(§dв руках бумажник§8)", "§d : ", self::DISTANCE);
+        $this->getCore()->getChatter()->send($player, "{CommandPayTake}", "§d : ", self::DISTANCE);
         foreach($players as $p) {
             if($p === $player) {
                 continue;
             } else {
                 if($this->getCore()->getBank()->takePlayerMoney($player, $args[0])) {
-                    $this->getCore()->getChatter()->send($player, "передал(а) деньги человеку напротив", "§d", self::DISTANCE);
+                    $this->getCore()->getChatter()->send($player, "{CommandPayPay}", "§d", self::DISTANCE);
                     $this->getCore()->getBank()->givePlayerMoney($p, $args[0]);
                 } else {
-                    $player->sendMessage("§сВам нехватило денег для передачи");
+                    $player->sendMessage("CommandPayNoMoney");
                 }
             }
         }
         
-        $this->getCore()->getChatter()->send($player, "положил(а) бумажник в карман", "§d", self::DISTANCE);
+        $this->getCore()->getChatter()->send($player, "{CommandPayPut}", "§d", self::DISTANCE);
         
         $event->setCancelled();
     }

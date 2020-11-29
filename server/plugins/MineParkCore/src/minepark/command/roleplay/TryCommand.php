@@ -38,7 +38,7 @@ class TryCommand extends Command
 
         $message = implode(self::ARGUMENTS_SEPERATOR, $args);
         
-        $actResult = mt_rand(1, 2) == 1 ? "§7[§aУдачно§7]" : "§7[§cНеудачно§7]";
+        $actResult = mt_rand(1, 2) == 1 ? "CommandRolePlayTrySucces" : "CommandRolePlayTryUnsucces";
         
         $this->getCore()->getChatter()->send($player, $message . " " . $actResult, "§d", self::DISTANCE);
         $player->sendSound(Sounds::ROLEPLAY);

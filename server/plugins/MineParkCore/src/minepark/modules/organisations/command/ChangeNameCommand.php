@@ -30,19 +30,19 @@ class ChangeNameCommand extends OrganisationsCommand
     public function execute(Player $player, array $args = array(), Event $event = null)
     {
         if (!$this->canGiveDocuments($player)) {
-            $player->sendMessage("§cВы не документовед!");
+            $player->sendMessage("CommandChangeNameNoCanGive");
             return;
         }
 
         if (!$this->isNearPoint($player)) {
-            $player->sendMessage("§6Рядом нет мэрии! (/gps)");
+            $player->sendMessage("CommandChangeNameNoGov");
             return;
         }
 
         $plrs = $this->getPlayersNear($player);
 
         if (self::argumentsNo($plrs)) {
-            $player->sendMessage("§6Рядом с вами нет клиентов!");
+            $player->sendMessage("CommandChangeNameNoPlayer");
             return;
         }
 
@@ -52,7 +52,7 @@ class ChangeNameCommand extends OrganisationsCommand
         }
 
         if (!self::argumentsMin(2, $args)) {
-            $player->sendMessage("§cФормат: /o changename <имя> <псевдоним>");
+            $player->sendMessage("CommandChangeNameHelp");
             return;
         }
 
@@ -69,18 +69,18 @@ class ChangeNameCommand extends OrganisationsCommand
         $toPlayer->setTip("§aпоздравляем!","§9$oldname §7>>> §e".$toPlayer->getProfile()->fullName, 5);
 
         $this->getCore()->getBank()->givePlayerMoney($government, 10);
-        $government->sendMessage("§bВы изменили имя клиента с §9$oldname §7на §e".$toPlayer->getProfile()->fullName);
+        $government->sendLocalizedMessage("{CommandChangeName}".$toPlayer->getProfile()->fullName);
     }
 
     private function moveThemOut(array $plrs, Player $government)
     {
-        $this->getCore()->getChatter()->send($government, "Граждане, не мешайте проведению процесса!");
+        $this->getCore()->getChatter()->send($government, "{CommandChangeNameManyPlayers1}");
         foreach($plrs as $id => $p) {
             if($id > 1) {
-                $p->sendMessage("§6Вы мешаете проведению операции, отойдите дальше!");
+                $p->sendMessage("CommandChangeNameManyPlayers2");
             }
         }
-        $government->sendMessage("§6Операция требует приватности, поэтому не была произведена!");
+        $government->sendMessage("CommandChangeNameManyPlayers3");
     }
 
     private function canGiveDocuments(Player $p) : bool

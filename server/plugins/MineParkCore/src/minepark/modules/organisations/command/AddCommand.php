@@ -30,19 +30,19 @@ class AddCommand extends OrganisationsCommand
     public function execute(Player $player, array $args = array(), Event $event = null)
     {
         if (!$this->isBoss($player)) {
-            $player->sendMessage("§6Эту команду могут использовать только главы фракций!");
+            $player->sendMessage("CommandAddNoBoss");
             return;
         }
 
         $plrs = $this->getPlayersNear($player);
 
         if (self::argumentsNo($plrs)) {
-            $player->sendMessage("§6Подойдите к гражданину поближе!");
+            $player->sendMessage("CommandAddNoPlayers");
             return;
         }
 
         if (self::argumentsMin(2, $plrs)) {
-            $player->sendMessage("§6Рядом слишком много людей!");
+            $player->sendMessage("CommandAddManyPlayers");
         }
 
         $this->tryChangeOrganisation($plrs[0], $player);
@@ -53,8 +53,8 @@ class AddCommand extends OrganisationsCommand
         $player->getProfile()->organisation = $boss->getProfile()->organisation;
         $this->getCore()->getProfiler()->saveProfile($player);
 
-		$boss->sendMessage("Вы приняли на работу гражданина " . $player->getProfile()->fullName);
-		$player->sendMessage("Теперь вы ".$this->core->getOrganisationsModule()->getName($player->getProfile()->organisation));
+		$boss->sendLocalizedMessage("{CommandAdd}" . $player->getProfile()->fullName);
+		$player->sendLocalizedMessage("{GroupYou}".$this->core->getOrganisationsModule()->getName($player->getProfile()->organisation));
     }
 
     private function isBoss(Player $p) : bool

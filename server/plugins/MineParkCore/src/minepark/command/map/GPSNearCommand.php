@@ -38,7 +38,7 @@ class GPSNearCommand extends Command
             $list = implode(", ", $nearPoints);
         } 
         
-        $player->sendMessage("§aМеста рядом: §e" . $list);
+        $player->sendLocalizedMessage("{CommandGPSNear}" . $list);
 		$player->sendSound(Sounds::OPEN_NAVIGATOR);
     }
 }

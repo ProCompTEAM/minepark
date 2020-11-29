@@ -29,8 +29,8 @@ class GPS
 				$label = "";
 				
 				if($x >= -12 and $x <= 12 and $y >= -12 and $y <= 12) {
-					$player->sendMessage("§aПоздравляем, вы прибыли к месту назначения!");
-					$player->sendMessage("§6Вы можете посмотреть места рядом: §e/gpsnear");
+					$player->sendMessage("CommandGPSCome");
+					$player->sendMessage("CommandGPSNearUse");
 
 					$player->gps = null;
 					$player->bar = null;

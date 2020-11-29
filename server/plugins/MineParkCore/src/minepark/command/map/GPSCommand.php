@@ -33,14 +33,14 @@ class GPSCommand extends Command
     {
         if(self::argumentsCount(2, $args)) {
             if(!is_numeric($args[0]) or !is_numeric($args[1])) {
-                $player->sendMessage("§cУказана неверная позиция X Z");
+                $player->sendMessage("CommangGPSnoXZ");
                 return;
             }
 
             $player->gps = new Position($args[0], $player->getY(), $args[1], $player->getLevel());
 
-            $player->sendMessage("§aМаршрут к указанной точке проложен;");
-            $player->sendMessage("§6Следуйте по направлению указателей навигатора!");
+            $player->sendMessage("CommandGPSPath1");
+            $player->sendMessage("CommandGPSPath2");
             return;
         }
         
@@ -52,10 +52,10 @@ class GPSCommand extends Command
             if($player->gps == false) {
                 $player->gps = null;
 
-                $player->sendMessage("§6Места §e$point §6на карте не существует!");
+                $player->sendMessage("CommandGPSNoPoint");
             } else {
-                $player->sendMessage("§aМаршрут к точке §e$point §aобновлен;");
-                $player->sendMessage("§6Следуйте по направлению указателей навигатора!");
+                $player->sendMessage("CommandGPSToPoint");
+                $player->sendMessage("CommandGPSPath2");
             }
             return;
         }
