@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace MinePark.AutoTests.Specs.Login
+namespace AutoTests.Specs.Login
 {
     using TechTalk.SpecFlow;
     using System;
@@ -65,7 +65,7 @@ namespace MinePark.AutoTests.Specs.Login
             if (((testRunner.FeatureContext != null) 
                         && (testRunner.FeatureContext.FeatureInfo.Title != "Auth")))
             {
-                global::MinePark.AutoTests.Specs.Login.AuthFeature.FeatureSetup(null);
+                global::AutoTests.Specs.Login.AuthFeature.FeatureSetup(null);
             }
         }
         

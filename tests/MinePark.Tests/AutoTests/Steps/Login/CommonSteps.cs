@@ -1,7 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MinePark.Framework;
-using System.Diagnostics;
-using System.Linq;
+using MinePark.Framework.Layers;
 using TechTalk.SpecFlow;
 
 namespace MinePark.AutoTests.Steps.Login
@@ -9,16 +8,15 @@ namespace MinePark.AutoTests.Steps.Login
     [Binding]
     public class CommonSteps
     {
-        [Given(@"Открытое меню с серверами")]
-        public void ServerMenuOpened()
-        {
-            bool isMinecraftOpened = IsMinecraftOpened();
-            Assert.IsTrue(isMinecraftOpened, "Процесс с игрой не найден");
-        }
+        private CommonLayer commonLayer = Store.GetLayer<CommonLayer>();
 
-        private bool IsMinecraftOpened()
+        [Given(@"Открытое меню с серверами")]
+        public void ServersMenuOpened()
         {
-            return Process.GetProcessesByName(Defaults.GameProcessName).Any();
+            bool isMinecraftOpened = commonLayer.IsMinecraftOpened();
+            Assert.IsTrue(isMinecraftOpened, "Процесс с игрой не найден");
+
+            commonLayer.ActivateMinecraftWindow();
         }
     }
 }
