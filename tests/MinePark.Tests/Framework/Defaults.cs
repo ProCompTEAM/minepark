@@ -5,5 +5,7 @@
         public static readonly string GameProcessName = "Minecraft.Windows";
 
         public static readonly string GameTitle = "Minecraft";
+
+        public static readonly int CompletionMsTimeout = 100;
     }
 }

@@ -17,11 +17,12 @@ namespace MinePark.Framework
 
         public static T GetLayer<T>() where T : Layer => (T)layers.Where(s => s.GetType() == typeof(T)).Single();
 
-        public static void RegisterService(Layer layer) => layers.Add(layer);
+        public static void RegisterLayer(Layer layer) => layers.Add(layer);
 
         private static void InitializeAll()
         {
-            RegisterService(new CommonLayer());
+            RegisterLayer(new CommonLayer());
+            RegisterLayer(new KeyboardLayer());
         }
     }
 }

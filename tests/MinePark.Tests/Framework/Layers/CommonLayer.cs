@@ -8,12 +8,17 @@ namespace MinePark.Framework.Layers
 {
     public class CommonLayer : Layer
     {
+        public void WaitMilliseconds(int milliseconds)
+        {
+            Wait(milliseconds);
+        }
+
         public bool IsMinecraftOpened()
         {
             return GetActiveMinecraftProcess() != null;
         }
 
-        public void ActivateMinecraftWindow()
+        public void ActivateGameWindow()
         {
             IntPtr hwnd = WindowsApi.FindWindow(null, Defaults.GameTitle);
             
