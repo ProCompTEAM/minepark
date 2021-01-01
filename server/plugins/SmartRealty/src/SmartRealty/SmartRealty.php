@@ -8,7 +8,6 @@ namespace SmartRealty;
 
 use pocketmine\plugin\PluginBase;
 use pocketmine\Player;
-use pocketmine\utils\Config;
 use pocketmine\block\SignPost;
 use pocketmine\block\WallSign;
 use pocketmine\tile\Sign;
@@ -19,15 +18,17 @@ use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerPreLoginEvent;
 use pocketmine\event\player\PlayerInteractEvent;
-use pocketmine\event\block\SignChangeEvent;
 use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\block\BlockBreakEvent;
 
 class SmartRealty extends PluginBase implements Listener
 {
 	public $economy;
+
 	private $levels;
+
 	public $property;
+
 	public $signev;
 	
     public function onEnable()
@@ -55,7 +56,7 @@ class SmartRealty extends PluginBase implements Listener
 	
 	public function getDirectory()
 	{
-		return "plugins/SmartRealtyPE/";
+		return $this->getDataFolder();
 	}
 	
 	public function getProperty() : Property
@@ -82,14 +83,14 @@ class SmartRealty extends PluginBase implements Listener
 	
 	public function tapEvent(PlayerInteractEvent $e)
 	{	
-		if(!isset($this->levels[strtolower($e->getPlayer()->getLevel()->getName())])) return;
+		if(!isset($this->levels[strtolower($e->getPlayer()->getLevel()->getName())])) {
+			return;
+		}
 	
 		$this->getProperty()->tap($e);
 
-		if($this->signev) //fix of SignChangeEvent bug
-		{
-			if($e->getBlock() instanceof Sign or $e->getBlock() instanceof SignPost or $e->getBlock() instanceof WallSign)
-			{
+		if($this->signev) { //fix of SignChangeEvent bug
+			if($e->getBlock() instanceof Sign or $e->getBlock() instanceof SignPost or $e->getBlock() instanceof WallSign) {
 				$ev = new FixSignEvent($e);
 				$this->signChangeEvent($ev->getEvent());
 			}
@@ -103,20 +104,20 @@ class SmartRealty extends PluginBase implements Listener
 	
 	public function blockPlaceEvent(BlockPlaceEvent $e)
 	{
-		if($e->getPlayer()->getProfile()->builder)
-		{
+		if($e->getPlayer()->getProfile()->builder) {
 			return;
 		}
 		
-		if(!isset($this->levels[strtolower($e->getPlayer()->getLevel()->getName())])) return;
+		if(!isset($this->levels[strtolower($e->getPlayer()->getLevel()->getName())])) {
+			return;
+		}
 		
 		$this->getProperty()->block($e, "place");
 	}
 	
 	public function blockBreakEvent(BlockBreakEvent $e)
 	{
-		if($e->getPlayer()->getProfile()->builder)
-		{
+		if($e->getPlayer()->getProfile()->builder) {
 			return;
 		}
 
@@ -129,9 +130,13 @@ class SmartRealty extends PluginBase implements Listener
 	
 	public function onCommand(CommandSender $sender, Command $cmd, $label, array $cmds) : bool
 	{
-		if($sender instanceof Player and !isset($this->levels[strtolower($sender->getLevel()->getName())])) return false;
+		if($sender instanceof Player and !isset($this->levels[strtolower($sender->getLevel()->getName())])) {
+			return false;
+		}
 		
-		if($cmd == "realt") $this->getProperty()->command($sender, $cmds);
+		if($cmd == "realt") {
+			$this->getProperty()->command($sender, $cmds);
+		}
 		
 		return true;
 	}

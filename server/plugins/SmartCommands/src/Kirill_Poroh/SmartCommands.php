@@ -49,7 +49,7 @@ class SmartCommands extends PluginBase implements Listener
 	
 	public function getDirectory()
 	{
-		return "plugins/SmartCommandsPE/";
+		return $this->getDataFolder();
 	}
 	
 	public function onCommand(CommandSender $sender, Command $command, $label, $args) : bool

@@ -14,9 +14,8 @@ white-list.txt
 mdc.yml
 world-protector.yml
 /server/worlds/*
-/server/plugins/EconomyAPI/*
-/server/plugins/SmartRealtyPE/*
-/server/plugins/pocketmine/*
+/server/plugin_data/EconomyAPI/*
+/server/plugin_data/SmartRealtyPE/*
 /server/players/*
 /server/crashdumps/*
 /lobby/worlds/*
@@ -34,6 +33,8 @@ players.json
 phone.json
 logins.json
 
+#pocketmine API for development
+/server/plugins/pocketmine/*
 
 
 # -= MDC =-

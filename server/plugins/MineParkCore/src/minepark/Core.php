@@ -35,8 +35,8 @@ class Core extends PluginBase implements Listener
 	public const SERVER_LOBBY_ADDRESS = "minepark.ru";
 	public const SERVER_LOBBY_PORT = 19132;
 
-	public const DEFAULT_DIRECTORY = "data/";
-	public const DEFAULT_DIRECTORY_STRINGS = "data/strings/";
+	public const DEFAULT_DIRECTORY = "core_data/";
+	public const DEFAULT_DIRECTORY_STRINGS = "core_data/strings/";
 
 	public const MESSAGES_LOG_FILE = "msg-log.txt";
 	public const WEBAPI_LOG_FILE = "webapi-log.txt";

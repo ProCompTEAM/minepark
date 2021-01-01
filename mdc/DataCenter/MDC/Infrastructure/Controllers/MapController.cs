@@ -1,5 +1,4 @@
 ﻿using MDC.Data.Dtos;
-using MDC.Data.Models;
 using MDC.Infrastructure.Controllers.Interfaces;
 using MDC.Infrastructure.Services;
 using MDC.Infrastructure.Services.Interfaces;

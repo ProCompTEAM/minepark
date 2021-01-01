@@ -5,7 +5,6 @@ use pocketmine\Player;
 
 use minepark\Core;
 use minepark\Sounds;
-use minepark\Permissions;
 
 class Chatter
 {

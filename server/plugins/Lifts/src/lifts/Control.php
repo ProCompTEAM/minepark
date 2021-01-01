@@ -35,7 +35,7 @@ class Control extends PluginBase implements Listener
 	
 	public function getDefaultDir() 
 	{ 
-		return "plugins/Lifts/"; 
+		return $this->getDataFolder(); 
 	} 
 	
 	public function move(Position $pos) 

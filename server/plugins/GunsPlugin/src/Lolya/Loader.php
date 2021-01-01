@@ -22,12 +22,12 @@ class Loader
 	
 	public function save()
 	{
-		file_put_contents("./data/weapons.json", json_encode($this->main->getGunData()->getGuns(), JSON_UNESCAPED_UNICODE));
+		file_put_contents("./core_data/weapons.json", json_encode($this->main->getGunData()->getGuns(), JSON_UNESCAPED_UNICODE));
 	}
 
 	public function getGunConfig()
 	{
-		return json_decode(file_get_contents("./data/weapons.json"), JSON_UNESCAPED_UNICODE);
+		return json_decode(file_get_contents("./core_data/weapons.json"), JSON_UNESCAPED_UNICODE);
 	}
 }
 ?>

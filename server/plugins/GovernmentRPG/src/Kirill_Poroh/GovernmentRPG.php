@@ -224,8 +224,8 @@ class GovernmentRPG extends PluginBase implements Listener
 	
 	public function getDirectory()
 	{
-		@mkdir("data/");
-		return "data/";
+		@mkdir("core_data/");
+		return "core_data/";
 	}
 	
 	public function getPrefix()
