@@ -23,6 +23,7 @@ namespace MinePark.Framework
         {
             RegisterLayer(new CommonLayer());
             RegisterLayer(new KeyboardLayer());
+            RegisterLayer(new GameLayer());
         }
     }
 }

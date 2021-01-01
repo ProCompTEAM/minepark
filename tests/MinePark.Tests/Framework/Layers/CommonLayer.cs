@@ -13,9 +13,9 @@ namespace MinePark.Framework.Layers
             Wait(milliseconds);
         }
 
-        public bool IsMinecraftOpened()
+        public bool IsGameOpened()
         {
-            return GetActiveMinecraftProcess() != null;
+            return GetActiveGameProcess() != null;
         }
 
         public void ActivateGameWindow()
@@ -32,7 +32,7 @@ namespace MinePark.Framework.Layers
             }
         }
 
-        private Process GetActiveMinecraftProcess()
+        private Process GetActiveGameProcess()
         {
             return Process.GetProcessesByName(Defaults.GameProcessName).SingleOrDefault();
         }

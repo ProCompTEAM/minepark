@@ -1,6 +1,4 @@
-﻿using MinePark.Framework.Api;
-using MinePark.Framework.Layers.Base;
-using System;
+﻿using MinePark.Framework.Layers.Base;
 using WindowsInput;
 using WindowsInput.Native;
 
@@ -37,6 +35,13 @@ namespace MinePark.Framework.Layers
             inputSimulator.Keyboard.KeyPress(VirtualKeyCode.CONTROL);
 
             inputSimulator.Keyboard.KeyPress(VirtualKeyCode.SNAPSHOT);
+
+            WaitCompletion();
+        }
+
+        public void SendMessage(string message)
+        {
+            inputSimulator.Keyboard.TextEntry(message);
 
             WaitCompletion();
         }

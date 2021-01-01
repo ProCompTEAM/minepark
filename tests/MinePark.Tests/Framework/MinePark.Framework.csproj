@@ -13,4 +13,10 @@
     <Folder Include="Utilities\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="Flare Sharp">
+      <HintPath>C:\Users\User\Documents\Flare Sharp.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

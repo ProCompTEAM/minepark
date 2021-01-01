@@ -6,6 +6,6 @@
 
         public static readonly string GameTitle = "Minecraft";
 
-        public static readonly int CompletionMsTimeout = 100;
+        public static readonly int CompletionMsTimeout = 500;
     }
 }
