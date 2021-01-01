@@ -16,6 +16,8 @@ world-protector.yml
 /server/worlds/*
 /server/plugin_data/EconomyAPI/*
 /server/plugin_data/SmartRealtyPE/*
+/server/plugin_data/Lifts/db/*
+/server/plugin_data/MapImageEngine/instructions/*
 /server/players/*
 /server/crashdumps/*
 /lobby/worlds/*

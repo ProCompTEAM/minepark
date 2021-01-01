@@ -201,7 +201,7 @@
     "CommandSellNoShop": "§6Вы далеко от торгового учреждения! (/gps)",
     "CommandSellNoCash": "§6Рядом с вами нет кассового аппарата!",
     "CommandSellNoPlayers": "§6Рядом с вами нет покупателей!",
-    "CommandSellNoMoney1Part1": "§eПокупателю #".,
+    "CommandSellNoMoney1Part1": "§eПокупателю #",
     "CommandSellNoMoney1Part2": " не хватило денег для покупки!",
     "CommandSellNoMoney2": "§cСожалеем, но вам не хватило денег для покупки!",
     "CommandSellNoMoney3": "§eПродавец отобрал у вас корзину с продуктами",

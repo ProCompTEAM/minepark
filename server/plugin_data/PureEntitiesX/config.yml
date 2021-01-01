@@ -15,21 +15,21 @@ despawn:
 
 # configuration of panic mode for some entities
 panic:
-  enabled: true
+  enabled: false
   ticks: 100 # how long is an entity in panic mode
 
 # task definitions - to have full functionality, enable all!
 tasks:
-  spawn: true # set to true to enable spawn/unspawn tasks
+  spawn: false # set to true to enable spawn/unspawn tasks
   async: true # set to true for mob equipment working and relogging tamed entities working
-  looking: true # set to true to enable entity interaction and enderman looking detection e.g.
+  looking: false # set to true to enable entity interaction and enderman looking detection e.g.
 
 # when set to true the creeper will explode and also destroy blocks
 creeper:
   block-breaking-explosion: false
 
 breeding:
-  emit-love-particles-constantly: true
+  emit-love-particles-constantly: false
 
 # control logfile logging
 # possible: debug, warn, info
@@ -55,29 +55,29 @@ idle:
 
 # control max spawning values ...
 max-spawn:
-  bat: 2
-  chicken: 5
-  cow: 5
-  horse: 10 # also donkeys and so on ...
-  ocelot: 2
-  parrot: 3
-  pig: 5
-  rabbit: 5
-  sheep: 5
+  bat: 0
+  chicken: 0
+  cow: 0
+  horse: 0 # also donkeys and so on ...
+  ocelot: 0
+  parrot: 0
+  pig: 0
+  rabbit: 0
+  sheep: 0
 
-  blaze: 5
-  cavespider: 5
-  creeper: 5
-  enderman: 5
-  ghast: 5
+  blaze: 0
+  cavespider: 0
+  creeper: 0
+  enderman: 0
+  ghast: 0
   irongolem: 0
-  magmacube: 5
-  pigzombie: 5
-  skeleton: 5
-  slime: 5
-  spider: 8
-  wolf: 5
-  zombie: 5
+  magmacube: 0
+  pigzombie: 0
+  skeleton: 0
+  slime: 0
+  spider: 0
+  wolf: 0
+  zombie: 0
 
 
 # control spawn probability with each spawn run for each entity
@@ -125,79 +125,79 @@ mob-equipment:
     wear-pickup-chances:
       can-pickup-loot:
         easy: 0
-        normal: 55
-        hard: 75
+        normal: 0
+        hard: 0
       armor:
         easy: 0
-        normal: 15
-        hard: 20
+        normal: 0
+        hard: 0
       weapon:
-        easy: 1
-        normal: 10
-        hard: 20
+        easy: 0
+        normal: 0
+        hard: 0
     # chances of different armor pieces, per difficulty (easy|normal|hard)
     wear-chances:
       helmet:
-        easy: 100
-        normal: 100
-        hard: 100
+        easy: 0
+        normal: 0
+        hard: 0
       helmet-chestplate:
-        easy: 75
-        normal: 75
-        hard: 90
+        easy: 0
+        normal: 0
+        hard: 0
       helmet-chestplate-leggings:
-        easy: 56
-        normal: 56
-        hard: 81
+        easy: 0
+        normal: 0
+        hard: 0
       full:
-        easy: 42
-        normal: 42
-        hard: 73
+        easy: 0
+        normal: 0
+        hard: 0
     # chances of different armor pieces, per difficulty
     armor-types:
-      leather: 37
-      gold: 48
-      chain: 13 # not used yet
-      iron: 2
-      diamond: 1
+      leather: 0
+      gold: 0
+      chain: 0 # not used yet
+      iron: 0
+      diamond: 0
 
   zombiepigman:
       # chances for pickup loot, wearing armor and weapon in percent for easy|normal|hard
       wear-pickup-chances:
         can-pickup-loot:
           easy: 0
-          normal: 55
-          hard: 75
+          normal: 0
+          hard: 0
         armor:
           easy: 0
-          normal: 15
-          hard: 20
+          normal: 0
+          hard: 0
         weapon:
-          easy: 1
-          normal: 10
-          hard: 20
+          easy: 0
+          normal: 0
+          hard: 0
       # chances of different armor pieces, per difficulty (easy|normal|hard)
       wear-chances:
         helmet:
-          easy: 100
-          normal: 100
-          hard: 100
+          easy: 0
+          normal: 0
+          hard: 0
         helmet-chestplate:
-          easy: 75
-          normal: 75
-          hard: 90
+          easy: 0
+          normal: 0
+          hard: 0
         helmet-chestplate-leggings:
-          easy: 56
-          normal: 56
-          hard: 81
+          easy: 0
+          normal: 0
+          hard: 0
         full:
-          easy: 42
-          normal: 42
-          hard: 73
+          easy: 0
+          normal: 0
+          hard: 0
       # chances of different armor pieces, per difficulty
       armor-types:
-        leather: 37
-        gold: 48
-        chain: 13 # not used yet
-        iron: 2
-        diamond: 1
+        leather: 0
+        gold: 0
+        chain: 0 # not used yet
+        iron: 0
+        diamond: 0
