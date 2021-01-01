@@ -1,7 +1,7 @@
 <?php
 namespace minepark\player;
 
-use pocketmine\Player;
+use minepark\player\implementations\MineParkPlayer;
 
 use minepark\Core;
 use minepark\Sounds;
@@ -27,7 +27,7 @@ class Chatter
 		return Core::getActive();
 	}
 
-	public function sendGlobal(Player $sender, string $message) 
+	public function sendGlobal(MineParkPlayer $sender, string $message) 
 	{
 		if(!$sender->getProfile()->minutesPlayed < self::GLOBAL_CHAT_MINIMUM_MINUTES_PLAYED) {
 			$sender->sendMessage("§eЭтот чат станет доступен после того, как вы отыграете некоторое время.");
@@ -44,7 +44,7 @@ class Chatter
 		}
 	}
 
-	public function sendForAdministration(Player $sender, string $message) 
+	public function sendForAdministration(MineParkPlayer $sender, string $message) 
 	{
 		if(!$sender->isAdministrator()) {
 			$sender->sendMessage("§cДоступ к этому чату есть только у администрации проекта!");
@@ -58,7 +58,7 @@ class Chatter
 		}
 	}
 	
-	public function send(Player $sender, string $message, string $prefix = " §8сказал(а) §7>", int $rad = 7)
+	public function send(MineParkPlayer $sender, string $message, string $prefix = " §8сказал(а) §7>", int $rad = 7)
 	{
 		$senderName = strtolower($sender->getName());
 		$makeFriends = false;
@@ -82,7 +82,7 @@ class Chatter
 		}
 	}
 
-	private function sendGlobalMessage(Player $target, string $senderName, string $message) 
+	private function sendGlobalMessage(MineParkPlayer $target, string $senderName, string $message) 
 	{
 		if($this->getCore()->getPhone()->hasStream($target)) {
 			$target->sendMessage("§7<§eСмартфон §d: §8Card Community§7> §fпользователь §3" . $senderName . " §fпишет§c: §7" . substr($message, 1));
@@ -90,13 +90,13 @@ class Chatter
 		}
 	}
 
-	private function sendMessageForAdministrator(Player $target, string $senderName, string $message) 
+	private function sendMessageForAdministrator(MineParkPlayer $target, string $senderName, string $message) 
 	{
 		$target->sendMessage("§7<§aАдминистрация§7> §3" . $senderName . " §fпишет§c: §7" . substr($message, 1));
 		$target->sendSound(Sounds::CHAT_SOUND);
 	}
 
-	private function sendMessage(Player $target, string $senderName, bool $makeFriends, string $message, string $prefix) 
+	private function sendMessage(MineParkPlayer $target, string $senderName, bool $makeFriends, string $message, string $prefix) 
 	{
 		$nickname = null;
 

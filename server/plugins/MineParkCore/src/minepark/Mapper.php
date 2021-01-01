@@ -1,10 +1,10 @@
 <?php
 namespace minepark;
 
-use minepark\mdc\dto\LocalMapPointDto;
-use minepark\mdc\dto\MapPointDto;
+use minepark\mdc\dtos\LocalMapPointDto;
+use minepark\mdc\dtos\MapPointDto;
 use minepark\mdc\sources\MapSource;
-use pocketmine\Player;
+use minepark\player\implementations\MineParkPlayer;
 use pocketmine\level\Position;
 
 class Mapper
@@ -55,7 +55,7 @@ class Mapper
 		return $this->getSource()->deletePoint($name);
 	}
 	
-	public function teleportPoint(Player $player, string $name)
+	public function teleportPoint(MineParkPlayer $player, string $name)
 	{
 		$point = $this->getSource()->getPoint($name);
 

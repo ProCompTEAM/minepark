@@ -3,11 +3,11 @@ namespace minepark\player;
 
 use minepark\Api;
 use minepark\Core;
-use pocketmine\Player;
+use minepark\player\implementations\MineParkPlayer;
 
 use minepark\utils\CallbackTask;
 use minepark\command\JailExitCommand;
-use minepark\mdc\dto\PasswordDto;
+use minepark\mdc\dtos\PasswordDto;
 use minepark\mdc\sources\UsersSource;
 
 class Auth
@@ -25,7 +25,7 @@ class Auth
 		return Core::getActive();
 	}
 	
-	public function checkState(Player $player) : int
+	public function checkState(MineParkPlayer $player) : int
 	{
 		if(!$this->getRemoteSource()->isUserPasswordExist($player->getName())) {
 			return self::STATE_REGISTER;
@@ -39,7 +39,7 @@ class Auth
 		}
 	}
 	
-	public function preLogin(Player $player)
+	public function preLogin(MineParkPlayer $player)
 	{
 		$state = $this->checkState($player);
 
@@ -47,21 +47,21 @@ class Auth
 
 		switch($state) {
 			case self::STATE_REGISTER:
-				$player->bar = "AuthPasswordRegister"; 
+				$player->getStatesMap()->bar = "AuthPasswordRegister"; 
 			break;
 			case self::STATE_NEED_AUTH:
-				$player->bar = "AuthPasswordLogin"; 
+				$player->getStatesMap()->bar = "AuthPasswordLogin"; 
 			break;
 			case self::STATE_AUTO:
 				$this->autoLogInUser($player);
 			break;
 			default:
-				$player->bar = "AuthError"; 
+				$player->getStatesMap()->bar = "AuthError"; 
 			break;
 		}
 	}
 	
-	public function login(Player $player, string $password)
+	public function login(MineParkPlayer $player, string $password)
 	{
 		$state = $this->checkState($player);
 
@@ -87,13 +87,13 @@ class Auth
 		$player->setImmobile(!$status);
 	}
 
-	public function sendWelcomeText(Player $player)
+	public function sendWelcomeText(MineParkPlayer $player)
 	{	
 		$player->addTitle("WelcomeTitle1","WelcomeTitle2", 5);
 		$this->sendWelcomeChatText($player);
 	}
 	
-	public function sendWelcomeChatText(Player $player)
+	public function sendWelcomeChatText(MineParkPlayer $player)
 	{
 		$player->sendMessage("WelcomeTextMessage1");
 		$player->sendMessage("WelcomeTextMessage2");
@@ -102,10 +102,10 @@ class Auth
 		$player->sendMessage("WelcomeTextMessage5");
 	}
 
-	private function logInUser(Player $player)
+	private function logInUser(MineParkPlayer $player)
 	{
-		$player->auth = true;
-		$player->bar = null;
+		$player->getStatesMap()->auth = true;
+		$player->getStatesMap()->bar = null;
 
 		$this->ips[$player->getName()] = $player->getAddress();
 		
@@ -118,13 +118,13 @@ class Auth
 		$this->setMovement($player, true);
 	}
 
-	private function registerUser(Player $player, string $password)
+	private function registerUser(MineParkPlayer $player, string $password)
 	{
 		$this->updatePassword($player, $password);
 		$this->ips[$player->getName()] = $player->getAddress();
 
-		$player->auth = true;
-		$player->bar = null; 
+		$player->getStatesMap()->auth = true;
+		$player->getStatesMap()->bar = null; 
 
 		$this->sendWelcomeText($player);
 		$player->sendLocalizedMessage("{AuthStart}" . $password);
@@ -132,7 +132,7 @@ class Auth
 		$this->setMovement($player, true);
 	}
 
-	private function updatePassword(Player $player, string $password) 
+	private function updatePassword(MineParkPlayer $player, string $password) 
 	{
 		$passwordDto = new PasswordDto();
 		$passwordDto->name = $player->getName();
@@ -141,10 +141,10 @@ class Auth
 		$this->getRemoteSource()->setUserPassword($passwordDto);
 	}
 
-	private function autoLogInUser(Player $player)
+	private function autoLogInUser(MineParkPlayer $player)
 	{
-		$player->auth = true; 
-		$player->bar = null;
+		$player->getStatesMap()->auth = true; 
+		$player->getStatesMap()->bar = null;
 
 		$this->setMovement($player, true);
 

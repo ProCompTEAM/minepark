@@ -4,7 +4,7 @@ namespace minepark\modules\organisations\command;
 use minepark\modules\organisations\Organisations;
 use minepark\Permissions;
 
-use pocketmine\Player;
+use minepark\player\implementations\MineParkPlayer;
 use pocketmine\event\Event;
 
 class NoFireCommand extends OrganisationsCommand
@@ -30,7 +30,7 @@ class NoFireCommand extends OrganisationsCommand
         ];
     }
 
-    public function execute(Player $player, array $args = array(), Event $event = null)
+    public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
         $organModule = $this->getCore()->getOrganisationsModule();
 

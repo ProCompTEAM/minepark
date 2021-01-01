@@ -1,7 +1,6 @@
 <?php
 namespace minepark;
 
-use pocketmine\Player;
 use pocketmine\tile\Sign;
 use minepark\player\Chatter;
 
@@ -10,7 +9,7 @@ use pocketmine\block\WallSign;
 use pocketmine\event\Listener;
 use minepark\utils\FixSignEvent;
 use minepark\mdc\sources\UsersSource;
-use minepark\player\ImplementedPlayer;
+use minepark\player\implementations\MineParkPlayer;
 use pocketmine\entity\object\Painting;
 use pocketmine\event\block\BlockEvent;
 use pocketmine\event\level\ChunkLoadEvent;
@@ -38,12 +37,12 @@ class EventsHandler implements Listener
     
     public function onCreation(PlayerCreationEvent $event)
 	{
-		$event->setPlayerClass(ImplementedPlayer::class);
+		$event->setPlayerClass(MineParkPlayer::class);
 	}
 	
 	public function commandEvent(PlayerCommandPreprocessEvent $event)
 	{
-		if(!$event->getPlayer()->auth) {
+		if(!$event->getPlayer()->getStatesMap()->auth) {
 			$this->getCore()->getAuthModule()->login($event->getPlayer(), $event->getMessage());
 			$event->setCancelled();
 			return;
@@ -73,7 +72,7 @@ class EventsHandler implements Listener
 	{
 		$e->setCancelled();
 
-		if($e->getPlayer()->phoneRcv != null) {
+		if($e->getPlayer()->getStatesMap()->phoneRcv != null) {
 			$this->getCore()->getPhone()->handleInCall($e->getPlayer(), $e->getMessage());
 			$this->getCore()->getChatter()->send($e->getPlayer(), $e->getMessage(), " §8говорит в телефон §7>");
 			$this->getCore()->getTrackerModule()->message($e->getPlayer(), $e->getMessage(), 7, "[PHONE]");
@@ -101,7 +100,7 @@ class EventsHandler implements Listener
 		
 		$this->getCore()->getApi()->sendToMessagesLog($event->getPlayer()->getName(), "*** Выход из игры");
 		
-		if($event->getPlayer()->phoneRcv != null) {
+		if($event->getPlayer()->getStatesMap()->phoneRcv != null) {
 			$this->getCore()->getPhone()->breakCall($event->getPlayer());
 		}
 
@@ -125,7 +124,7 @@ class EventsHandler implements Listener
 
 		$this->getCore()->getInitializer()->checkInventoryItems($event->getPlayer());
 
-		if((!$event->getPlayer()->auth or $event->getBlock()->getId() == 71)
+		if((!$event->getPlayer()->getStatesMap()->auth or $event->getBlock()->getId() == 71)
 			or (($event->getPlayer()->getInventory()->getItemInHand()->getId() == 259) and !$event->getPlayer()->isOp())) {
 				$event->setCancelled();
 		}
@@ -152,7 +151,7 @@ class EventsHandler implements Listener
 	
 	public function signSetEvent(SignChangeEvent $e)
 	{
-		if(!$e->getPlayer()->auth) {
+		if(!$e->getPlayer()->getStatesMap()->auth) {
 			$e->setCancelled();
 		}
 	}
@@ -172,15 +171,15 @@ class EventsHandler implements Listener
 		$cancel = false;
 
 		if(($event instanceof EntityDamageByEntityEvent and $event->getEntity() instanceof Painting) 
-			and ($event->getDamager() instanceof Player and !$event->getDamager()->isOp())) {
+			and ($event->getDamager() instanceof MineParkPlayer and !$event->getDamager()->isOp())) {
 			$cancel = true;
 		}
 
-		if($event instanceof EntityDamageByEntityEvent and $event->getDamager() instanceof Player and $event->getEntity() instanceof Player) {
+		if($event instanceof EntityDamageByEntityEvent and $event->getDamager() instanceof MineParkPlayer and $event->getEntity() instanceof MineParkPlayer) {
 			$cancel = $this->getCore()->getDamager()->kick($event->getEntity(), $event->getDamager());
 		}
 
-		if(($event->getEntity()->getHealth() - $event->getFinalDamage()) <= 0 and $event->getEntity() instanceof Player and $event->getEntity()->getGamemode() != 1) {
+		if(($event->getEntity()->getHealth() - $event->getFinalDamage()) <= 0 and $event->getEntity() instanceof MineParkPlayer and $event->getEntity()->getGamemode() != 1) {
 			$damager = $event instanceof EntityDamageByEntityEvent ? $event->getDamager() : null;
 			$cancel = $this->getCore()->getDamager()->kill($event->getEntity(), $damager);
 		}
@@ -203,7 +202,7 @@ class EventsHandler implements Listener
 	{
 		$player = $event->getPlayer();
 
-		if(!$player->auth) {
+		if(!$player->getStatesMap()->auth) {
 			$event->setCancelled();
 			return;
 		}
@@ -236,8 +235,8 @@ class EventsHandler implements Listener
 	{
 		$currentTime = time();
 
-		if($currentTime - $event->getPlayer()->lastTap > 2) {
-			$event->getPlayer()->lastTap = $currentTime;
+		if($currentTime - $event->getPlayer()->getStatesMap()->lastTap > 2) {
+			$event->getPlayer()->getStatesMap()->lastTap = $currentTime;
 
 			return true;
 		}

@@ -1,18 +1,21 @@
 <?php
-namespace minepark\player;
+namespace minepark\player\implementations;
 
 use minepark\Core;
-use pocketmine\Player;
 
+use pocketmine\Player;
 use pocketmine\math\Vector3;
-use minepark\mdc\dto\UserDto;
+use minepark\mdc\dtos\UserDto;
+use minepark\player\models\StatesMap;
 use pocketmine\network\SourceInterface;
 use pocketmine\network\mcpe\protocol\PlaySoundPacket;
 use pocketmine\event\player\PlayerCommandPreprocessEvent;
 use pocketmine\network\mcpe\protocol\ModalFormRequestPacket;
 
-class ImplementedPlayer extends Player
+class MineParkPlayer extends Player
 {	
+	private StatesMap $statesMap;
+
 	public UserDto $profile;
 
 	public function __construct(SourceInterface $interface, string $ip, int $port)
@@ -20,16 +23,31 @@ class ImplementedPlayer extends Player
 		parent::__construct($interface, $ip, $port);
 	}
 	
-	public function __get($name) 
+	public function __get($name) //rudiment
 	{
 		if(!isset($this->$name)) return null;
 		
 		return $this->$name;
 	}
 	
-	public function __set($name, $value) 
+	public function __set($name, $value) //rudiment
 	{
 		$this->$name = $value;
+	}
+
+	public function getProfile() : UserDto
+	{
+		return $this->profile;
+	}
+
+	public function getStatesMap() : StatesMap
+	{
+		return $this->statesMap;
+	}
+
+	public function setStatesMap(StatesMap $map)
+	{
+		$this->statesMap = $map;
 	}
 	
 	public function sendWindowMessage($text, $title = "")
@@ -47,14 +65,14 @@ class ImplementedPlayer extends Player
 		$this->dataPacket($pk);
     }
     
-	public function sendSound(string $soundname, Vector3 $vector3 = null, int $volume = 500, int $pitch = 1)
+	public function sendSound(string $soundName, Vector3 $vector3 = null, int $volume = 500, int $pitch = 1)
 	{
 		if($vector3 == null) {
             $vector3 = $this->getPosition()->add(0, 1, 0);
         }
 		
 		$pk = new PlaySoundPacket();
-		$pk->soundName = $soundname;
+		$pk->soundName = $soundName;
 		$pk->x = $vector3->getX();
 		$pk->y = $vector3->getY();
 		$pk->z = $vector3->getZ();
@@ -73,11 +91,6 @@ class ImplementedPlayer extends Player
 		}
 
 		return false;
-	}
-
-	public function getProfile() : UserDto
-	{
-		return $this->profile;
 	}
 
 	public function sendCommand(string $command)

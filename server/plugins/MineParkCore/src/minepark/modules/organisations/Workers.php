@@ -3,7 +3,7 @@ namespace minepark\modules\organisations;
 
 use minepark\Core;
 use minepark\Mapper;
-use pocketmine\Player;
+use minepark\player\implementations\MineParkPlayer;
 use pocketmine\event\Event;
 use pocketmine\entity\Effect;
 
@@ -80,7 +80,7 @@ class Workers
         return false;
     }
 
-	public function takebox(Player $player)
+	public function takebox(MineParkPlayer $player)
 	{
         $hasPoint = $this->ifPointIsNearPlayer($player->getPosition(), Mapper::POINT_GROUP_WORK1);
 
@@ -89,7 +89,7 @@ class Workers
             return;
         }
 
-        if($player->wbox == null) {
+        if($player->getStatesMap()->loadWeight == null) {
             $this->handleBoxTake($player);
             return;
         }
@@ -97,21 +97,21 @@ class Workers
         $player->sendMessage("§cСначала положите ящик из ваших рук на склад!");
 	}
     
-    private function handleBoxTake(Player $player)
+    private function handleBoxTake(MineParkPlayer $player)
     {
         $player->addEffect(new EffectInstance(Effect::getEffect(2), 20 * 9999, 3));
 
 		$box = $this->words[mt_rand(0, count($this->words))]; 
-        $player->wbox = mt_rand(1, 12); 
+        $player->getStatesMap()->loadWeight = mt_rand(1, 12); 
         
         $player->sendMessage("§7Найдите точку разгрузки и положите ящик!");
         
         $this->getCore()->getChatter()->send($player, "§8(§dв руках ящик с надписью | $box |§8)", "§d : ", 12);
     
-		$player->bar = "§aВ руках ящик около " . $player->wbox . " кг";
+		$player->getStatesMap()->bar = "§aВ руках ящик около " . $player->getStatesMap()->loadWeight . " кг";
     }
 
-	public function putbox(Player $player)
+	public function putbox(MineParkPlayer $player)
 	{
         $hasPoint = $this->ifPointIsNearPlayer($player->getPosition(), Mapper::POINT_GROUP_WORK2);
 
@@ -120,7 +120,7 @@ class Workers
             return;
         }
 
-        if($player->wbox != null) {
+        if($player->getStatesMap()->loadWeight != null) {
             $this->handlePutBox($player);
             return;
         }
@@ -128,15 +128,15 @@ class Workers
         $player->sendMessage("§cВам необходимо взять ящик со склада!");
     }
     
-    private function handlePutBox(Player $player)
+    private function handlePutBox(MineParkPlayer $player)
     {
         $player->removeAllEffects();
 
         $this->getCore()->getChatter()->send($player, "§8(§dЯщик расположился на складе§8)", "§d : ", 12);
-        $this->getCore()->getBank()->givePlayerMoney($player, 20 * $player->wbox);
+        $this->getCore()->getBank()->givePlayerMoney($player, 20 * $player->getStatesMap()->loadWeight);
 
-        $player->wbox = null; 
-        $player->bar = null;
+        $player->getStatesMap()->loadWeight = null; 
+        $player->getStatesMap()->bar = null;
     }
 }
 ?>

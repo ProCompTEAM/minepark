@@ -2,7 +2,7 @@
 namespace minepark\modules\organisations;
 
 use minepark\Core;
-use pocketmine\Player;
+use minepark\player\implementations\MineParkPlayer;
 use pocketmine\item\Item;
 use pocketmine\tile\Sign;
 use pocketmine\utils\Config;
@@ -83,15 +83,15 @@ class Shop
 
         $res = array($id, $price, $label);
 
-        array_push($event->getPlayer()->goods, $res);
+        array_push($event->getPlayer()->getStatesMap()->goods, $res);
     
 		$event->getPlayer()->sendMessage("§7[§6!§7] §aВы положили §b$label §aза §b$price §aв корзину.");
 	}
 
-	private function handleCreateSign(BlockEvent $event, array $lns, Player $p)
+	private function handleCreateSign(BlockEvent $event, array $lns, MineParkPlayer $player)
 	{
 		if(self::priceInvalid($lns[2])) {
-			$p->sendMessage("§cЦена товара должна быть в интервале от 0 до 20000");
+			$player->sendMessage("§cЦена товара должна быть в интервале от 0 до 20000");
 			return;
 		}
 
@@ -100,10 +100,10 @@ class Shop
 
 		$name = $this->handleItemName(1, $lns[3]);
 		
-		$this->createSign($event, $name, $price, $id, $p);
+		$this->createSign($event, $name, $price, $id, $player);
 	}
 
-	private function createSign(BlockEvent $event, string $name, int $price, int $id, Player $p)
+	private function createSign(BlockEvent $event, string $name, int $price, int $id, MineParkPlayer $player)
 	{
 		$x = floor($event->getBlock()->getX());
 		$y = floor($event->getBlock()->getY());
@@ -113,7 +113,7 @@ class Shop
 		$this->setSignLines($event, $name, $price);
 		$this->saveSignInConfig($pos, $price, $id, $name);
 		
-		$p->sendMessage("§aТочка продажи §3$name §a по цене §d$price §aдобавлена");
+		$player->sendMessage("§aТочка продажи §3$name §a по цене §d$price §aдобавлена");
 	}
 
 	private function setSignLines($event, string $name, int $price)

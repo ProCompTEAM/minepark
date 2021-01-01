@@ -3,7 +3,7 @@ namespace minepark\command\phone;
 
 use minepark\Sounds;
 
-use pocketmine\Player;
+use minepark\player\implementations\MineParkPlayer;
 use minepark\Permissions;
 
 use pocketmine\event\Event;
@@ -27,7 +27,7 @@ class SmsCommand extends Command
         ];
     }
 
-    public function execute(Player $player, array $args = array(), Event $event = null)
+    public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
         array_unshift($args, self::CURRENT_COMMAND);
 

@@ -1,7 +1,7 @@
 <?php
 namespace minepark\command;
 
-use pocketmine\Player;
+use minepark\player\implementations\MineParkPlayer;
 use pocketmine\event\Event;
 
 use minepark\Permissions;
@@ -27,7 +27,7 @@ class PayCommand extends Command
         ];
     }
 
-    public function execute(Player $player, array $args = array(), Event $event = null)
+    public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
         $player->sendSound(Sounds::CHAT_SOUND);
 

@@ -5,7 +5,7 @@ use minepark\modules\organisations\Organisations;
 use minepark\Permissions;
 use minepark\Api;
 
-use pocketmine\Player;
+use minepark\player\implementations\MineParkPlayer;
 use pocketmine\event\Event;
 
 class InfoCommand extends OrganisationsCommand
@@ -26,7 +26,7 @@ class InfoCommand extends OrganisationsCommand
         ];
     }
 
-    public function execute(Player $player, array $args = array(), Event $event = null)
+    public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
         if (!$this->canGetInfo($player)) {
             $player->sendMessage("CommandInfoNoCan");
@@ -49,12 +49,12 @@ class InfoCommand extends OrganisationsCommand
         $this->getPlayerInfo($plrs[0], $player);
     }
 
-    private function canGetInfo(Player $p) : bool
+    private function canGetInfo(MineParkPlayer $p) : bool
     {
         return $p->getProfile()->organisation == Organisations::GOVERNMENT_WORK or $p->getProfile()->organisation == Organisations::SECURITY_WORK;
     }
 
-    private function getPlayersNear(Player $player) : array
+    private function getPlayersNear(MineParkPlayer $player) : array
     {
         $allplayers = $this->getCore()->getApi()->getRegionPlayers($player, 5);
 
@@ -68,7 +68,7 @@ class InfoCommand extends OrganisationsCommand
         return $players;
     }
 
-    private function getPlayerInfo(Player $playerToInfo, Player $requestor)
+    private function getPlayerInfo(MineParkPlayer $playerToInfo, MineParkPlayer $requestor)
     {
         $f = "§bДоп.информация о человеке ".$playerToInfo->getProfile()->fullName.":";
 

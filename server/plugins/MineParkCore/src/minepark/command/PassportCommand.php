@@ -4,7 +4,7 @@ namespace minepark\command;
 use minepark\Api;
 use minepark\Permissions;
 
-use pocketmine\Player;
+use minepark\player\implementations\MineParkPlayer;
 use pocketmine\event\Event;
 use minepark\Sounds;
 
@@ -30,7 +30,7 @@ class PassportCommand extends Command
         ];
     }
 
-    public function execute(Player $player, array $args = array(), Event $event = null)
+    public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
         $player->sendSound(Sounds::PASSPORT_OPEN);
 
@@ -49,7 +49,7 @@ class PassportCommand extends Command
         $this->getCore()->getChatter()->send($player, "{CommandPassportTake}", "§d", 10);
     }
 
-    private function getPassportForm(Player $player) : string
+    private function getPassportForm(MineParkPlayer $player) : string
     {
         $outputOrg = $this->getCore()->getOrganisationsModule()->getName($player->getProfile()->organisation);
         $outputRank = (($this->getCore()->getApi()->existsAttr($player, Api::ATTRIBUTE_BOSS)) ? " §7[§bНачальник§7]" : "");

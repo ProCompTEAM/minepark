@@ -2,7 +2,7 @@
 namespace minepark;
 
 use minepark\mdc\sources\UsersSource;
-use pocketmine\Player;
+use minepark\player\implementations\MineParkPlayer;
 
 class Profiler
 {
@@ -18,12 +18,12 @@ class Profiler
 		return Core::getActive();
 	}
 	
-	public function isNewPlayer(Player $player) : bool
+	public function isNewPlayer(MineParkPlayer $player) : bool
 	{
 		return !$this->getSource()->isUserExist($player->getName());
 	}
 	
-    public function initializeProfile(Player $player)
+    public function initializeProfile(MineParkPlayer $player)
 	{
         if($player->isnew) {
             $player->profile = $this->getSource()->createUserInternal($player->getName());
@@ -32,12 +32,12 @@ class Profiler
         }
 	}
 	
-	public function loadProfile(Player $player)
+	public function loadProfile(MineParkPlayer $player)
 	{
         $player->profile = $this->getSource()->getUser($player->getName());
 	}
 	
-	public function saveProfile(Player $player)
+	public function saveProfile(MineParkPlayer $player)
 	{
         $this->getSource()->updateUserData($player->getProfile());
 	}

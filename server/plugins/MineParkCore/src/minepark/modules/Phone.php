@@ -3,7 +3,7 @@ namespace minepark\modules;
 
 use minepark\Core;
 use minepark\Mapper;
-use pocketmine\Player;
+use minepark\player\implementations\MineParkPlayer;
 use pocketmine\math\Vector3;
 
 use pocketmine\utils\Config;
@@ -24,7 +24,7 @@ class Phone
 		return Core::getActive();
 	}
 
-	public function init(Player $p) : int
+	public function init(MineParkPlayer $p) : int
 	{
 		$c = $this->c;
 		if($this->getNumber($p) and is_numeric($this->getNumber($p))) 
@@ -44,7 +44,7 @@ class Phone
 		}
 	}
 	
-	public function getNumber(Player $p) : int
+	public function getNumber(MineParkPlayer $p) : int
 	{
 		$c = $this->c;
 		$list = $c->getNested("numbers");
@@ -64,7 +64,7 @@ class Phone
 		return false;
 	}
 	
-	public function getPlayer($number, $nickOnly = false) : ?Player
+	public function getPlayer($number, $nickOnly = false) : ?MineParkPlayer
 	{
 		$c = $this->c;
 		$nick = $c->getNested("numbers.".$number);
@@ -81,18 +81,18 @@ class Phone
 		return $this->getCore()->getMapper()->hasNearPointWithType($pos, self::MAX_STREAM_DISTANCE, Mapper::POINT_GROUP_STREAM);
 	}
 
-	public function handleInCall(Player $player, string $message) 
+	public function handleInCall(MineParkPlayer $player, string $message) 
 	{
 		$number = $this->getNumber($player);
 
-		$player->phoneRcv->sendMessage("§9✆ §e$number §6: §a".$message);
+		$player->getStatesMap()->phoneRcv->sendMessage("§9✆ §e$number §6: §a".$message);
 		$player->sendMessage("§9✆ §5$number §6: §2".$message);
 	}
 
-	public function breakCall(Player $player) 
+	public function breakCall(MineParkPlayer $player) 
 	{
-		$player->phoneRcv->sendMessage("PhoneSmsErrorNet");
-		$player->phoneRcv->phoneRcv = null;
+		$player->getStatesMap()->phoneRcv->sendMessage("PhoneSmsErrorNet");
+		$player->getStatesMap()->phoneRcv->getStatesMap()->phoneRcv = null;
 	}
 	
 	public function sendMessage($number, $text, $title) : bool
@@ -153,21 +153,21 @@ class Phone
 			elseif($number == "action")
 			{
 				if($cmds[0] == "sms") return;
-				if($player->phoneReq != null) {
-					foreach(array($player->phoneReq, $player) as $p) {
-						$p->sendLocalizedMessage("{PhoneCall1}".$this->getNumber($player->phoneReq).".."); 
+				if($player->getStatesMap()->phoneReq != null) {
+					foreach(array($player->getStatesMap()->phoneReq, $player) as $p) {
+						$p->sendLocalizedMessage("{PhoneCall1}".$this->getNumber($player->getStatesMap()->phoneReq).".."); 
 						$p->sendMessage("PhoneCall2");
 						$player->sendMessage("PhoneCall3");
 					}
-					$player->phoneRcv = $player->phoneReq;
-					$player->phoneRcv->phoneRcv = $player;
-					$player->phoneReq = null; $player->phoneRcv->phoneReq = null;
+					$player->getStatesMap()->phoneRcv = $player->getStatesMap()->phoneReq;
+					$player->getStatesMap()->phoneRcv->getStatesMap()->phoneRcv = $player;
+					$player->getStatesMap()->phoneReq = null; $player->getStatesMap()->phoneRcv->getStatesMap()->phoneReq = null;
 				}
-				elseif($player->phoneRcv != null) 
+				elseif($player->getStatesMap()->phoneRcv != null) 
 				{
-					foreach(array($player->phoneRcv, $player) as $p) {
+					foreach(array($player->getStatesMap()->phoneRcv, $player) as $p) {
 						$p->sendMessage("PhoneCallEnd");
-						$p->phoneRcv = null;
+						$p->getStatesMap()->phoneRcv = null;
 					}
 				}
 				else $player->sendMessage("PhoneCallReload"); 
@@ -184,11 +184,11 @@ class Phone
 							$player->sendMessage("PhoneBeeps");
 							if($number == $mynumber or !is_numeric($number)) 
 								$player->sendMessage("PhoneCheckNum");
-							elseif($player2->phoneRcv == null) {
+							elseif($player2->getStatesMap()->phoneRcv == null) {
 								$this->getCore()->getChatter()->send($player2, "{PhoneCallingBeep}", "§d : ", 10);
 								$player2->sendLocalizedMessage("{PhoneCalling1}".$mynumber.".");
 								$player2->sendMessage("PhoneCalling2");
-								$player2->phoneReq = $player;
+								$player2->getStatesMap()->phoneReq = $player;
 							}
 							else $player->sendMessage("PhoneCalling3");
 						}
@@ -215,24 +215,24 @@ class Phone
 	{
 		foreach($this->getCore()->getServer()->getOnlinePlayers() as $p)
 		{
-			if($p->phoneRcv != null)
+			if($p->getStatesMap()->phoneRcv != null)
 			{
-				if($this->hasStream($p->phoneRcv->getPosition()))
+				if($this->hasStream($p->getStatesMap()->phoneRcv->getPosition()))
 				{
 					if(!$this->getCore()->getBank()->takePlayerMoney($p, 20)) 
 					{
 						$p->sendMessage("PhoneSmsContinueNoMoney");
 						$p->sendMessage("PhoneSmsErrorNet");
-						$p->phoneRcv->sendMessage("PhoneSmsErrorNet");
-						$p->phoneRcv->phoneRcv = null; $p->phoneRcv = null; 
+						$p->getStatesMap()->phoneRcv->sendMessage("PhoneSmsErrorNet");
+						$p->getStatesMap()->phoneRcv->getStatesMap()->phoneRcv = null; $p->getStatesMap()->phoneRcv = null; 
 					}
 				}
 				else 
 				{
 					$p->sendMessage("PhoneSmsNoNet");
 					$p->sendMessage("PhoneSmsErrorNet");
-					$p->phoneRcv->sendMessage("PhoneSmsErrorNet");
-					$p->phoneRcv->phoneRcv = null; $p->phoneRcv = null; 
+					$p->getStatesMap()->phoneRcv->sendMessage("PhoneSmsErrorNet");
+					$p->getStatesMap()->phoneRcv->getStatesMap()->phoneRcv = null; $p->getStatesMap()->phoneRcv = null; 
 				}
 			}
 		}

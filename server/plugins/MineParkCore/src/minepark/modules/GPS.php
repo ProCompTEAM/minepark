@@ -22,9 +22,9 @@ class GPS
 	public function timer()
 	{
 		foreach($this->getCore()->getServer()->getOnlinePlayers() as $player) {
-			if($player->gps != null) {
-				$x = round($player->gps->getX() - $player->getX());
-				$y = round($player->gps->getZ() - $player->getZ());
+			if($player->getStatesMap()->gps != null) {
+				$x = round($player->getStatesMap()->gps->getX() - $player->getX());
+				$y = round($player->getStatesMap()->gps->getZ() - $player->getZ());
 				
 				$label = "";
 				
@@ -32,8 +32,8 @@ class GPS
 					$player->sendMessage("CommandGPSCome");
 					$player->sendMessage("CommandGPSNearUse");
 
-					$player->gps = null;
-					$player->bar = null;
+					$player->getStatesMap()->gps = null;
+					$player->getStatesMap()->bar = null;
 					return;
 				}
 				
@@ -97,7 +97,7 @@ class GPS
 					}
 				}
 				
-				$player->bar = "§7(§9Smart§6Navi§7) §8[" . $this->getL($player->getX(), $player->getZ(), $player->gps->getX(), $player->gps->getZ()) ."m] §a" . $label;
+				$player->getStatesMap()->bar = "§7(§9Smart§6Navi§7) §8[" . $this->getL($player->getX(), $player->getZ(), $player->getStatesMap()->gps->getX(), $player->getStatesMap()->gps->getZ()) ."m] §a" . $label;
 			}
 		}	
 	}

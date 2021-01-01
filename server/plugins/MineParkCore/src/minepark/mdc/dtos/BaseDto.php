@@ -1,5 +1,5 @@
 <?php
-namespace minepark\mdc\dto;
+namespace minepark\mdc\dtos;
 
 abstract class BaseDto
 {

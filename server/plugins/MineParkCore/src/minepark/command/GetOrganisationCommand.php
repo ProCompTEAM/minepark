@@ -2,7 +2,7 @@
 namespace minepark\command;
 
 use minepark\Sounds;
-use pocketmine\Player;
+use minepark\player\implementations\MineParkPlayer;
 use minepark\Permissions;
 
 use pocketmine\event\Event;
@@ -30,7 +30,7 @@ class GetOrganisationCommand extends Command
         ];
     }
 
-    public function execute(Player $player, array $args = array(), Event $event = null)
+    public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
         $player->sendSound(Sounds::ROLEPLAY);
 
@@ -60,7 +60,7 @@ class GetOrganisationCommand extends Command
         return null;
     }
 
-    private function sendMenu(Player $player)
+    private function sendMenu(MineParkPlayer $player)
     {
         $form = "";
         $form .= "§eВы можете устроиться в организацию";
@@ -72,7 +72,7 @@ class GetOrganisationCommand extends Command
         $player->sendWindowMessage($form);
     }
 
-    private function switchOrg(Player $player, string $orgId)
+    private function switchOrg(MineParkPlayer $player, string $orgId)
     {
         if($this->getCore()->getBank()->takePlayerMoney($player, 1000)) {
             switch($orgId)
@@ -89,7 +89,7 @@ class GetOrganisationCommand extends Command
         }
     }
 
-    private function setOrg(Player $player, string $orgId)
+    private function setOrg(MineParkPlayer $player, string $orgId)
     {
         $orgName = $this->getCore()->getOrganisationsModule()->getName($orgId);
 

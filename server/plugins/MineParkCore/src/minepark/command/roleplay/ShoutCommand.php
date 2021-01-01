@@ -1,7 +1,7 @@
 <?php
 namespace minepark\command\roleplay;
 
-use pocketmine\Player;
+use minepark\player\implementations\MineParkPlayer;
 
 use minepark\command\Command;
 use pocketmine\event\Event;
@@ -29,7 +29,7 @@ class ShoutCommand extends Command
         ];
     }
 
-    public function execute(Player $player, array $args = array(), Event $event = null)
+    public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
         if(self::argumentsNo($args)) {
             $player->sendMessage("CommandRolePlayShoutUse");

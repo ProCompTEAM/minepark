@@ -1,19 +1,19 @@
 <?php
 namespace minepark\player;
 
-use pocketmine\Player;
+use minepark\player\implementations\MineParkPlayer;
 use onebone\economyapi\EconomyAPI;
 
 class Bank
 {
 	public const PREFIX = "[BANK] ";
 	
-	public function getPlayerMoney(Player $player) : int
+	public function getPlayerMoney(MineParkPlayer $player) : int
 	{
 		return EconomyAPI::getInstance()->myMoney($player);
 	}
 	
-	public function takePlayerMoney(Player $player, int $money, bool $label = true)
+	public function takePlayerMoney(MineParkPlayer $player, int $money, bool $label = true)
 	{ 
 		$status = EconomyAPI::getInstance()->reduceMoney($player, $money);
 	
@@ -25,7 +25,7 @@ class Bank
 		return $status;
 	}
 	
-	public function givePlayerMoney(Player $player, int $money, bool $label = true)
+	public function givePlayerMoney(MineParkPlayer $player, int $money, bool $label = true)
 	{ 
 		$status = EconomyAPI::getInstance()->addMoney($player, $money);
 		

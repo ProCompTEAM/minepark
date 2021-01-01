@@ -6,9 +6,6 @@ author: Kirill_Poroh
 
 
 commands:
- feed:
-  default: op
-  permissions: sc.command.feed
  coffee:
   default: op
   permissions: sc.command.ef

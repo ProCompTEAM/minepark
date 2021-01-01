@@ -25,7 +25,9 @@ class SmartCommands extends PluginBase implements Listener
 		
 		$this->getLogger()->info("§eSmartCommands MCPE!");
 		
-		if(!file_exists($this->getDirectory())) mkdir($this->getDirectory());
+		if(!file_exists($this->getDirectory())) {
+			mkdir($this->getDirectory());
+		}
 		
 		$this->command = array();
 		
@@ -35,7 +37,6 @@ class SmartCommands extends PluginBase implements Listener
 		$this->command["mute"] = new MuteCommand($this);
 		$this->command["unmute"] = new MuteCommand($this);
 		$this->command["coffee"] = new CoffeeCommand($this);
-		$this->command["feed"] = new FeedCommand($this);
 		$this->command["cc"] = new ClearCommand($this);
 		$this->command["v"] = new VanishCommand($this);
 		$this->command["freeze"] = new FreezeCommand($this);
@@ -58,19 +59,15 @@ class SmartCommands extends PluginBase implements Listener
 		{
 			if (isset($this->command[$command->getName()]))
 			{
-				if(!$this->command[$command->getName()]->run($command->getName(), $args, $sender))
-				{
+				if(!$this->command[$command->getName()]->run($command->getName(), $args, $sender)) {
 					$sender->sendMessage("§6Друг, чтобы иметь доступ к этой команде, необходимо купить подходящий донат: /donate");
 					return false;
-				}
-				else
-				{
+				} else {
 					return true;
 				}
 			}
 		}
-		else 
-		{
+		else {
 			$sender->sendMessage("§cКоманды плагина можно выполнять только от имени игрока!");
 			
 			return false;
@@ -91,31 +88,28 @@ class SmartCommands extends PluginBase implements Listener
 	
 	public function eJoin(PlayerJoinEvent $e)
 	{
-		if(isset($this->command["timeban"]))
-		{
+		if(isset($this->command["timeban"])) {
 			$this->command["timeban"]->checkBanned($e->getPlayer());
 			
 			return;
 		}
 		
-		if(isset($this->command["mute"]) and $this->command["mute"]->isMuted($e->getPlayer()))
-		{
+		if(isset($this->command["mute"]) and $this->command["mute"]->isMuted($e->getPlayer())) {
 			$e->getPlayer()->muted = true;
+		} else {
+			$e->getPlayer()->muted = false;
 		}
-		else $e->getPlayer()->muted = false;
 	}
 	
 	public function eChat(PlayerChatEvent $e)
 	{
-		if(isset($this->command["timeban"]))
-		{
+		if(isset($this->command["timeban"])) {
 			$this->command["timeban"]->checkBanned($e->getPlayer());
 			
 			return;
 		}
 		
-		if($e->getPlayer()->muted)
-		{
+		if($e->getPlayer()->muted) {
 			$e->getPlayer()->sendMessage("§6Ваш чат заблокирован администрацией ;(");
 			
 			$e->setCancelled(true);
@@ -124,8 +118,7 @@ class SmartCommands extends PluginBase implements Listener
 	
 	public function onVirtualChestTransaction(InventoryTransactionEvent $e) 
 	{
-		if(isset($e->getTransaction()->getInventories()[1]->invsee_player))
-		{
+		if(isset($e->getTransaction()->getInventories()[1]->invsee_player)) {
 			$this->command["invsee"]->transaction($e->getTransaction());
 		}
 	}

@@ -1,7 +1,7 @@
 <?php
 namespace minepark\command\report;
 
-use pocketmine\Player;
+use minepark\player\implementations\MineParkPlayer;
 use pocketmine\event\Event;
 
 use minepark\command\Command;
@@ -27,7 +27,7 @@ class ReportCommand extends Command
         ];
     }
 
-    public function execute(Player $player, array $args = array(), Event $event = null)
+    public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
 		if (self::argumentsNo($args)) {
 			$player->sendMessage("NoArguments2");

@@ -22,8 +22,8 @@ class StatusBar
 	public function timer()
 	{
 		foreach($this->getCore()->getServer()->getOnlinePlayers() as $p) {
-			if($p->bar != null) {
-				$p->sendTip($p->bar);
+			if($p->getStatesMap()->bar != null) {
+				$p->sendTip($p->getStatesMap()->bar);
 			}
 		}
 
@@ -40,7 +40,7 @@ class StatusBar
 				$f = "§7[§9i§7] §f".$line;
 				foreach($this->getCore()->getServer()->getOnlinePlayers() as $p)
 				{
-					if($p->auth) $p->sendMessage($f);
+					if($p->getStatesMap()->auth) $p->sendMessage($f);
 				}
 			}
 			$this->tmsg = 0;

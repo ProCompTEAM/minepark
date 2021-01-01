@@ -1,7 +1,7 @@
 <?php
 namespace minepark\modules\organisations\command;
 
-use pocketmine\Player;
+use minepark\player\implementations\MineParkPlayer;
 use pocketmine\event\Event;
 
 use minepark\Permissions;
@@ -24,7 +24,7 @@ class RadioCommand extends OrganisationsCommand
         ];
     }
 
-    public function execute(Player $player, array $args = array(), Event $event = null)
+    public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
         if (self::argumentsNo($args)) {
             $player->sendMessage("§eПравильное использование этой команды: /r [ТЕКСТ]");

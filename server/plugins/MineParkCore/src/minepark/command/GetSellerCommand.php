@@ -3,7 +3,7 @@ namespace minepark\command;
 
 use minepark\modules\organisations\Organisations;
 use minepark\Sounds;
-use pocketmine\Player;
+use minepark\player\implementations\MineParkPlayer;
 use minepark\Permissions;
 
 use pocketmine\event\Event;
@@ -29,7 +29,7 @@ class GetSellerCommand extends Command
         ];
     }
 
-    public function execute(Player $player, array $args = array(), Event $event = null)
+    public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
         $player->sendSound(Sounds::ROLEPLAY);
 

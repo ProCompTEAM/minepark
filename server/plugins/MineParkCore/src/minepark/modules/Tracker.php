@@ -5,7 +5,7 @@ use minepark\utils\CallbackTask;
 use minepark\Core;
 use minepark\Permissions;
 
-use pocketmine\Player;
+use minepark\player\implementations\MineParkPlayer;
 
 class Tracker
 {
@@ -23,12 +23,12 @@ class Tracker
 		return Core::getActive();
 	}
     
-    public function isTracked(Player $player) : bool
+    public function isTracked(MineParkPlayer $player) : bool
     {
         return isset($this->tracked[$player->getName()]) and $this->tracked[$player->getName()];
     }
 
-    public function enableTrack(Player $player, Player $causer = null)
+    public function enableTrack(MineParkPlayer $player, MineParkPlayer $causer = null)
     {
         $playerName = $player->getName();
 
@@ -48,7 +48,7 @@ class Tracker
         ]);
     }
 
-    public function disableTrack(Player $player, Player $causer=null)
+    public function disableTrack(MineParkPlayer $player, MineParkPlayer $causer = null)
     {
         $playerName = $player->getName();
 
@@ -67,7 +67,7 @@ class Tracker
         ]);
     }
 
-    public function message(Player $player, string $message, $rad=7, string $prefix="[UNDEFINED]")
+    public function message(MineParkPlayer $player, string $message, $rad=7, string $prefix = "[UNDEFINED]")
     {
         if (!$this->isTracked($player)) {
             return;
@@ -80,7 +80,7 @@ class Tracker
         ], $player);
     }
 
-    public function actionRP(Player $player, string $action, $rad=7, string $prefix="[UndefinedRP]")
+    public function actionRP(MineParkPlayer $player, string $action, $rad=7, string $prefix = "[UndefinedRP]")
     {
         if (!$this->isTracked($player)) {
             return;
@@ -93,7 +93,7 @@ class Tracker
         ], $player);
     }
 
-    private function broadcastAdmins(array $messages=[], Player $sender = null, $rad = 7)
+    private function broadcastAdmins(array $messages=[], MineParkPlayer $sender = null, $rad = 7)
     {
         $admins = $this->getCore()->getApi()->getAdministration();
 
@@ -112,7 +112,7 @@ class Tracker
         }
     }
 
-    private function sendMessage(Player $player, array $messages=[])
+    private function sendMessage(MineParkPlayer $player, array $messages=[])
     {
         foreach($messages as $message) {
             $player->sendLocalizedMessage(self::CHAT_PREFIX . $message);

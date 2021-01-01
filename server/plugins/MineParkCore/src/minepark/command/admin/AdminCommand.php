@@ -3,7 +3,7 @@ namespace minepark\command\admin;
 
 use minepark\Sounds;
 
-use pocketmine\Player;
+use minepark\player\implementations\MineParkPlayer;
 use minepark\Permissions;
 
 use pocketmine\event\Event;
@@ -28,7 +28,7 @@ class AdminCommand extends Command
         ];
     }
 
-    public function execute(Player $player, array $args = array(), Event $event = null)
+    public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
 		if (self::argumentsNo($args)) {
 			$player->sendMessage("§eВсе аргументы пусты :(");
@@ -99,7 +99,7 @@ class AdminCommand extends Command
         }
     }
 
-    public function commandSetOrg(Player $player, array $args)
+    public function commandSetOrg(MineParkPlayer $player, array $args)
     {
         if(!$this->countArguments($player, $args, 2)) {
             return;
@@ -119,7 +119,7 @@ class AdminCommand extends Command
 		$targetPlayer->sendLocalizedMessage("{GroupYou}". $this->getCore()->getOrganisationsModule()->getName($oid));
     }
 
-    public function commandNear(Player $player)
+    public function commandNear(MineParkPlayer $player)
     {
         $rad = 7;
         
@@ -132,7 +132,7 @@ class AdminCommand extends Command
         $player->sendMessage($f);
     }
 
-    public function commandArest(Player $player, array $args)
+    public function commandArest(MineParkPlayer $player, array $args)
     {
         if(!$this->countArguments($player, $args, 1)) {
             return;
@@ -149,7 +149,7 @@ class AdminCommand extends Command
         $this->getCore()->getServer()->broadcastMessage("{AdminCmdArestPart1}" . $player->getProfile()->fullName . "{AdminCmdArestPart2}" . $targetPlayer->getProfile()->fullName);
     }
 
-    public function commandTags(Player $player, array $args)
+    public function commandTags(MineParkPlayer $player, array $args)
     {
         if(!$this->countArguments($player, $args, 1)) {
             return;
@@ -164,7 +164,7 @@ class AdminCommand extends Command
 		$player->sendMessage($targetPlayer->getProfile()->attributes);
     }
 
-    public function commandAddTag(Player $player, array $args)
+    public function commandAddTag(MineParkPlayer $player, array $args)
     {
         if(!$this->countArguments($player, $args, 2)) {
             return;
@@ -181,7 +181,7 @@ class AdminCommand extends Command
         $player->sendMessage("AdminCmdSetTag");
     }
 
-    public function commandRemoveTag(Player $player, array $args)
+    public function commandRemoveTag(MineParkPlayer $player, array $args)
     {
         if(!$this->countArguments($player, $args, 2)) {
             return;
@@ -198,7 +198,7 @@ class AdminCommand extends Command
         $player->sendMessage("AdminCmdRemoveTag");
     }
 
-    public function commandHide(Player $player)
+    public function commandHide(MineParkPlayer $player)
     {
         foreach($this->getCore()->getServer()->getOnlinePlayers() as $p) {
             $p->hidePlayer($player);
@@ -207,7 +207,7 @@ class AdminCommand extends Command
         $player->sendMessage("AdminCmdHide");
     }
 
-    public function commandShow(Player $player)
+    public function commandShow(MineParkPlayer $player)
     {
         foreach($this->getCore()->getServer()->getOnlinePlayers() as $p) {
             $p->showPlayer($player);
@@ -216,7 +216,7 @@ class AdminCommand extends Command
         $player->sendMessage("AdminCmdShow");
     }
 
-    public function commandTrack(Player $player, array $args)
+    public function commandTrack(MineParkPlayer $player, array $args)
     {
         if (!$this->countArguments($player, $args, 1)) {
             return;
@@ -237,7 +237,7 @@ class AdminCommand extends Command
         $this->getCore()->getTrackerModule()->enableTrack($target, $player);
     }
 
-    public function commandUnTrack(Player $player, array $args)
+    public function commandUnTrack(MineParkPlayer $player, array $args)
     {
         if (!$this->countArguments($player, $args, 1)) {
             return;
@@ -265,7 +265,7 @@ class AdminCommand extends Command
         }
     }
 
-    private function countArguments(Player $player, array $args, int $minCount)
+    private function countArguments(MineParkPlayer $player, array $args, int $minCount)
     {
         if(count($args) < $minCount + 1) {
             $player->sendMessage("NoArguments");

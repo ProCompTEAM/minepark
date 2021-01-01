@@ -1,7 +1,7 @@
 <?php
 namespace minepark\modules;
 
-use pocketmine\Player;
+use minepark\player\implementations\MineParkPlayer;
 use pocketmine\item\Item;
 
 use minepark\Core;
@@ -14,7 +14,7 @@ class FastFood
 		return Core::getActive();
 	}
 
-	public function command(Player $player)
+	public function command(MineParkPlayer $player)
 	{
 		$core = $this->getCore();
 

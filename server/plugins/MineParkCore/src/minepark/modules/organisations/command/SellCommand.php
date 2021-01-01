@@ -5,7 +5,7 @@ use minepark\Mapper;
 use minepark\modules\organisations\Organisations;
 use minepark\Permissions;
 
-use pocketmine\Player;
+use minepark\player\implementations\MineParkPlayer;
 use pocketmine\item\Item;
 use pocketmine\event\Event;
 
@@ -29,7 +29,7 @@ class SellCommand extends OrganisationsCommand
         ];
     }
 
-    public function execute(Player $player, array $args = array(), Event $event = null)
+    public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
         if (!self::isSeller($player)) {
             $player->sendMessage("CommandSellNoSeller");
@@ -58,9 +58,9 @@ class SellCommand extends OrganisationsCommand
         $this->handleAllBuyers($buyers, $player);
     }
 
-    public static function isSeller(Player $p) : bool
+    public static function isSeller(MineParkPlayer $player) : bool
     {
-        return $p->getProfile()->organisation == Organisations::SELLER_WORK || $p->isOp();
+        return $player->getProfile()->organisation == Organisations::SELLER_WORK || $player->isOp();
     }
 
     private function noPointsNear(array $points) : bool
@@ -68,30 +68,30 @@ class SellCommand extends OrganisationsCommand
         return count($points) <= 0;
     }
 
-    private function ifIsNearShops(Player $player)
+    private function ifIsNearShops(MineParkPlayer $player)
     {
         return $this->getCore()->getMapper()->hasNearPointWithType($player, self::MARKETPLACE_DISTANCE, Mapper::POINT_GROUP_MARKETPLACE);
     }
 
-    private function getBuyersNear(Player $player)
+    private function getBuyersNear(MineParkPlayer $player)
     {
         $players = $this->getCore()->getApi()->getRegionPlayers($player, 7);
         $buyers = array();
 
         foreach($players as $p) {
-            if(count($p->goods) > 0) {
+            if(count($p->getStatesMap()->goods) > 0) {
                 $buyers[] = $p;
             }
         }
         return $buyers;
     }
 
-    private function handleAllBuyers(array $buyers, Player $seller)
+    private function handleAllBuyers(array $buyers, MineParkPlayer $seller)
     {
         foreach($buyers as $curr => $b) {
             $price = 0;
 
-            foreach($b->goods as $g) {
+            foreach($b->getStatesMap()->goods as $g) {
                 $price = $price + $g[1];
             }
 
@@ -103,18 +103,18 @@ class SellCommand extends OrganisationsCommand
         }
     }
 
-    private function notMuchMoney(Player $buyer, Player $seller, $curr)
+    private function notMuchMoney(MineParkPlayer $buyer, MineParkPlayer $seller, $curr)
     {
         $seller->sendLocalizedMessage("CommandSellNoMoney1Part1".($curr + 1)."CommandSellNoMoney1Part2");
         $buyer->sendMessage("CommandSellNoMoney2");
         $buyer->sendMessage("CommandSellNoMoney3");
-        $buyer->goods = array();
+        $buyer->getStatesMap()->goods = array();
     }
 
-    private function handleSell(int $price, Player $b, Player $seller, $curr)
+    private function handleSell(int $price, MineParkPlayer $b, MineParkPlayer $seller, $curr)
     {
         $receipt = "§e--==========ЧЕК==========--\n";
-        foreach($b->goods as $g) {
+        foreach($b->getStatesMap()->goods as $g) {
             $item = Item::get($g[0], 0, 1);
             $item->setCustomName($g[2]);
             $b->getInventory()->addItem($item);
@@ -122,7 +122,7 @@ class SellCommand extends OrganisationsCommand
         }
         $b->sendMessage($receipt);
         $b->sendLocalizedMessage("{CommandSellFinalPart1}".$price."{CommandSellFinalPart2}");
-        $b->goods = array();
+        $b->getStatesMap()->goods = array();
         $this->getCore()->getBank()->givePlayerMoney($seller, ceil($price/2));
         $seller->sendLocalizedMessage("{CommandSellDo}".($curr + 1));
     }

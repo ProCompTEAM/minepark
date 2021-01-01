@@ -4,7 +4,7 @@ namespace minepark\modules\organisations\command;
 use minepark\modules\organisations\Organisations;
 use minepark\Permissions;
 
-use pocketmine\Player;
+use minepark\player\implementations\MineParkPlayer;
 use pocketmine\event\Event;
 
 class ChangeNameCommand extends OrganisationsCommand
@@ -27,7 +27,7 @@ class ChangeNameCommand extends OrganisationsCommand
         ];
     }
 
-    public function execute(Player $player, array $args = array(), Event $event = null)
+    public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
         if (!$this->canGiveDocuments($player)) {
             $player->sendMessage("CommandChangeNameNoCanGive");
@@ -59,7 +59,7 @@ class ChangeNameCommand extends OrganisationsCommand
         $this->tryChangeName($plrs[0], $player, $args[0], $args[1]);
     }
 
-    private function tryChangeName(Player $toPlayer, Player $government, string $name, string $surname)
+    private function tryChangeName(MineParkPlayer $toPlayer, MineParkPlayer $government, string $name, string $surname)
     {
         
         $oldname = $toPlayer->getProfile()->fullName;
@@ -72,7 +72,7 @@ class ChangeNameCommand extends OrganisationsCommand
         $government->sendLocalizedMessage("{CommandChangeName}".$toPlayer->getProfile()->fullName);
     }
 
-    private function moveThemOut(array $plrs, Player $government)
+    private function moveThemOut(array $plrs, MineParkPlayer $government)
     {
         $this->getCore()->getChatter()->send($government, "{CommandChangeNameManyPlayers1}");
         foreach($plrs as $id => $p) {
@@ -83,18 +83,18 @@ class ChangeNameCommand extends OrganisationsCommand
         $government->sendMessage("CommandChangeNameManyPlayers3");
     }
 
-    private function canGiveDocuments(Player $p) : bool
+    private function canGiveDocuments(MineParkPlayer $p) : bool
     {
         return $p->getProfile()->organisation == Organisations::GOVERNMENT_WORK or $p->getProfile()->organisation == Organisations::LAWYER_WORK;
     }
 
-    private function isNearPoint(Player $p) : bool
+    private function isNearPoint(MineParkPlayer $p) : bool
     {
         $plist = $this->getCore()->getMapper()->getNearPoints($p->getPosition(), 32);
 		return in_array(self::POINT_NAME, $plist);
     }
 
-    private function getPlayersNear(Player $player) : array
+    private function getPlayersNear(MineParkPlayer $player) : array
     {
         $allplayers = $this->getCore()->getApi()->getRegionPlayers($player, 5);
 

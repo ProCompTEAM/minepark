@@ -5,7 +5,7 @@ use minepark\utils\CallbackTask;
 use minepark\Core;
 use minepark\Permissions;
 
-use pocketmine\Player;
+use minepark\player\implementations\MineParkPlayer;
 use pocketmine\Server;
 
 class Reporter
@@ -26,7 +26,7 @@ class Reporter
 		return Core::getActive();
 	}
 	
-	public static function getPlayerId(Player $player) : string
+	public static function getPlayerId(MineParkPlayer $player) : string
 	{
 		return strtolower($player->getName());
 	}
@@ -65,7 +65,7 @@ class Reporter
 		return $allHelpers[rand(0, $helperCount)]->getName();
 	}
 	
-	public static function isHelper(Player $player) : bool
+	public static function isHelper(MineParkPlayer $player) : bool
 	{
 		return $player->hasPermission(Permissions::ADMINISTRATOR);
 	}
@@ -82,7 +82,7 @@ class Reporter
 		return $id;
 	}
 	
-	public function createReport($reportId, Player $reporter, $reportContent)
+	public function createReport($reportId, MineParkPlayer $reporter, $reportContent)
 	{
 		$this->playerReports[$reportId] = [
 			"reporter" => $reporter,
@@ -94,7 +94,7 @@ class Reporter
 		return strlen($string) > self::CHARACTERS_LIMIT;
 	}
 
-	public function replyReport(Player $replier, $reportId, $content) : bool
+	public function replyReport(MineParkPlayer $replier, $reportId, $content) : bool
 	{
 		if (!$this->reportExists($reportId)) {
 			$replier->sendMessage("ReporterNoTicket");
@@ -121,7 +121,7 @@ class Reporter
 		return true;
 	}
 
-	private function playerReply(Player $replier, $reportInfo, $reportContent, $reportId)
+	private function playerReply(MineParkPlayer $replier, $reportInfo, $reportContent, $reportId)
 	{
 		$reporter = $reportInfo['reporter'];
 
@@ -138,7 +138,7 @@ class Reporter
 			$helper->sendMessage("§b $reportContent");
 		}
 	}
-	private function helperReply(Player $replier, $reportInfo, $reportContent, $reportId)
+	private function helperReply(MineParkPlayer $replier, $reportInfo, $reportContent, $reportId)
 	{
 		$reporter = $reportInfo['reporter'];
 
@@ -198,7 +198,7 @@ class Reporter
 		return true;
 	}
 
-	public function playerReport(Player $player, $reportContent)
+	public function playerReport(MineParkPlayer $player, $reportContent)
 	{
 		if (self::getHelpers() == null) {
 			$player->sendMessage("ReporterNoHelpers");
@@ -213,7 +213,7 @@ class Reporter
 		$this->createNewReport($player, $reportContent);
 	}
 
-	private function createNewReport(Player $reporter, $reportContent)
+	private function createNewReport(MineParkPlayer $reporter, $reportContent)
 	{
 		$reportID = $this->generateReportID();
 

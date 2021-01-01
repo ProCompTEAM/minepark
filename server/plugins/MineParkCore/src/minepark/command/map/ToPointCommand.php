@@ -1,7 +1,7 @@
 <?php
 namespace minepark\command\map;
 
-use pocketmine\Player;
+use minepark\player\implementations\MineParkPlayer;
 
 use minepark\command\Command;
 use pocketmine\event\Event;
@@ -27,7 +27,7 @@ class ToPointCommand extends Command
         ];
     }
 
-    public function execute(Player $player, array $args = array(), Event $event = null)
+    public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
         if(!self::argumentsMin(1, $args)) {
             $player->sendMessage("PointNoArg");

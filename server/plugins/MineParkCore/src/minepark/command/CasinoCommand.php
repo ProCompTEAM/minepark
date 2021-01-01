@@ -1,7 +1,7 @@
 <?php
 namespace minepark\command;
 
-use pocketmine\Player;
+use minepark\player\implementations\MineParkPlayer;
 use pocketmine\event\Event;
 use pocketmine\level\Position;
 
@@ -33,7 +33,7 @@ class CasinoCommand extends Command
         ];
     }
 
-    public function execute(Player $player, array $args = array(), Event $event = null)
+    public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
         if(!$this->checkState($player, $args)) {
             return;
@@ -68,7 +68,7 @@ class CasinoCommand extends Command
         return null;
     }
 
-    private function checkState(Player $player, array $args) : bool
+    private function checkState(MineParkPlayer $player, array $args) : bool
     {
         if(self::argumentsNo($args)) {
             $player->sendMessage("CommandCasinoUse");

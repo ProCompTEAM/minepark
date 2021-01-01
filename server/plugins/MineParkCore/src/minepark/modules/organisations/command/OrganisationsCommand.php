@@ -3,7 +3,7 @@ namespace minepark\modules\organisations\command;
 
 use minepark\Core;
 
-use pocketmine\Player;
+use minepark\player\implementations\MineParkPlayer;
 use pocketmine\event\Event;
 
 abstract class OrganisationsCommand
@@ -34,7 +34,7 @@ abstract class OrganisationsCommand
 
     abstract public function getPermissions() : array;
 
-    abstract public function execute(Player $player, array $args = array(), Event $event = null);
+    abstract public function execute(MineParkPlayer $player, array $args = array(), Event $event = null);
 
     protected function getCore()
     {

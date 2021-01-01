@@ -1,8 +1,8 @@
 <?php
 namespace minepark\mdc\sources;
 
-use minepark\mdc\dto\PasswordDto;
-use minepark\mdc\dto\UserDto;
+use minepark\mdc\dtos\PasswordDto;
+use minepark\mdc\dtos\UserDto;
 
 class UsersSource extends RemoteSource
 {

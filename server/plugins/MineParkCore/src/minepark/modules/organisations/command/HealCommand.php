@@ -4,7 +4,7 @@ namespace minepark\modules\organisations\command;
 use minepark\modules\organisations\Organisations;
 use minepark\Permissions;
 
-use pocketmine\Player;
+use minepark\player\implementations\MineParkPlayer;
 use pocketmine\event\Event;
 
 class HealCommand extends OrganisationsCommand
@@ -27,7 +27,7 @@ class HealCommand extends OrganisationsCommand
         ];
     }
 
-    public function execute(Player $player, array $args = array(), Event $event = null)
+    public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
         if (!$this->isHealer($player)) {
             $player->sendMessage("CommandHealNoCanHeal");
@@ -50,19 +50,19 @@ class HealCommand extends OrganisationsCommand
         }
     }
 
-    private function isHealer(Player $plr)
+    private function isHealer(MineParkPlayer $plr)
     {
         return $plr->getProfile()->organisation == Organisations::DOCTOR_WORK;
     }
 
-    private function isNearPoint(Player $p) : bool
+    private function isNearPoint(MineParkPlayer $player) : bool
     {
-        $plist = $this->getCore()->getMapper()->getNearPoints($p->getPosition(), 32);
+        $plist = $this->getCore()->getMapper()->getNearPoints($player->getPosition(), 32);
 
 		return in_array(self::POINT_NAME, $plist);
     }
 
-    private function moveThemOut(array $plrs, Player $healer)
+    private function moveThemOut(array $plrs, MineParkPlayer $healer)
     {
         $this->getCore()->getChatter()->send($healer, "{CommandHealManyPlayers1}");
 
@@ -75,7 +75,7 @@ class HealCommand extends OrganisationsCommand
         $healer->sendMessage("CommandHealManyPlayers3");
     }
 
-    private function getPlayersNear(Player $player) : array
+    private function getPlayersNear(MineParkPlayer $player) : array
     {
         $allplayers = $this->getCore()->getApi()->getRegionPlayers($player, 5);
 
@@ -90,7 +90,7 @@ class HealCommand extends OrganisationsCommand
         return $players;
     }
 
-    private function healPlayer(Player $healer, Player $playerToHeal)
+    private function healPlayer(MineParkPlayer $healer, MineParkPlayer $playerToHeal)
     {
         $playerToHeal->removeAllEffects();
         $playerToHeal->setHealth($playerToHeal->getMaxHealth());

@@ -1,7 +1,7 @@
 <?php
 namespace minepark\modules\organisations;
 
-use pocketmine\Player;
+use minepark\player\implementations\MineParkPlayer;
 use pocketmine\event\Event;
 
 use minepark\Permissions;
@@ -47,7 +47,7 @@ class OrganisationsCommandHandler
 		return $this->commands;
 	}
 	
-	public function execute(Player $player, string $rawCommand, Event $event = null)
+	public function execute(MineParkPlayer $player, string $rawCommand, Event $event = null)
 	{
 		if($rawCommand[0] == "/") {
 			$rawCommand = substr($rawCommand, 1);
@@ -93,7 +93,7 @@ class OrganisationsCommandHandler
 		return null;
 	}
 
-	private function hasPermissions(Player $player, OrganisationsCommand $command) : bool
+	private function hasPermissions(MineParkPlayer $player, OrganisationsCommand $command) : bool
 	{
 		$permissions = $command->getPermissions();
 

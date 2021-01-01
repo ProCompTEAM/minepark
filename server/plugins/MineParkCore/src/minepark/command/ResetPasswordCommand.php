@@ -1,7 +1,7 @@
 <?php
 namespace minepark\command;
 
-use pocketmine\Player;
+use minepark\player\implementations\MineParkPlayer;
 use minepark\Permissions;
 
 use pocketmine\event\Event;
@@ -26,7 +26,7 @@ class ResetPasswordCommand extends Command
         ];
     }
 
-    public function execute(Player $player, array $args = array(), Event $event = null)
+    public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
         if(self::argumentsNo($args)) {
             $player->sendMessage("Необходимо указать никнейм игрока.");
@@ -48,7 +48,7 @@ class ResetPasswordCommand extends Command
         return $this->getCore()->getMDC()->getSource(UsersSource::ROUTE);
     }
 
-    private function resetPassword(Player $sender, string $targetPlayerName)
+    private function resetPassword(MineParkPlayer $sender, string $targetPlayerName)
     {
         $this->getRemoteSource()->resetUserPassword($targetPlayerName);
         $sender->sendMessage("Сброс пароля игрока $targetPlayerName прошёл успешно.");

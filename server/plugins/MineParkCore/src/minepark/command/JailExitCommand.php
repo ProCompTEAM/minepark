@@ -4,7 +4,7 @@ namespace minepark\command;
 use minepark\Api;
 use minepark\Permissions;
 
-use pocketmine\Player;
+use minepark\player\implementations\MineParkPlayer;
 use pocketmine\event\Event;
 use pocketmine\level\Position;
 
@@ -33,7 +33,7 @@ class JailExitCommand extends Command
         ];
     }
 
-    public function execute(Player $player, array $args = array(), Event $event = null)
+    public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
         if($this->getJailPoint($player->getPosition()) == null or !$this->getCore()->getApi()->existsAttr($player, Api::ATTRIBUTE_ARRESTED)) {
             $player->sendMessage("CommandJailExitNoPoint");
@@ -48,7 +48,7 @@ class JailExitCommand extends Command
 
             $this->getCore()->getMapper()->teleportPoint($player, self::FREE_POINT_NAME);
 
-            $player->bar = null;
+            $player->getStatesMap()->bar = null;
         } else {
             $player->sendLocalizedMessage("{CommandJailExitNoMoney}". self::FREE_PRICE);
         }

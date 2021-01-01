@@ -2,7 +2,7 @@
 namespace minepark;
 
 use pocketmine\level\Position;
-use pocketmine\Player;
+use minepark\player\implementations\MineParkPlayer;
 
 class Api
 {
@@ -84,12 +84,12 @@ class Api
 	   return $str;
 	}
 	
-	public function existsAttr(Player $player, string $key) : bool
+	public function existsAttr(MineParkPlayer $player, string $key) : bool
 	{
 		return (preg_match('/'.strtoupper($key).'/', $player->getProfile()->attributes));
 	}
 	
-	public function changeAttr(Player $player, string $key, bool $status = true)
+	public function changeAttr(MineParkPlayer $player, string $key, bool $status = true)
 	{
 		if(!$status) {
 			$player->getProfile()->attributes = str_replace(strtoupper($key), '', $player->getProfile()->attributes);
@@ -100,13 +100,13 @@ class Api
 		$this->getCore()->getProfiler()->saveProfile($player);
 	}
 	
-	public function arest(Player $player)
+	public function arest(MineParkPlayer $player)
 	{
 		$this->getCore()->getMapper()->teleportPoint($player, Mapper::POINT_NAME_JAIL);
 		$this->getCore()->getApi()->changeAttr($player, self::ATTRIBUTE_ARRESTED);
 		$this->getCore()->getApi()->changeAttr($player, self::ATTRIBUTE_WANTED, false);
 
-		$player->bar = "§6ВЫ АРЕСТОВАНЫ!";
+		$player->getStatesMap()->bar = "§6ВЫ АРЕСТОВАНЫ!";
 
 		$player->setImmobile(false);
 	}

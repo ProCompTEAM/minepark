@@ -4,7 +4,7 @@ namespace minepark\command\map;
 use minepark\Mapper;
 
 use minepark\Sounds;
-use pocketmine\Player;
+use minepark\player\implementations\MineParkPlayer;
 use minepark\Permissions;
 use pocketmine\event\Event;
 
@@ -29,7 +29,7 @@ class GPSCommand extends Command
         ];
     }
 
-    public function execute(Player $player, array $args = array(), Event $event = null)
+    public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
         if(self::argumentsCount(2, $args)) {
             if(!is_numeric($args[0]) or !is_numeric($args[1])) {
@@ -37,7 +37,7 @@ class GPSCommand extends Command
                 return;
             }
 
-            $player->gps = new Position($args[0], $player->getY(), $args[1], $player->getLevel());
+            $player->getStatesMap()->gps = new Position($args[0], $player->getY(), $args[1], $player->getLevel());
 
             $player->sendMessage("CommandGPSPath1");
             $player->sendMessage("CommandGPSPath2");
@@ -47,10 +47,10 @@ class GPSCommand extends Command
         if(self::argumentsCount(1, $args)) {
             $point = $args[0];
 
-            $player->gps = $this->getCore()->getMapper()->getPointPosition($point);
+            $player->getStatesMap()->gps = $this->getCore()->getMapper()->getPointPosition($point);
 
-            if($player->gps == false) {
-                $player->gps = null;
+            if($player->getStatesMap()->gps == false) {
+                $player->getStatesMap()->gps = null;
 
                 $player->sendMessage("CommandGPSNoPoint");
             } else {
@@ -60,15 +60,15 @@ class GPSCommand extends Command
             return;
         }
 
-        $player->gps = null;
-        $player->bar = null;
+        $player->getStatesMap()->gps = null;
+        $player->getStatesMap()->bar = null;
             
         $this->sendInformationWindow($player);
 
         $player->sendSound(Sounds::OPEN_NAVIGATOR);
     }
 
-    private function sendInformationWindow(Player $player) 
+    private function sendInformationWindow(MineParkPlayer $player) 
     {
         $form = "";
         $x = floor($player->getX()); 

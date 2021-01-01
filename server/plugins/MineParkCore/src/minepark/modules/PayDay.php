@@ -2,8 +2,9 @@
 namespace minepark\modules;
 
 use minepark\Api;
-use minepark\utils\CallbackTask;
 use minepark\Core;
+use minepark\utils\CallbackTask;
+use minepark\player\implementations\MineParkPlayer;
 
 class PayDay
 {
@@ -20,11 +21,11 @@ class PayDay
 	
 	public function t()
 	{
-		foreach($this->getCore()->getServer()->getOnlinePlayers() as $p) {
+		foreach($this->getCore()->getServer()->getOnlinePlayers() as $player) {
 			$salary = 0; 
 			$special = 0;
 			
-			switch($p->getProfile()->organisation)
+			switch($player->getProfile()->organisation)
 			{
 				case 1: $salary = 200; break;
 				case 2: $salary = 600; break;
@@ -35,15 +36,15 @@ class PayDay
 				case 7: $salary = 500; break;
 			}
 			
-			if(!$p->hasPlayedBefore() and $p->isnew) {
+			if(!$player->hasPlayedBefore() and $player->isnew) {
 				$special += 200;
 			}
 
-			if($p->getProfile()->organisation == 0) {
+			if($player->getProfile()->organisation == 0) {
 				$special += 100;
 			}
 
-			if($this->getCore()->getApi()->existsAttr($p, Api::ATTRIBUTE_BOSS)) {
+			if($this->getCore()->getApi()->existsAttr($player, Api::ATTRIBUTE_BOSS)) {
 				$salary *= 2;
 			}
 
@@ -56,15 +57,15 @@ class PayDay
 			$f .= "\n §3☛ §fИтого: §2" . $summ;
 
 			if($summ > 0) {
-				$this->getCore()->getBank()->givePlayerMoney($p, $summ, false);
+				$this->getCore()->getBank()->givePlayerMoney($player, $summ, false);
 			}
 
 			if($summ < 0) {
-				$this->getCore()->getBank()->takePlayerMoney($p, $summ);
+				$this->getCore()->getBank()->takePlayerMoney($player, $summ);
 			}
 
-			if($p->auth) {
-				$p->sendMessage($f);
+			if($player->getStatesMap()->auth) {
+				$player->sendMessage($f);
 			}
 		}
 	}

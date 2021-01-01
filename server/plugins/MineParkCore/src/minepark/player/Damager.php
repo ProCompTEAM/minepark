@@ -4,7 +4,7 @@ namespace minepark\player;
 use minepark\Api;
 use minepark\Core;
 use minepark\Permissions;
-use pocketmine\Player;
+use minepark\player\implementations\MineParkPlayer;
 use pocketmine\utils\Config;
 use pocketmine\entity\Effect;
 use pocketmine\entity\Entity;
@@ -19,7 +19,7 @@ class Damager
 
     public function __construct()
 	{
-        $this->config = new Config($this->getCore()->getTargetDirectory() . "nopvp.json", Config::JSON);
+        $this->config = new Config($this->getCore()->getTargetDirectory() . "greenZones.json", Config::JSON);
         $this->reasons = array("сотрясения мозга", "потери сознания", "ряда переломов");
 	}
 
@@ -33,7 +33,7 @@ class Damager
 		return $this->config;
 	}
 
-    public function kick(Player $player, Player $damager) : bool
+    public function kick(MineParkPlayer $player, MineParkPlayer $damager) : bool
     {
         if($damager->getProfile()->organisation == 4 and $damager->getInventory()->getItemInHand()->getName() == "Stick") {
             $this->getCore()->getChatter()->send($damager, "§8(§dв руках дубинка-электрошокер§8)", "§d : ", 10);
@@ -42,7 +42,7 @@ class Damager
             $this->getCore()->getApi()->changeAttr($player, Api::ATTRIBUTE_WANTED);
 
             $player->setImmobile(true);
-            $player->bar = "§6ВЫ ОГЛУШЕНЫ!";
+            $player->getStatesMap()->bar = "§6ВЫ ОГЛУШЕНЫ!";
 
             return false;
         }
@@ -50,7 +50,7 @@ class Damager
         return $this->checkPvp($player, $damager);
     }
 
-    public function kill(Player $player, ?Entity $damager) : bool
+    public function kill(MineParkPlayer $player, ?Entity $damager) : bool
     {
         $this->getCore()->getMapper()->teleportPoint($player, self::POINT_AFTER_KILL);
 
@@ -67,7 +67,7 @@ class Damager
         
         foreach($this->getCore()->getServer()->getOnlinePlayers() as $p) {
             if($p->hasPermission(Permissions::ADMINISTRATOR)) {
-                if($damager instanceof Player) {
+                if($damager instanceof MineParkPlayer) {
                     $p->sendMessage("§7[§6!§7] PvP : §c" . $damager->getName() . " убил " . $player->getName());
                 } else {
                     $p->sendMessage("§7[§6!§7] Kill : §c"." игрок  " . $player->getName()." убился..");
@@ -78,9 +78,9 @@ class Damager
         return true;
     }
 
-    private function checkPvp(Player $player, Player $damager) : bool
+    private function checkPvp(MineParkPlayer $player, MineParkPlayer $damager) : bool
     {
-        if($damager->nopvp) {
+        if($damager->getStatesMap()->damageDisabled) {
             $damager->sendMessage("§6PvP режим недоступен!");
             return true;
         }

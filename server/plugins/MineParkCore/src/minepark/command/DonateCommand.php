@@ -1,7 +1,7 @@
 <?php
 namespace minepark\command;
 
-use pocketmine\Player;
+use minepark\player\implementations\MineParkPlayer;
 use pocketmine\event\Event;
 
 use minepark\Permissions;
@@ -29,7 +29,7 @@ class DonateCommand extends Command
         return $this->getCore()->getTargetDirectory() . "strings/donate.txt";
     }
 
-    public function execute(Player $player, array $args = array(), Event $event = null)
+    public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
         $file = $this->getFileSource();
         $content = file_exists($file) ? $this->clearData(file_get_contents($file)) : "*";

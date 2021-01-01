@@ -5,7 +5,7 @@ use minepark\modules\organisations\Organisations;
 use minepark\Permissions;
 use minepark\Api;
 
-use pocketmine\Player;
+use minepark\player\implementations\MineParkPlayer;
 use pocketmine\event\Event;
 
 class ArestCommand extends OrganisationsCommand
@@ -26,7 +26,7 @@ class ArestCommand extends OrganisationsCommand
         ];
     }
 
-    public function execute(Player $player, array $args = array(), Event $event = null)
+    public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
         if (!$this->canArrest($player)) {
             $player->sendMessage("CommandArestCan");
@@ -47,12 +47,12 @@ class ArestCommand extends OrganisationsCommand
         }
     }
 
-    private function canArrest(Player $p) : bool
+    private function canArrest(MineParkPlayer $player) : bool
     {
-        return $p->getProfile()->organisation == Organisations::GOVERNMENT_WORK or $p->getProfile()->organisation == Organisations::SECURITY_WORK;
+        return $p->getProfile()->organisation == Organisations::GOVERNMENT_WORK or $player->getProfile()->organisation == Organisations::SECURITY_WORK;
     }
 
-    private function getPlayersNear(Player $player) : array
+    private function getPlayersNear(MineParkPlayer $player) : array
     {
         $allplayers = $this->getCore()->getApi()->getRegionPlayers($player, 5);
 
@@ -67,7 +67,7 @@ class ArestCommand extends OrganisationsCommand
         return $players;
     }
 
-    private function arrestPlayer(Player $playerToArrest, Player $arrester)
+    private function arrestPlayer(MineParkPlayer $playerToArrest, MineParkPlayer $arrester)
     {
         if(!$this->getCore()->getApi()->existsAttr($playerToArrest, Api::ATTRIBUTE_WANTED)) {
             $arrester->sendLocalizedMessage("{CommandArestDoStun1}".$playerToArrest->getProfile()->fullName);

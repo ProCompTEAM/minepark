@@ -3,10 +3,11 @@ namespace minepark\player;
 
 use minepark\Core;
 use minepark\Profiler;
-use pocketmine\Player;
+use minepark\player\implementations\MineParkPlayer;
 use minepark\Permissions;
 use pocketmine\item\Item;
 use minepark\modules\organisations\Organisations;
+use minepark\player\models\StatesMap;
 
 class Initializer
 {
@@ -24,7 +25,7 @@ class Initializer
         return Core::getActive()->getProfiler();
     }
     
-    public function initialize(Player $player)
+    public function initialize(MineParkPlayer $player)
     {
         $player->isnew = $this->getProfiler()->isNewPlayer($player);
 
@@ -37,7 +38,7 @@ class Initializer
         $this->showLang($player);
     }
 
-    public function join(Player $player)
+    public function join(MineParkPlayer $player)
 	{
 		$player->removeAllEffects();
         $player->setNameTag("");
@@ -51,7 +52,7 @@ class Initializer
         $this->addInventoryItems($player);
     }
 
-    public function checkInventoryItems(Player $player)
+    public function checkInventoryItems(MineParkPlayer $player)
 	{
         $itemId = $player->getInventory()->getItemInHand()->getId();
 
@@ -69,7 +70,7 @@ class Initializer
 		}
 	}
 
-    private function addInventoryItems(Player $player)
+    private function addInventoryItems(MineParkPlayer $player)
 	{
         //GIVING ITEMS DEFAULT KIT
 		$phone = Item::get(336, 0, 1);
@@ -99,53 +100,57 @@ class Initializer
         }
     }
 
-    private function setDefaults(Player $player)
+    private function setDefaults(MineParkPlayer $player)
 	{
-        $player->auth = false;
+        $statesMap = new StatesMap();
+
+        $statesMap->auth = false;
         
-        $player->gps = null;
-        $player->bar = null;
+        $statesMap->gps = null;
+        $statesMap->bar = null;
 
-        $player->phoneRcv = null;
-        $player->phoneReq = null;
+        $statesMap->phoneRcv = null;
+        $statesMap->phoneReq = null;
 
-        $player->goods = array();
+        $statesMap->goods = array();
 
-        $player->wbox = null;
+        $statesMap->loadWeight = null;
 
-        $player->nopvp = false;
+        $statesMap->damageDisabled = false;
         
-        $player->lastTap = time();
+        $statesMap->lastTap = time();
+
+        $player->setStatesMap($statesMap);
     }
     
-    private function showLang(Player $player)
+    private function showLang(MineParkPlayer $player)
     {
         $message = "Selected locale: " . $player->locale;
         $this->getCore()->getServer()->getLogger()->info($message);
     }
 
-    private function handleNewPlayer(Player $player)
+    private function handleNewPlayer(MineParkPlayer $player)
 	{
         $this->getCore()->getBank()->givePlayerMoney($player, self::DEFAULT_MONEY_PRESENT);
         $this->getCore()->getTrackerModule()->enableTrack($player);
         $this->presentNewPlayer($player);
     }
 
-    private function presentNewPlayer(Player $newPlayer)
+    private function presentNewPlayer(MineParkPlayer $newPlayer)
 	{
         foreach($this->getCore()->getServer()->getOnlinePlayers() as $player) {
             $player->addTitle("§6" . $newPlayer->getName(), "§aВ парке новый посетитель!", 5);
         }
     }
     
-    private function setPermissions(Player $player)
+    private function setPermissions(MineParkPlayer $player)
 	{
         $player->addAttachment($this->getCore(), Permissions::ANYBODY, true);
 
         $this->addCustomPermissions($player);
     }
     
-    private function showDonaterStatus(Player $donater)
+    private function showDonaterStatus(MineParkPlayer $donater)
 	{
         if(!$donater->hasPermission("group.custom")){
             return;
@@ -158,7 +163,7 @@ class Initializer
         }
     }
     
-    private function getDonaterLabel(Player $donater)
+    private function getDonaterLabel(MineParkPlayer $donater)
 	{
         if($donater->isOp()) {
             return "§7⚑РУКОВОДСТВО ПАРКА";
@@ -185,7 +190,7 @@ class Initializer
         }
     }
 
-    private function addCustomPermissions(Player $player)
+    private function addCustomPermissions(MineParkPlayer $player)
     {
         $profile = $player->getProfile();
 
@@ -231,7 +236,7 @@ class Initializer
 		}
     }
     
-    private function addAdministratorPermissions(Player $player)
+    private function addAdministratorPermissions(MineParkPlayer $player)
     {
         $permissions = Permissions::getCustomAdministratorPermissions();
 
@@ -240,7 +245,7 @@ class Initializer
         }
     }
 
-    private function addBuilderPermissions(Player $player)
+    private function addBuilderPermissions(MineParkPlayer $player)
     {
         $permissions = Permissions::getCustomBuilderPermissions();
 
@@ -249,7 +254,7 @@ class Initializer
         }
     }
 
-    private function addRealtorPermissions(Player $player)
+    private function addRealtorPermissions(MineParkPlayer $player)
     {
         $permissions = Permissions::getCustomRealtorPermissions();
 
@@ -258,7 +263,7 @@ class Initializer
         }
     }
 
-    private function addVipPermissions(Player $player)
+    private function addVipPermissions(MineParkPlayer $player)
     {
         $permissions = Permissions::getCustomVipPermissions();
 

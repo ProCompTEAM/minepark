@@ -3,7 +3,7 @@ namespace minepark\command\map;
 
 use minepark\Sounds;
 
-use pocketmine\Player;
+use minepark\player\implementations\MineParkPlayer;
 use minepark\Permissions;
 
 use pocketmine\event\Event;
@@ -29,7 +29,7 @@ class GPSNearCommand extends Command
         ];
     }
 
-    public function execute(Player $player, array $args = array(), Event $event = null)
+    public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
         $nearPoints = $this->getCore()->getMapper()->getNearPoints($player->getPosition(), self::DISTANCE);
         $list = " §7(отсутствуют)  ";

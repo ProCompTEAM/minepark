@@ -4,7 +4,7 @@ namespace minepark\modules\organisations\command;
 use minepark\Permissions;
 use minepark\Api;
 
-use pocketmine\Player;
+use minepark\player\implementations\MineParkPlayer;
 use pocketmine\event\Event;
 
 class AddCommand extends OrganisationsCommand
@@ -27,7 +27,7 @@ class AddCommand extends OrganisationsCommand
         ];
     }
 
-    public function execute(Player $player, array $args = array(), Event $event = null)
+    public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
         if (!$this->isBoss($player)) {
             $player->sendMessage("CommandAddNoBoss");
@@ -48,7 +48,7 @@ class AddCommand extends OrganisationsCommand
         $this->tryChangeOrganisation($plrs[0], $player);
     }
 
-    private function tryChangeOrganisation(Player $player, Player $boss)
+    private function tryChangeOrganisation(MineParkPlayer $player, MineParkPlayer $boss)
     {
         $player->getProfile()->organisation = $boss->getProfile()->organisation;
         $this->getCore()->getProfiler()->saveProfile($player);
@@ -57,12 +57,12 @@ class AddCommand extends OrganisationsCommand
 		$player->sendLocalizedMessage("{GroupYou}".$this->core->getOrganisationsModule()->getName($player->getProfile()->organisation));
     }
 
-    private function isBoss(Player $p) : bool
+    private function isBoss(MineParkPlayer $player) : bool
     {
-        return $this->getCore()->getApi()->existsAttr($p, Api::ATTRIBUTE_BOSS);
+        return $this->getCore()->getApi()->existsAttr($player, Api::ATTRIBUTE_BOSS);
     }
 
-    private function getPlayersNear(Player $player) : array
+    private function getPlayersNear(MineParkPlayer $player) : array
     {
         $allplayers = $this->getCore()->getApi()->getRegionPlayers($player, 5);
 
