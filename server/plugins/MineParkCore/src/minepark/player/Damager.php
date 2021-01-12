@@ -65,12 +65,12 @@ class Damager
 
         $player->sleepOn($player->getPosition()->subtract(0, 1, 0));
         
-        foreach($this->getCore()->getServer()->getOnlinePlayers() as $p) {
-            if($p->hasPermission(Permissions::ADMINISTRATOR)) {
+        foreach($this->getCore()->getServer()->getOnlinePlayers() as $players) {
+            if($players->hasPermission(Permissions::ADMINISTRATOR)) {
                 if($damager instanceof MineParkPlayer) {
-                    $p->sendMessage("§7[§6!§7] PvP : §c" . $damager->getName() . " убил " . $player->getName());
+                    $players->sendMessage("§7[§6!§7] PvP : §c" . $damager->getName() . " убил " . $player->getName());
                 } else {
-                    $p->sendMessage("§7[§6!§7] Kill : §c"." игрок  " . $player->getName()." убился..");
+                    $players->sendMessage("§7[§6!§7] Kill : §c"." игрок  " . $player->getName()." убился..");
                 }
             }
         }
