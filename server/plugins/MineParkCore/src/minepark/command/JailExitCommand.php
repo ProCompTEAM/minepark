@@ -12,9 +12,6 @@ class JailExitCommand extends Command
 {
     public const CURRENT_COMMAND = "jexit";
 
-    public const JAIL_POINT_NAME = "КПЗ";
-    public const FREE_POINT_NAME = "Мэрия";
-
     public const FREE_PRICE = 50000;
 
     public const DOOR_DISTANCE = 20;
@@ -46,7 +43,7 @@ class JailExitCommand extends Command
             $this->getCore()->getApi()->changeAttr($player, "A", false);
             $this->getCore()->getApi()->changeAttr($player, "W", false);
 
-            $this->getCore()->getMapper()->teleportPoint($player, self::FREE_POINT_NAME);
+            $this->getCore()->getMapper()->teleportPoint($player, Mapper::POINT_NAME_MAYOROFFICE);
 
             $player->getStatesMap()->bar = null;
         } else {
@@ -60,7 +57,7 @@ class JailExitCommand extends Command
         
         foreach($plist as $point)
         {
-            if($point == self::JAIL_POINT_NAME) {
+            if($point == Mapper::POINT_NAME_JAIL) {
                 return $point;
             }
         }

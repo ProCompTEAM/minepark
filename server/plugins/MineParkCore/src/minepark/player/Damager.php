@@ -12,7 +12,6 @@ use pocketmine\entity\EffectInstance;
 
 class Damager
 {
-    public const POINT_AFTER_KILL = 'палата';
 
     private $config;
     private $reasons;
@@ -52,7 +51,7 @@ class Damager
 
     public function kill(MineParkPlayer $player, ?Entity $damager) : bool
     {
-        $this->getCore()->getMapper()->teleportPoint($player, self::POINT_AFTER_KILL);
+        $this->getCore()->getMapper()->teleportPoint($player, Mapper::POINT_NAME_KILL);
 
         $player->addEffect(new EffectInstance(Effect::getEffect(2), 5000, 1));
         $player->addEffect(new EffectInstance(Effect::getEffect(18), 5000, 1));
