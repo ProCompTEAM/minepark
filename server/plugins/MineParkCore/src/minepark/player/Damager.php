@@ -51,7 +51,7 @@ class Damager
 
     public function kill(MineParkPlayer $player, ?Entity $damager) : bool
     {
-        $this->getCore()->getMapper()->teleportPoint($player, Mapper::POINT_NAME_KILL);
+        $this->getCore()->getMapper()->teleportPoint($player, Mapper::POINT_NAME_HOSPITAL);
 
         $player->addEffect(new EffectInstance(Effect::getEffect(2), 5000, 1));
         $player->addEffect(new EffectInstance(Effect::getEffect(18), 5000, 1));
@@ -69,7 +69,7 @@ class Damager
                 if($damager instanceof MineParkPlayer) {
                     $players->sendMessage("§7[§6!§7] PvP : §c" . $damager->getName() . " убил " . $player->getName());
                 } else {
-                    $players->sendMessage("§7[§6!§7] Kill : §c"." игрок  " . $player->getName()." убился..");
+                    $players->sendMessage("§7[§6!§7] Kill : §c"." игрок  " . $player->getName()." умер..");
                 }
             }
         }

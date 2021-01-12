@@ -43,7 +43,7 @@ class JailExitCommand extends Command
             $this->getCore()->getApi()->changeAttr($player, "A", false);
             $this->getCore()->getApi()->changeAttr($player, "W", false);
 
-            $this->getCore()->getMapper()->teleportPoint($player, Mapper::POINT_NAME_MAYOROFFICE);
+            $this->getCore()->getMapper()->teleportPoint($player, Mapper::POINT_NAME_ADIMINISTRATION);
 
             $player->getStatesMap()->bar = null;
         } else {
