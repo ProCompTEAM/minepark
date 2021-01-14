@@ -9,6 +9,8 @@ use minepark\Permissions;
 use pocketmine\event\Event;
 use minepark\command\Command;
 
+use pocketmine\level\Level;
+
 class AdminCommand extends Command
 {
     public const CURRENT_COMMAND = "a";
@@ -85,6 +87,14 @@ class AdminCommand extends Command
 
             case 'siren':
                 $this->commandSiren();
+            break;
+
+            case 'day':
+                $this->commandDay($player);
+            break;
+
+            case 'night':
+                $this->commandNight($player);
             break;
 		}
     }
@@ -263,6 +273,18 @@ class AdminCommand extends Command
         foreach($this->getCore()->getServer()->getOnlinePlayers() as $player) {
             $player->sendSound(Sounds::SIREN_SOUND);
         }
+    }
+
+    public function commandDay(MineParkPlayer $player)
+    {
+        $player->getLevel()->setTime(Level::TIME_DAY);
+        $player->sendMessage("AdminCmdDay");
+    }
+
+    public function commandNight(MineParkPlayer $player)
+    {
+        $player->getLevel()->setTime(Level::TIME_NIGHT);
+        $player->sendMessage("AdminCmdNight");
     }
 
     private function countArguments(MineParkPlayer $player, array $args, int $minCount)

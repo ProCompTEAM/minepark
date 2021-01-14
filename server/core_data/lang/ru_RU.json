@@ -41,6 +41,8 @@
     "AdminCmdRemoveTag": "Тег игрока изменен на <FALSE>!",
     "AdminCmsHide": "Теперь вы невидимый! Возврат: /a show",
     "AdminCmdShow": "Вас снова видят все игроки!",
+    "AdminCmdDay": "Время суток сменилось на день",
+    "AdminCmdNight": "Время суток сменилось на ночь",
 
     "TrackerPlayerNotExists": "§eДанного игрока не существует!",
     "TrackerAlreadyTracked": "§eЗа этим игроком и так происходит слежка.",
