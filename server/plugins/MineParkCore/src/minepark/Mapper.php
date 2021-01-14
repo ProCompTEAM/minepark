@@ -31,6 +31,8 @@ class Mapper
 	public const POINT_GROUP_FASTFOOD = 7;
 
 	public const POINT_NAME_JAIL = "КПЗ";
+	public const POINT_NAME_ADIMINISTRATION = "Администрация";
+	public const POINT_NAME_HOSPITAL = "Палата";
 
 	public function getCore() : Core
 	{
