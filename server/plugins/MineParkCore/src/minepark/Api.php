@@ -2,7 +2,9 @@
 namespace minepark;
 
 use pocketmine\level\Position;
+use pocketmine\Server;
 use minepark\player\implementations\MineParkPlayer;
+use minepark\utils\CallbackTask;
 
 class Api
 {
@@ -141,5 +143,19 @@ class Api
 		$cmd->unregister($commandMap);
 		$commandMap->unregister($cmd);
 	}
+
+	public function __construct()
+    {
+   	    $this->getCore()->getScheduler()->scheduleRepeatingTask(new CallbackTask([$this, "broadcastMessage"]), 20 * 400);
+    }
+
+    public function broadcastMessage()
+    {
+    	$msg = array(
+    	"Message1", "Message2", "Message3", "Message4", "Message5", "Message6", "Message7", "Message8", "Message9", "Message10"
+		);
+    	$this->getServer()->broadcastMessage("" . $msg[mt_rand(0, count($msg) - 1)]);
+
+    }
 }
 ?>
