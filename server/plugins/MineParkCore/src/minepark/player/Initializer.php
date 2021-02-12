@@ -159,7 +159,7 @@ class Initializer
         $label = $this->getDonaterLabel($donater);
 
         foreach($this->getCore()->getServer()->getOnlinePlayers() as $player) {
-            $player->addTitle("§e" . $donater->getName(), $label . " " . $donater->getName() . "{UserOnline}", 5);
+            $player->addLocalizedTitle("§e" . $donater->getName(), $label . " " . $donater->getName() . " {UserOnline}", 5);
         }
     }
     

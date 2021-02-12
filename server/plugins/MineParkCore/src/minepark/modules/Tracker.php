@@ -99,7 +99,7 @@ class Tracker
 
         if(is_null($sender)) {
             foreach($admins as $admin) {
-                $this->sendMessage($admin, $messages);
+                $this->sendLocalizedMessage($admin, $messages);
             }
         } else {
             foreach($admins as $admin) {
@@ -107,7 +107,7 @@ class Tracker
                     continue;
                 }
     
-                $this->sendMessage($admin, $messages);
+                $this->sendLocalizedMessage($admin, $messages);
             }
         }
     }

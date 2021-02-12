@@ -86,7 +86,7 @@ class Localizer
                 $write = true;
             } elseif($ch == "}") {
                 $write = false;
-                $result .= $this->take($langKey, $stringKey);
+                $result .= $this->take($langKey, $stringKey) ?? $stringKey;
                 $stringKey = "";
             } else {
                 if($write) {

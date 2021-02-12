@@ -36,15 +36,7 @@ class PassportCommand extends Command
 
         $form = $this->getPassportForm($player);
 		
-		$list = $this->getCore()->getApi()->getRegionPlayers($player, 4);
-		foreach($list as $p) {
-			$p->sendWindowMessage($form, "Паспорт " . $player->getName());
-				
-			if(strpos($p->getProfile()->people, strtolower($player->getName())) === false and $p !== $player) {
-				$p->getProfile()->people .= strtolower($player->getName());
-				$this->getCore()->getProfiler()->saveProfile($p);
-			}
-        }
+		$this->showPassportForm($player, $form);
         
         $this->getCore()->getChatter()->send($player, "{CommandPassportTake}", "§d", 10);
     }
@@ -67,6 +59,18 @@ class PassportCommand extends Command
         $form .= "\n§d★ §eТелефонный номер§6: " . $outputPhone;
 
         return $form;
+    }
+
+    private function showPassportForm(MineParkPlayer $player, string $form)
+    {
+        foreach($this->getCore()->getApi()->getRegionPlayers($player, 4) as $p) {
+			$p->sendWindowMessage($form, "Паспорт " . $player->getName());
+				
+			if(strpos($p->getProfile()->people, strtolower($player->getName())) === false and $p !== $player) {
+				$p->getProfile()->people .= strtolower($player->getName());
+				$this->getCore()->getProfiler()->saveProfile($p);
+			}
+        }
     }
 }
 ?>

@@ -97,11 +97,11 @@ class Phone
 	
 	public function sendMessage($number, $text, $title) : bool
 	{
-		$p = $this->getPlayer($number);
+		$player = $this->getPlayer($number);
 
-		if($p !== null and $this->hasStream($p->getPosition())) {
-			$p->sendLocalizedMessage("{PhoneSend}".$title);
-			$p->sendMessage("§b[➪] ".$text);
+		if($player !== null and $this->hasStream($player->getPosition())) {
+			$player->sendLocalizedMessage("{PhoneSend}".$title);
+			$player->sendMessage("§b[➪] ".$text);
 			return true;
 		}
 		
@@ -127,23 +127,29 @@ class Phone
 			if($number == "02" or $number == "03")
 			{
 				$oid = 4; if($number == "03") $oid = 2;
-				$ps = $this->getCore()->getMapper()->getNearPoints($player->getPosition(), 15);
-				if(count($ps) < 0) $player->sendMessage("PhoneErrorCall");
-				else
-				{
-					foreach($this->getCore()->getServer()->getOnlinePlayers() as $p)
-					{
-						if($p->getProfile()->organisation == $oid) 
-						{
-							if(count($ps) == 0) $p->sendMessage("PhoneEvent1");
-							else $p->sendMessage("PhoneEvent2");
+				$streams = $this->getCore()->getMapper()->getNearPoints($player->getPosition(), 15);
+				if(count($streams) < 0) { 
+					$player->sendMessage("PhoneErrorCall");
+				} else {
+					foreach($this->getCore()->getServer()->getOnlinePlayers() as $p) {
+						if($p->getProfile()->organisation == $oid) {
+							if(count($streams) == 0) {
+								$p->sendMessage("PhoneEvent1");
+							} else {
+								$p->sendMessage("PhoneEvent2");
+							}
+
 							$p->sendLocalizedMessage("{PhoneEvent3}".$this->getNumber($player));
 							$p->sendLocalizedMessage("{PhoneEvent4}".$player->getProfile()->fullName);
 							$p->sendLocalizedMessage("{PhoneEvent5}".implode(", ",$player->property));
-							if(count($ps) == 0) $p->sendMessage("PhoneEvent6");
-							else $p->sendLocalizedMessage("{PhoneEvent7}".$ps[0]);
+							if(count($streams) == 0) {
+								$p->sendMessage("PhoneEvent6");
+							} else {
+								$p->sendLocalizedMessage("{PhoneEvent7}".$streams[0]);
+							}
 						}
 					}
+
 					$player->sendMessage("PhoneEventCallHelp1");
 					$player->sendMessage("PhoneEventCallHelp2");
 					$player->sendMessage("PhoneEventCallHelp3");

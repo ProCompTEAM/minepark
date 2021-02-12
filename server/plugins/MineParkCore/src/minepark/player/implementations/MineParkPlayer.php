@@ -25,7 +25,9 @@ class MineParkPlayer extends Player
 	
 	public function __get($name) //rudiment
 	{
-		if(!isset($this->$name)) return null;
+		if(!isset($this->$name)) {
+			return null;
+		}
 		
 		return $this->$name;
 	}
@@ -143,6 +145,22 @@ class MineParkPlayer extends Player
 		parent::sendPopup(Core::getActive()->getLocalizer()->translateFrom($this->locale, $message));
 	}
 
+	public function addTitle(string $title, string $subtitle = "", int $fadeIn = -1, int $stay = -1, int $fadeOut = -1)
+	{
+		$title = Core::getActive()->getLocalizer()->take($this->locale, $title) ?? $title;
+		$subtitle = Core::getActive()->getLocalizer()->take($this->locale, $subtitle) ?? $subtitle;
+
+		parent::addTitle($title, $subtitle, $fadeIn, $stay, $fadeOut);
+	}
+
+	public function addLocalizedTitle(string $title, string $subtitle = "", int $fadeIn = -1, int $stay = -1, int $fadeOut = -1)
+	{
+		$title = Core::getActive()->getLocalizer()->translateFrom($this->locale, $title);
+		$subtitle = Core::getActive()->getLocalizer()->translateFrom($this->locale, $subtitle);
+
+		parent::addTitle($title, $subtitle, $fadeIn, $stay, $fadeOut);
+	}
+
 	public function kick(string $reason = "", bool $isAdmin = true, $quitMessage = null) : bool
 	{
 		if($reason === "") {
@@ -152,14 +170,6 @@ class MineParkPlayer extends Player
 		$reason = Core::getActive()->getLocalizer()->take($this->locale, $reason) ?? $reason;
 
 		return parent::kick($reason, $isAdmin, $quitMessage);
-	}
-
-	public function addTitle(string $title, string $subtitle = "", int $fadeIn = -1, int $stay = -1, int $fadeOut = -1)
-	{
-		$title = Core::getActive()->getLocalizer()->take($this->locale, $title) ?? $title;
-		$subtitle = Core::getActive()->getLocalizer()->take($this->locale, $subtitle) ?? $subtitle;
-
-		parent::addTitle($title, $subtitle, $fadeIn, $stay, $fadeOut);
 	}
 }
 ?>
