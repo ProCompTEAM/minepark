@@ -18,7 +18,7 @@ namespace MDC.Infrastructure.Services
 
         public long CreateNumberForUser(string userName)
         {
-            return CreatePhone(userName.ToLower(), PhoneSubjectType.User);
+            return CreatePhone(userName, PhoneSubjectType.User);
         }
 
         public long CreateNumberForOrganization(string organizationName)
@@ -30,7 +30,7 @@ namespace MDC.Infrastructure.Services
         {
             Phone phone = databaseProvider.SingleOrDefault<Phone>(
                 phone => phone.SubjectType == PhoneSubjectType.User && 
-                phone.Subject == userName.ToLower());
+                phone.Subject.ToLower() == userName.ToLower());
             return phone?.Number;
         }
 
