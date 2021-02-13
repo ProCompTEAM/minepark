@@ -27,8 +27,6 @@ namespace MDC.Infrastructure.Services.Interfaces
 
         void Update(UserDto userDto);
 
-        void Delete(string userName);
-
         void UpdateJoinStatus(string userName);
 
         void UpdateQuitStatus(string userName);
