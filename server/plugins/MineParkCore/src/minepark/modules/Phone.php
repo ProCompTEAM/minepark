@@ -3,74 +3,45 @@ namespace minepark\modules;
 
 use minepark\Core;
 use minepark\Mapper;
-use minepark\player\implementations\MineParkPlayer;
 use pocketmine\math\Vector3;
 
-use pocketmine\utils\Config;
 use minepark\utils\CallbackTask;
+
+use minepark\mdc\sources\PhonesSource;
+
+use minepark\player\implementations\MineParkPlayer;
 
 class Phone
 {
 	public const MAX_STREAM_DISTANCE = 200;
 
+	public const EMERGENCY_NUMBER1 = "02";
+	public const EMERGENCY_NUMBER2 = "03";
+
+	private $source;
+
 	public function __construct()
 	{
-		$this->c = new Config($this->getCore()->getTargetDirectory() . "phone.json", Config::JSON);
-		$this->getCore()->getScheduler()->scheduleRepeatingTask(new CallbackTask([$this, "update"]), 20 * 60);
+		$this->source = $this->getCore()->getMDC()->getSource(PhonesSource::ROUTE);
+		$this->getCore()->getScheduler()->scheduleRepeatingTask(new CallbackTask([$this, "takeFee"]), 20 * 60);
 	}
 	
 	public function getCore() : Core
 	{
 		return Core::getActive();
 	}
-
-	public function init(MineParkPlayer $p) : int
+	
+	public function getNumber(MineParkPlayer $player) : int
 	{
-		$c = $this->c;
-		if($this->getNumber($p) and is_numeric($this->getNumber($p))) 
-			return $this->getNumber($p);
-		else {
-			$users = $c->getNested("numbers");
-			$n = 10001; 
-			
-			if($users != null) {
-				$n = 10001 + count($users);
-			}
-
-			$c->setNested("numbers.".$n, strtolower($p->getName()));
-			$c->save();
-
-			return $n;
-		}
+		return $this->getSource()->getNumberForUser($player->getName());
 	}
 	
-	public function getNumber(MineParkPlayer $p) : int
+	public function getPlayer(int $number, bool $nameOnly = false) : ?MineParkPlayer
 	{
-		$c = $this->c;
-		$list = $c->getNested("numbers");
+		$name = $this->getSource()->getUserNameByNumber($number);
 
-		if($list == null) {
-			return false;
-		}
-
-		foreach($list as $num => $i) {
-			$name = $c->getNested("numbers.".$num);
-
-			if($name == strtolower($p->getName())) {
-				return $num;
-			}
-		}
-
-		return false;
-	}
-	
-	public function getPlayer($number, $nickOnly = false) : ?MineParkPlayer
-	{
-		$c = $this->c;
-		$nick = $c->getNested("numbers.".$number);
-
-		if($nick) {
-			return $nickOnly ? $nick : $this->getCore()->getServer()->getPlayer($nick);
+		if(isset($name)) {
+			return $nameOnly ? $name : $this->getCore()->getServer()->getPlayer($nameOnly);
 		}
 		
 		return null;
@@ -95,7 +66,7 @@ class Phone
 		$player->getStatesMap()->phoneRcv->getStatesMap()->phoneRcv = null;
 	}
 	
-	public function sendMessage($number, $text, $title) : bool
+	public function sendMessage(int $number, string $text, string $title) : bool
 	{
 		$player = $this->getPlayer($number);
 
@@ -108,138 +79,179 @@ class Phone
 		return false;
 	}
 	
-	public function cmd($player, $cmds)
+	public function cmd(MineParkPlayer $player, array $commandArgs)
 	{
 		$this->getCore()->getChatter()->send($player, "§8(§dв руках телефон§8)", "§d : ", 10);
-		if(!isset($cmds[1])) {
-			$t = "";
-			$t .= "§9☏ Позвонить: §e/c <номер телефона>\n";
-			$t .= "§9☏ Служба Охраны: §e/c 02\n";
-			$t .= "§9☏ Мед. помощь: §e/c 03\n";
-			$t .= "§9☏ Сообщения: §e/sms <н.телефона> <текст>\n";
-			$t .= "§1> Цены: §aСМС 20р, Звонок 20р минута\n";
-			$t .= "§1> Ваш телефонный номер: §3".$this->getNumber($player);
-			$player->sendWindowMessage($t, "§9❖======*Смартфон*=======❖");
-		}
-		else
-		{
-			$number = $cmds[1];
-			if($number == "02" or $number == "03")
-			{
-				$oid = 4; if($number == "03") $oid = 2;
-				$streams = $this->getCore()->getMapper()->getNearPoints($player->getPosition(), 15);
-				if(count($streams) < 0) { 
-					$player->sendMessage("PhoneErrorCall");
-				} else {
-					foreach($this->getCore()->getServer()->getOnlinePlayers() as $p) {
-						if($p->getProfile()->organisation == $oid) {
-							if(count($streams) == 0) {
-								$p->sendMessage("PhoneEvent1");
-							} else {
-								$p->sendMessage("PhoneEvent2");
-							}
 
-							$p->sendLocalizedMessage("{PhoneEvent3}".$this->getNumber($player));
-							$p->sendLocalizedMessage("{PhoneEvent4}".$player->getProfile()->fullName);
-							$p->sendLocalizedMessage("{PhoneEvent5}".implode(", ",$player->property));
-							if(count($streams) == 0) {
-								$p->sendMessage("PhoneEvent6");
-							} else {
-								$p->sendLocalizedMessage("{PhoneEvent7}".$streams[0]);
-							}
-						}
-					}
+		if(!isset($commandArgs[1])) {
+			$this->sendDisplayMessages($player);
+		} else {
+			$number = $commandArgs[1];
 
-					$player->sendMessage("PhoneEventCallHelp1");
-					$player->sendMessage("PhoneEventCallHelp2");
-					$player->sendMessage("PhoneEventCallHelp3");
-					$player->sendMessage("PhoneEventCallHelp4");
+			if($number == self::EMERGENCY_NUMBER1 or $number == self::EMERGENCY_NUMBER2) {
+				$organisationId = 4;
+
+				if($number == self::EMERGENCY_NUMBER2) {
+					$organisationId = 2;
 				}
+
+				$this->emergencyCall($player, $organisationId);
 			}
-			elseif($number == "action")
-			{
-				if($cmds[0] == "sms") return;
-				if($player->getStatesMap()->phoneReq != null) {
-					foreach(array($player->getStatesMap()->phoneReq, $player) as $p) {
-						$p->sendLocalizedMessage("{PhoneCall1}".$this->getNumber($player->getStatesMap()->phoneReq).".."); 
-						$p->sendMessage("PhoneCall2");
-						$player->sendMessage("PhoneCall3");
-					}
-					$player->getStatesMap()->phoneRcv = $player->getStatesMap()->phoneReq;
-					$player->getStatesMap()->phoneRcv->getStatesMap()->phoneRcv = $player;
-					$player->getStatesMap()->phoneReq = null; $player->getStatesMap()->phoneRcv->getStatesMap()->phoneReq = null;
+			elseif($number == "action") {
+				if($commandArgs[0] == "sms") {
+					return;
 				}
-				elseif($player->getStatesMap()->phoneRcv != null) 
-				{
-					foreach(array($player->getStatesMap()->phoneRcv, $player) as $p) {
-						$p->sendMessage("PhoneCallEnd");
-						$p->getStatesMap()->phoneRcv = null;
+
+				$this->acceptNewCallOrCancel($player);
+			} else {
+				if($this->hasStream($player->getPosition())) {
+					$targetPlayer = $this->getPlayer($number);
+					if($targetPlayer !== null and $this->hasStream($targetPlayer->getPosition())) {
+						$this->makeCallOrSendSMS($player, $targetPlayer, $commandArgs, $number);
+					}
+					else {
+						$player->sendMessage("PhoneSmsNoNet");
 					}
 				}
-				else $player->sendMessage("PhoneCallReload"); 
-			}
-			else {
-				if($this->hasStream($player->getPosition())) 
-				{
-					$mynumber = $this->getNumber($player);
-					$player2 = $this->getPlayer($number);
-					if($player2 !== null and $this->hasStream($player2->getPosition()))
-					{
-						if($cmds[0] == "c") 
-						{
-							$player->sendMessage("PhoneBeeps");
-							if($number == $mynumber or !is_numeric($number)) 
-								$player->sendMessage("PhoneCheckNum");
-							elseif($player2->getStatesMap()->phoneRcv == null) {
-								$this->getCore()->getChatter()->send($player2, "{PhoneCallingBeep}", "§d : ", 10);
-								$player2->sendLocalizedMessage("{PhoneCalling1}".$mynumber.".");
-								$player2->sendMessage("PhoneCalling2");
-								$player2->getStatesMap()->phoneReq = $player;
-							}
-							else $player->sendMessage("PhoneCalling3");
-						}
-						else 
-						{
-							if($this->getCore()->getBank()->takePlayerMoney($player, 20)) 
-							{
-								$this->getCore()->getChatter()->send($player2, "{PhoneSmsBeep}", "§d : ", 10);
-								$sms = $this->sendMessage($number, $this->getCore()->getApi()->getFromArray($cmds, 2), $mynumber);
-								if(!$sms) $player->sendMessage("PhoneSmsError");
-								else $player->sendMessage("PhoneSmsSucces");
-							}
-							else $player->sendMessage("PhoneSmsNoMoney");
-						}
-					}
-					else $player->sendMessage("PhoneSmsNoNet");
+				else {
+					$player->sendMessage("PhoneSmsNoNet2"); 
 				}
-				else $player->sendMessage("PhoneSmsNoNet2");
 			}
 		}
 	}
 	
-	public function update()
+	public function takeFee()
 	{
-		foreach($this->getCore()->getServer()->getOnlinePlayers() as $p)
-		{
-			if($p->getStatesMap()->phoneRcv != null)
-			{
-				if($this->hasStream($p->getStatesMap()->phoneRcv->getPosition()))
-				{
-					if(!$this->getCore()->getBank()->takePlayerMoney($p, 20)) 
-					{
-						$p->sendMessage("PhoneSmsContinueNoMoney");
-						$p->sendMessage("PhoneSmsErrorNet");
-						$p->getStatesMap()->phoneRcv->sendMessage("PhoneSmsErrorNet");
-						$p->getStatesMap()->phoneRcv->getStatesMap()->phoneRcv = null; $p->getStatesMap()->phoneRcv = null; 
+		foreach($this->getCore()->getServer()->getOnlinePlayers() as $player) {
+			if($player->getStatesMap()->phoneRcv != null) {
+				if($this->hasStream($player->getStatesMap()->phoneRcv->getPosition())) {
+					if(!$this->getCore()->getBank()->takePlayerMoney($player, 20)) {
+						$player->sendMessage("PhoneSmsContinueNoMoney");
+						$player->sendMessage("PhoneSmsErrorNet");
+
+						$player->getStatesMap()->phoneRcv->sendMessage("PhoneSmsErrorNet");
+
+						$player->getStatesMap()->phoneRcv->getStatesMap()->phoneRcv = null; 
+						$player->getStatesMap()->phoneRcv = null; 
 					}
 				}
-				else 
-				{
-					$p->sendMessage("PhoneSmsNoNet");
-					$p->sendMessage("PhoneSmsErrorNet");
-					$p->getStatesMap()->phoneRcv->sendMessage("PhoneSmsErrorNet");
-					$p->getStatesMap()->phoneRcv->getStatesMap()->phoneRcv = null; $p->getStatesMap()->phoneRcv = null; 
+				else {
+					$player->sendMessage("PhoneSmsNoNet");
+					$player->sendMessage("PhoneSmsErrorNet");
+
+					$player->getStatesMap()->phoneRcv->sendMessage("PhoneSmsErrorNet");
+
+					$player->getStatesMap()->phoneRcv->getStatesMap()->phoneRcv = null; 
+					$player->getStatesMap()->phoneRcv = null; 
 				}
+			}
+		}
+	}
+
+	private function getSource() : PhonesSource
+	{
+		return $this->source;
+	}
+
+	private function sendDisplayMessages(MineParkPlayer $player)
+	{
+		$message  = "§9☏ Позвонить: §e/c <номер телефона>\n";
+		$message .= "§9☏ Служба Охраны: §e/c 02\n";
+		$message .= "§9☏ Мед. помощь: §e/c 03\n";
+		$message .= "§9☏ Сообщения: §e/sms <н.телефона> <текст>\n";
+		$message .= "§1> Цены: §aСМС 20р, Звонок 20р минута\n";
+		$message .= "§1> Ваш телефонный номер: §3".$this->getNumber($player);
+
+		$player->sendWindowMessage($message, "§9❖======*Смартфон*=======❖");
+	}
+
+	private function acceptNewCallOrCancel(MineParkPlayer $player)
+	{
+		if($player->getStatesMap()->phoneReq != null) {
+			foreach(array($player->getStatesMap()->phoneReq, $player) as $p) {
+				$p->sendLocalizedMessage("{PhoneCall1}".$this->getNumber($player->getStatesMap()->phoneReq) . ".."); 
+				$p->sendMessage("PhoneCall2");
+				$player->sendMessage("PhoneCall3");
+			}
+
+			$player->getStatesMap()->phoneRcv = $player->getStatesMap()->phoneReq;
+			$player->getStatesMap()->phoneRcv->getStatesMap()->phoneRcv = $player;
+
+			$player->getStatesMap()->phoneReq = null; 
+			$player->getStatesMap()->phoneRcv->getStatesMap()->phoneReq = null;
+		} elseif($player->getStatesMap()->phoneRcv != null) {
+			foreach(array($player->getStatesMap()->phoneRcv, $player) as $p) {
+				$p->sendMessage("PhoneCallEnd");
+				$p->getStatesMap()->phoneRcv = null;
+			}
+		} else {
+			$player->sendMessage("PhoneCallReload"); 
+		}
+	}
+
+	private function emergencyCall(MineParkPlayer $player, int $organisationId)
+	{
+		$streams = $this->getCore()->getMapper()->getNearPoints($player->getPosition(), 15);
+
+		foreach($this->getCore()->getServer()->getOnlinePlayers() as $onlinePlayer) {
+			if($onlinePlayer->getProfile()->organisation == $organisationId) {
+				if(count($streams) == 0) {
+					$onlinePlayer->sendMessage("PhoneEvent1");
+				} else {
+					$onlinePlayer->sendMessage("PhoneEvent2");
+				}
+
+				$onlinePlayer->sendLocalizedMessage("{PhoneEvent3}" . $this->getNumber($player));
+				$onlinePlayer->sendLocalizedMessage("{PhoneEvent4}" . $player->getProfile()->fullName);
+				$onlinePlayer->sendLocalizedMessage("{PhoneEvent5}" . implode(", ",$player->property));
+	
+				if(count($streams) == 0) {
+					$onlinePlayer->sendMessage("PhoneEvent6");
+				} else {
+					$onlinePlayer->sendLocalizedMessage("{PhoneEvent7}" . $streams[0]);
+				}
+			}
+		}
+
+		$player->sendMessage("PhoneEventCallHelp1");
+		$player->sendMessage("PhoneEventCallHelp2");
+		$player->sendMessage("PhoneEventCallHelp3");
+		$player->sendMessage("PhoneEventCallHelp4");
+	}
+
+	private function makeCallOrSendSMS(MineParkPlayer $player, MineParkPlayer $targetPlayer, array $commandArgs, int $number)
+	{
+		$myNumber = $this->getNumber($player);
+
+		if($commandArgs[0] == "c") {
+			$player->sendMessage("PhoneBeeps");
+
+			if($number == $myNumber or !is_numeric($number)) {
+				$player->sendMessage("PhoneCheckNum");
+			} elseif($targetPlayer->getStatesMap()->phoneRcv == null) {
+				$this->getCore()->getChatter()->send($targetPlayer, "{PhoneCallingBeep}", "§d : ", 10);
+
+				$targetPlayer->sendLocalizedMessage("{PhoneCalling1}".$myNumber.".");
+				$targetPlayer->sendMessage("PhoneCalling2");
+
+				$targetPlayer->getStatesMap()->phoneReq = $player;
+			} else {
+				$player->sendMessage("PhoneCalling3");
+			}
+		} else {
+			if($this->getCore()->getBank()->takePlayerMoney($player, 20)) {
+				$this->getCore()->getChatter()->send($targetPlayer, "{PhoneSmsBeep}", "§d : ", 10);
+
+				$sms = $this->sendMessage($number, $this->getCore()->getApi()->getFromArray($commandArgs, 2), $myNumber);
+
+				if(!$sms) {
+					$player->sendMessage("PhoneSmsError");
+				} else {
+					$player->sendMessage("PhoneSmsSucces");
+				}
+			}
+			else {
+				$player->sendMessage("PhoneSmsNoMoney");
 			}
 		}
 	}

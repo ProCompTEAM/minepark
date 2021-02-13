@@ -15,7 +15,7 @@ namespace MDC.Infrastructure.Providers
 
         private List<string> tokens = new List<string>();
 
-        private static Dictionary<string, string> tokenUnitIdPairs = new Dictionary<string, string>();
+        private static readonly Dictionary<string, string> tokenUnitIdPairs = new Dictionary<string, string>();
 
         public ContextProvider()
         {

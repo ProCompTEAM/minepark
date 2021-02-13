@@ -14,6 +14,8 @@ namespace MDC.Data
 
         public DbSet<MapPoint> MapPoints { get; set; }
 
+        public DbSet<Phone> Phones { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if(!MDCDatabase.IsInitialized)
