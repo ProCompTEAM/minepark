@@ -62,11 +62,6 @@ class UsersSource extends RemoteSource
         $this->createRequest("update", $userDto);
     }
 
-    public function deleteUser(string $userName)
-    {
-        $this->createRequest("delete", $userName);
-    }
-
     public function updateUserJoinStatus(string $userName)
     {
         $this->createRequest("update-join-status", $userName);

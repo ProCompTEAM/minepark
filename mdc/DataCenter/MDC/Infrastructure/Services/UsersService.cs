@@ -118,13 +118,6 @@ namespace MDC.Infrastructure.Services
             databaseProvider.Commit();
         }
 
-        public void Delete(string userName)
-        {
-            User user = GetUser(userName);
-            databaseProvider.Delete(user);
-            databaseProvider.Commit();
-        }
-
         public void UpdateJoinStatus(string userName)
         {
             User user = GetUser(userName);

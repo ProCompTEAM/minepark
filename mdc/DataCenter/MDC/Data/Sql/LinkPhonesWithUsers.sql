@@ -1,9 +1,9 @@
-﻿INSERT 
-	INTO phones (Subject, Number, SubjectType, CreatedDate, UpdatedDate)  
-	VALUES(
-		(SELECT Name FROM users AS Subject) is not null,
-		((SELECT Id FROM users AS NUMBER) is not NULL) + 1000,
-		1,
-		CURRENT_DATE(),
-		CURRENT_DATE()
-	)
+﻿SET @CurrentIndex = 0;
+	INSERT 
+		INTO phones (Subject, Number, SubjectType, CreatedDate, UpdatedDate)  
+			SELECT Name,
+			(@CurrentIndex := @CurrentIndex + 1) + 1000,
+			1,
+			CURRENT_DATE(),
+			CURRENT_DATE()
+		FROM users

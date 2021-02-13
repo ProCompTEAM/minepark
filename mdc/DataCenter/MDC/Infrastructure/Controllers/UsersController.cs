@@ -61,11 +61,6 @@ namespace MDC.Infrastructure.Controllers
             usersService.Update(user);
         }
 
-        public void Delete(string userName)
-        {
-            usersService.Delete(userName);
-        }
-
         public void UpdateJoinStatus(string userName)
         {
             usersService.UpdateJoinStatus(userName);
