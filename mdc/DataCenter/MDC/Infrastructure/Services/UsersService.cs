@@ -15,12 +15,15 @@ namespace MDC.Infrastructure.Services
 
         private readonly IDateTimeProvider dateTimeProvider;
 
+        private readonly IPhonesService phonesService;
+
         private readonly IMapper mapper;
 
         public UsersService()
         {
             databaseProvider = Store.GetProvider<DatabaseProvider>();
             dateTimeProvider = Store.GetProvider<DateTimeProvider>();
+            phonesService = Store.GetService<PhonesService>();
             mapper = Store.GetMapper();
         }
 
@@ -42,7 +45,9 @@ namespace MDC.Infrastructure.Services
         public UserDto GetUserDto(string userName)
         {
             User user = GetUser(userName);
-            return mapper.Map<UserDto>(user);
+            UserDto userDto = mapper.Map<UserDto>(user);
+            userDto.PhoneNumber = phonesService.GetNumberForUser(userName);
+            return userDto;
         }
 
         public string GetPassword(string userName)
@@ -75,6 +80,8 @@ namespace MDC.Infrastructure.Services
             User user = mapper.Map<User>(userDto);
             databaseProvider.Create(user);
             databaseProvider.Commit();
+
+            phonesService.CreateNumberForUser(user.Name);
         }
 
         public UserDto CreateInternal(string userName)
@@ -85,7 +92,12 @@ namespace MDC.Infrastructure.Services
             databaseProvider.Create(user);
             databaseProvider.Commit();
 
-            return mapper.Map<UserDto>(user);
+            long phoneNumber = phonesService.CreateNumberForUser(user.Name);
+
+            UserDto userDto = mapper.Map<UserDto>(user);
+            userDto.PhoneNumber = phoneNumber;
+
+            return userDto;
         }
 
         public void Update(UserDto userDto)

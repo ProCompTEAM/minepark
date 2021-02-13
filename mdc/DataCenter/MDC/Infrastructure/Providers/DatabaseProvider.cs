@@ -42,13 +42,15 @@ namespace MDC.Infrastructure.Providers
 
         public bool Any<T>(Expression<Func<T, bool>> predicate) where T : class, IEntity => Database.Context.Set<T>().Any(predicate);
 
+        public int Count<T>() where T : class, IEntity => Database.Context.Set<T>().Count();
+
         public int Count<T>(Expression<Func<T, bool>> predicate) where T : class, IEntity => Database.Context.Set<T>().Count(predicate);
 
         public void Create<T>(T entity) where T : class, IEntity
         {
-            if (entity is ICreatedDate)
+            if (entity is ICreatedDate date)
             {
-                ((ICreatedDate)entity).CreatedDate = dateTimeProvider.Now;
+                date.CreatedDate = dateTimeProvider.Now;
             }
 
             Database.Context.Add(entity);
@@ -56,9 +58,9 @@ namespace MDC.Infrastructure.Providers
 
         public void Update<T>(T entity) where T : class, IEntity
         {
-            if(entity is IUpdatedDate)
+            if (entity is IUpdatedDate date)
             {
-                ((IUpdatedDate)entity).UpdatedDate = dateTimeProvider.Now;
+                date.UpdatedDate = dateTimeProvider.Now;
             }
 
             Database.Context.Update(entity);

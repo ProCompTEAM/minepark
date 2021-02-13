@@ -33,6 +33,8 @@ class UserDto extends BaseDto
 
     public int $minutesPlayed;
 
+    public int $phoneNumber;
+
     public bool $vip;
 
     public bool $administrator;

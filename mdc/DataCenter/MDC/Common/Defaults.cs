@@ -14,5 +14,7 @@
         public const int DefaultStringLength = 128;
 
         public const int DefaultLongStringLength = 4096;
+
+        public const int StartPhoneNumber = 10001;
     }
 }

@@ -23,6 +23,8 @@ namespace MDC.Infrastructure.Providers.Interfaces
 
         bool Any<T>(Expression<Func<T, bool>> predicate) where T : class, IEntity;
 
+        int Count<T>() where T : class, IEntity;
+
         int Count<T>(Expression<Func<T, bool>> predicate) where T : class, IEntity;
 
         T First<T>(Expression<Func<T, bool>> predicate) where T : class, IEntity;

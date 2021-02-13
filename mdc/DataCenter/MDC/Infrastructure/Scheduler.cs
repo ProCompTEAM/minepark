@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace MDC.Infrastructure
 {
-    public static class Sheduler
+    public static class Scheduler
     {
         private static readonly List<ITask> tasks = new List<ITask>();
 

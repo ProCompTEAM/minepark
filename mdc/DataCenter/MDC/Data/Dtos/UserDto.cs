@@ -32,6 +32,8 @@ namespace MDC.Data.Dtos
 
         public int MinutesPlayed { get; set; }
 
+        public long PhoneNumber { get; set; }
+
         public bool Vip { get; set; }
 
         public bool Administrator { get; set; }
