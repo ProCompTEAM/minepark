@@ -6,8 +6,10 @@
 
         long CreateNumberForOrganization(string organizationName);
 
-        long GetNumberForUser(string userName);
+        long? GetNumberForUser(string userName);
 
-        long GetNumberForOrganization(string organizationName);
+        long? GetNumberForOrganization(string organizationName);
+
+        string GetUserNameByNumber(long number);
     }
 }

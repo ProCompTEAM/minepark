@@ -46,7 +46,7 @@ namespace MDC.Infrastructure.Services
         {
             User user = GetUser(userName);
             UserDto userDto = mapper.Map<UserDto>(user);
-            userDto.PhoneNumber = phonesService.GetNumberForUser(userName);
+            userDto.PhoneNumber = (long) phonesService.GetNumberForUser(userName);
             return userDto;
         }
 

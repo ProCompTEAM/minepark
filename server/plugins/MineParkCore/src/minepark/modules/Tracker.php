@@ -99,7 +99,7 @@ class Tracker
 
         if(is_null($sender)) {
             foreach($admins as $admin) {
-                $this->sendLocalizedMessage($admin, $messages);
+                $this->sendMessage($admin, $messages);
             }
         } else {
             foreach($admins as $admin) {
@@ -107,12 +107,12 @@ class Tracker
                     continue;
                 }
     
-                $this->sendLocalizedMessage($admin, $messages);
+                $this->sendMessage($admin, $messages);
             }
         }
     }
 
-    private function sendMessage(MineParkPlayer $player, array $messages=[])
+    private function sendMessage(MineParkPlayer $player, array $messages = [])
     {
         foreach($messages as $message) {
             $player->sendLocalizedMessage(self::CHAT_PREFIX . $message);

@@ -15,7 +15,17 @@ namespace MDC.Infrastructure.Controllers
             phonesService = Store.GetService<PhonesService>();
         }
 
-        public long GetNumberForOrganization(string organizationName)
+        public long? GetNumberForUser(string userName)
+        {
+            return phonesService.GetNumberForUser(userName);
+        }
+
+        public string GetUserNameByNumber(long number)
+        {
+            return phonesService.GetUserNameByNumber(number);
+        }
+
+        public long? GetNumberForOrganization(string organizationName)
         {
             return phonesService.GetNumberForOrganization(organizationName);
         }

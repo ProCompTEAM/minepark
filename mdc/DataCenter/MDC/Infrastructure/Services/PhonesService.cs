@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using MDC.Common;
+﻿using MDC.Common;
 using MDC.Data.Enums;
 using MDC.Data.Models;
 using MDC.Infrastructure.Providers;
@@ -19,7 +18,7 @@ namespace MDC.Infrastructure.Services
 
         public long CreateNumberForUser(string userName)
         {
-            return CreatePhone(userName, PhoneSubjectType.User);
+            return CreatePhone(userName.ToLower(), PhoneSubjectType.User);
         }
 
         public long CreateNumberForOrganization(string organizationName)
@@ -27,20 +26,28 @@ namespace MDC.Infrastructure.Services
             return CreatePhone(organizationName, PhoneSubjectType.Organization);
         }
 
-        public long GetNumberForUser(string userName)
+        public long? GetNumberForUser(string userName)
         {
-            Phone phone = databaseProvider.Single<Phone>(
+            Phone phone = databaseProvider.SingleOrDefault<Phone>(
                 phone => phone.SubjectType == PhoneSubjectType.User && 
-                phone.Subject == userName);
-            return phone.Number;
+                phone.Subject == userName.ToLower());
+            return phone?.Number;
         }
 
-        public long GetNumberForOrganization(string organizationName)
+        public long? GetNumberForOrganization(string organizationName)
         {
-            Phone phone = databaseProvider.Single<Phone>(
+            Phone phone = databaseProvider.SingleOrDefault<Phone>(
                 phone => phone.SubjectType == PhoneSubjectType.Organization &&
                 phone.Subject == organizationName);
-            return phone.Number;
+            return phone?.Number;
+        }
+
+        public string GetUserNameByNumber(long number)
+        {
+            Phone phone = databaseProvider.SingleOrDefault<Phone>(
+                phone => phone.SubjectType == PhoneSubjectType.User &&
+                phone.Number == number);
+            return phone?.Subject;
         }
 
         private long CreatePhone(string subject, PhoneSubjectType subjectType)

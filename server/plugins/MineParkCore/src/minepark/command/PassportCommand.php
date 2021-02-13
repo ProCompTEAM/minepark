@@ -45,7 +45,7 @@ class PassportCommand extends Command
     {
         $outputOrg = $this->getCore()->getOrganisationsModule()->getName($player->getProfile()->organisation);
         $outputRank = (($this->getCore()->getApi()->existsAttr($player, Api::ATTRIBUTE_BOSS)) ? " §7[§bНачальник§7]" : "");
-        $outputPhone = $this->getCore()->getPhone()->getNumber($player);
+        $outputPhone = $player->getProfile()->phoneNumber;
         
 		$form = "§5Паспортные данные | Печать | WorldDoc";
         $form .= "\n§d★ §eПолное имя§6: §3" . $player->getProfile()->fullName

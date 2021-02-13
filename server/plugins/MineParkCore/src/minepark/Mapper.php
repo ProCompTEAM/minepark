@@ -109,7 +109,6 @@ class Mapper
 	{
 		$points = $this->getNearPoints($pos, $distance, false);
 
-
 		foreach($points as $point) {
 			if($point->groupId == $group) {
 				return true;

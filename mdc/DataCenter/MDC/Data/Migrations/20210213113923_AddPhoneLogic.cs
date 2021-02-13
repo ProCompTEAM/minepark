@@ -24,16 +24,6 @@ namespace MDC.Data.Migrations
                 {
                     table.PrimaryKey("PK_Phones", x => x.Id);
                 });
-
-            migrationBuilder.Sql(@"
-                    INSERT INTO phones (Subject, Number, SubjectType, CreatedDate, UpdatedDate)  
-	                    VALUES(
-	                        (SELECT Name FROM users AS Subject),
-	                        (SELECT Id FROM users AS NUMBER) + 10000,
-	                        1,
-	                        CURRENT_DATE(),
-	                        CURRENT_DATE()
-                    )");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

@@ -48,9 +48,14 @@ namespace MDC.Infrastructure.Providers
 
         public void Create<T>(T entity) where T : class, IEntity
         {
-            if (entity is ICreatedDate date)
+            if (entity is ICreatedDate createdEntity)
             {
-                date.CreatedDate = dateTimeProvider.Now;
+                createdEntity.CreatedDate = dateTimeProvider.Now;
+            }
+
+            if (entity is IUpdatedDate updatedEntity)
+            {
+                updatedEntity.UpdatedDate = dateTimeProvider.Now;
             }
 
             Database.Context.Add(entity);
@@ -58,9 +63,9 @@ namespace MDC.Infrastructure.Providers
 
         public void Update<T>(T entity) where T : class, IEntity
         {
-            if (entity is IUpdatedDate date)
+            if (entity is IUpdatedDate createdEntity)
             {
-                date.UpdatedDate = dateTimeProvider.Now;
+                createdEntity.UpdatedDate = dateTimeProvider.Now;
             }
 
             Database.Context.Update(entity);

@@ -6,7 +6,7 @@ use minepark\player\implementations\MineParkPlayer;
 
 class Profiler
 {
-	public $source;
+	private $source;
 	
 	public function __construct()
 	{

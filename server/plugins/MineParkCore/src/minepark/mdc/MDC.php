@@ -2,9 +2,10 @@
 namespace minepark\mdc;
 
 use minepark\Core;
-use minepark\mdc\sources\MapSource;
 use pocketmine\utils\Config;
+use minepark\mdc\sources\MapSource;
 use minepark\mdc\sources\UsersSource;
+use minepark\mdc\sources\PhonesSource;
 use minepark\mdc\sources\RemoteSource;
 use minepark\mdc\sources\SettingsSource;
 
@@ -85,7 +86,8 @@ class MDC
         $this->sources = [
             new UsersSource,
             new SettingsSource,
-            new MapSource
+            new MapSource,
+            new PhonesSource
         ];
     }
 
