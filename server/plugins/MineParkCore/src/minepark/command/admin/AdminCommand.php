@@ -138,7 +138,7 @@ class AdminCommand extends Command
             return;
         }
 
-        $targetPlayer = $this->getCore()->getServer()->getPlayer($args[1]);
+        $targetPlayer = MineParkPlayer::cast($this->getCore()->getServer()->getPlayer($args[1]));
 
 		if($targetPlayer === null) {
             return;
@@ -261,6 +261,7 @@ class AdminCommand extends Command
     public function commandSiren()
     {
         foreach($this->getCore()->getServer()->getOnlinePlayers() as $player) {
+            $player = MineParkPlayer::cast($player);
             $player->sendSound(Sounds::SIREN_SOUND);
         }
     }

@@ -52,6 +52,7 @@ class Chatter
 		}
 		
 		foreach($this->getCore()->getServer()->getOnlinePlayers() as $target) {
+			$target = MineParkPlayer::cast($target);
 			if($target->isAdministrator()) {
 				$this->sendMessageForAdministrator($target, $sender->getProfile()->fullName, $message);
 			}

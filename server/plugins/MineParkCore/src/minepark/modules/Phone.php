@@ -8,7 +8,7 @@ use pocketmine\math\Vector3;
 use minepark\utils\CallbackTask;
 
 use minepark\mdc\sources\PhonesSource;
-
+use minepark\modules\organisations\Organisations;
 use minepark\player\implementations\MineParkPlayer;
 
 class Phone
@@ -71,8 +71,8 @@ class Phone
 		$player = $this->getPlayer($number);
 
 		if($player !== null and $this->hasStream($player->getPosition())) {
-			$player->sendLocalizedMessage("{PhoneSend}".$title);
-			$player->sendMessage("§b[➪] ".$text);
+			$player->sendLocalizedMessage("{PhoneSend}" . $title);
+			$player->sendMessage("§b[➪] " . $text);
 			return true;
 		}
 		
@@ -89,10 +89,10 @@ class Phone
 			$number = $commandArgs[1];
 
 			if($number == self::EMERGENCY_NUMBER1 or $number == self::EMERGENCY_NUMBER2) {
-				$organisationId = 4;
+				$organisationId = Organisations::SECURITY_WORK;
 
 				if($number == self::EMERGENCY_NUMBER2) {
-					$organisationId = 2;
+					$organisationId = Organisations::DOCTOR_WORK;
 				}
 
 				$this->emergencyCall($player, $organisationId);
@@ -123,6 +123,7 @@ class Phone
 	public function takeFee()
 	{
 		foreach($this->getCore()->getServer()->getOnlinePlayers() as $player) {
+			$player = MineParkPlayer::cast($player);
 			if($player->getStatesMap()->phoneRcv != null) {
 				if($this->hasStream($player->getStatesMap()->phoneRcv->getPosition())) {
 					if(!$this->getCore()->getBank()->takePlayerMoney($player, 20)) {
@@ -160,7 +161,7 @@ class Phone
 		$message .= "§9☏ Мед. помощь: §e/c 03\n";
 		$message .= "§9☏ Сообщения: §e/sms <н.телефона> <текст>\n";
 		$message .= "§1> Цены: §aСМС 20р, Звонок 20р минута\n";
-		$message .= "§1> Ваш телефонный номер: §3".$this->getNumber($player);
+		$message .= "§1> Ваш телефонный номер: §3" . $player->getProfile()->phoneNumber;
 
 		$player->sendWindowMessage($message, "§9❖======*Смартфон*=======❖");
 	}
@@ -194,6 +195,7 @@ class Phone
 		$streams = $this->getCore()->getMapper()->getNearPoints($player->getPosition(), 15);
 
 		foreach($this->getCore()->getServer()->getOnlinePlayers() as $onlinePlayer) {
+			$onlinePlayer = MineParkPlayer::cast($onlinePlayer);
 			if($onlinePlayer->getProfile()->organisation == $organisationId) {
 				if(count($streams) == 0) {
 					$onlinePlayer->sendMessage("PhoneEvent1");

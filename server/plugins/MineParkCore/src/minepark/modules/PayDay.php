@@ -3,6 +3,7 @@ namespace minepark\modules;
 
 use minepark\Api;
 use minepark\Core;
+use minepark\modules\organisations\Organisations;
 use minepark\utils\CallbackTask;
 use minepark\player\implementations\MineParkPlayer;
 
@@ -11,7 +12,7 @@ class PayDay
 	
 	public function __construct()
 	{
-		$this->getCore()->getScheduler()->scheduleRepeatingTask(new CallbackTask([$this, "t"]), 20 * 600);
+		$this->getCore()->getScheduler()->scheduleRepeatingTask(new CallbackTask([$this, "calcAndShow"]), 20 * 600);
 	}
 	
 	public function getCore() : Core
@@ -19,28 +20,19 @@ class PayDay
 		return Core::getActive();
 	}
 	
-	public function t()
+	public function calcAndShow()
 	{
 		foreach($this->getCore()->getServer()->getOnlinePlayers() as $player) {
-			$salary = 0; 
+			$player = MineParkPlayer::cast($player);
+
+			$salary = $this->getSalaryValue($player); 
 			$special = 0;
-			
-			switch($player->getProfile()->organisation)
-			{
-				case 1: $salary = 200; break;
-				case 2: $salary = 600; break;
-				case 3: $salary = 500; break;
-				case 4: $salary = 300; break;
-				case 5: $salary = 400; break;
-				case 6: $salary = 2000; break;
-				case 7: $salary = 500; break;
-			}
-			
-			if(!$player->hasPlayedBefore() and $player->isnew) {
+
+			if(!$player->getStatesMap()->isNew) {
 				$special += 200;
 			}
 
-			if($player->getProfile()->organisation == 0) {
+			if($player->getProfile()->organisation == Organisations::NO_WORK) {
 				$special += 100;
 			}
 
@@ -50,12 +42,6 @@ class PayDay
 
 			$summ = ($salary + $special);
 
-			$f = "§7----=====§eВРЕМЯ ЗАРПЛАТЫ§7=====----";
-			$f .= "\n §3> §fЗаработано: §2" . $salary;
-			$f .= "\n §3> §fПособие: §2" . $special;
-			$f .= "\n§8- - - -== -==- ==- - - -";
-			$f .= "\n §3☛ §fИтого: §2" . $summ;
-
 			if($summ > 0) {
 				$this->getCore()->getBank()->givePlayerMoney($player, $summ, false);
 			}
@@ -64,10 +50,44 @@ class PayDay
 				$this->getCore()->getBank()->takePlayerMoney($player, $summ);
 			}
 
-			if($player->getStatesMap()->auth) {
-				$player->sendMessage($f);
-			}
+			$this->sendForm($player, $salary, $special, $summ);
 		}
+	}
+
+	private function sendForm(MineParkPlayer $player, int $salary, int $special, int $summ) 
+	{
+		$form = "§7----=====§eВРЕМЯ ЗАРПЛАТЫ§7=====----";
+		$form .= "\n §3> §fЗаработано: §2" . $salary;
+		$form .= "\n §3> §fПособие: §2" . $special;
+		$form .= "\n§8- - - -== -==- ==- - - -";
+		$form .= "\n §3☛ §fИтого: §2" . $summ;
+
+		if($player->getStatesMap()->auth) {
+			$player->sendMessage($form);
+		}
+	}
+
+	private function getSalaryValue(MineParkPlayer $player) : int
+	{
+		switch($player->getProfile()->organisation)
+		{
+			case Organisations::TAXI_WORK: 
+				return 200;
+			case Organisations::DOCTOR_WORK: 
+				return 600;
+			case Organisations::LAWYER_WORK: 
+				return 500;
+			case Organisations::SECURITY_WORK: 
+				return 300;
+			case Organisations::SELLER_WORK: 
+				return 400;
+			case Organisations::GOVERNMENT_WORK:
+				return 2000;
+			case Organisations::EMERGENCY_WORK: 
+				return 500;
+		}
+
+		return 0;
 	}
 }
 ?>

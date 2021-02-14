@@ -1,14 +1,15 @@
 <?php
 namespace Lolya;
 
+use pocketmine\Player;
+use Lolya\utils\CallbackTask;
 use pocketmine\event\Listener;
-use pocketmine\event\player\PlayerInteractEvent;
-use pocketmine\event\entity\ProjectileHitEntityEvent;
 
 use Lolya\creature\BulletEntity;
-use pocketmine\Player;
+use pocketmine\event\player\PlayerInteractEvent;
 
-use Lolya\utils\CallbackTask;
+use minepark\player\implementations\MineParkPlayer;
+use pocketmine\event\entity\ProjectileHitEntityEvent;
 
 class GunListener implements Listener
 {
@@ -48,6 +49,7 @@ class GunListener implements Listener
 		
 		$this->makeNotShoot($player);
 		
+		$player = MineParkPlayer::cast($player);
 		$player->sendSound($gunData['sound']);
 		
 		foreach($this->main->getServer()->getOnlinePlayers() as $plr) {
