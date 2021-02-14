@@ -27,11 +27,11 @@ class Initializer
     
     public function initialize(MineParkPlayer $player)
     {
-        $player->isnew = $this->getProfiler()->isNewPlayer($player);
+        $this->setDefaults($player);
+
+        $this->updateNewPlayerStatus($player);
 
         $this->getProfiler()->initializeProfile($player);
-        
-        $this->setDefaults($player);
 
         $this->setPermissions($player);
         
@@ -43,7 +43,7 @@ class Initializer
 		$player->removeAllEffects();
         $player->setNameTag("");
 
-        if($player->isnew) {
+        if($player->getStatesMap()->isNew) {
 			$this->handleNewPlayer($player);
         }
 
@@ -105,6 +105,7 @@ class Initializer
         $statesMap = new StatesMap();
 
         $statesMap->auth = false;
+        $statesMap->isNew = false;
         
         $statesMap->gps = null;
         $statesMap->bar = null;
@@ -121,6 +122,12 @@ class Initializer
         $statesMap->lastTap = time();
 
         $player->setStatesMap($statesMap);
+    }
+
+    private function updateNewPlayerStatus(MineParkPlayer $player) 
+    {
+        $status = $this->getProfiler()->isNewPlayer($player);
+        $player->getStatesMap()->isNew = $status;
     }
     
     private function showLang(MineParkPlayer $player)
@@ -159,6 +166,7 @@ class Initializer
         $label = $this->getDonaterLabel($donater);
 
         foreach($this->getCore()->getServer()->getOnlinePlayers() as $player) {
+            $player = MineParkPlayer::cast($player);
             $player->addLocalizedTitle("§e" . $donater->getName(), $label . " " . $donater->getName() . " {UserOnline}", 5);
         }
     }

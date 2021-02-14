@@ -25,8 +25,9 @@ class Profiler
 	
     public function initializeProfile(MineParkPlayer $player)
 	{
-        if($player->isnew) {
-            $player->profile = $this->getSource()->createUserInternal($player->getName());
+        if($player->getStatesMap()->isNew) {
+			$createdUserProfile = $this->getSource()->createUserInternal($player->getName());
+            $player->setProfile($createdUserProfile);
 		} else {
             $this->loadProfile($player);
         }
@@ -34,7 +35,8 @@ class Profiler
 	
 	public function loadProfile(MineParkPlayer $player)
 	{
-        $player->profile = $this->getSource()->getUser($player->getName());
+        $profile = $this->getSource()->getUser($player->getName());
+		$player->setProfile($profile);
 	}
 	
 	public function saveProfile(MineParkPlayer $player)

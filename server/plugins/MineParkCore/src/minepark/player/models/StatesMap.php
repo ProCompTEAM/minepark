@@ -8,6 +8,8 @@ class StatesMap
 {
 	public bool $auth;
 
+	public bool $isNew;
+
 	public ?Position $gps;
 
 	public ?string $bar;

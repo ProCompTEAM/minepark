@@ -70,7 +70,7 @@ class InfoCommand extends OrganisationsCommand
 
     private function getPlayerInfo(MineParkPlayer $playerToInfo, MineParkPlayer $requestor)
     {
-        $f = "§bДоп.информация о человеке ".$playerToInfo->getProfile()->fullName.":";
+        $f = "§bДоп.информация о человеке " . $playerToInfo->getProfile()->fullName . ":";
 
         $f .= "\n§a > §eДокументы: ". ($this->core->getApi()->existsAttr($playerToInfo, Api::ATTRIBUTE_HAS_PASSPORT) ? "§aда" : "§cнет");
         $f .= "\n§a > §eАрестован: ". ($this->core->getApi()->existsAttr($playerToInfo, Api::ATTRIBUTE_ARRESTED) ? "§aда" : "§cнет");

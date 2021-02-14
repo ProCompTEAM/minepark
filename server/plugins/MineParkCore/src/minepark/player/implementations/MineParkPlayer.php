@@ -1,8 +1,9 @@
 <?php
 namespace minepark\player\implementations;
 
-use minepark\Core;
+use Exception;
 
+use minepark\Core;
 use pocketmine\Player;
 use pocketmine\math\Vector3;
 use minepark\mdc\dtos\UserDto;
@@ -16,7 +17,17 @@ class MineParkPlayer extends Player
 {	
 	private StatesMap $statesMap;
 
-	public UserDto $profile;
+	private UserDto $profile;
+
+	public static function cast(Player $player) : ?MineParkPlayer {
+		if($player === null) {
+			return null;
+		} elseif($player instanceof MineParkPlayer) {
+			return $player;
+		} else {
+			throw new Exception("Player isn't MineParkPlayer");
+		}
+	}
 
 	public function __construct(SourceInterface $interface, string $ip, int $port)
 	{
@@ -40,6 +51,11 @@ class MineParkPlayer extends Player
 	public function getProfile() : UserDto
 	{
 		return $this->profile;
+	}
+
+	public function setProfile(UserDto $profile)
+	{
+		$this->profile = $profile;
 	}
 
 	public function getStatesMap() : StatesMap
@@ -84,7 +100,7 @@ class MineParkPlayer extends Player
 		$this->dataPacket($pk);
 	}
 	
-	public function hasPermissionIn(array $permissions)
+	public function hasPermissions(array $permissions)
 	{
 		foreach($permissions as $permission) {
 			if($this->hasPermission($permission)) {
@@ -133,6 +149,11 @@ class MineParkPlayer extends Player
 	public function sendWhisper(string $sender, string $message)
 	{
 		parent::sendWhisper($sender, Core::getActive()->getLocalizer()->take($this->locale, $message) ?? $message);
+	}
+
+	public function sendLocalizedWhisper(string $sender, string $message)
+	{
+		parent::sendWhisper($sender, Core::getActive()->getLocalizer()->translateFrom($this->locale, $message));
 	}
 
 	public function sendPopup(string $message, string $subtitle = "")

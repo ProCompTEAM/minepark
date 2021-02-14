@@ -66,7 +66,7 @@ class ChangeNameCommand extends OrganisationsCommand
         $toPlayer->getProfile()->fullName = $name . ' ' . $surname;
 
         $this->getCore()->getProfiler()->saveProfile($toPlayer);
-        $toPlayer->setTip("§aпоздравляем!","§9$oldname §7>>> §e".$toPlayer->getProfile()->fullName, 5);
+        $toPlayer->sendTip("§aпоздравляем!","§9$oldname §7>>> §e".$toPlayer->getProfile()->fullName, 5);
 
         $this->getCore()->getBank()->givePlayerMoney($government, 10);
         $government->sendLocalizedMessage("{CommandChangeName}".$toPlayer->getProfile()->fullName);
@@ -75,22 +75,22 @@ class ChangeNameCommand extends OrganisationsCommand
     private function moveThemOut(array $plrs, MineParkPlayer $government)
     {
         $this->getCore()->getChatter()->send($government, "{CommandChangeNameManyPlayers1}");
-        foreach($plrs as $id => $p) {
+        foreach($plrs as $id => $player) {
             if($id > 1) {
-                $p->sendMessage("CommandChangeNameManyPlayers2");
+                $player->sendMessage("CommandChangeNameManyPlayers2");
             }
         }
         $government->sendMessage("CommandChangeNameManyPlayers3");
     }
 
-    private function canGiveDocuments(MineParkPlayer $p) : bool
+    private function canGiveDocuments(MineParkPlayer $player) : bool
     {
-        return $p->getProfile()->organisation == Organisations::GOVERNMENT_WORK or $p->getProfile()->organisation == Organisations::LAWYER_WORK;
+        return $player->getProfile()->organisation == Organisations::GOVERNMENT_WORK or $player->getProfile()->organisation == Organisations::LAWYER_WORK;
     }
 
-    private function isNearPoint(MineParkPlayer $p) : bool
+    private function isNearPoint(MineParkPlayer $player) : bool
     {
-        $plist = $this->getCore()->getMapper()->getNearPoints($p->getPosition(), 32);
+        $plist = $this->getCore()->getMapper()->getNearPoints($player->getPosition(), 32);
 		return in_array(self::POINT_NAME, $plist);
     }
 
@@ -100,7 +100,7 @@ class ChangeNameCommand extends OrganisationsCommand
 
         $players = array();
         foreach ($allplayers as $currp) {
-            if ($currp->getName() != $p->getName()) {
+            if ($currp->getName() != $player->getName()) {
                 $players[] = $currp;
             }
         }

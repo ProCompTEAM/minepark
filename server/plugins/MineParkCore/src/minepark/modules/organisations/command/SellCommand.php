@@ -78,9 +78,9 @@ class SellCommand extends OrganisationsCommand
         $players = $this->getCore()->getApi()->getRegionPlayers($player, 7);
         $buyers = array();
 
-        foreach($players as $p) {
-            if(count($p->getStatesMap()->goods) > 0) {
-                $buyers[] = $p;
+        foreach($players as $currentPlayer) {
+            if(count($currentPlayer->getStatesMap()->goods) > 0) {
+                $buyers[] = $currentPlayer;
             }
         }
         return $buyers;
@@ -114,16 +114,20 @@ class SellCommand extends OrganisationsCommand
     private function handleSell(int $price, MineParkPlayer $b, MineParkPlayer $seller, $curr)
     {
         $receipt = "§e--==========ЧЕК==========--\n";
+
         foreach($b->getStatesMap()->goods as $g) {
             $item = Item::get($g[0], 0, 1);
             $item->setCustomName($g[2]);
             $b->getInventory()->addItem($item);
             $receipt .= "§a".$g[2]." §eза §3".$g[1]." руб\n";
         }
+
         $b->sendMessage($receipt);
         $b->sendLocalizedMessage("{CommandSellFinalPart1}".$price."{CommandSellFinalPart2}");
+
         $b->getStatesMap()->goods = array();
         $this->getCore()->getBank()->givePlayerMoney($seller, ceil($price/2));
+
         $seller->sendLocalizedMessage("{CommandSellDo}".($curr + 1));
     }
 }

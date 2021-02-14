@@ -70,11 +70,10 @@ class GPSCommand extends Command
 
     private function sendInformationWindow(MineParkPlayer $player) 
     {
-        $form = "";
         $x = floor($player->getX()); 
         $z = floor($player->getZ());
 
-        $form .= "§4(§7gps§4) §7места рядом: §d/gpsnear\n";
+        $form  = "§4(§7gps§4) §7Места рядом: §d/gpsnear\n";
         $form .= "§4(§7gps§4) §7Проложить маршрут: §d/gps <назв.места>\n";
         $form .= "§4(§7gps§4) §7Проложить к точке: §d/gps <X> <Z>\n";
         $form .= "§4(§7gps§4) §7В некоторых местах острова навигатор может работать неправильно из за плохого подключения к спутникам\n";

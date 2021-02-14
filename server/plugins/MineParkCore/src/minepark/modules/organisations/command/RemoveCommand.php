@@ -29,8 +29,6 @@ class RemoveCommand extends OrganisationsCommand
 
     public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
-        $organModule = $this->getCore()->getOrganisationsModule();
-
         if (!$this->isBoss($player)) {
             $player->sendMessage("CommandRemoveNoBoss");
             return;

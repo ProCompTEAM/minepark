@@ -29,8 +29,6 @@ class GiveLicCommand extends OrganisationsCommand
 
     public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
-        $organModule = $this->getCore()->getOrganisationsModule();
-
         if (!$this->canGiveDocuments($player)) {
             $player->sendMessage("CommandGiveLicNoCanGive");
             return;
@@ -77,14 +75,14 @@ class GiveLicCommand extends OrganisationsCommand
         $government->sendMessage("CommandGiveLicManyPlayers3");
     }
 
-    private function canGiveDocuments(MineParkPlayer $p) : bool
+    private function canGiveDocuments(MineParkPlayer $player) : bool
     {
-        return $p->getProfile()->organisation == Organisations::GOVERNMENT_WORK or $p->getProfile()->organisation == Organisations::LAWYER_WORK;
+        return $player->getProfile()->organisation == Organisations::GOVERNMENT_WORK or $player->getProfile()->organisation == Organisations::LAWYER_WORK;
     }
 
-    private function isNearPoint(MineParkPlayer $p) : bool
+    private function isNearPoint(MineParkPlayer $player) : bool
     {
-        $plist = $this->getCore()->getMapper()->getNearPoints($p->getPosition(), 32);
+        $plist = $this->getCore()->getMapper()->getNearPoints($player->getPosition(), 32);
 		return in_array(self::POINT_NAME, $plist);
     }
 

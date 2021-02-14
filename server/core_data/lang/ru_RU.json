@@ -99,7 +99,7 @@
     "CommandCasinoNear": "§cВам необходимо находиться около игровых автоматов!",
 
 
-    "CommandGetOrgGet": "Теперь вы $orgName",
+    "CommandGetOrgGet": "Теперь вы в этой организации",
     "CommandGetOrgNearGov": "§сВам необходимо находиться в мэрии!",
     "CommandGetOrgNoMoney": "§cНе хватило суммы :(",
 
