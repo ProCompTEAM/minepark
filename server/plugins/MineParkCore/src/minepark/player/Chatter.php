@@ -8,8 +8,6 @@ use minepark\Sounds;
 
 class Chatter
 {
-	public const GLOBAL_CHAT_MINIMUM_MINUTES_PLAYED = 60;
-
 	public const GLOBAL_CHAT_SIGNATURE = '!';
 	public const ADMINISTRATION_CHAT_SIGNATURE = '@';
 
@@ -29,7 +27,7 @@ class Chatter
 
 	public function sendGlobal(MineParkPlayer $sender, string $message) 
 	{
-		if(!$sender->getProfile()->minutesPlayed < self::GLOBAL_CHAT_MINIMUM_MINUTES_PLAYED) {
+		if($sender->getStatesMap()->isBeginner) {
 			$sender->sendMessage("§eЭтот чат станет доступен после того, как вы отыграете некоторое время.");
 			return;
 		}
@@ -86,7 +84,7 @@ class Chatter
 	private function sendGlobalMessage(MineParkPlayer $target, string $senderName, string $message) 
 	{
 		if($this->getCore()->getPhone()->hasStream($target)) {
-			$target->sendMessage("§7<§eСмартфон §d: §8Card Community§7> §fпользователь §3" . $senderName . " §fпишет§c: §7" . substr($message, 1));
+			$target->sendMessage("§7<§eСмартфон §d: §8Сообщество§7> §fпользователь §3" . $senderName . " §fпишет§c: §7" . substr($message, 1));
 			$target->sendSound(Sounds::CHAT_SOUND);
 		}
 	}

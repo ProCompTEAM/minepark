@@ -10,6 +10,8 @@ class StatesMap
 
 	public bool $isNew;
 
+	public bool $isBeginner;
+
 	public ?Position $gps;
 
 	public ?string $bar;
