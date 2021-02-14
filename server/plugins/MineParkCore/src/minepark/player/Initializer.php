@@ -15,6 +15,8 @@ class Initializer
 
     public const DONATER_STATUS_BONUS_COUNT = 100;
 
+    public const MINIMAL_SKILL_MINUTES_PLAYED = 60;
+
     public function getCore() : Core
     {
         return Core::getActive();
@@ -32,6 +34,8 @@ class Initializer
         $this->updateNewPlayerStatus($player);
 
         $this->getProfiler()->initializeProfile($player);
+
+        $this->updateBegginerStatus($player);
 
         $this->setPermissions($player);
         
@@ -106,6 +110,7 @@ class Initializer
 
         $statesMap->auth = false;
         $statesMap->isNew = false;
+        $statesMap->isBeginner = false;
         
         $statesMap->gps = null;
         $statesMap->bar = null;
@@ -128,6 +133,13 @@ class Initializer
     {
         $status = $this->getProfiler()->isNewPlayer($player);
         $player->getStatesMap()->isNew = $status;
+    }
+
+    private function updateBegginerStatus(MineParkPlayer $player) 
+    {
+        $status = $player->getStatesMap()->isNew || 
+            $player->getProfile()->minutesPlayed < self::MINIMAL_SKILL_MINUTES_PLAYED;
+        $player->getStatesMap()->isBeginner = $status;
     }
     
     private function showLang(MineParkPlayer $player)
