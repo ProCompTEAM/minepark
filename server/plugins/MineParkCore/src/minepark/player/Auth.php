@@ -6,7 +6,7 @@ use minepark\Core;
 use minepark\player\implementations\MineParkPlayer;
 
 use minepark\utils\CallbackTask;
-use minepark\command\JailExitCommand;
+use minepark\commands\JailExitCommand;
 use minepark\mdc\dtos\PasswordDto;
 use minepark\mdc\sources\UsersSource;
 
