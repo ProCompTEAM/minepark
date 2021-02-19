@@ -7,6 +7,7 @@ use minepark\Permissions;
 use pocketmine\event\Event;
 use minepark\command\Command;
 use minepark\command\PayCommand;
+use minepark\command\BankCommand;
 use minepark\command\LevelCommand;
 use minepark\command\MoneyCommand;
 use minepark\command\CasinoCommand;
@@ -80,7 +81,8 @@ class CommandsHandler
 			new ResetPasswordCommand,
 			new ReportCommand,
 			new ReplyCommand,
-			new CloseCommand
+			new CloseCommand,
+			new BankCommand
 		];
 	}
 

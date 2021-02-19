@@ -2,6 +2,7 @@
 namespace minepark\mdc;
 
 use minepark\Core;
+use minepark\mdc\sources\BankingSource;
 use pocketmine\utils\Config;
 use minepark\mdc\sources\MapSource;
 use minepark\mdc\sources\UsersSource;
@@ -87,7 +88,8 @@ class MDC
             new UsersSource,
             new SettingsSource,
             new MapSource,
-            new PhonesSource
+            new PhonesSource,
+            new BankingSource
         ];
     }
 

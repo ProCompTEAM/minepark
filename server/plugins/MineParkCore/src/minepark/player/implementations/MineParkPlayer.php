@@ -171,7 +171,7 @@ class MineParkPlayer extends Player
 		$title = Core::getActive()->getLocalizer()->take($this->locale, $title) ?? $title;
 		$subtitle = Core::getActive()->getLocalizer()->take($this->locale, $subtitle) ?? $subtitle;
 
-		parent::addTitle($title, $subtitle, $fadeIn, $stay, $fadeOut);
+		parent::sendTitle($title, $subtitle, $fadeIn, $stay, $fadeOut);
 	}
 
 	public function addLocalizedTitle(string $title, string $subtitle = "", int $fadeIn = -1, int $stay = -1, int $fadeOut = -1)
@@ -179,7 +179,7 @@ class MineParkPlayer extends Player
 		$title = Core::getActive()->getLocalizer()->translateFrom($this->locale, $title);
 		$subtitle = Core::getActive()->getLocalizer()->translateFrom($this->locale, $subtitle);
 
-		parent::addTitle($title, $subtitle, $fadeIn, $stay, $fadeOut);
+		parent::sendTitle($title, $subtitle, $fadeIn, $stay, $fadeOut);
 	}
 
 	public function kick(string $reason = "", bool $isAdmin = true, $quitMessage = null) : bool

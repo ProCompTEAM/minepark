@@ -26,6 +26,8 @@ class StatesMap
 
 	public bool $damageDisabled;
 
+	public int $paymentMethod;
+
 	public int $lastTap;
 }
 ?>

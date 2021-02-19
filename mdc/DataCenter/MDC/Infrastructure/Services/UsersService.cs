@@ -17,6 +17,8 @@ namespace MDC.Infrastructure.Services
 
         private readonly IPhonesService phonesService;
 
+        private readonly IBankingService bankingService;
+
         private readonly IMapper mapper;
 
         public UsersService()
@@ -24,6 +26,7 @@ namespace MDC.Infrastructure.Services
             databaseProvider = Store.GetProvider<DatabaseProvider>();
             dateTimeProvider = Store.GetProvider<DateTimeProvider>();
             phonesService = Store.GetService<PhonesService>();
+            bankingService = Store.GetService<BankingService>();
             mapper = Store.GetMapper();
         }
 
@@ -82,6 +85,7 @@ namespace MDC.Infrastructure.Services
             databaseProvider.Commit();
 
             phonesService.CreateNumberForUser(user.Name);
+            bankingService.CreateEmptyBankAccount(user.Name);
         }
 
         public UserDto CreateInternal(string userName)
@@ -91,6 +95,8 @@ namespace MDC.Infrastructure.Services
             User user = GetDefaultUserTemplate(userName);
             databaseProvider.Create(user);
             databaseProvider.Commit();
+
+            bankingService.CreateEmptyBankAccount(userName);
 
             long phoneNumber = phonesService.CreateNumberForUser(user.Name);
 

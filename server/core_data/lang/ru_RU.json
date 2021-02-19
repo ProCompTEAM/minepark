@@ -99,6 +99,15 @@
     "CommandCasinoNear": "§cВам необходимо находиться около игровых автоматов!",
 
 
+    "CommandBankSuccess": "§aВы успешно сменили метод платежа!",
+    "CommandBankError1": "§eУ Вас и так выбран данный метод платежа!",
+    "CommandBankError2": "§eПроизошла ошибка. Пожалуйста, попробуйте сменить метод оплаты позже",
+    "CommandBankFormContent": "§aВыберите метод оплаты, пожалуйста",
+    "CommandBankFormButton1": "Наличные",
+    "CommandBankFormButton2": "Банковская карта",
+    "CommandBankFormButton3": "Кредитная карта",
+
+
     "CommandGetOrgGet": "Теперь вы в этой организации",
     "CommandGetOrgNearGov": "§сВам необходимо находиться в мэрии!",
     "CommandGetOrgNoMoney": "§cНе хватило суммы :(",
@@ -332,7 +341,7 @@
 
     "ScoreBoard1": "§eПосетителей: §a",
     "ScoreBoard2": "§eВремя МСК:  §c",
-    "ScoreBoard3": "§eНа карте: §9",
+    "ScoreBoard3": "§eДенег всего: §9",
     "ScoreBoard4": "§dRolePlay: §7/me <д-е>",
     "ScoreBoard5": "§dРадиостанция: §3/radio",
     "ScoreBoard6": "§dКричать: §7/s <сообщ>",

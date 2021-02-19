@@ -4,6 +4,7 @@ namespace minepark\player;
 use minepark\Api;
 use minepark\Core;
 use minepark\Permissions;
+use minepark\Mapper;
 use minepark\player\implementations\MineParkPlayer;
 use pocketmine\utils\Config;
 use pocketmine\entity\Effect;

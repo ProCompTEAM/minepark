@@ -51,6 +51,8 @@ class Initializer
 			$this->handleNewPlayer($player);
         }
 
+        $this->getCore()->getBank()->initializePlayerPaymentMethod($player);
+
         $this->showDonaterStatus($player);
         
         $this->addInventoryItems($player);
@@ -126,6 +128,8 @@ class Initializer
         
         $statesMap->lastTap = time();
 
+        $statesMap->paymentMethod = Bank::PAYMENT_METHOD_CASH;
+
         $player->setStatesMap($statesMap);
     }
 
@@ -158,7 +162,7 @@ class Initializer
     private function presentNewPlayer(MineParkPlayer $newPlayer)
 	{
         foreach($this->getCore()->getServer()->getOnlinePlayers() as $player) {
-            $player->addTitle("§6" . $newPlayer->getName(), "§aВ парке новый посетитель!", 5);
+            $player->sendTitle("§6" . $newPlayer->getName(), "§aВ парке новый посетитель!", 5);
         }
     }
     

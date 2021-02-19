@@ -10,6 +10,9 @@ declare(strict_types = 1);
 namespace JackMD\ScoreHud\Addons
 {
 	use JackMD\ScoreHud\addon\AddonBase;
+	use minepark\Core;
+    use minepark\player\Bank;
+    use minepark\utils\CallbackTask;
 	use onebone\economyapi\EconomyAPI;
 	use pocketmine\Player;
 
@@ -42,16 +45,18 @@ namespace JackMD\ScoreHud\Addons
 				"{world_player_count}" => count($player->getLevel()->getPlayers())
 			];
 		}*/
-		
+
 		private $core;
-		private $economyAPI;
+		private $money = [];
 
 		public function onEnable(): void{
 			$this->core = $this->getServer()->getPluginManager()->getPlugin("MineParkCore");
-			$this->economyAPI = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
+			$callbackTask = new CallbackTask([$this, "updatePlayersMoney"]);
+			$this->core->getScheduler()->scheduleRepeatingTask($callbackTask, 20 * 6);
 		}
 		
-		public function getProcessedTags(Player $player): array{
+		public function getProcessedTags(Player $player) : array
+		{
 			return [
 				"{line1}" => $this->getTranslation($player, "ScoreBoard1") . count($player->getServer()->getOnlinePlayers()),
 				"{line2}" => $this->getTranslation($player, "ScoreBoard2") . date($this->getScoreHud()->getConfig()->get("time-format")),
@@ -65,12 +70,35 @@ namespace JackMD\ScoreHud\Addons
 			];
 		}
 		
-		public function getTranslation(Player $player, string $key) {
-			return $this->core->getLocalizer()->take($player->locale, $key);
+		public function getTranslation(Player $player, string $key) : ?string
+		{
+			return $this->getCore()->getLocalizer()->take($player->locale, $key);
 		}
 		
-		public function getMoney(Player $player) {
-			return $this->economyAPI->myMoney($player);
+		public function getMoney(Player $player) : float
+		{
+			if (!isset($this->money[$player->getName()])) {
+				$this->money[$player->getName()] = $this->core->getBank()->getAllMoney($player);
+			}
+
+			return $this->money[$player->getName()];
+		}
+
+		public function updatePlayersMoney($value)
+		{
+			foreach ($this->getServer()->getOnlinePlayers() as $player) {
+				$money[$player->getName()] = $this->core->getBank()->getAllMoney($player);
+			}
+		}
+
+		protected function getCore() : Core
+		{
+			return Core::getActive();
+		}
+
+		protected function getBank() : Bank
+		{
+			return $this->getCore()->getBank();
 		}
 	}
 }
