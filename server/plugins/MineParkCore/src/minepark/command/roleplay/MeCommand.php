@@ -6,8 +6,8 @@ use minepark\player\implementations\MineParkPlayer;
 use minepark\command\Command;
 use pocketmine\event\Event;
 
-use minepark\Permissions;
-use minepark\Sounds;
+use minepark\defaults\Permissions;
+use minepark\defaults\Sounds;
 
 class MeCommand extends Command
 {

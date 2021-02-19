@@ -1,5 +1,5 @@
 <?php
-namespace minepark;
+namespace minepark\defaults;
 
 class Sounds 
 {

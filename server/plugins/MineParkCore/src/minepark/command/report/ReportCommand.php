@@ -5,7 +5,7 @@ use minepark\player\implementations\MineParkPlayer;
 use pocketmine\event\Event;
 
 use minepark\command\Command;
-use minepark\Permissions;
+use minepark\defaults\Permissions;
 
 use minepark\utils\CallbackTask;
 

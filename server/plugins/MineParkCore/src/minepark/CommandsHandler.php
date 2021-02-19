@@ -3,7 +3,7 @@ namespace minepark;
 
 use minepark\player\implementations\MineParkPlayer;
 
-use minepark\Permissions;
+use minepark\defaults\Permissions;
 use pocketmine\event\Event;
 use minepark\command\Command;
 use minepark\command\PayCommand;

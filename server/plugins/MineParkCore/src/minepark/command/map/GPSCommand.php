@@ -3,9 +3,9 @@ namespace minepark\command\map;
 
 use minepark\Mapper;
 
-use minepark\Sounds;
+use minepark\defaults\Sounds;
 use minepark\player\implementations\MineParkPlayer;
-use minepark\Permissions;
+use minepark\defaults\Permissions;
 use pocketmine\event\Event;
 
 use minepark\command\Command;

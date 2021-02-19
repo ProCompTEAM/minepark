@@ -4,7 +4,7 @@ namespace minepark\command\report;
 use minepark\player\implementations\MineParkPlayer;
 use pocketmine\event\Event;
 
-use minepark\Permissions;
+use minepark\defaults\Permissions;
 
 use minepark\command\Command;
 

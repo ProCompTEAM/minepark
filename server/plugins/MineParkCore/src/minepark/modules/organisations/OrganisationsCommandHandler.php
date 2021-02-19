@@ -4,7 +4,7 @@ namespace minepark\modules\organisations;
 use minepark\player\implementations\MineParkPlayer;
 use pocketmine\event\Event;
 
-use minepark\Permissions;
+use minepark\defaults\Permissions;
 
 use minepark\modules\organisations\command\OrganisationsCommand;
 use minepark\modules\organisations\command\AddCommand;

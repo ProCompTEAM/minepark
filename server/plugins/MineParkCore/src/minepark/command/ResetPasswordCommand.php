@@ -2,7 +2,7 @@
 namespace minepark\command;
 
 use minepark\player\implementations\MineParkPlayer;
-use minepark\Permissions;
+use minepark\defaults\Permissions;
 
 use pocketmine\event\Event;
 use minepark\mdc\sources\UsersSource;

@@ -4,8 +4,8 @@ namespace minepark\command;
 use minepark\player\implementations\MineParkPlayer;
 use pocketmine\event\Event;
 
-use minepark\Permissions;
-use minepark\Sounds;
+use minepark\defaults\Permissions;
+use minepark\defaults\Sounds;
 
 class PayCommand extends Command
 {
