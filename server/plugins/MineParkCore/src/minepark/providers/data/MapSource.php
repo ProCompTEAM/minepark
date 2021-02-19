@@ -1,8 +1,8 @@
 <?php
-namespace minepark\mdc\sources;
+namespace minepark\providers\data;
 
-use minepark\mdc\dtos\MapPointDto;
-use minepark\mdc\dtos\LocalMapPointDto;
+use minepark\models\dtos\MapPointDto;
+use minepark\models\dtos\LocalMapPointDto;
 
 class MapSource extends RemoteSource
 {

@@ -1,5 +1,5 @@
 <?php
-namespace minepark\mdc\dtos;
+namespace minepark\models\dtos;
 
 class LocalMapPointDto extends BaseDto
 {

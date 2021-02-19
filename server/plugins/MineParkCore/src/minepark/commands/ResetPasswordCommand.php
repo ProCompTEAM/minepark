@@ -5,7 +5,7 @@ use minepark\player\implementations\MineParkPlayer;
 use minepark\defaults\Permissions;
 
 use pocketmine\event\Event;
-use minepark\mdc\sources\UsersSource;
+use minepark\providers\data\UsersSource;
 
 class ResetPasswordCommand extends Command
 {

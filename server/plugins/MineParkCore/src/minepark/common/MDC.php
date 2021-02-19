@@ -1,13 +1,13 @@
 <?php
-namespace minepark\mdc;
+namespace minepark\common;
 
 use minepark\Core;
 use pocketmine\utils\Config;
-use minepark\mdc\sources\MapSource;
-use minepark\mdc\sources\UsersSource;
-use minepark\mdc\sources\PhonesSource;
-use minepark\mdc\sources\RemoteSource;
-use minepark\mdc\sources\SettingsSource;
+use minepark\providers\data\MapSource;
+use minepark\providers\data\UsersSource;
+use minepark\providers\data\PhonesSource;
+use minepark\providers\data\RemoteSource;
+use minepark\providers\data\SettingsSource;
 
 class MDC
 {

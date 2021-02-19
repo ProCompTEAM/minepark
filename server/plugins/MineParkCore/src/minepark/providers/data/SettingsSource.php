@@ -1,5 +1,5 @@
 <?php
-namespace minepark\mdc\sources;
+namespace minepark\providers\data;
 
 class SettingsSource extends RemoteSource
 {

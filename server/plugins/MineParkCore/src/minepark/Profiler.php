@@ -1,7 +1,7 @@
 <?php
 namespace minepark;
 
-use minepark\mdc\sources\UsersSource;
+use minepark\providers\data\UsersSource;
 use minepark\player\implementations\MineParkPlayer;
 
 class Profiler
