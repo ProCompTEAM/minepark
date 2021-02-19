@@ -1,5 +1,5 @@
 <?php
-namespace minepark\player\models;
+namespace minepark\models\player;
 
 use minepark\player\implementations\MineParkPlayer;
 use pocketmine\level\Position;

@@ -7,7 +7,7 @@ use minepark\Core;
 use pocketmine\Player;
 use pocketmine\math\Vector3;
 use minepark\mdc\dtos\UserDto;
-use minepark\player\models\StatesMap;
+use minepark\models\player\StatesMap;
 use pocketmine\network\SourceInterface;
 use pocketmine\network\mcpe\protocol\PlaySoundPacket;
 use pocketmine\event\player\PlayerCommandPreprocessEvent;

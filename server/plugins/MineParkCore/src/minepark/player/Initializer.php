@@ -7,7 +7,7 @@ use minepark\player\implementations\MineParkPlayer;
 use minepark\defaults\Permissions;
 use pocketmine\item\Item;
 use minepark\modules\organisations\Organisations;
-use minepark\player\models\StatesMap;
+use minepark\models\player\StatesMap;
 
 class Initializer
 {
