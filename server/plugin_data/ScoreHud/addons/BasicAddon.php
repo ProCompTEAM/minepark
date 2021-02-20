@@ -11,8 +11,6 @@ namespace JackMD\ScoreHud\Addons
 {
 	use JackMD\ScoreHud\addon\AddonBase;
 	use minepark\Core;
-    use minepark\player\Bank;
-    use minepark\utils\CallbackTask;
 	use pocketmine\Player;
 
 	class BasicAddon extends AddonBase{
@@ -70,13 +68,6 @@ namespace JackMD\ScoreHud\Addons
 		public function getTranslation(Player $player, string $key) : ?string
 		{
 			return $this->getCore()->getLocalizer()->take($player->locale, $key);
-		}
-
-		public function updatePlayersMoney()
-		{
-			foreach ($this->getServer()->getOnlinePlayers() as $player) {
-				$this->money[$player->getName()] = $this->core->getBank()->getAllMoney($player);
-			}
 		}
 
 		protected function getCore() : Core
