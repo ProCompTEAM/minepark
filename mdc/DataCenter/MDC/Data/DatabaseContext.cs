@@ -16,6 +16,8 @@ namespace MDC.Data
 
         public DbSet<Phone> Phones { get; set; }
 
+        public DbSet<UnitBalance> UnitBalances { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if(!MDCDatabase.IsInitialized)

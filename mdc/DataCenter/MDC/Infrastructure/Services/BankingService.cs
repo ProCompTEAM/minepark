@@ -52,8 +52,14 @@ namespace MDC.Infrastructure.Services
                 return false;
             }
 
-            bankAccount.Cash -= RoundNumber(amount);
+            double money = RoundNumber(amount);
 
+            if (!IncreaseUnitBalance(money))
+            {
+                return false;
+            }
+
+            bankAccount.Cash -= money;
             UpdateBankAccount(bankAccount);
 
             return true;
@@ -68,8 +74,14 @@ namespace MDC.Infrastructure.Services
                 return false;
             }
 
-            bankAccount.Debit -= RoundNumber(amount);
+            double money = RoundNumber(amount);
 
+            if (!IncreaseUnitBalance(money))
+            {
+                return false;
+            }
+
+            bankAccount.Debit -= money;
             UpdateBankAccount(bankAccount);
 
             return true;
@@ -84,7 +96,14 @@ namespace MDC.Infrastructure.Services
                 return false;
             }
 
-            bankAccount.Credit -= RoundNumber(amount);
+            double money = RoundNumber(amount);
+
+            if (!IncreaseUnitBalance(money))
+            {
+                return false;
+            }
+
+            bankAccount.Credit -= money;
             UpdateBankAccount(bankAccount);
 
             return true;
@@ -99,7 +118,14 @@ namespace MDC.Infrastructure.Services
                 return false;
             }
 
-            bankAccount.Cash += RoundNumber(amount);
+            double money = RoundNumber(amount);
+
+            if (!DecreaseUnitBalance(money))
+            {
+                return false;
+            }
+
+            bankAccount.Cash += money;
             UpdateBankAccount(bankAccount);
 
             return true;
@@ -114,7 +140,14 @@ namespace MDC.Infrastructure.Services
                 return false;
             }
 
-            bankAccount.Debit += RoundNumber(amount);
+            double money = RoundNumber(amount);
+
+            if (!DecreaseUnitBalance(money))
+            {
+                return false;
+            }
+
+            bankAccount.Debit += money;
             UpdateBankAccount(bankAccount);
 
             return true;
@@ -129,7 +162,14 @@ namespace MDC.Infrastructure.Services
                 return false;
             }
 
-            bankAccount.Credit += RoundNumber(amount);
+            double money = RoundNumber(amount);
+
+            if (!DecreaseUnitBalance(money))
+            {
+                return false;
+            }
+
+            bankAccount.Credit += money;
             UpdateBankAccount(bankAccount);
 
             return true;
@@ -167,6 +207,23 @@ namespace MDC.Infrastructure.Services
             return true;
         }
 
+        public double GetUnitBalance(string unitId)
+        {
+            return GetUnitBalanceModel(unitId).Balance;
+        }
+
+        public bool InitializeUnitBalance(string unitId)
+        {
+            if (!databaseProvider.Any<UnitBalance>(b => b.UnitId == unitId)) 
+            {
+                CreateUnitBalance(unitId);
+
+                return true;
+            }
+
+            return false;
+        }
+
         private bool VerifyReduceOperation(double moneyAmount, double decreaseAmount)
         {
             if (decreaseAmount < 0) 
@@ -180,24 +237,6 @@ namespace MDC.Infrastructure.Services
         private bool VerifyGiveOperation(double increaseAmount)
         {
             return increaseAmount >= 0;
-        }
-
-        private BankAccount GetDefaultBankTemplate(string userName)
-        {
-            return new BankAccount
-            {
-                Name = userName.ToLower(),
-                UnitId = contextProvider.GetCurrentUnitId(),
-                Cash = 0.00,
-                Debit = 0.00,
-                Credit = 0.00,
-                PaymentMethod = PaymentMethod.Cash
-            };
-        }
-
-        private double RoundNumber(double number)
-        {
-            return Math.Round(number, Defaults.MoneyRoundDigitsAmount);
         }
 
         private void UpdateBankAccount(BankAccount bankAccount)
@@ -216,6 +255,79 @@ namespace MDC.Infrastructure.Services
             }
 
             return bankAccount;
+        }
+
+        private bool IncreaseUnitBalance(double increaseAmount)
+        {
+            string unitId = contextProvider.GetCurrentUnitId();
+
+            UnitBalance unitBalance = GetUnitBalanceModel(unitId);
+
+            unitBalance.Balance += increaseAmount;
+
+            databaseProvider.Update(unitBalance);
+
+            return true;
+        }
+
+        private bool DecreaseUnitBalance(double decreaseAmount)
+        {
+            string unitId = contextProvider.GetCurrentUnitId();
+
+            UnitBalance unitBalance = GetUnitBalanceModel(unitId);
+
+            if (unitBalance.Balance < decreaseAmount)
+            {
+                return false;
+            }
+
+            unitBalance.Balance -= decreaseAmount;
+
+            databaseProvider.Update(unitBalance);
+
+            return true;
+        }
+
+        private UnitBalance GetUnitBalanceModel(string unitId)
+        {
+            UnitBalance unitBalance = databaseProvider.SingleOrDefault<UnitBalance>(b => b.UnitId == unitId);
+
+            if (unitBalance == null) 
+            {
+                throw new InvalidOperationException("UnitID balance doesn't exist");
+            }
+
+            return unitBalance;
+        }
+
+        private void CreateUnitBalance(string unitId)
+        {
+            UnitBalance unitBalance = new UnitBalance
+            {
+                UnitId = unitId,
+                Balance = Defaults.UnitStartBalance
+            };
+
+            databaseProvider.Create(unitBalance);
+            databaseProvider.Commit();
+        }
+
+        private BankAccount GetDefaultBankTemplate(string userName)
+        {
+            return new BankAccount
+            {
+                Name = userName.ToLower(),
+                UnitId = contextProvider.GetCurrentUnitId(),
+                Cash = 0.00,
+                Debit = 0.00,
+                Credit = 0.00,
+                PaymentMethod = PaymentMethod.Cash
+            };
+        }
+
+        private double RoundNumber(double number)
+        {
+            return Math.Round(number, Defaults.MoneyRoundDigitsAmount);
         }
     }
 }

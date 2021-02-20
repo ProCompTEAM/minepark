@@ -75,5 +75,10 @@ namespace MDC.Infrastructure.Controllers
         {
             return bankingService.SwitchPaymentMethod(bankDto.Name, bankDto.Method);
         }
+
+        public double GetUnitBalance(string unitId)
+        {
+            return bankingService.GetUnitBalance(unitId);
+        }
     }
 }
