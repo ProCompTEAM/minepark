@@ -13,7 +13,6 @@ namespace JackMD\ScoreHud\Addons
 	use minepark\Core;
     use minepark\player\Bank;
     use minepark\utils\CallbackTask;
-	use onebone\economyapi\EconomyAPI;
 	use pocketmine\Player;
 
 	class BasicAddon extends AddonBase{
@@ -84,7 +83,7 @@ namespace JackMD\ScoreHud\Addons
 			return $this->money[$player->getName()];
 		}
 
-		public function updatePlayersMoney($value)
+		public function updatePlayersMoney()
 		{
 			foreach ($this->getServer()->getOnlinePlayers() as $player) {
 				$money[$player->getName()] = $this->core->getBank()->getAllMoney($player);

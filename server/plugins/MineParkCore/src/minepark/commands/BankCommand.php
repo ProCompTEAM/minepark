@@ -28,7 +28,6 @@ class BankCommand extends Command
     public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
         $form = $this->getChooseForm($player);
-
         $player->sendForm($form);
     }
 

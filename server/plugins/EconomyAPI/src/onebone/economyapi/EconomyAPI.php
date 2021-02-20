@@ -28,7 +28,7 @@ class EconomyAPI extends PluginBase
         return $this->getBank()->getPlayerMoney($player);
     }
 
-    public function addMoney($player, $amount, bool $force, string $issued="") : int
+    public function addMoney($player, $amount, bool $force, string $issued = "") : int
     {
         if (is_string($player)) {
             $player = $this->getServer()->getPlayer($player);
