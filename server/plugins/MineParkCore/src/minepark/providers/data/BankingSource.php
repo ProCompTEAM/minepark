@@ -1,8 +1,8 @@
 <?php
 namespace minepark\providers\data;
 
-use minepark\mdc\dtos\BankTransactionDto;
-use minepark\mdc\dtos\PaymentMethodDto;
+use minepark\models\dtos\PaymentMethodDto;
+use minepark\models\dtos\BankTransactionDto;
 
 class BankingSource extends RemoteSource
 {

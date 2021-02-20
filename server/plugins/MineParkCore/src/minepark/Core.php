@@ -41,7 +41,7 @@ class Core extends PluginBase implements Listener
 	public const MESSAGES_LOG_FILE = "msg-log.txt";
 	public const WEBAPI_LOG_FILE = "webapi-log.txt";
 
-	static private $_core;
+	private static $_core;
 
 	private $eventsHandler;
 

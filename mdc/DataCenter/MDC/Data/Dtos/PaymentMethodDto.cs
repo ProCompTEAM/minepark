@@ -1,4 +1,4 @@
-using System;
+using MDC.Data.Enums;
 
 namespace MDC.Data.Dtos
 {
@@ -6,6 +6,6 @@ namespace MDC.Data.Dtos
     {
         public string Name { get; set; }
 
-        public int Method { get; set; }
+        public PaymentMethod Method { get; set; }
     }
 }

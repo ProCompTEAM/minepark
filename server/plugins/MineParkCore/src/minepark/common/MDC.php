@@ -2,12 +2,12 @@
 namespace minepark\common;
 
 use minepark\Core;
-use minepark\mdc\sources\BankingSource;
 use pocketmine\utils\Config;
 use minepark\providers\data\MapSource;
 use minepark\providers\data\UsersSource;
 use minepark\providers\data\PhonesSource;
 use minepark\providers\data\RemoteSource;
+use minepark\providers\data\BankingSource;
 use minepark\providers\data\SettingsSource;
 
 class MDC

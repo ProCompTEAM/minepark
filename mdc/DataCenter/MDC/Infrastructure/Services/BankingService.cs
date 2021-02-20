@@ -94,7 +94,7 @@ namespace MDC.Infrastructure.Services
         {
             BankAccount bankAccount = GetBankAccount(userName);
 
-            if (!VerifyGiveOperation(bankAccount.Credit, amount)) 
+            if (!VerifyGiveOperation(amount)) 
             {
                 return false;
             }
@@ -109,7 +109,7 @@ namespace MDC.Infrastructure.Services
         {
             BankAccount bankAccount = GetBankAccount(userName);
 
-            if (!VerifyGiveOperation(bankAccount.Credit, amount)) 
+            if (!VerifyGiveOperation(amount)) 
             {
                 return false;
             }
@@ -124,7 +124,7 @@ namespace MDC.Infrastructure.Services
         {
             BankAccount bankAccount = GetBankAccount(userName);
 
-            if (!VerifyGiveOperation(bankAccount.Credit, amount)) 
+            if (!VerifyGiveOperation(amount)) 
             {
                 return false;
             }
@@ -152,16 +152,16 @@ namespace MDC.Infrastructure.Services
             return bankAccount.PaymentMethod;
         }
 
-        public bool SwitchPaymentMethod(string userName, int method)
+        public bool SwitchPaymentMethod(string userName, PaymentMethod method)
         {
             BankAccount bankAccount = GetBankAccount(userName);
 
-            if ((int) bankAccount.PaymentMethod == method) 
+            if (bankAccount.PaymentMethod == method) 
             {
                 return false;
             }
 
-            bankAccount.PaymentMethod = (PaymentMethod) method;
+            bankAccount.PaymentMethod = method;
             UpdateBankAccount(bankAccount);
 
             return true;
@@ -177,7 +177,7 @@ namespace MDC.Infrastructure.Services
             return moneyAmount - decreaseAmount >= 0;
         }
 
-        private bool VerifyGiveOperation(double moneyAmount, double increaseAmount)
+        private bool VerifyGiveOperation(double increaseAmount)
         {
             return increaseAmount >= 0;
         }

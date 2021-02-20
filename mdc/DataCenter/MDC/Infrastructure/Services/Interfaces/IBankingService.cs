@@ -28,6 +28,6 @@ namespace MDC.Infrastructure.Services.Interfaces
 
         PaymentMethod GetPaymentMethod(string userName);
 
-        bool SwitchPaymentMethod(string userName, int method);
+        bool SwitchPaymentMethod(string userName, PaymentMethod method);
     }
 }
