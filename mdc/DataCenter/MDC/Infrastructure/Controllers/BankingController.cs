@@ -68,7 +68,7 @@ namespace MDC.Infrastructure.Controllers
 
         public int GetPaymentMethod(string userName)
         {
-            return bankingService.GetPaymentMethod(userName);
+            return (int) bankingService.GetPaymentMethod(userName);
         }
 
         public bool SwitchPaymentMethod(PaymentMethodDto bankDto)

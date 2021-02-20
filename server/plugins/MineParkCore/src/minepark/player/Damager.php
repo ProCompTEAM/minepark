@@ -29,9 +29,9 @@ class Damager
     }
     
     public function getConfig() : Config
-	{
-		return $this->config;
-	}
+    {
+        return $this->config;
+    }
 
     public function kick(MineParkPlayer $player, MineParkPlayer $damager) : bool
     {

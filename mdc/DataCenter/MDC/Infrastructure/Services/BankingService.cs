@@ -52,7 +52,7 @@ namespace MDC.Infrastructure.Services
                 return false;
             }
 
-            bankAccount.Cash -= amount;
+            bankAccount.Cash -= Math.Round(amount, 2);
 
             UpdateBankAccount(bankAccount);
 
@@ -68,7 +68,7 @@ namespace MDC.Infrastructure.Services
                 return false;
             }
 
-            bankAccount.Debit -= amount;
+            bankAccount.Debit -= Math.Round(amount, 2);
 
             UpdateBankAccount(bankAccount);
 
@@ -84,7 +84,7 @@ namespace MDC.Infrastructure.Services
                 return false;
             }
 
-            bankAccount.Credit -= amount;
+            bankAccount.Credit -= Math.Round(amount, 2);
             UpdateBankAccount(bankAccount);
 
             return true;
@@ -99,7 +99,7 @@ namespace MDC.Infrastructure.Services
                 return false;
             }
 
-            bankAccount.Cash += amount;
+            bankAccount.Cash += Math.Round(amount, 2);
             UpdateBankAccount(bankAccount);
 
             return true;
@@ -114,7 +114,7 @@ namespace MDC.Infrastructure.Services
                 return false;
             }
 
-            bankAccount.Debit += amount;
+            bankAccount.Debit += Math.Round(amount, 2);
             UpdateBankAccount(bankAccount);
 
             return true;
@@ -129,7 +129,7 @@ namespace MDC.Infrastructure.Services
                 return false;
             }
 
-            bankAccount.Credit += amount;
+            bankAccount.Credit += Math.Round(amount, 2);
             UpdateBankAccount(bankAccount);
 
             return true;
@@ -145,11 +145,11 @@ namespace MDC.Infrastructure.Services
             return true;
         }
 
-        public int GetPaymentMethod(string userName)
+        public PaymentMethod GetPaymentMethod(string userName)
         {
             BankAccount bankAccount = GetBankAccount(userName);
 
-            return (int) bankAccount.PaymentMethod;
+            return bankAccount.PaymentMethod;
         }
 
         public bool SwitchPaymentMethod(string userName, int method)
@@ -174,21 +174,11 @@ namespace MDC.Infrastructure.Services
                 return false;
             }
 
-            if (Math.Round(decreaseAmount, 2) != decreaseAmount) 
-            {
-                return false;
-            }
-
             return moneyAmount - decreaseAmount >= 0;
         }
 
         private bool VerifyGiveOperation(double moneyAmount, double increaseAmount)
         {
-            if (Math.Round(increaseAmount, 2) != increaseAmount) 
-            {
-                return false;
-            }
-
             return increaseAmount >= 0;
         }
 

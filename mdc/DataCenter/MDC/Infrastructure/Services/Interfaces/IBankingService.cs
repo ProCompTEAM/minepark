@@ -1,4 +1,4 @@
-using MDC.Data.Dtos;
+using MDC.Data.Enums;
 
 namespace MDC.Infrastructure.Services.Interfaces
 {
@@ -26,7 +26,7 @@ namespace MDC.Infrastructure.Services.Interfaces
 
         bool CreateEmptyBankAccount(string userName);
 
-        int GetPaymentMethod(string userName);
+        PaymentMethod GetPaymentMethod(string userName);
 
         bool SwitchPaymentMethod(string userName, int method);
     }
