@@ -52,8 +52,15 @@ namespace MDC.Infrastructure.Services
                 return false;
             }
 
-            bankAccount.Cash -= RoundNumber(amount);
+            double money = RoundNumber(amount);
+            string unitId = contextProvider.GetCurrentUnitId();
 
+            if (!IncreaseUnitBalance(unitId, money))
+            {
+                return false;
+            }
+
+            bankAccount.Cash -= money;
             UpdateBankAccount(bankAccount);
 
             return true;
@@ -68,8 +75,15 @@ namespace MDC.Infrastructure.Services
                 return false;
             }
 
-            bankAccount.Debit -= RoundNumber(amount);
+            double money = RoundNumber(amount);
+            string unitId = contextProvider.GetCurrentUnitId();
 
+            if (!IncreaseUnitBalance(unitId, money))
+            {
+                return false;
+            }
+
+            bankAccount.Debit -= money;
             UpdateBankAccount(bankAccount);
 
             return true;
@@ -84,7 +98,15 @@ namespace MDC.Infrastructure.Services
                 return false;
             }
 
-            bankAccount.Credit -= RoundNumber(amount);
+            double money = RoundNumber(amount);
+            string unitId = contextProvider.GetCurrentUnitId();
+
+            if (!IncreaseUnitBalance(unitId, money))
+            {
+                return false;
+            }
+
+            bankAccount.Credit -= money;
             UpdateBankAccount(bankAccount);
 
             return true;
@@ -99,7 +121,15 @@ namespace MDC.Infrastructure.Services
                 return false;
             }
 
-            bankAccount.Cash += RoundNumber(amount);
+            double money = RoundNumber(amount);
+            string unitId = contextProvider.GetCurrentUnitId();
+
+            if (!DecreaseUnitBalance(unitId, money))
+            {
+                return false;
+            }
+
+            bankAccount.Cash += money;
             UpdateBankAccount(bankAccount);
 
             return true;
@@ -114,7 +144,15 @@ namespace MDC.Infrastructure.Services
                 return false;
             }
 
-            bankAccount.Debit += RoundNumber(amount);
+            double money = RoundNumber(amount);
+            string unitId = contextProvider.GetCurrentUnitId();
+
+            if (!DecreaseUnitBalance(unitId, money))
+            {
+                return false;
+            }
+
+            bankAccount.Debit += money;
             UpdateBankAccount(bankAccount);
 
             return true;
@@ -129,7 +167,15 @@ namespace MDC.Infrastructure.Services
                 return false;
             }
 
-            bankAccount.Credit += RoundNumber(amount);
+            double money = RoundNumber(amount);
+            string unitId = contextProvider.GetCurrentUnitId();
+
+            if (!DecreaseUnitBalance(unitId, money))
+            {
+                return false;
+            }
+
+            bankAccount.Credit += money;
             UpdateBankAccount(bankAccount);
 
             return true;
@@ -167,6 +213,25 @@ namespace MDC.Infrastructure.Services
             return true;
         }
 
+        public double GetUnitBalance(string unitId)
+        {
+            return GetUnitBalanceModel(unitId).Balance;
+        }
+
+        public bool InitializeUnitBalance()
+        {
+            string unitId = contextProvider.GetCurrentUnitId();
+
+            if (!databaseProvider.Any<UnitBalance>(b => b.UnitId == unitId)) 
+            {
+                CreateUnitBalance(unitId);
+
+                return true;
+            }
+
+            return false;
+        }
+
         private bool VerifyReduceOperation(double moneyAmount, double decreaseAmount)
         {
             if (decreaseAmount < 0) 
@@ -180,6 +245,59 @@ namespace MDC.Infrastructure.Services
         private bool VerifyGiveOperation(double increaseAmount)
         {
             return increaseAmount >= 0;
+        }
+
+        private bool IncreaseUnitBalance(string unitId, double increaseAmount)
+        {
+            UnitBalance unitBalance = GetUnitBalanceModel(unitId);
+
+            unitBalance.Balance += increaseAmount;
+
+            databaseProvider.Update(unitBalance);
+            databaseProvider.Commit();
+
+            return true;
+        }
+
+        private bool DecreaseUnitBalance(string unitId, double decreaseAmount)
+        {
+            UnitBalance unitBalance = GetUnitBalanceModel(unitId);
+
+            if (unitBalance.Balance < decreaseAmount)
+            {
+                return false;
+            }
+
+            unitBalance.Balance -= decreaseAmount;
+
+            databaseProvider.Update(unitBalance);
+            databaseProvider.Commit();
+
+            return true;
+        }
+
+        private UnitBalance GetUnitBalanceModel(string unitId)
+        {
+            UnitBalance unitBalance = databaseProvider.SingleOrDefault<UnitBalance>(b => b.UnitId == unitId);
+
+            if (unitBalance == null) 
+            {
+                throw new InvalidOperationException("UnitID balance doesn't exist");
+            }
+
+            return unitBalance;
+        }
+
+        private void CreateUnitBalance(string unitId)
+        {
+            UnitBalance unitBalance = new UnitBalance
+            {
+                UnitId = unitId,
+                Balance = Defaults.UnitStartBalance
+            };
+
+            databaseProvider.Create(unitBalance);
+            databaseProvider.Commit();
         }
 
         private BankAccount GetDefaultBankTemplate(string userName)

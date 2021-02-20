@@ -15,6 +15,11 @@ class Bank
 	public const PAYMENT_METHOD_DEBIT = 2;
 	public const PAYMENT_METHOD_CREDIT = 3;
 
+	public function __construct()
+	{
+		$this->getRemoteSource()->initializeUnitBalance();
+	}
+
 	public function getCore() : Core
 	{
 		return Core::getActive();
