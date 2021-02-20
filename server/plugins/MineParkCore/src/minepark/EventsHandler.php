@@ -8,7 +8,7 @@ use pocketmine\block\SignPost;
 use pocketmine\block\WallSign;
 use pocketmine\event\Listener;
 use minepark\utils\FixSignEvent;
-use minepark\mdc\sources\UsersSource;
+use minepark\providers\data\UsersSource;
 use minepark\player\implementations\MineParkPlayer;
 use pocketmine\entity\object\Painting;
 use pocketmine\event\block\BlockEvent;

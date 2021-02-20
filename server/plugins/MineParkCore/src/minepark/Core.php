@@ -2,7 +2,7 @@
 namespace minepark;
 
 use minepark\Api;
-use minepark\mdc\MDC;
+use minepark\common\MDC;
 use minepark\modules\GPS;
 use minepark\player\Auth;
 use minepark\player\Bank;

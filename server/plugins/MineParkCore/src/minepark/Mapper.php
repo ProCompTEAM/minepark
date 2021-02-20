@@ -1,9 +1,9 @@
 <?php
 namespace minepark;
 
-use minepark\mdc\dtos\LocalMapPointDto;
-use minepark\mdc\dtos\MapPointDto;
-use minepark\mdc\sources\MapSource;
+use minepark\models\dtos\LocalMapPointDto;
+use minepark\models\dtos\MapPointDto;
+use minepark\providers\data\MapSource;
 use minepark\player\implementations\MineParkPlayer;
 use pocketmine\level\Position;
 

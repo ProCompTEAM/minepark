@@ -2,7 +2,7 @@
 namespace minepark\modules\organisations\command;
 
 use minepark\modules\organisations\Organisations;
-use minepark\Permissions;
+use minepark\defaults\Permissions;
 use minepark\Api;
 
 use minepark\player\implementations\MineParkPlayer;

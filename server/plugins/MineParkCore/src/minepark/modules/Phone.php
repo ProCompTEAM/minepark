@@ -7,7 +7,7 @@ use pocketmine\math\Vector3;
 
 use minepark\utils\CallbackTask;
 
-use minepark\mdc\sources\PhonesSource;
+use minepark\providers\data\PhonesSource;
 use minepark\modules\organisations\Organisations;
 use minepark\player\implementations\MineParkPlayer;
 

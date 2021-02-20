@@ -6,9 +6,9 @@ use minepark\Core;
 use minepark\player\implementations\MineParkPlayer;
 
 use minepark\utils\CallbackTask;
-use minepark\command\JailExitCommand;
-use minepark\mdc\dtos\PasswordDto;
-use minepark\mdc\sources\UsersSource;
+use minepark\commands\JailExitCommand;
+use minepark\models\dtos\PasswordDto;
+use minepark\providers\data\UsersSource;
 
 class Auth
 {

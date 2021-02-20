@@ -3,7 +3,7 @@ namespace minepark\player;
 
 use minepark\Api;
 use minepark\Core;
-use minepark\Permissions;
+use minepark\defaults\Permissions;
 use minepark\player\implementations\MineParkPlayer;
 use pocketmine\utils\Config;
 use pocketmine\entity\Effect;

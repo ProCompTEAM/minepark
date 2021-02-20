@@ -4,7 +4,7 @@ namespace minepark\player;
 use minepark\player\implementations\MineParkPlayer;
 
 use minepark\Core;
-use minepark\Sounds;
+use minepark\defaults\Sounds;
 
 class Chatter
 {
