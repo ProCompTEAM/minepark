@@ -53,7 +53,6 @@ namespace MDC.Infrastructure.Services
             }
 
             double money = RoundNumber(amount);
-            string unitId = contextProvider.GetCurrentUnitId();
 
             if (!IncreaseUnitBalance(money))
             {
@@ -76,7 +75,6 @@ namespace MDC.Infrastructure.Services
             }
 
             double money = RoundNumber(amount);
-            string unitId = contextProvider.GetCurrentUnitId();
 
             if (!IncreaseUnitBalance(money))
             {
@@ -99,7 +97,6 @@ namespace MDC.Infrastructure.Services
             }
 
             double money = RoundNumber(amount);
-            string unitId = contextProvider.GetCurrentUnitId();
 
             if (!IncreaseUnitBalance(money))
             {
@@ -122,7 +119,6 @@ namespace MDC.Infrastructure.Services
             }
 
             double money = RoundNumber(amount);
-            string unitId = contextProvider.GetCurrentUnitId();
 
             if (!DecreaseUnitBalance(money))
             {
@@ -145,7 +141,6 @@ namespace MDC.Infrastructure.Services
             }
 
             double money = RoundNumber(amount);
-            string unitId = contextProvider.GetCurrentUnitId();
 
             if (!DecreaseUnitBalance(money))
             {
@@ -271,7 +266,6 @@ namespace MDC.Infrastructure.Services
             unitBalance.Balance += increaseAmount;
 
             databaseProvider.Update(unitBalance);
-            databaseProvider.Commit();
 
             return true;
         }
@@ -290,7 +284,6 @@ namespace MDC.Infrastructure.Services
             unitBalance.Balance -= decreaseAmount;
 
             databaseProvider.Update(unitBalance);
-            databaseProvider.Commit();
 
             return true;
         }
