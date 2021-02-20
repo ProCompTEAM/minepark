@@ -55,7 +55,7 @@ namespace MDC.Infrastructure.Services
             double money = RoundNumber(amount);
             string unitId = contextProvider.GetCurrentUnitId();
 
-            if (!IncreaseUnitBalance(unitId, money))
+            if (!IncreaseUnitBalance(money))
             {
                 return false;
             }
@@ -78,7 +78,7 @@ namespace MDC.Infrastructure.Services
             double money = RoundNumber(amount);
             string unitId = contextProvider.GetCurrentUnitId();
 
-            if (!IncreaseUnitBalance(unitId, money))
+            if (!IncreaseUnitBalance(money))
             {
                 return false;
             }
@@ -101,7 +101,7 @@ namespace MDC.Infrastructure.Services
             double money = RoundNumber(amount);
             string unitId = contextProvider.GetCurrentUnitId();
 
-            if (!IncreaseUnitBalance(unitId, money))
+            if (!IncreaseUnitBalance(money))
             {
                 return false;
             }
@@ -124,7 +124,7 @@ namespace MDC.Infrastructure.Services
             double money = RoundNumber(amount);
             string unitId = contextProvider.GetCurrentUnitId();
 
-            if (!DecreaseUnitBalance(unitId, money))
+            if (!DecreaseUnitBalance(money))
             {
                 return false;
             }
@@ -147,7 +147,7 @@ namespace MDC.Infrastructure.Services
             double money = RoundNumber(amount);
             string unitId = contextProvider.GetCurrentUnitId();
 
-            if (!DecreaseUnitBalance(unitId, money))
+            if (!DecreaseUnitBalance(money))
             {
                 return false;
             }
@@ -168,9 +168,8 @@ namespace MDC.Infrastructure.Services
             }
 
             double money = RoundNumber(amount);
-            string unitId = contextProvider.GetCurrentUnitId();
 
-            if (!DecreaseUnitBalance(unitId, money))
+            if (!DecreaseUnitBalance(money))
             {
                 return false;
             }
@@ -218,10 +217,8 @@ namespace MDC.Infrastructure.Services
             return GetUnitBalanceModel(unitId).Balance;
         }
 
-        public bool InitializeUnitBalance()
+        public bool InitializeUnitBalance(string unitId)
         {
-            string unitId = contextProvider.GetCurrentUnitId();
-
             if (!databaseProvider.Any<UnitBalance>(b => b.UnitId == unitId)) 
             {
                 CreateUnitBalance(unitId);
@@ -247,8 +244,28 @@ namespace MDC.Infrastructure.Services
             return increaseAmount >= 0;
         }
 
-        private bool IncreaseUnitBalance(string unitId, double increaseAmount)
+        private void UpdateBankAccount(BankAccount bankAccount)
         {
+            databaseProvider.Update(bankAccount);
+            databaseProvider.Commit();
+        }
+
+        private BankAccount GetBankAccount(string userName)
+        {
+            BankAccount bankAccount = databaseProvider.SingleOrDefault<BankAccount>(b => b.Name == userName.ToLower());
+
+            if (bankAccount == null) 
+            {
+                throw new InvalidOperationException("User not exist");
+            }
+
+            return bankAccount;
+        }
+
+        private bool IncreaseUnitBalance(double increaseAmount)
+        {
+            string unitId = contextProvider.GetCurrentUnitId();
+
             UnitBalance unitBalance = GetUnitBalanceModel(unitId);
 
             unitBalance.Balance += increaseAmount;
@@ -259,8 +276,10 @@ namespace MDC.Infrastructure.Services
             return true;
         }
 
-        private bool DecreaseUnitBalance(string unitId, double decreaseAmount)
+        private bool DecreaseUnitBalance(double decreaseAmount)
         {
+            string unitId = contextProvider.GetCurrentUnitId();
+
             UnitBalance unitBalance = GetUnitBalanceModel(unitId);
 
             if (unitBalance.Balance < decreaseAmount)
@@ -316,24 +335,6 @@ namespace MDC.Infrastructure.Services
         private double RoundNumber(double number)
         {
             return Math.Round(number, Defaults.MoneyRoundDigitsAmount);
-        }
-
-        private void UpdateBankAccount(BankAccount bankAccount)
-        {
-            databaseProvider.Update(bankAccount);
-            databaseProvider.Commit();
-        }
-
-        private BankAccount GetBankAccount(string userName)
-        {
-            BankAccount bankAccount = databaseProvider.SingleOrDefault<BankAccount>(b => b.Name == userName.ToLower());
-
-            if (bankAccount == null) 
-            {
-                throw new InvalidOperationException("User not exist");
-            }
-
-            return bankAccount;
         }
     }
 }

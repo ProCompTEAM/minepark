@@ -77,10 +77,5 @@ class BankingSource extends RemoteSource
     {
         return (float) $this->createRequest("get-unit-balance", $unitId);
     }
-
-    public function initializeUnitBalance() : bool
-    {
-        return (bool) $this->createRequest("initialize-unit-balance", null);
-    }
 }
 ?>

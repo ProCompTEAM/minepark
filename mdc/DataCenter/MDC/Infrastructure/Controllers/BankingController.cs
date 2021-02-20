@@ -80,10 +80,5 @@ namespace MDC.Infrastructure.Controllers
         {
             return bankingService.GetUnitBalance(unitId);
         }
-
-        public bool InitializeUnitBalance()
-        {
-            return bankingService.InitializeUnitBalance();
-        }
     }
 }

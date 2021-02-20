@@ -31,6 +31,7 @@ namespace MDC.Infrastructure.Services.Interfaces
         bool SwitchPaymentMethod(string userName, PaymentMethod method);
 
         double GetUnitBalance(string unitId);
-        bool InitializeUnitBalance();
+
+        bool InitializeUnitBalance(string unitId);
     }
 }
