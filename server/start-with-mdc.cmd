@@ -2,6 +2,8 @@
 cd /d "..\mdc\Build\netcoreapp3.1\"
 start "" "MDC Loader.exe"
 
+timeout 2 > NUL
+
 cd /d %~dp0
 TITLE PocketMine-MP server software for Minecraft: Pocket Edition
 

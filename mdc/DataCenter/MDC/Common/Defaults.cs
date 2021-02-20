@@ -16,5 +16,7 @@
         public const int DefaultLongStringLength = 4096;
 
         public const int StartPhoneNumber = 10001;
+
+        public const int MoneyRoundDigitsAmount = 2;
     }
 }

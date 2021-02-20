@@ -48,6 +48,7 @@ namespace MDC.Infrastructure
             RegisterController(new PhonesController());
             RegisterController(new UsersController());
             RegisterController(new MapController());
+            RegisterController(new BankingController());
         }
 
         private static void InitializeProviders()
@@ -61,6 +62,7 @@ namespace MDC.Infrastructure
         private static void InitializeServices()
         {
             RegisterService(new PhonesService());
+            RegisterService(new BankingService());
             RegisterService(new UsersService());
             RegisterService(new MapService());
         }

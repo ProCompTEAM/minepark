@@ -1,12 +1,11 @@
 <?php
 namespace minepark;
 
-use minepark\player\implementations\MineParkPlayer;
-
-use minepark\defaults\Permissions;
 use pocketmine\event\Event;
 use minepark\commands\Command;
 use minepark\commands\PayCommand;
+use minepark\commands\BankCommand;
+use minepark\defaults\Permissions;
 use minepark\commands\LevelCommand;
 use minepark\commands\MoneyCommand;
 use minepark\commands\CasinoCommand;
@@ -35,11 +34,12 @@ use minepark\commands\workers\PutBoxCommand;
 use minepark\commands\GetOrganisationCommand;
 use minepark\commands\map\RemovePointCommand;
 use minepark\commands\map\ToNearPointCommand;
-use minepark\commands\workers\GetFarmCommand;
 
+use minepark\commands\workers\GetFarmCommand;
 use minepark\commands\workers\PutFarmCommand;
 use minepark\commands\workers\TakeBoxCommand;
 use minepark\commands\roleplay\WhisperCommand;
+use minepark\player\implementations\MineParkPlayer;
 
 class CommandsHandler
 {
@@ -80,7 +80,8 @@ class CommandsHandler
 			new ResetPasswordCommand,
 			new ReportCommand,
 			new ReplyCommand,
-			new CloseCommand
+			new CloseCommand,
+			new BankCommand
 		];
 	}
 

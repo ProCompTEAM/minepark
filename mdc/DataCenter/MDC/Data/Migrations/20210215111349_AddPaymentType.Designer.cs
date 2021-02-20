@@ -3,21 +3,23 @@ using System;
 using MDC.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MDC.Data.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20210215111349_AddPaymentType")]
+    partial class AddPaymentType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("MDC.Data.Models.BankAccount", b =>
+            modelBuilder.Entity("MDC.Data.Models.Bank", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -51,7 +53,7 @@ namespace MDC.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BankAccounts");
+                    b.ToTable("Bank");
                 });
 
             modelBuilder.Entity("MDC.Data.Models.Credentials", b =>

@@ -3,12 +3,13 @@ namespace minepark\player;
 
 use minepark\Api;
 use minepark\Core;
-use minepark\defaults\Permissions;
-use minepark\player\implementations\MineParkPlayer;
+use minepark\Mapper;
 use pocketmine\utils\Config;
 use pocketmine\entity\Effect;
 use pocketmine\entity\Entity;
+use minepark\defaults\Permissions;
 use pocketmine\entity\EffectInstance;
+use minepark\player\implementations\MineParkPlayer;
 
 class Damager
 {
@@ -28,9 +29,9 @@ class Damager
     }
     
     public function getConfig() : Config
-	{
-		return $this->config;
-	}
+    {
+        return $this->config;
+    }
 
     public function kick(MineParkPlayer $player, MineParkPlayer $damager) : bool
     {

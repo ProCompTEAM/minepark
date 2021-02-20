@@ -7,6 +7,7 @@ use minepark\providers\data\MapSource;
 use minepark\providers\data\UsersSource;
 use minepark\providers\data\PhonesSource;
 use minepark\providers\data\RemoteSource;
+use minepark\providers\data\BankingSource;
 use minepark\providers\data\SettingsSource;
 
 class MDC
@@ -87,7 +88,8 @@ class MDC
             new UsersSource,
             new SettingsSource,
             new MapSource,
-            new PhonesSource
+            new PhonesSource,
+            new BankingSource
         ];
     }
 

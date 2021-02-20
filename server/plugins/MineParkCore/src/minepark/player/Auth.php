@@ -6,7 +6,7 @@ use minepark\Core;
 use minepark\player\implementations\MineParkPlayer;
 
 use minepark\utils\CallbackTask;
-use minepark\commands\JailExitCommand;
+use minepark\Mapper;
 use minepark\models\dtos\PasswordDto;
 use minepark\providers\data\UsersSource;
 
@@ -110,7 +110,7 @@ class Auth
 		$this->ips[$player->getName()] = $player->getAddress();
 		
 		if($this->getCore()->getApi()->existsAttr($player, Api::ATTRIBUTE_ARRESTED)) {
-			$this->getCore()->getMapper()->teleportPoint($player, JailExitCommand::JAIL_POINT_NAME);
+			$this->getCore()->getMapper()->teleportPoint($player, Mapper::POINT_NAME_JAIL);
 		} else {
 			$this->sendWelcomeText($player);
 		}

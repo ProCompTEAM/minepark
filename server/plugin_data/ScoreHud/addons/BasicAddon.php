@@ -10,7 +10,7 @@ declare(strict_types = 1);
 namespace JackMD\ScoreHud\Addons
 {
 	use JackMD\ScoreHud\addon\AddonBase;
-	use onebone\economyapi\EconomyAPI;
+	use minepark\Core;
 	use pocketmine\Player;
 
 	class BasicAddon extends AddonBase{
@@ -42,20 +42,20 @@ namespace JackMD\ScoreHud\Addons
 				"{world_player_count}" => count($player->getLevel()->getPlayers())
 			];
 		}*/
-		
+
 		private $core;
-		private $economyAPI;
+		private $money = [];
 
 		public function onEnable(): void{
 			$this->core = $this->getServer()->getPluginManager()->getPlugin("MineParkCore");
-			$this->economyAPI = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
 		}
 		
-		public function getProcessedTags(Player $player): array{
+		public function getProcessedTags(Player $player) : array
+		{
 			return [
 				"{line1}" => $this->getTranslation($player, "ScoreBoard1") . count($player->getServer()->getOnlinePlayers()),
 				"{line2}" => $this->getTranslation($player, "ScoreBoard2") . date($this->getScoreHud()->getConfig()->get("time-format")),
-				"{line3}" => $this->getTranslation($player, "ScoreBoard3") . $this->getMoney($player),
+				"{line3}" => $this->getTranslation($player, "ScoreBoard3"),
 				"{line4}" => $this->getTranslation($player, "ScoreBoard4"),
 				"{line5}" => $this->getTranslation($player, "ScoreBoard5"),
 				"{line6}" => $this->getTranslation($player, "ScoreBoard6"),
@@ -65,12 +65,14 @@ namespace JackMD\ScoreHud\Addons
 			];
 		}
 		
-		public function getTranslation(Player $player, string $key) {
-			return $this->core->getLocalizer()->take($player->locale, $key);
+		public function getTranslation(Player $player, string $key) : ?string
+		{
+			return $this->getCore()->getLocalizer()->take($player->locale, $key);
 		}
-		
-		public function getMoney(Player $player) {
-			return $this->economyAPI->myMoney($player);
+
+		protected function getCore() : Core
+		{
+			return Core::getActive();
 		}
 	}
 }

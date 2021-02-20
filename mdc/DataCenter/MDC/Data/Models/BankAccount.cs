@@ -1,12 +1,13 @@
-using MDC.Common;
-using MDC.Data.Attributes;
-using MDC.Data.Base;
 using System;
 using System.ComponentModel.DataAnnotations;
+using MDC.Common;
+using MDC.Data.Enums;
+using MDC.Data.Attributes;
+using MDC.Data.Base;
 
 namespace MDC.Data.Models
 {
-    public class Bank : BaseEntity, IUnited, ICreatedDate, IUpdatedDate
+    public class BankAccount : BaseEntity, IUnited, ICreatedDate, IUpdatedDate
     {
         [Required, Unicode(Defaults.DefaultStringLength)]
         public string Name { get; set; }
@@ -22,6 +23,9 @@ namespace MDC.Data.Models
 
         [Required]
         public double Credit { get; set; }
+
+        [Required]
+        public PaymentMethod PaymentMethod { get; set; }
 
         public DateTime CreatedDate { get; set; }
 

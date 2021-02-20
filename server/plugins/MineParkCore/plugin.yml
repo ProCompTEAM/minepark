@@ -120,6 +120,9 @@ commands:
  resetpassword:
   default: true
   permissions: minepark.all
+ bank:
+  default: true
+  permissions: minepark.all
  
 permissions:
   minepark.admin:

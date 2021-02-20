@@ -7,6 +7,7 @@ use minepark\defaults\Permissions;
 use minepark\player\implementations\MineParkPlayer;
 use pocketmine\event\Event;
 use pocketmine\level\Position;
+use minepark\Mapper;
 
 class JailExitCommand extends Command
 {

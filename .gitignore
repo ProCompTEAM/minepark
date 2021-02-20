@@ -2,6 +2,8 @@ Thumbs.db
 *.obj
 *.pdb
 *.log
+.vs
+.vscode
 
 /server/worlds/*
 /server/plugin_data/EconomyAPI/*
