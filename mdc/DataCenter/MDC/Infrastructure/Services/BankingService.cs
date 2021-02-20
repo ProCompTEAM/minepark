@@ -1,11 +1,11 @@
 using System;
 
-using MDC.Data.Dtos;
 using MDC.Data.Models;
 using MDC.Infrastructure.Providers;
 using MDC.Infrastructure.Providers.Interfaces;
 using MDC.Infrastructure.Services.Interfaces;
 using MDC.Data.Enums;
+using MDC.Common;
 
 namespace MDC.Infrastructure.Services
 {
@@ -52,7 +52,7 @@ namespace MDC.Infrastructure.Services
                 return false;
             }
 
-            bankAccount.Cash -= Math.Round(amount, 2);
+            bankAccount.Cash -= RoundNumber(amount);
 
             UpdateBankAccount(bankAccount);
 
@@ -68,7 +68,7 @@ namespace MDC.Infrastructure.Services
                 return false;
             }
 
-            bankAccount.Debit -= Math.Round(amount, 2);
+            bankAccount.Debit -= RoundNumber(amount);
 
             UpdateBankAccount(bankAccount);
 
@@ -84,7 +84,7 @@ namespace MDC.Infrastructure.Services
                 return false;
             }
 
-            bankAccount.Credit -= Math.Round(amount, 2);
+            bankAccount.Credit -= RoundNumber(amount);
             UpdateBankAccount(bankAccount);
 
             return true;
@@ -99,7 +99,7 @@ namespace MDC.Infrastructure.Services
                 return false;
             }
 
-            bankAccount.Cash += Math.Round(amount, 2);
+            bankAccount.Cash += RoundNumber(amount);
             UpdateBankAccount(bankAccount);
 
             return true;
@@ -114,7 +114,7 @@ namespace MDC.Infrastructure.Services
                 return false;
             }
 
-            bankAccount.Debit += Math.Round(amount, 2);
+            bankAccount.Debit += RoundNumber(amount);
             UpdateBankAccount(bankAccount);
 
             return true;
@@ -129,7 +129,7 @@ namespace MDC.Infrastructure.Services
                 return false;
             }
 
-            bankAccount.Credit += Math.Round(amount, 2);
+            bankAccount.Credit += RoundNumber(amount);
             UpdateBankAccount(bankAccount);
 
             return true;
@@ -193,6 +193,11 @@ namespace MDC.Infrastructure.Services
                 Credit = 0.00,
                 PaymentMethod = PaymentMethod.Cash
             };
+        }
+
+        private double RoundNumber(double number)
+        {
+            return Math.Round(number, Defaults.MoneyRoundDigitsAmount);
         }
 
         private void UpdateBankAccount(BankAccount bankAccount)
