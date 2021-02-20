@@ -3,7 +3,7 @@ namespace minepark\modules;
 
 use minepark\utils\CallbackTask;
 use minepark\Core;
-use minepark\Permissions;
+use minepark\defaults\Permissions;
 
 use minepark\player\implementations\MineParkPlayer;
 use pocketmine\Server;

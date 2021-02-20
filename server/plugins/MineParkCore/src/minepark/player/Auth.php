@@ -7,8 +7,8 @@ use minepark\player\implementations\MineParkPlayer;
 
 use minepark\utils\CallbackTask;
 use minepark\Mapper;
-use minepark\mdc\dtos\PasswordDto;
-use minepark\mdc\sources\UsersSource;
+use minepark\models\dtos\PasswordDto;
+use minepark\providers\data\UsersSource;
 
 class Auth
 {

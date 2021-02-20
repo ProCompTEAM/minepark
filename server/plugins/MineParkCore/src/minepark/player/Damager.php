@@ -3,13 +3,13 @@ namespace minepark\player;
 
 use minepark\Api;
 use minepark\Core;
-use minepark\Permissions;
 use minepark\Mapper;
-use minepark\player\implementations\MineParkPlayer;
 use pocketmine\utils\Config;
 use pocketmine\entity\Effect;
 use pocketmine\entity\Entity;
+use minepark\defaults\Permissions;
 use pocketmine\entity\EffectInstance;
+use minepark\player\implementations\MineParkPlayer;
 
 class Damager
 {

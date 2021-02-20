@@ -2,9 +2,9 @@
 namespace minepark\player;
 
 use minepark\Core;
-use minepark\mdc\dtos\BankTransactionDto;
 use minepark\mdc\dtos\PaymentMethodDto;
-use minepark\mdc\sources\BankingSource;
+use minepark\mdc\dtos\BankTransactionDto;
+use minepark\providers\data\BankingSource;
 use minepark\player\implementations\MineParkPlayer;
 
 class Bank
