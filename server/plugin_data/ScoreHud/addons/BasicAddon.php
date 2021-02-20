@@ -50,8 +50,6 @@ namespace JackMD\ScoreHud\Addons
 
 		public function onEnable(): void{
 			$this->core = $this->getServer()->getPluginManager()->getPlugin("MineParkCore");
-			$callbackTask = new CallbackTask([$this, "updatePlayersMoney"]);
-			$this->core->getScheduler()->scheduleRepeatingTask($callbackTask, 20 * 6);
 		}
 		
 		public function getProcessedTags(Player $player) : array
@@ -59,7 +57,7 @@ namespace JackMD\ScoreHud\Addons
 			return [
 				"{line1}" => $this->getTranslation($player, "ScoreBoard1") . count($player->getServer()->getOnlinePlayers()),
 				"{line2}" => $this->getTranslation($player, "ScoreBoard2") . date($this->getScoreHud()->getConfig()->get("time-format")),
-				"{line3}" => $this->getTranslation($player, "ScoreBoard3") . $this->getMoney($player),
+				"{line3}" => $this->getTranslation($player, "ScoreBoard3"),
 				"{line4}" => $this->getTranslation($player, "ScoreBoard4"),
 				"{line5}" => $this->getTranslation($player, "ScoreBoard5"),
 				"{line6}" => $this->getTranslation($player, "ScoreBoard6"),
@@ -73,31 +71,17 @@ namespace JackMD\ScoreHud\Addons
 		{
 			return $this->getCore()->getLocalizer()->take($player->locale, $key);
 		}
-		
-		public function getMoney(Player $player) : float
-		{
-			if (!isset($this->money[$player->getName()])) {
-				$this->money[$player->getName()] = $this->core->getBank()->getAllMoney($player);
-			}
-
-			return $this->money[$player->getName()];
-		}
 
 		public function updatePlayersMoney()
 		{
 			foreach ($this->getServer()->getOnlinePlayers() as $player) {
-				$money[$player->getName()] = $this->core->getBank()->getAllMoney($player);
+				$this->money[$player->getName()] = $this->core->getBank()->getAllMoney($player);
 			}
 		}
 
 		protected function getCore() : Core
 		{
 			return Core::getActive();
-		}
-
-		protected function getBank() : Bank
-		{
-			return $this->getCore()->getBank();
 		}
 	}
 }

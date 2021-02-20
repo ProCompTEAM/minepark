@@ -35,8 +35,10 @@ class Bank
 		}
 	}
 	
-	public function takePlayerMoney(MineParkPlayer $player, float $money, bool $label = true)
+	public function takePlayerMoney(MineParkPlayer $player, float $money, bool $label = true) : bool
 	{
+		$status = false;
+
 		switch($player->getStatesMap()->paymentMethod) {
 			case self::PAYMENT_METHOD_CASH:
 				$status = $this->reduceCash($player, $money);
@@ -57,8 +59,10 @@ class Bank
 		return $status;
 	}
 	
-	public function givePlayerMoney(MineParkPlayer $player, float $money, bool $label = true)
+	public function givePlayerMoney(MineParkPlayer $player, float $money, bool $label = true) : bool
 	{ 
+		$status = false;
+
 		switch($player->getStatesMap()->paymentMethod) {
 			case self::PAYMENT_METHOD_CASH:
 				$status = $this->giveCash($player, $money);
@@ -155,10 +159,6 @@ class Bank
 
 	public function initializePlayerPaymentMethod(MineParkPlayer $player)
 	{
-		if ($player->getStatesMap()->isNew) {
-			return;
-		}
-
 		$player->getStatesMap()->paymentMethod = $this->getRemoteSource()->getPaymentMethod($player->getName());
 	}
 

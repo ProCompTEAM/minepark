@@ -1,8 +1,6 @@
-using System;
-
 namespace MDC.Data.Enums
 {
-    public enum PaymentMethod : Int32
+    public enum PaymentMethod : int
     {
         Cash = 1,
 

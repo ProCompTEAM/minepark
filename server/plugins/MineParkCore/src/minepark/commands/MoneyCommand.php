@@ -28,8 +28,13 @@ class MoneyCommand extends Command
 
     public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
-        $money = $this->getCore()->getBank()->getPlayerMoney($player);
-        $player->sendLocalizedMessage("{CommandMoneyPart1}". $money . "{CommandMoneyPart2}");
+        $cash = $this->getCore()->getBank()->getCash($player);
+        $debit = $this->getCore()->getBank()->getDebit($player);
+        $credit = $this->getCore()->getBank()->getCredit($player);
+
+        $player->sendMessage("§2→ Наличные§e $cash §3рублей.");
+        $player->sendMessage("§3→ На карте§e $debit §3рублей.");
+        $player->sendMessage("§4→ В кредит§e $credit §3рублей.");
     }
 }
 ?>

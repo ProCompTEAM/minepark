@@ -43,11 +43,11 @@ class PayDay
 			$summ = ($salary + $special);
 
 			if($summ > 0) {
-				$this->getCore()->getBank()->givePlayerMoney($player, $summ, false);
+				$this->getCore()->getBank()->giveDebit($player, $summ);
 			}
 
 			if($summ < 0) {
-				$this->getCore()->getBank()->takePlayerMoney($player, $summ);
+				$this->getCore()->getBank()->reduceDebit($player, $summ);
 			}
 
 			$this->sendForm($player, $salary, $special, $summ);

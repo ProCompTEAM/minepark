@@ -3,6 +3,7 @@ namespace minepark\commands;
 
 use jojoe77777\FormAPI\SimpleForm;
 use minepark\defaults\Permissions;
+use minepark\player\Bank;
 use minepark\player\implementations\MineParkPlayer;
 use pocketmine\event\Event;
 use pocketmine\form\Form;
@@ -31,13 +32,17 @@ class BankCommand extends Command
         $player->sendForm($form);
     }
 
-    public function answerForm(MineParkPlayer $player, ?int $data=null)
+    public function answerForm(MineParkPlayer $player, ?int $data = null)
     {
         if (is_null($data)) {
             return;
         }
 
-        if ($data < 0 || $data > 2) {
+        $paymentMethod = $data + 1;
+
+        if ($paymentMethod != Bank::PAYMENT_METHOD_CASH
+                and $paymentMethod != Bank::PAYMENT_METHOD_DEBIT
+                    and $paymentMethod != Bank::PAYMENT_METHOD_CREDIT) {
             return $player->sendMessage("CommandBankError2");
         }
 

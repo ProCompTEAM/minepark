@@ -128,10 +128,6 @@
     "CommandLevelInvalid": "Мир с таким названием не был найден!",
 
 
-    "CommandMoneyPart1": "§3→ На вашей карте §e",
-    "CommandMoneyPart2": " §3рублей.",
-
-
     "CommandOnlineNoAdmins": "Сейчас нет администраторов в сети, но это не повод вести себя плохо :)",
     "CommandOnlineMessage": "Администрация в сети: ",
 
@@ -341,7 +337,7 @@
 
     "ScoreBoard1": "§eПосетителей: §a",
     "ScoreBoard2": "§eВремя МСК:  §c",
-    "ScoreBoard3": "§eБаланс: §9",
+    "ScoreBoard3": "§bБаланс: §6/money",
     "ScoreBoard4": "§dRolePlay: §7/me <д-е>",
     "ScoreBoard5": "§dРадиостанция: §3/radio",
     "ScoreBoard6": "§dКричать: §7/s <сообщ>",
