@@ -2,12 +2,13 @@
 namespace minepark\commands;
 
 use minepark\Api;
-use minepark\defaults\Permissions;
+use minepark\Mapper;
 
-use minepark\player\implementations\MineParkPlayer;
+use minepark\Providers;
 use pocketmine\event\Event;
 use pocketmine\level\Position;
-use minepark\Mapper;
+use minepark\defaults\Permissions;
+use minepark\common\player\MineParkPlayer;
 
 class JailExitCommand extends Command
 {
@@ -38,7 +39,7 @@ class JailExitCommand extends Command
             return;
         }
         
-        if($this->getCore()->getBank()->takePlayerMoney($player, self::FREE_PRICE)) {
+        if(Providers::getBankingProvider()->takePlayerMoney($player, self::FREE_PRICE)) {
             $this->getCore()->getChatter()->send($player, "{CommandJailExit}", "§d", self::DOOR_DISTANCE);
 
             $this->getCore()->getApi()->changeAttr($player, "A", false);

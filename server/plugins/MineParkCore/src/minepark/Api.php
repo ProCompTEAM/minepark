@@ -1,8 +1,10 @@
 <?php
 namespace minepark;
 
+use minepark\defaults\Files;
 use pocketmine\level\Position;
-use minepark\player\implementations\MineParkPlayer;
+use minepark\defaults\Permissions;
+use minepark\common\player\MineParkPlayer;
 
 class Api
 {
@@ -11,42 +13,23 @@ class Api
 	public const ATTRIBUTE_WANTED = 'W';
 	public const ATTRIBUTE_BOSS = 'B';
 
-	public function getCore() : Core
-	{
-		return Core::getActive();
-	}
-	
-	public function getName() : string
-	{
-		return "MinePark";
-	}
-
-	public function getChatLabel() : string
-	{
-		return "§6MINE§aPARK§8.§eRU §7▶ ";
-	}
-
-	public function getSite() : string
-	{
-		return "http://minepark.ru/";
-	}
-	
 	public function getPrefix($pId, $withColor = false) : string
 	{
 		$form = null;
 
 		switch($pId)
 		{
-            case 1: $form = "§0Неизвестный" ; break;
-            case 2: $form = "§5Оператор" ; break;
-            case 3: $form = "§6Заключенный" ; break;
-            case 4: $form = "§2Рабочий" ; break;
-            case 5: $form = "§cДоктор" ; break;
-            case 6: $form = "§aГос. Служащий" ; break;
-            case 7: $form = "§3Служба Охраны" ; break;
-            case 8: $form = "§dПродавец" ; break;
-            case 9: $form = "§eЮрист" ; break;
+            case 1:  $form = "§0Неизвестный" ; break;
+            case 2:  $form = "§5Оператор" ; break;
+            case 3:  $form = "§6Заключенный" ; break;
+            case 4:  $form = "§2Рабочий" ; break;
+            case 5:  $form = "§cДоктор" ; break;
+            case 6:  $form = "§aГос. Служащий" ; break;
+            case 7:  $form = "§3Служба Охраны" ; break;
+            case 8:  $form = "§dПродавец" ; break;
+            case 9:  $form = "§eЮрист" ; break;
             case 10: $form = "§4Служба Спасения"; break;
+
 			default: return "§f"; break;
 		}
 
@@ -131,7 +114,7 @@ class Api
 	
 	public function sendToMessagesLog(string $prefix, string $message)
 	{
-		file_put_contents(Core::MESSAGES_LOG_FILE, (PHP_EOL . "(" . $prefix . ") - " . $message), FILE_APPEND);
+		file_put_contents(Files::MESSAGES_LOG_FILE, (PHP_EOL . "(" . $prefix . ") - " . $message), FILE_APPEND);
 	}
 
 	public function removeDefaultServerCommand($commandName)
@@ -140,6 +123,11 @@ class Api
 		$cmd = $commandMap->getCommand($commandName);
 		$cmd->unregister($commandMap);
 		$commandMap->unregister($cmd);
+	}
+
+	private function getCore() : Core
+	{
+		return Core::getActive();
 	}
 }
 ?>

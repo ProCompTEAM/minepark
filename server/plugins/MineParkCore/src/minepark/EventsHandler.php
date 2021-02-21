@@ -2,16 +2,16 @@
 namespace minepark;
 
 use pocketmine\tile\Sign;
-use minepark\player\Chatter;
 
+use minepark\modules\GameChat;
 use pocketmine\block\SignPost;
 use pocketmine\block\WallSign;
 use pocketmine\event\Listener;
 use minepark\utils\FixSignEvent;
-use minepark\providers\data\UsersSource;
-use minepark\player\implementations\MineParkPlayer;
 use pocketmine\entity\object\Painting;
 use pocketmine\event\block\BlockEvent;
+use minepark\providers\data\UsersSource;
+use minepark\common\player\MineParkPlayer;
 use pocketmine\event\level\ChunkLoadEvent;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockPlaceEvent;
@@ -82,9 +82,9 @@ class EventsHandler implements Listener
 			return;
 		}
 		
-		if($e->getMessage()[0] == Chatter::GLOBAL_CHAT_SIGNATURE) {
+		if($e->getMessage()[0] == GameChat::GLOBAL_CHAT_SIGNATURE) {
 			$this->getCore()->getChatter()->sendGlobal($e->getPlayer(), $e->getMessage());
-		} elseif($e->getMessage()[0] == Chatter::ADMINISTRATION_CHAT_SIGNATURE) {
+		} elseif($e->getMessage()[0] == GameChat::ADMINISTRATION_CHAT_SIGNATURE) {
 			$this->getCore()->getChatter()->sendForAdministration($e->getPlayer(), $e->getMessage());
 		} else {
 			$this->getCore()->getChatter()->send($e->getPlayer(), $e->getMessage());

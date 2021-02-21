@@ -1,11 +1,12 @@
 <?php
 namespace minepark\modules\organisations\command;
 
-use minepark\modules\organisations\Organisations;
-use minepark\defaults\Permissions;
-
-use minepark\player\implementations\MineParkPlayer;
+use minepark\Providers;
 use pocketmine\event\Event;
+
+use minepark\defaults\Permissions;
+use minepark\common\player\MineParkPlayer;
+use minepark\modules\organisations\Organisations;
 
 class ChangeNameCommand extends OrganisationsCommand
 {
@@ -68,7 +69,7 @@ class ChangeNameCommand extends OrganisationsCommand
         $this->getCore()->getProfiler()->saveProfile($toPlayer);
         $toPlayer->sendTip("§aпоздравляем!","§9$oldname §7>>> §e".$toPlayer->getProfile()->fullName, 5);
 
-        $this->getCore()->getBank()->givePlayerMoney($government, 10);
+        Providers::getBankingProvider()->givePlayerMoney($government, 10);
         $government->sendLocalizedMessage("{CommandChangeName}".$toPlayer->getProfile()->fullName);
     }
 

@@ -1,5 +1,5 @@
 <?php
-namespace minepark\player;
+namespace minepark\modules;
 
 use minepark\Api;
 use minepark\Core;
@@ -9,7 +9,7 @@ use pocketmine\entity\Effect;
 use pocketmine\entity\Entity;
 use minepark\defaults\Permissions;
 use pocketmine\entity\EffectInstance;
-use minepark\player\implementations\MineParkPlayer;
+use minepark\common\player\MineParkPlayer;
 
 class Damager
 {

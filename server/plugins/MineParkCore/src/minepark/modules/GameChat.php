@@ -1,12 +1,12 @@
 <?php
-namespace minepark\player;
+namespace minepark\modules;
 
-use minepark\player\implementations\MineParkPlayer;
+use minepark\common\player\MineParkPlayer;
 
 use minepark\Core;
 use minepark\defaults\Sounds;
 
-class Chatter
+class GameChat
 {
 	public const GLOBAL_CHAT_SIGNATURE = '!';
 	public const ADMINISTRATION_CHAT_SIGNATURE = '@';

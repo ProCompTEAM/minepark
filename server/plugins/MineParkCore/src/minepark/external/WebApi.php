@@ -2,6 +2,7 @@
 namespace minepark\external;
 
 use minepark\Core;
+use minepark\defaults\Files;
 use minepark\utils\CallbackTask;
 
 class WebApi
@@ -51,7 +52,7 @@ class WebApi
         $this->getCore()->getLogger()->info("[webapi] " . $message);
 
         $note = date("d.m.Y H:i:s") . " > " . $message . PHP_EOL;
-        file_put_contents(Core::WEBAPI_LOG_FILE, $note, FILE_APPEND);
+        file_put_contents(Files::WEBAPI_LOG_FILE, $note, FILE_APPEND);
     }
 
     private function getAddress($connection) : string

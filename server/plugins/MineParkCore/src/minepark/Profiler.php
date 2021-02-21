@@ -2,7 +2,7 @@
 namespace minepark;
 
 use minepark\providers\data\UsersSource;
-use minepark\player\implementations\MineParkPlayer;
+use minepark\common\player\MineParkPlayer;
 
 class Profiler
 {

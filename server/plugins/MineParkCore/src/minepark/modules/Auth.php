@@ -1,9 +1,9 @@
 <?php
-namespace minepark\player;
+namespace minepark\modules;
 
 use minepark\Api;
 use minepark\Core;
-use minepark\player\implementations\MineParkPlayer;
+use minepark\common\player\MineParkPlayer;
 
 use minepark\utils\CallbackTask;
 use minepark\Mapper;

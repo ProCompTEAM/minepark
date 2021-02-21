@@ -3,11 +3,12 @@ namespace minepark\commands\admin;
 
 use minepark\defaults\Sounds;
 
-use minepark\player\implementations\MineParkPlayer;
+use minepark\common\player\MineParkPlayer;
 use minepark\defaults\Permissions;
 
 use pocketmine\event\Event;
 use minepark\commands\Command;
+use minepark\defaults\Defaults;
 
 class AdminCommand extends Command
 {
@@ -95,7 +96,7 @@ class AdminCommand extends Command
 
         foreach($this->getCore()->getServer()->getOnlinePlayers() as $p) {
             $num = $this->getCore()->getPhone()->getNumber($p);
-            $this->getCore()->getPhone()->sendMessage($num, $text, $this->getCore()->getApi()->getName());
+            $this->getCore()->getPhone()->sendMessage($num, $text, Defaults::CONTEXT_NAME);
         }
     }
 
@@ -106,7 +107,7 @@ class AdminCommand extends Command
         }
 
         $oid = $args[2];
-        $targetPlayer = $this->getCore()->getServer()->getPlayer($args[1]);
+        $targetPlayer = MineParkPlayer::cast($this->getCore()->getServer()->getPlayer($args[1]));
         
 		if($targetPlayer === null) {
             return;
@@ -155,7 +156,7 @@ class AdminCommand extends Command
             return;
         }
 
-        $targetPlayer = $this->getCore()->getServer()->getPlayer($args[1]);
+        $targetPlayer = MineParkPlayer::cast($this->getCore()->getServer()->getPlayer($args[1]));
 
 		if($targetPlayer === null) {
             return;

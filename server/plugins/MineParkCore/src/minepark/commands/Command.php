@@ -3,7 +3,7 @@ namespace minepark\commands;
 
 use minepark\Core;
 
-use minepark\player\implementations\MineParkPlayer;
+use minepark\common\player\MineParkPlayer;
 use pocketmine\event\Event;
 
 abstract class Command

@@ -4,7 +4,7 @@ namespace minepark\commands\map;
 use minepark\Mapper;
 
 use minepark\defaults\Sounds;
-use minepark\player\implementations\MineParkPlayer;
+use minepark\common\player\MineParkPlayer;
 use minepark\defaults\Permissions;
 use pocketmine\event\Event;
 

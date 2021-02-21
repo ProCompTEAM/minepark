@@ -1,11 +1,12 @@
 <?php
 namespace minepark\commands;
 
-use minepark\player\implementations\MineParkPlayer;
+use minepark\Providers;
 use pocketmine\event\Event;
 use pocketmine\level\Position;
 
 use minepark\defaults\Permissions;
+use minepark\common\player\MineParkPlayer;
 
 class CasinoCommand extends Command
 {
@@ -39,10 +40,10 @@ class CasinoCommand extends Command
             return;
         }
 
-        if($this->getCore()->getBank()->takePlayerMoney($player, $args[0], false))
+        if(Providers::getBankingProvider()->takePlayerMoney($player, $args[0], false))
         {
             if(mt_rand(1, self::CASINO_CHANCE) == 1) {
-                $this->getCore()->getBank()->givePlayerMoney($player, $args[0] * 2);
+                Providers::getBankingProvider()->givePlayerMoney($player, $args[0] * 2);
                 $player->sendMessage("CommandCasinoWin");
             } else { 
                 $player->sendMessage("CommandCasinoLose");

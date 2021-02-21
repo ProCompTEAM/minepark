@@ -3,7 +3,7 @@ namespace minepark\commands;
 
 use minepark\modules\organisations\Organisations;
 use minepark\defaults\Sounds;
-use minepark\player\implementations\MineParkPlayer;
+use minepark\common\player\MineParkPlayer;
 use minepark\defaults\Permissions;
 
 use pocketmine\event\Event;

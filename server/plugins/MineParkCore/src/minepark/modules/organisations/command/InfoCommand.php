@@ -5,7 +5,7 @@ use minepark\modules\organisations\Organisations;
 use minepark\defaults\Permissions;
 use minepark\Api;
 
-use minepark\player\implementations\MineParkPlayer;
+use minepark\common\player\MineParkPlayer;
 use pocketmine\event\Event;
 
 class InfoCommand extends OrganisationsCommand

@@ -1,21 +1,21 @@
 <?php
-namespace minepark\player;
+namespace minepark\providers;
 
 use minepark\Core;
+use minepark\Providers;
+use minepark\defaults\Defaults;
+use minepark\providers\base\Provider;
 
-class Localizer
+class LocalizationProvider extends Provider
 {
-    public const DEFAULT_LANGUAGE_KEY = "ru_RU";
-    public const INTERNATIONAL_LANGUAGE_KEY = "en_US";
-
     private $supportedLanguages;
     private $data;
 
     public static function translate(string $langKey, string $content) : string
     {
         return strpos($content, "{") !== false
-            ? Core::getActive()->getLocalizer()->translateFrom($langKey, $content)
-            : Core::getActive()->getLocalizer()->take($langKey, $content) ?? $content;
+            ? Providers::getLocalizationProvider()->translateFrom($langKey, $content)
+            : Providers::getLocalizationProvider()->take($langKey, $content) ?? $content;
     }
 
     public function __construct()
@@ -27,11 +27,6 @@ class Localizer
         $this->initialize();
 	}
 
-	public function getCore() : Core
-	{
-		return Core::getActive();
-    }
-    
     public function getLanguages() : array
 	{
 		return [
@@ -54,7 +49,7 @@ class Localizer
     public function take(string $langKey, string $stringKey) : ?string
 	{
         if(!isset($this->data[$langKey])) {
-            $langKey = self::INTERNATIONAL_LANGUAGE_KEY;
+            $langKey = Defaults::INTERNATIONAL_LANGUAGE_KEY;
         }
 
 		return $this->takeValue($langKey, $stringKey);
@@ -63,8 +58,8 @@ class Localizer
     public function getKeyArray(string $langKey, string $arrayKey) : ?array
     {
         if(!isset($this->data[$langKey][$arrayKey]) ) {
-            return isset($this->data[self::DEFAULT_LANGUAGE_KEY][$arrayKey]) && is_array($this->data[self::DEFAULT_LANGUAGE_KEY][$arrayKey])
-                ? $this->data[self::DEFAULT_LANGUAGE_KEY][$arrayKey]
+            return isset($this->data[Defaults::DEFAULT_LANGUAGE_KEY][$arrayKey]) && is_array($this->data[Defaults::DEFAULT_LANGUAGE_KEY][$arrayKey])
+                ? $this->data[Defaults::DEFAULT_LANGUAGE_KEY][$arrayKey]
                 : null;
         }
 
@@ -109,7 +104,7 @@ class Localizer
 
     private function getDirectory() : string
     {
-        return $this->getCore()->getTargetDirectory() . "lang/";
+        return Core::getActive()->getTargetDirectory() . "lang/";
     }
 
     private function initialize()
@@ -130,8 +125,8 @@ class Localizer
     private function takeValue(string $langKey, string $stringKey) : ?string
     {
         if(!isset($this->data[$langKey][$stringKey])) {
-            return isset($this->data[self::DEFAULT_LANGUAGE_KEY][$stringKey])
-                ? $this->data[self::DEFAULT_LANGUAGE_KEY][$stringKey]
+            return isset($this->data[Defaults::DEFAULT_LANGUAGE_KEY][$stringKey])
+                ? $this->data[Defaults::DEFAULT_LANGUAGE_KEY][$stringKey]
                 : null;
         }
 

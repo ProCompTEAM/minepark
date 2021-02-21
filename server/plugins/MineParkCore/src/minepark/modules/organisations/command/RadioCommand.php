@@ -1,7 +1,7 @@
 <?php
 namespace minepark\modules\organisations\command;
 
-use minepark\player\implementations\MineParkPlayer;
+use minepark\common\player\MineParkPlayer;
 use pocketmine\event\Event;
 
 use minepark\defaults\Permissions;

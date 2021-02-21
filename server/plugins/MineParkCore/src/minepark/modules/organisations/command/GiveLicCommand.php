@@ -4,7 +4,7 @@ namespace minepark\modules\organisations\command;
 use minepark\modules\organisations\Organisations;
 use minepark\defaults\Permissions;
 
-use minepark\player\implementations\MineParkPlayer;
+use minepark\common\player\MineParkPlayer;
 use pocketmine\event\Event;
 
 class GiveLicCommand extends OrganisationsCommand

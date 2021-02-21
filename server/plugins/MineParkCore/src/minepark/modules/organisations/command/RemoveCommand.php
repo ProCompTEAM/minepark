@@ -4,7 +4,7 @@ namespace minepark\modules\organisations\command;
 use minepark\defaults\Permissions;
 use minepark\Api;
 
-use minepark\player\implementations\MineParkPlayer;
+use minepark\common\player\MineParkPlayer;
 use pocketmine\event\Event;
 
 class RemoveCommand extends OrganisationsCommand

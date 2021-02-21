@@ -2,45 +2,39 @@
 namespace minepark;
 
 use minepark\Api;
+use minepark\Mapper;
+use minepark\Profiler;
+use minepark\Providers;
 use minepark\common\MDC;
 use minepark\modules\GPS;
-use minepark\player\Auth;
-use minepark\player\Bank;
+use minepark\modules\Auth;
 use minepark\EventsHandler;
 use minepark\modules\Phone;
+use minepark\defaults\Files;
 use minepark\modules\PayDay;
-use minepark\player\Chatter;
-use minepark\player\Damager;
 use minepark\CommandsHandler;
 use minepark\external\WebApi;
+use minepark\modules\Damager;
 use minepark\modules\Tracker;
 use minepark\modules\FastFood;
+use minepark\modules\GameChat;
 use minepark\modules\Reporter;
-use minepark\player\Localizer;
 use pocketmine\event\Listener;
 use jojoe77777\FormAPI\FormAPI;
+use minepark\defaults\Defaults;
 use minepark\modules\StatusBar;
 use pocketmine\command\Command;
-use minepark\player\Initializer;
+use minepark\modules\Initializer;
 use pocketmine\plugin\PluginBase;
 use minepark\modules\NotifyPlayers;
+use minepark\modules\WorldProtector;
 use pocketmine\command\CommandSender;
 use minepark\external\service\Service;
 use pocketmine\command\ConsoleCommandSender;
 use minepark\modules\organisations\Organisations;
-use minepark\modules\WorldProtector;
 
 class Core extends PluginBase implements Listener
 {
-	public const SERVER_LOBBY_ADDRESS = "minepark.ru";
-	public const SERVER_LOBBY_PORT = 19132;
-
-	public const DEFAULT_DIRECTORY = "core_data/";
-	public const DEFAULT_DIRECTORY_STRINGS = "core_data/strings/";
-
-	public const MESSAGES_LOG_FILE = "msg-log.txt";
-	public const WEBAPI_LOG_FILE = "webapi-log.txt";
-
 	private static $_core;
 
 	private $eventsHandler;
@@ -51,12 +45,10 @@ class Core extends PluginBase implements Listener
 	private $scmd;
 	private $organisations;
 	private $service;
-	private $bank;
 	private $profiler;
 	private $mapper;
 	private $chatter;
 	private $initializer;
-	private $localizer;
 	private $damager;
 	private $reporter;
 	private $protector;
@@ -85,12 +77,14 @@ class Core extends PluginBase implements Listener
 
 		$this->initialize();
 
-		if(!file_exists(self::DEFAULT_DIRECTORY)) {
-			mkdir(self::DEFAULT_DIRECTORY);
+		Providers::initializeAll();
+
+		if(!file_exists(Files::DEFAULT_DIRECTORY)) {
+			mkdir(Files::DEFAULT_DIRECTORY);
 		}
 
-		if(!file_exists(self::DEFAULT_DIRECTORY_STRINGS)) {
-			mkdir(self::DEFAULT_DIRECTORY_STRINGS);
+		if(!file_exists(Files::DEFAULT_DIRECTORY_STRINGS)) {
+			mkdir(Files::DEFAULT_DIRECTORY_STRINGS);
 		}
 
 		$this->applyServerSettings();
@@ -99,7 +93,7 @@ class Core extends PluginBase implements Listener
 	public function onDisable()
 	{
 		foreach($this->getServer()->getOnlinePlayers() as $player) {
-			$player->transfer(self::SERVER_LOBBY_ADDRESS, self::SERVER_LOBBY_PORT);
+			$player->transfer(Defaults::SERVER_LOBBY_ADDRESS, Defaults::SERVER_LOBBY_PORT);
 		}
 	}
 
@@ -121,12 +115,10 @@ class Core extends PluginBase implements Listener
 		$this->scmd = new CommandsHandler;
 		$this->organisations = new Organisations;
 		$this->service = new Service;
-		$this->bank = new Bank;
 		$this->profiler = new Profiler;
 		$this->mapper = new Mapper;
-		$this->chatter = new Chatter;
+		$this->chatter = new GameChat;
 		$this->initializer = new Initializer;
-		$this->localizer = new Localizer;
 		$this->damager = new Damager;
 		$this->protector = new WorldProtector;
 		$this->phone = new Phone;
@@ -143,7 +135,7 @@ class Core extends PluginBase implements Listener
 
 	public function getTargetDirectory(bool $strings = false) : string
 	{
-		return $strings ? self::DEFAULT_DIRECTORY_STRINGS : self::DEFAULT_DIRECTORY;
+		return $strings ? Files::DEFAULT_DIRECTORY_STRINGS : Files::DEFAULT_DIRECTORY;
 	}
 
 	public function getMDC() : MDC
@@ -186,11 +178,6 @@ class Core extends PluginBase implements Listener
 		return $this->organisations;
 	}
 
-	public function getBank() : Bank
-	{
-		return $this->bank;
-	}
-
 	public function getProfiler() : Profiler
 	{
 		return $this->profiler;
@@ -201,7 +188,7 @@ class Core extends PluginBase implements Listener
 		return $this->mapper;
 	}
 	
-	public function getChatter() : Chatter
+	public function getChatter() : GameChat
 	{
 		return $this->chatter;
 	}
@@ -209,11 +196,6 @@ class Core extends PluginBase implements Listener
 	public function getInitializer() : Initializer
 	{
 		return $this->initializer;
-	}
-
-	public function getLocalizer() : Localizer
-	{
-		return $this->localizer;
 	}
 
 	public function getDamager() : Damager

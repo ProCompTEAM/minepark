@@ -1,35 +1,28 @@
 <?php
-namespace minepark\player;
+namespace minepark\providers;
 
 use minepark\Core;
+use minepark\providers\base\Provider;
+use minepark\common\player\MineParkPlayer;
+use minepark\defaults\PaymentMethods;
 use minepark\models\dtos\PaymentMethodDto;
 use minepark\providers\data\BankingSource;
 use minepark\models\dtos\BankTransactionDto;
-use minepark\player\implementations\MineParkPlayer;
 
-class Bank
+class BankingProvider extends Provider
 {
-	public const PREFIX = "[BANK] ";
-
-	public const PAYMENT_METHOD_CASH = 1;
-	public const PAYMENT_METHOD_DEBIT = 2;
-	public const PAYMENT_METHOD_CREDIT = 3;
-
-	public function getCore() : Core
-	{
-		return Core::getActive();
-	}
+	private const PREFIX = "[BANK] ";
 	
 	public function getPlayerMoney(MineParkPlayer $player) : float
 	{
 		switch($player->getStatesMap()->paymentMethod) {
-			case self::PAYMENT_METHOD_CASH:
+			case PaymentMethods::CASH:
 				return $this->getCash($player);
 			break;
-			case self::PAYMENT_METHOD_DEBIT:
+			case PaymentMethods::DEBIT:
 				return $this->getDebit($player);
 			break;
-			case self::PAYMENT_METHOD_CREDIT:
+			case PaymentMethods::CREDIT:
 				return $this->getCredit($player);
 			break;
 		}
@@ -40,20 +33,20 @@ class Bank
 		$status = false;
 
 		switch($player->getStatesMap()->paymentMethod) {
-			case self::PAYMENT_METHOD_CASH:
+			case PaymentMethods::CASH:
 				$status = $this->reduceCash($player, $money);
 			break;
-			case self::PAYMENT_METHOD_DEBIT:
+			case PaymentMethods::DEBIT:
 				$status = $this->reduceDebit($player, $money);
 			break;
-			case self::PAYMENT_METHOD_CREDIT:
+			case PaymentMethods::CREDIT:
 				$status = $this->reduceCredit($player, $money);
 			break;
 		}
 	
 		if ($label and $status) {
-			$player->sendMessage(self::PREFIX."§eС вашего счета списано рублей: " . $money);
-			$player->sendMessage(self::PREFIX."§bТекущий остаток на карте: " . $this->getPlayerMoney($player) . "руб");
+			$player->sendMessage(self::PREFIX . "§eС вашего счета списано рублей: " . $money);
+			$player->sendMessage(self::PREFIX . "§bТекущий остаток на карте: " . $this->getPlayerMoney($player) . "руб");
 		}
 		
 		return $status;
@@ -64,20 +57,20 @@ class Bank
 		$status = false;
 
 		switch($player->getStatesMap()->paymentMethod) {
-			case self::PAYMENT_METHOD_CASH:
+			case PaymentMethods::CASH:
 				$status = $this->giveCash($player, $money);
 			break;
-			case self::PAYMENT_METHOD_DEBIT:
+			case PaymentMethods::DEBIT:
 				$status = $this->giveDebit($player, $money);
 			break;
-			case self::PAYMENT_METHOD_CREDIT:
+			case PaymentMethods::CREDIT:
 				$status = $this->giveCredit($player, $money);
 			break;
 		}
 		
 		if ($label and $status) {
-			$player->sendMessage(self::PREFIX."§aНа ваш счет зачислена сумма в рублях: " . $money);
-			$player->sendMessage(self::PREFIX."§2Текущий остаток на карте: §a" . $this->getPlayerMoney($player) . "руб");
+			$player->sendMessage(self::PREFIX . "§aНа ваш счет зачислена сумма в рублях: " . $money);
+			$player->sendMessage(self::PREFIX . "§2Текущий остаток на карте: §a" . $this->getPlayerMoney($player) . "руб");
 		}
 		
 		return $status;
@@ -180,7 +173,7 @@ class Bank
 
 	private function getRemoteSource() : BankingSource
 	{
-		return $this->getCore()->getMDC()->getSource(BankingSource::ROUTE);
+		return Core::getActive()->getMDC()->getSource(BankingSource::ROUTE);
 	}
 }
 ?>

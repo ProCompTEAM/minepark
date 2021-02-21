@@ -2,7 +2,7 @@
 namespace minepark\modules\organisations;
 
 use minepark\Core;
-use minepark\player\implementations\MineParkPlayer;
+use minepark\common\player\MineParkPlayer;
 use pocketmine\item\Item;
 use pocketmine\tile\Sign;
 use pocketmine\utils\Config;

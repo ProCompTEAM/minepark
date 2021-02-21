@@ -3,13 +3,14 @@ namespace minepark\modules;
 
 use minepark\Core;
 use minepark\Mapper;
+use minepark\Providers;
+
 use pocketmine\math\Vector3;
 
 use minepark\utils\CallbackTask;
-
 use minepark\providers\data\PhonesSource;
+use minepark\common\player\MineParkPlayer;
 use minepark\modules\organisations\Organisations;
-use minepark\player\implementations\MineParkPlayer;
 
 class Phone
 {
@@ -126,7 +127,7 @@ class Phone
 			$player = MineParkPlayer::cast($player);
 			if($player->getStatesMap()->phoneRcv != null) {
 				if($this->hasStream($player->getStatesMap()->phoneRcv->getPosition())) {
-					if(!$this->getCore()->getBank()->takePlayerMoney($player, 20)) {
+					if(!Providers::getBankingProvider()->takePlayerMoney($player, 20)) {
 						$player->sendMessage("PhoneSmsContinueNoMoney");
 						$player->sendMessage("PhoneSmsErrorNet");
 
@@ -241,7 +242,7 @@ class Phone
 				$player->sendMessage("PhoneCalling3");
 			}
 		} else {
-			if($this->getCore()->getBank()->takePlayerMoney($player, 20)) {
+			if(Providers::getBankingProvider()->takePlayerMoney($player, 20)) {
 				$this->getCore()->getChatter()->send($targetPlayer, "{PhoneSmsBeep}", "§d : ", 10);
 
 				$sms = $this->sendMessage($number, $this->getCore()->getApi()->getFromArray($commandArgs, 2), $myNumber);
