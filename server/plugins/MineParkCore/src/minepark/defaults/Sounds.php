@@ -3,16 +3,16 @@ namespace minepark\defaults;
 
 class Sounds 
 {
-    const CHAT_SOUND = "minepark.sound1";
+    public const CHAT_SOUND = "minepark.sound1";
 
-    const SIREN_SOUND = "minepark.sound5";
+    public const ENABLE_PHONE = "minepark.sound2";
 
-    const OPEN_NAVIGATOR = "minepark.sound3";
+    public const OPEN_NAVIGATOR = "minepark.sound3";
 
-    const ROLEPLAY = "minepark.sound4";
+    public const ROLEPLAY = "minepark.sound4";
 
-    const PASSPORT_OPEN = "minepark.sound4";
-    
-    const ENABLE_PHONE = "minepark.sound2";
+    public const PASSPORT_OPEN = "minepark.sound4";
+
+    public const SIREN_SOUND = "minepark.sound5";
 }
 ?>
