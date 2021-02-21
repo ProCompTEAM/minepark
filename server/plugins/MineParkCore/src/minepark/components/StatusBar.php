@@ -1,10 +1,11 @@
 <?php
 namespace minepark\components;
 
-use minepark\utils\CallbackTask;
 use minepark\Core;
+use minepark\utils\CallbackTask;
+use minepark\components\base\Component;
 
-class StatusBar
+class StatusBar extends Component
 {
 	public $tmsg;
 	

@@ -1,11 +1,12 @@
 <?php
 namespace minepark\components;
 
-use minepark\utils\CallbackTask;
 use minepark\Core;
 use minepark\Mapper;
+use minepark\utils\CallbackTask;
+use minepark\components\base\Component;
 
-class NotifyPlayers
+class NotifyPlayers extends Component
 {
 	public $mapper;
 

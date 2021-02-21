@@ -6,9 +6,10 @@ use minepark\Mapper;
 
 use minepark\Providers;
 use pocketmine\item\Item;
+use minepark\components\base\Component;
 use minepark\common\player\MineParkPlayer;
 
-class FastFood
+class FastFood extends Component
 {
 	public function getCore() : Core
 	{

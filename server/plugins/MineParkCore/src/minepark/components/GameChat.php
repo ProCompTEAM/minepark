@@ -1,12 +1,13 @@
 <?php
 namespace minepark\components;
 
+use minepark\Core;
+
+use minepark\defaults\Sounds;
+use minepark\components\base\Component;
 use minepark\common\player\MineParkPlayer;
 
-use minepark\Core;
-use minepark\defaults\Sounds;
-
-class GameChat
+class GameChat extends Component
 {
 	public const GLOBAL_CHAT_SIGNATURE = '!';
 	public const ADMINISTRATION_CHAT_SIGNATURE = '@';

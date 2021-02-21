@@ -1,14 +1,14 @@
 <?php
 namespace minepark\components;
 
-use minepark\utils\CallbackTask;
 use minepark\Core;
-use minepark\defaults\Permissions;
-
-use minepark\common\player\MineParkPlayer;
 use pocketmine\Server;
 
-class Reporter
+use minepark\defaults\Permissions;
+use minepark\components\base\Component;
+use minepark\common\player\MineParkPlayer;
+
+class Reporter extends Component
 {
 	public $playerReports;
 

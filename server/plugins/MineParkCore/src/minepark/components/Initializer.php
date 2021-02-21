@@ -8,10 +8,11 @@ use pocketmine\item\Item;
 use minepark\defaults\Permissions;
 use minepark\defaults\PaymentMethods;
 use minepark\models\player\StatesMap;
+use minepark\components\base\Component;
 use minepark\common\player\MineParkPlayer;
 use minepark\components\organisations\Organisations;
 
-class Initializer
+class Initializer extends Component
 {
     public const DEFAULT_MONEY_PRESENT = 1000;
 

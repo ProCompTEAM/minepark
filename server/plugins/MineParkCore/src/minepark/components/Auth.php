@@ -4,13 +4,13 @@ namespace minepark\components;
 use minepark\Api;
 use minepark\Core;
 use minepark\common\player\MineParkPlayer;
-
+use minepark\components\base\Component;
 use minepark\utils\CallbackTask;
 use minepark\Mapper;
 use minepark\models\dtos\PasswordDto;
 use minepark\providers\data\UsersSource;
 
-class Auth
+class Auth extends Component
 {
 	public const STATE_REGISTER = 0;
 	public const STATE_NEED_AUTH = 1;

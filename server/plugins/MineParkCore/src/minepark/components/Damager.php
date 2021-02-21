@@ -9,9 +9,10 @@ use pocketmine\entity\Effect;
 use pocketmine\entity\Entity;
 use minepark\defaults\Permissions;
 use pocketmine\entity\EffectInstance;
+use minepark\components\base\Component;
 use minepark\common\player\MineParkPlayer;
 
-class Damager
+class Damager extends Component
 {
 
     private $config;

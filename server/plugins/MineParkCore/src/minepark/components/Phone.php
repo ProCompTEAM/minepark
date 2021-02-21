@@ -8,11 +8,12 @@ use minepark\Providers;
 use pocketmine\math\Vector3;
 
 use minepark\utils\CallbackTask;
+use minepark\components\base\Component;
 use minepark\providers\data\PhonesSource;
 use minepark\common\player\MineParkPlayer;
 use minepark\components\organisations\Organisations;
 
-class Phone
+class Phone extends Component
 {
 	public const MAX_STREAM_DISTANCE = 200;
 

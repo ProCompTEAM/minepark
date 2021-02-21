@@ -4,8 +4,9 @@ namespace minepark\components;
 use minepark\Core;
 use pocketmine\utils\Config;
 use pocketmine\level\Position;
+use minepark\components\base\Component;
 
-class WorldProtector
+class WorldProtector extends Component
 {
 	private int $minimumX;
 

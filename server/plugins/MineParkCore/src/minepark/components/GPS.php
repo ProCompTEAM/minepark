@@ -1,10 +1,11 @@
 <?php
 namespace minepark\components;
 
-use minepark\utils\CallbackTask;
 use minepark\Core;
+use minepark\utils\CallbackTask;
+use minepark\components\base\Component;
 
-class GPS
+class GPS extends Component
 {
 	public $level;
 	
