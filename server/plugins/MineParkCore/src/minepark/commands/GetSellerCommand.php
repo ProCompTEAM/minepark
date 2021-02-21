@@ -1,7 +1,7 @@
 <?php
 namespace minepark\commands;
 
-use minepark\modules\organisations\Organisations;
+use minepark\components\organisations\Organisations;
 use minepark\defaults\Sounds;
 use minepark\common\player\MineParkPlayer;
 use minepark\defaults\Permissions;

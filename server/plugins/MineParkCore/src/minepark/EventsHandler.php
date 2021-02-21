@@ -3,7 +3,7 @@ namespace minepark;
 
 use pocketmine\tile\Sign;
 
-use minepark\modules\GameChat;
+use minepark\components\GameChat;
 use pocketmine\block\SignPost;
 use pocketmine\block\WallSign;
 use pocketmine\event\Listener;
