@@ -5,7 +5,7 @@ use minepark\Mapper;
 use minepark\modules\organisations\Organisations;
 use minepark\defaults\Permissions;
 
-use minepark\player\implementations\MineParkPlayer;
+use minepark\common\player\MineParkPlayer;
 use pocketmine\item\Item;
 use pocketmine\event\Event;
 

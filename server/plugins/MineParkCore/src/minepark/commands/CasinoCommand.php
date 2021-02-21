@@ -1,7 +1,7 @@
 <?php
 namespace minepark\commands;
 
-use minepark\player\implementations\MineParkPlayer;
+use minepark\common\player\MineParkPlayer;
 use pocketmine\event\Event;
 use pocketmine\level\Position;
 

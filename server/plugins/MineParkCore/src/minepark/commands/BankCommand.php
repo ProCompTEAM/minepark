@@ -4,7 +4,7 @@ namespace minepark\commands;
 use jojoe77777\FormAPI\SimpleForm;
 use minepark\defaults\Permissions;
 use minepark\player\Bank;
-use minepark\player\implementations\MineParkPlayer;
+use minepark\common\player\MineParkPlayer;
 use pocketmine\event\Event;
 use pocketmine\form\Form;
 

@@ -1,7 +1,7 @@
 <?php
 namespace minepark\modules;
 
-use minepark\player\implementations\MineParkPlayer;
+use minepark\common\player\MineParkPlayer;
 use pocketmine\item\Item;
 
 use minepark\Core;

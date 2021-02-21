@@ -5,7 +5,7 @@ use minepark\utils\CallbackTask;
 use minepark\Core;
 use minepark\defaults\Permissions;
 
-use minepark\player\implementations\MineParkPlayer;
+use minepark\common\player\MineParkPlayer;
 use pocketmine\Server;
 
 class Reporter

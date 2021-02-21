@@ -8,7 +8,7 @@ use pocketmine\event\Listener;
 use Lolya\creature\BulletEntity;
 use pocketmine\event\player\PlayerInteractEvent;
 
-use minepark\player\implementations\MineParkPlayer;
+use minepark\common\player\MineParkPlayer;
 use pocketmine\event\entity\ProjectileHitEntityEvent;
 
 class GunListener implements Listener

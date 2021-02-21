@@ -3,7 +3,7 @@ namespace minepark\modules\organisations;
 
 use minepark\Core;
 use minepark\Mapper;
-use minepark\player\implementations\MineParkPlayer;
+use minepark\common\player\MineParkPlayer;
 use pocketmine\event\Event;
 use pocketmine\entity\Effect;
 

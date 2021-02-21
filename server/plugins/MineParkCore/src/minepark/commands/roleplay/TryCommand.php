@@ -1,7 +1,7 @@
 <?php
 namespace minepark\commands\roleplay;
 
-use minepark\player\implementations\MineParkPlayer;
+use minepark\common\player\MineParkPlayer;
 
 use minepark\commands\Command;
 use pocketmine\event\Event;

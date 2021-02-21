@@ -2,7 +2,7 @@
 namespace minepark;
 
 use pocketmine\level\Position;
-use minepark\player\implementations\MineParkPlayer;
+use minepark\common\player\MineParkPlayer;
 
 class Api
 {

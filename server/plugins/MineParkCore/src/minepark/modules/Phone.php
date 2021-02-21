@@ -9,7 +9,7 @@ use minepark\utils\CallbackTask;
 
 use minepark\providers\data\PhonesSource;
 use minepark\modules\organisations\Organisations;
-use minepark\player\implementations\MineParkPlayer;
+use minepark\common\player\MineParkPlayer;
 
 class Phone
 {

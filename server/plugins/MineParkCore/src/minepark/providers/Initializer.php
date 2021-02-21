@@ -3,7 +3,7 @@ namespace minepark\player;
 
 use minepark\Core;
 use minepark\Profiler;
-use minepark\player\implementations\MineParkPlayer;
+use minepark\common\player\MineParkPlayer;
 use minepark\defaults\Permissions;
 use pocketmine\item\Item;
 use minepark\modules\organisations\Organisations;

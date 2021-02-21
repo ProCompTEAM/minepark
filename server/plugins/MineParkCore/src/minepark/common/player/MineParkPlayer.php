@@ -1,5 +1,5 @@
 <?php
-namespace minepark\player\implementations;
+namespace minepark\common\player;
 
 use Exception;
 

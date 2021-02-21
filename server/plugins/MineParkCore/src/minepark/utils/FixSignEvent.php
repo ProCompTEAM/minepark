@@ -5,7 +5,7 @@ namespace minepark\utils;
 
 use pocketmine\block\Block;
 use pocketmine\event\Cancellable;
-use minepark\player\implementations\MineParkPlayer;
+use minepark\common\player\MineParkPlayer;
 use pocketmine\tile\Sign;
 use pocketmine\event\block\SignChangeEvent;
 

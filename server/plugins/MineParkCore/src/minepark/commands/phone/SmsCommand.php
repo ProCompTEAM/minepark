@@ -3,7 +3,7 @@ namespace minepark\commands\phone;
 
 use minepark\defaults\Sounds;
 
-use minepark\player\implementations\MineParkPlayer;
+use minepark\common\player\MineParkPlayer;
 use minepark\defaults\Permissions;
 
 use pocketmine\event\Event;

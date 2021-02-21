@@ -1,7 +1,7 @@
 <?php
 namespace minepark\player;
 
-use minepark\player\implementations\MineParkPlayer;
+use minepark\common\player\MineParkPlayer;
 
 use minepark\Core;
 use minepark\defaults\Sounds;

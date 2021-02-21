@@ -1,7 +1,7 @@
 <?php
 namespace minepark\models\player;
 
-use minepark\player\implementations\MineParkPlayer;
+use minepark\common\player\MineParkPlayer;
 use pocketmine\level\Position;
 
 class StatesMap

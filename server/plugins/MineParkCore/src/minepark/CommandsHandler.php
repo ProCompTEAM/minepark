@@ -39,7 +39,7 @@ use minepark\commands\workers\GetFarmCommand;
 use minepark\commands\workers\PutFarmCommand;
 use minepark\commands\workers\TakeBoxCommand;
 use minepark\commands\roleplay\WhisperCommand;
-use minepark\player\implementations\MineParkPlayer;
+use minepark\common\player\MineParkPlayer;
 
 class CommandsHandler
 {

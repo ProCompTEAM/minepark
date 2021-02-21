@@ -1,7 +1,7 @@
 <?php
 namespace minepark\modules\organisations;
 
-use minepark\player\implementations\MineParkPlayer;
+use minepark\common\player\MineParkPlayer;
 use pocketmine\entity\EffectInstance;
 use pocketmine\entity\Effect;
 use pocketmine\level\Position;

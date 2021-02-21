@@ -5,7 +5,7 @@ use minepark\Api;
 use minepark\Core;
 use minepark\modules\organisations\Organisations;
 use minepark\utils\CallbackTask;
-use minepark\player\implementations\MineParkPlayer;
+use minepark\common\player\MineParkPlayer;
 
 class PayDay
 {

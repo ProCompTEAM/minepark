@@ -4,7 +4,7 @@ namespace minepark;
 use minepark\models\dtos\LocalMapPointDto;
 use minepark\models\dtos\MapPointDto;
 use minepark\providers\data\MapSource;
-use minepark\player\implementations\MineParkPlayer;
+use minepark\common\player\MineParkPlayer;
 use pocketmine\level\Position;
 
 class Mapper

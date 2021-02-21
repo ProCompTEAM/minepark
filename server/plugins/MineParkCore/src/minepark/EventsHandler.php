@@ -9,7 +9,7 @@ use pocketmine\block\WallSign;
 use pocketmine\event\Listener;
 use minepark\utils\FixSignEvent;
 use minepark\providers\data\UsersSource;
-use minepark\player\implementations\MineParkPlayer;
+use minepark\common\player\MineParkPlayer;
 use pocketmine\entity\object\Painting;
 use pocketmine\event\block\BlockEvent;
 use pocketmine\event\level\ChunkLoadEvent;

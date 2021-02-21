@@ -5,7 +5,7 @@ use minepark\Core;
 use minepark\models\dtos\PaymentMethodDto;
 use minepark\providers\data\BankingSource;
 use minepark\models\dtos\BankTransactionDto;
-use minepark\player\implementations\MineParkPlayer;
+use minepark\common\player\MineParkPlayer;
 
 class Bank
 {
