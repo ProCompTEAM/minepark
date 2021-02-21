@@ -1,11 +1,12 @@
 <?php
 namespace minepark\modules\organisations\command;
 
-use minepark\modules\organisations\Organisations;
-use minepark\defaults\Permissions;
-
-use minepark\common\player\MineParkPlayer;
+use minepark\Providers;
 use pocketmine\event\Event;
+
+use minepark\defaults\Permissions;
+use minepark\common\player\MineParkPlayer;
+use minepark\modules\organisations\Organisations;
 
 class HealCommand extends OrganisationsCommand
 {
@@ -96,7 +97,7 @@ class HealCommand extends OrganisationsCommand
         $playerToHeal->setHealth($playerToHeal->getMaxHealth());
 
 		$this->getCore()->getChatter()->send($healer, "{CommandHealDo}");
-		$this->getCore()->getBank()->givePlayerMoney($healer, 500);
+		Providers::getBankingProvider()->givePlayerMoney($healer, 500);
     }
 }
 ?>

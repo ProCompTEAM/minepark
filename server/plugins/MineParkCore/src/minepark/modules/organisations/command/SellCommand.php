@@ -2,12 +2,13 @@
 namespace minepark\modules\organisations\command;
 
 use minepark\Mapper;
-use minepark\modules\organisations\Organisations;
-use minepark\defaults\Permissions;
-
-use minepark\common\player\MineParkPlayer;
+use minepark\Providers;
 use pocketmine\item\Item;
+
 use pocketmine\event\Event;
+use minepark\defaults\Permissions;
+use minepark\common\player\MineParkPlayer;
+use minepark\modules\organisations\Organisations;
 
 class SellCommand extends OrganisationsCommand
 {
@@ -95,7 +96,7 @@ class SellCommand extends OrganisationsCommand
                 $price = $price + $g[1];
             }
 
-            if($this->getCore()->getBank()->takePlayerMoney($b, $price)) {
+            if(Providers::getBankingProvider()->takePlayerMoney($b, $price)) {
                 $this->handleSell($price, $b, $seller, $curr);
             } else {
                 $this->notMuchMoney($b, $seller, $curr);
@@ -126,7 +127,7 @@ class SellCommand extends OrganisationsCommand
         $b->sendLocalizedMessage("{CommandSellFinalPart1}".$price."{CommandSellFinalPart2}");
 
         $b->getStatesMap()->goods = array();
-        $this->getCore()->getBank()->givePlayerMoney($seller, ceil($price/2));
+        Providers::getBankingProvider()->givePlayerMoney($seller, ceil($price/2));
 
         $seller->sendLocalizedMessage("{CommandSellDo}".($curr + 1));
     }

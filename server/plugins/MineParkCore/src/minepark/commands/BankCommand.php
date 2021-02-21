@@ -1,12 +1,13 @@
 <?php
 namespace minepark\commands;
 
+use minepark\Providers;
+use pocketmine\form\Form;
+use pocketmine\event\Event;
 use jojoe77777\FormAPI\SimpleForm;
 use minepark\defaults\Permissions;
-use minepark\player\Bank;
+use minepark\defaults\PaymentMethods;
 use minepark\common\player\MineParkPlayer;
-use pocketmine\event\Event;
-use pocketmine\form\Form;
 
 class BankCommand extends Command
 {
@@ -40,13 +41,13 @@ class BankCommand extends Command
 
         $paymentMethod = $data + 1;
 
-        if ($paymentMethod != Bank::PAYMENT_METHOD_CASH
-                and $paymentMethod != Bank::PAYMENT_METHOD_DEBIT
-                    and $paymentMethod != Bank::PAYMENT_METHOD_CREDIT) {
+        if ($paymentMethod != PaymentMethods::CASH
+                and $paymentMethod != PaymentMethods::DEBIT
+                    and $paymentMethod != PaymentMethods::CREDIT) {
             return $player->sendMessage("CommandBankError2");
         }
 
-        if ($this->getCore()->getBank()->switchPaymentMethod($player, $paymentMethod)) {
+        if (Providers::getBankingProvider()->switchPaymentMethod($player, $paymentMethod)) {
             return $player->sendMessage("CommandBankSuccess");
         }
 
@@ -55,10 +56,10 @@ class BankCommand extends Command
 
     private function getChooseForm(string $language) : Form
     {
-        $contents = $this->getCore()->getLocalizer()->take($language, "CommandBankFormContent");
-        $buttonCash = $this->getCore()->getLocalizer()->take($language, "CommandBankFormButton1");
-        $buttonDebit = $this->getCore()->getLocalizer()->take($language, "CommandBankFormButton2");
-        $buttonCredit = $this->getCore()->getLocalizer()->take($language, "CommandBankFormButton3");
+        $contents     = Providers::getLocalizationProvider()->take($language, "CommandBankFormContent");
+        $buttonCash   = Providers::getLocalizationProvider()->take($language, "CommandBankFormButton1");
+        $buttonDebit  = Providers::getLocalizationProvider()->take($language, "CommandBankFormButton2");
+        $buttonCredit = Providers::getLocalizationProvider()->take($language, "CommandBankFormButton3");
 
         $form = new SimpleForm([$this, "answerForm"]);
         $form->setContent($contents);

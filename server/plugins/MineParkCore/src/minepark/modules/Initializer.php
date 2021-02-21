@@ -1,13 +1,15 @@
 <?php
-namespace minepark\player;
+namespace minepark\modules;
 
 use minepark\Core;
 use minepark\Profiler;
-use minepark\common\player\MineParkPlayer;
-use minepark\defaults\Permissions;
+use minepark\Providers;
 use pocketmine\item\Item;
-use minepark\modules\organisations\Organisations;
+use minepark\defaults\Permissions;
+use minepark\defaults\PaymentMethods;
 use minepark\models\player\StatesMap;
+use minepark\common\player\MineParkPlayer;
+use minepark\modules\organisations\Organisations;
 
 class Initializer
 {
@@ -51,7 +53,7 @@ class Initializer
 			$this->handleNewPlayer($player);
         }
 
-        $this->getCore()->getBank()->initializePlayerPaymentMethod($player);
+        Providers::getBankingProvider()->initializePlayerPaymentMethod($player);
 
         $this->showDonaterStatus($player);
         
@@ -128,7 +130,7 @@ class Initializer
         
         $statesMap->lastTap = time();
 
-        $statesMap->paymentMethod = Bank::PAYMENT_METHOD_CASH;
+        $statesMap->paymentMethod = PaymentMethods::CASH;
 
         $player->setStatesMap($statesMap);
     }
@@ -154,7 +156,7 @@ class Initializer
 
     private function handleNewPlayer(MineParkPlayer $player)
 	{
-        $this->getCore()->getBank()->givePlayerMoney($player, self::DEFAULT_MONEY_PRESENT);
+        Providers::getBankingProvider()->givePlayerMoney($player, self::DEFAULT_MONEY_PRESENT);
         $this->getCore()->getTrackerModule()->enableTrack($player);
         $this->presentNewPlayer($player);
     }

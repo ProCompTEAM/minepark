@@ -8,6 +8,7 @@ use pocketmine\Player;
 use pocketmine\math\Vector3;
 use minepark\models\dtos\UserDto;
 use minepark\models\player\StatesMap;
+use minepark\Providers;
 use pocketmine\network\SourceInterface;
 use pocketmine\network\mcpe\protocol\PlaySoundPacket;
 use pocketmine\event\player\PlayerCommandPreprocessEvent;
@@ -128,56 +129,56 @@ class MineParkPlayer extends Player
 
 	public function sendMessage($message)
 	{
-		parent::sendMessage(Core::getActive()->getLocalizer()->take($this->locale, $message) ?? $message);
+		parent::sendMessage(Providers::getLocalizationProvider()->take($this->locale, $message) ?? $message);
 	}
 
 	public function sendLocalizedMessage(string $message)
 	{
-		parent::sendMessage(Core::getActive()->getLocalizer()->translateFrom($this->locale, $message));
+		parent::sendMessage(Providers::getLocalizationProvider()->translateFrom($this->locale, $message));
 	}
 
 	public function sendTip(string $message)
 	{
-		parent::sendTip(Core::getActive()->getLocalizer()->take($this->locale, $message) ?? $message);
+		parent::sendTip(Providers::getLocalizationProvider()->take($this->locale, $message) ?? $message);
 	}
 
 	public function sendLocalizedTip(string $message)
 	{
-		parent::sendTip(Core::getActive()->getLocalizer()->translateFrom($this->locale, $message));
+		parent::sendTip(Providers::getLocalizationProvider()->translateFrom($this->locale, $message));
 	}
 
 	public function sendWhisper(string $sender, string $message)
 	{
-		parent::sendWhisper($sender, Core::getActive()->getLocalizer()->take($this->locale, $message) ?? $message);
+		parent::sendWhisper($sender, Providers::getLocalizationProvider()->take($this->locale, $message) ?? $message);
 	}
 
 	public function sendLocalizedWhisper(string $sender, string $message)
 	{
-		parent::sendWhisper($sender, Core::getActive()->getLocalizer()->translateFrom($this->locale, $message));
+		parent::sendWhisper($sender, Providers::getLocalizationProvider()->translateFrom($this->locale, $message));
 	}
 
 	public function sendPopup(string $message, string $subtitle = "")
 	{
-		parent::sendPopup(Core::getActive()->getLocalizer()->take($this->locale, $message) ?? $message);
+		parent::sendPopup(Providers::getLocalizationProvider()->take($this->locale, $message) ?? $message);
 	}
 
 	public function sendLocalizedPopup(string $message)
 	{
-		parent::sendPopup(Core::getActive()->getLocalizer()->translateFrom($this->locale, $message));
+		parent::sendPopup(Providers::getLocalizationProvider()->translateFrom($this->locale, $message));
 	}
 
 	public function addTitle(string $title, string $subtitle = "", int $fadeIn = -1, int $stay = -1, int $fadeOut = -1)
 	{
-		$title = Core::getActive()->getLocalizer()->take($this->locale, $title) ?? $title;
-		$subtitle = Core::getActive()->getLocalizer()->take($this->locale, $subtitle) ?? $subtitle;
+		$title = Providers::getLocalizationProvider()->take($this->locale, $title) ?? $title;
+		$subtitle = Providers::getLocalizationProvider()->take($this->locale, $subtitle) ?? $subtitle;
 
 		parent::sendTitle($title, $subtitle, $fadeIn, $stay, $fadeOut);
 	}
 
 	public function addLocalizedTitle(string $title, string $subtitle = "", int $fadeIn = -1, int $stay = -1, int $fadeOut = -1)
 	{
-		$title = Core::getActive()->getLocalizer()->translateFrom($this->locale, $title);
-		$subtitle = Core::getActive()->getLocalizer()->translateFrom($this->locale, $subtitle);
+		$title = Providers::getLocalizationProvider()->translateFrom($this->locale, $title);
+		$subtitle = Providers::getLocalizationProvider()->translateFrom($this->locale, $subtitle);
 
 		parent::sendTitle($title, $subtitle, $fadeIn, $stay, $fadeOut);
 	}
@@ -188,7 +189,7 @@ class MineParkPlayer extends Player
 			return parent::kick();
 		}
 
-		$reason = Core::getActive()->getLocalizer()->take($this->locale, $reason) ?? $reason;
+		$reason = Providers::getLocalizationProvider()->take($this->locale, $reason) ?? $reason;
 
 		return parent::kick($reason, $isAdmin, $quitMessage);
 	}

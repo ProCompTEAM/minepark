@@ -3,9 +3,10 @@ namespace minepark\modules;
 
 use minepark\Api;
 use minepark\Core;
-use minepark\modules\organisations\Organisations;
+use minepark\Providers;
 use minepark\utils\CallbackTask;
 use minepark\common\player\MineParkPlayer;
+use minepark\modules\organisations\Organisations;
 
 class PayDay
 {
@@ -43,11 +44,11 @@ class PayDay
 			$summ = ($salary + $special);
 
 			if($summ > 0) {
-				$this->getCore()->getBank()->giveDebit($player, $summ);
+				Providers::getBankingProvider()->giveDebit($player, $summ);
 			}
 
 			if($summ < 0) {
-				$this->getCore()->getBank()->reduceDebit($player, $summ);
+				Providers::getBankingProvider()->reduceDebit($player, $summ);
 			}
 
 			$this->sendForm($player, $salary, $special, $summ);

@@ -1,11 +1,12 @@
 <?php
 namespace minepark\commands;
 
-use minepark\common\player\MineParkPlayer;
+use minepark\Providers;
 use pocketmine\event\Event;
 
-use minepark\defaults\Permissions;
 use minepark\defaults\Sounds;
+use minepark\defaults\Permissions;
+use minepark\common\player\MineParkPlayer;
 
 class PayCommand extends Command
 {
@@ -48,9 +49,9 @@ class PayCommand extends Command
             if($p === $player) {
                 continue;
             } else {
-                if($this->getCore()->getBank()->takePlayerMoney($player, $args[0])) {
+                if(Providers::getBankingProvider()->takePlayerMoney($player, $args[0])) {
                     $this->getCore()->getChatter()->send($player, "{CommandPayPay}", "§d", self::DISTANCE);
-                    $this->getCore()->getBank()->givePlayerMoney($p, $args[0]);
+                    Providers::getBankingProvider()->givePlayerMoney($p, $args[0]);
                 } else {
                     $player->sendMessage("CommandPayNoMoney");
                 }

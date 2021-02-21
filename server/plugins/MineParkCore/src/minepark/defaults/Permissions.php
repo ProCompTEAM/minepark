@@ -3,17 +3,17 @@ namespace minepark\defaults;
 
 class Permissions
 {
-    const ANYBODY = "group.all";
+    public const ANYBODY = "group.all";
 
-    const OPERATOR = "group.operator";
-    const ADMINISTRATOR = "group.admin";
+    public const OPERATOR = "group.operator";
+    public const ADMINISTRATOR = "group.admin";
 
-    const VIP = "group.vip";
+    public const VIP = "group.vip";
 
-    const BUILDER = "group.builder";
-    const REALTOR = "group.realtor";
+    public const BUILDER = "group.builder";
+    public const REALTOR = "group.realtor";
 
-    const CUSTOM = "group.custom";
+    public const CUSTOM = "group.custom";
 
     public static function getCustomAdministratorPermissions() : array
     {

@@ -10,8 +10,8 @@ declare(strict_types = 1);
 namespace JackMD\ScoreHud\Addons
 {
 	use JackMD\ScoreHud\addon\AddonBase;
-	use minepark\Core;
 	use pocketmine\Player;
+	use minepark\Providers;
 
 	class BasicAddon extends AddonBase{
 
@@ -43,11 +43,7 @@ namespace JackMD\ScoreHud\Addons
 			];
 		}*/
 
-		private $core;
-		private $money = [];
-
 		public function onEnable(): void{
-			$this->core = $this->getServer()->getPluginManager()->getPlugin("MineParkCore");
 		}
 		
 		public function getProcessedTags(Player $player) : array
@@ -67,12 +63,7 @@ namespace JackMD\ScoreHud\Addons
 		
 		public function getTranslation(Player $player, string $key) : ?string
 		{
-			return $this->getCore()->getLocalizer()->take($player->locale, $key);
-		}
-
-		protected function getCore() : Core
-		{
-			return Core::getActive();
+			return Providers::getLocalizationProvider()->take($player->locale, $key);
 		}
 	}
 }

@@ -1,10 +1,11 @@
 <?php
 namespace minepark\commands;
 
-use minepark\common\player\MineParkPlayer;
+use minepark\Providers;
 use pocketmine\event\Event;
 
 use minepark\defaults\Permissions;
+use minepark\common\player\MineParkPlayer;
 
 class MoneyCommand extends Command
 {
@@ -28,9 +29,9 @@ class MoneyCommand extends Command
 
     public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
-        $cash = $this->getCore()->getBank()->getCash($player);
-        $debit = $this->getCore()->getBank()->getDebit($player);
-        $credit = $this->getCore()->getBank()->getCredit($player);
+        $cash = Providers::getBankingProvider()->getCash($player);
+        $debit = Providers::getBankingProvider()->getDebit($player);
+        $credit = Providers::getBankingProvider()->getCredit($player);
 
         $player->sendMessage("§2→ Наличные§e $cash §3рублей.");
         $player->sendMessage("§3→ На карте§e $debit §3рублей.");

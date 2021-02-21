@@ -3,12 +3,13 @@ namespace minepark\modules\organisations;
 
 use minepark\Core;
 use minepark\Mapper;
-use minepark\common\player\MineParkPlayer;
+use minepark\Providers;
 use pocketmine\event\Event;
 use pocketmine\entity\Effect;
 
 use pocketmine\level\Position;
 use pocketmine\entity\EffectInstance;
+use minepark\common\player\MineParkPlayer;
 
 class Workers
 {
@@ -133,7 +134,7 @@ class Workers
         $player->removeAllEffects();
 
         $this->getCore()->getChatter()->send($player, "§8(§dЯщик расположился на складе§8)", "§d : ", 12);
-        $this->getCore()->getBank()->givePlayerMoney($player, 20 * $player->getStatesMap()->loadWeight);
+        Providers::getBankingProvider()->givePlayerMoney($player, 20 * $player->getStatesMap()->loadWeight);
 
         $player->getStatesMap()->loadWeight = null; 
         $player->getStatesMap()->bar = null;

@@ -1,12 +1,13 @@
 <?php
 namespace minepark\commands;
 
-use minepark\defaults\Sounds;
-use minepark\common\player\MineParkPlayer;
-use minepark\defaults\Permissions;
-
+use minepark\Providers;
 use pocketmine\event\Event;
+use minepark\defaults\Sounds;
+
 use pocketmine\level\Position;
+use minepark\defaults\Permissions;
+use minepark\common\player\MineParkPlayer;
 
 class GetOrganisationCommand extends Command
 {
@@ -74,7 +75,7 @@ class GetOrganisationCommand extends Command
 
     private function switchOrg(MineParkPlayer $player, string $orgId)
     {
-        if($this->getCore()->getBank()->takePlayerMoney($player, 1000)) {
+        if(Providers::getBankingProvider()->takePlayerMoney($player, 1000)) {
             switch($orgId)
             {
                 case 1: $orgId = 5; break;

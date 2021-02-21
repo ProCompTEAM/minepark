@@ -1,11 +1,12 @@
 <?php
 namespace minepark\modules;
 
-use minepark\common\player\MineParkPlayer;
-use pocketmine\item\Item;
-
 use minepark\Core;
 use minepark\Mapper;
+
+use minepark\Providers;
+use pocketmine\item\Item;
+use minepark\common\player\MineParkPlayer;
 
 class FastFood
 {
@@ -21,10 +22,10 @@ class FastFood
 		if($core->getMapper()->hasNearPointWithType($player, 5, Mapper::POINT_GROUP_FASTFOOD)) {
 			$core->getChatter()->send($player, "{FastFoodNear}", "§d : ", 10);
 
-			if($core->getBank()->getPlayerMoney($player) >= 50) {
+			if(Providers::getBankingProvider()->getPlayerMoney($player) >= 50) {
 				$core->uiWindows->sendFastfoodWindow($player);
 				if($player->isPC) {
-					$core->getBank()->takePlayerMoney($player, 50);
+					Providers::getBankingProvider()->takePlayerMoney($player, 50);
 					$this->giveItem($player, mt_rand(0, count($this->getAllGoods()) - 1));
 					$player->sendMessage("FastFoodBoard");
 				}

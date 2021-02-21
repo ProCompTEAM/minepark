@@ -1,5 +1,5 @@
 <?php
-namespace minepark\player;
+namespace minepark\modules;
 
 use minepark\Api;
 use minepark\Core;

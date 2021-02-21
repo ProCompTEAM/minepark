@@ -1,12 +1,13 @@
 <?php
 namespace minepark\modules\organisations;
 
-use minepark\common\player\MineParkPlayer;
-use pocketmine\entity\EffectInstance;
+use minepark\Core;
+use minepark\Providers;
 use pocketmine\entity\Effect;
 use pocketmine\level\Position;
 
-use minepark\Core;
+use pocketmine\entity\EffectInstance;
+use minepark\common\player\MineParkPlayer;
 
 class Farm
 {
@@ -56,7 +57,7 @@ class Farm
 		$player->removeAllEffects();
 
 		$this->getCore()->getChatter()->send($player, "высыпал из корзины урожай", "§d ", 12);
-		$this->getCore()->getBank()->givePlayerMoney($player, 150);
+		Providers::getBankingProvider()->givePlayerMoney($player, 150);
 
 		$player->getStatesMap()->loadWeight = null; 
 		$player->getStatesMap()->bar = null;
