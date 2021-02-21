@@ -1,7 +1,7 @@
 This snapshot was automatically generated on
-Tue, 06 Oct 2020 11:58:47 +0000
+Wed, 17 Feb 2021 19:54:56 +0000
 
-Version: 7.4.11
+Version: 8.0.3RC1
 Branch: HEAD
 Build: D:\a\1\s\pocketmine-php-sdk\php-src\x64\Release_TS
 
@@ -44,7 +44,7 @@ mysqli
 
 
 Dependency information:
-Module: php7ts.dll
+Module: php8ts.dll
 ===========================
 	libcrypto-1_1-x64.dll
 	libssl-1_1-x64.dll
@@ -52,7 +52,6 @@ Module: php7ts.dll
 	nghttp2.dll
 	libsodium.dll
 	yaml.dll
-	imagehlp.dll
 
 Module: libssl-1_1-x64.dll
 ===========================
