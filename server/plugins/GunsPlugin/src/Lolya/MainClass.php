@@ -18,7 +18,7 @@ use Lolya\GunListener;
 
 use minepark\Core;
 use minepark\Mapper;
-use minepark\modules\organizations\Organizations;
+use minepark\components\organizations\Organizations;
 
 class MainClass extends PluginBase implements Listener 
 {

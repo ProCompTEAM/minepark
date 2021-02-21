@@ -10,6 +10,6 @@ class Defaults
     public const INTERNATIONAL_LANGUAGE_KEY = "en_US";
 
     public const SERVER_LOBBY_ADDRESS = "minepark.ru";
-	public const SERVER_LOBBY_PORT = 19132;
+    public const SERVER_LOBBY_PORT = 19132;
 }
 ?>
