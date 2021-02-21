@@ -79,13 +79,7 @@ class Core extends PluginBase implements Listener
 
 		Providers::initializeAll();
 
-		if(!file_exists(Files::DEFAULT_DIRECTORY)) {
-			mkdir(Files::DEFAULT_DIRECTORY);
-		}
-
-		if(!file_exists(Files::DEFAULT_DIRECTORY_STRINGS)) {
-			mkdir(Files::DEFAULT_DIRECTORY_STRINGS);
-		}
+		$this->initializeDefaultDirectories();
 
 		$this->applyServerSettings();
     }
@@ -261,6 +255,17 @@ class Core extends PluginBase implements Listener
 		}
 
 		return false;
+	}
+
+	private function initializeDefaultDirectories()
+	{
+		if(!file_exists(Files::DEFAULT_DIRECTORY)) {
+			mkdir(Files::DEFAULT_DIRECTORY);
+		}
+
+		if(!file_exists(Files::DEFAULT_DIRECTORY_STRINGS)) {
+			mkdir(Files::DEFAULT_DIRECTORY_STRINGS);
+		}
 	}
 
 	private function applyServerSettings()
