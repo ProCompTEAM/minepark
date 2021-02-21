@@ -46,7 +46,7 @@ class BankCommand extends Command
             return $player->sendMessage("CommandBankError2");
         }
 
-        if ($this->getCore()->getBank()->switchPaymentMethod($player, $data)) {
+        if ($this->getCore()->getBank()->switchPaymentMethod($player, $paymentMethod)) {
             return $player->sendMessage("CommandBankSuccess");
         }
 
