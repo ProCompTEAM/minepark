@@ -66,7 +66,7 @@ namespace MDC.Infrastructure.Services
             }
 
             bankAccount.Cash -= money;
-            moneyTransactionsAuditService.ProcessReduceOperation(userName, amount, PaymentMethod.Cash);
+            RegisterReduceOperation(userName, amount, PaymentMethod.Cash);
             UpdateBankAccount(bankAccount);
 
             return true;
@@ -89,7 +89,7 @@ namespace MDC.Infrastructure.Services
             }
 
             bankAccount.Debit -= money;
-            moneyTransactionsAuditService.ProcessReduceOperation(userName, amount, PaymentMethod.Debit);
+            RegisterReduceOperation(userName, amount, PaymentMethod.Debit);
             UpdateBankAccount(bankAccount);
 
             return true;
@@ -112,7 +112,7 @@ namespace MDC.Infrastructure.Services
             }
 
             bankAccount.Credit -= money;
-            moneyTransactionsAuditService.ProcessReduceOperation(userName, amount, PaymentMethod.Credit);
+            RegisterReduceOperation(userName, amount, PaymentMethod.Credit);
             UpdateBankAccount(bankAccount);
 
             return true;
@@ -135,7 +135,7 @@ namespace MDC.Infrastructure.Services
             }
 
             bankAccount.Cash += money;
-            moneyTransactionsAuditService.ProcessGiveOperation(userName, amount, PaymentMethod.Cash);
+            RegisterGiveOperation(userName, amount, PaymentMethod.Cash);
             UpdateBankAccount(bankAccount);
 
             return true;
@@ -158,7 +158,7 @@ namespace MDC.Infrastructure.Services
             }
 
             bankAccount.Debit += money;
-            moneyTransactionsAuditService.ProcessGiveOperation(userName, amount, PaymentMethod.Debit);
+            RegisterGiveOperation(userName, amount, PaymentMethod.Debit);
             UpdateBankAccount(bankAccount);
 
             return true;
@@ -181,7 +181,7 @@ namespace MDC.Infrastructure.Services
             }
 
             bankAccount.Credit += money;
-            moneyTransactionsAuditService.ProcessGiveOperation(userName, amount, PaymentMethod.Credit);
+            RegisterGiveOperation(userName, amount, PaymentMethod.Credit);
             UpdateBankAccount(bankAccount);
 
             return true;
@@ -234,6 +234,16 @@ namespace MDC.Infrastructure.Services
             }
 
             return false;
+        }
+
+        private void RegisterGiveOperation(string userName, double amount, PaymentMethod paymentMethod)
+        {
+            moneyTransactionsAuditService.ProcessGiveOperation(userName, amount, paymentMethod);
+        }
+
+        private void RegisterReduceOperation(string userName, double amount, PaymentMethod paymentMethod)
+        {
+            moneyTransactionsAuditService.ProcessReduceOperation(userName, amount, paymentMethod);
         }
 
         private bool VerifyReduceOperation(double moneyAmount, double decreaseAmount)
