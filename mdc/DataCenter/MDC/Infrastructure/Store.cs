@@ -6,6 +6,7 @@ using MDC.Infrastructure.Providers;
 using MDC.Infrastructure.Providers.Interfaces;
 using MDC.Infrastructure.Services;
 using MDC.Infrastructure.Services.Interfaces;
+using MDC.Infrastructure.Services.Audit;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -61,10 +62,16 @@ namespace MDC.Infrastructure
 
         private static void InitializeServices()
         {
+            InitializeAuditServices();
             RegisterService(new PhonesService());
             RegisterService(new BankingService());
             RegisterService(new UsersService());
             RegisterService(new MapService());
+        }
+
+        private static void InitializeAuditServices()
+        {
+            RegisterService(new MoneyTransactionsAuditService());
         }
     }
 }
