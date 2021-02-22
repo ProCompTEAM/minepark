@@ -18,6 +18,8 @@ namespace MDC.Data
 
         public DbSet<UnitBalance> UnitBalances { get; set; }
 
+        public DbSet<MoneyTransactionAuditRecord> MoneyTransactionAuditRecords { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if(!MDCDatabase.IsInitialized)

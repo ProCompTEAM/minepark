@@ -4,6 +4,8 @@ using MDC.Data.Models;
 using MDC.Infrastructure.Providers;
 using MDC.Infrastructure.Providers.Interfaces;
 using MDC.Infrastructure.Services.Interfaces;
+using MDC.Infrastructure.Services.Audit;
+using MDC.Infrastructure.Services.Audit.Interfaces;
 using MDC.Data.Enums;
 using MDC.Common;
 
@@ -15,10 +17,14 @@ namespace MDC.Infrastructure.Services
 
         private readonly IContextProvider contextProvider;
 
+        private readonly IMoneyTransactionsAuditService moneyTransactionsAuditService;
+
         public BankingService()
         {
             databaseProvider = Store.GetProvider<DatabaseProvider>();
             contextProvider = Store.GetProvider<ContextProvider>();
+
+            moneyTransactionsAuditService = Store.GetService<MoneyTransactionsAuditService>();
         }
 
         public double GetCash(string userName)
@@ -47,12 +53,12 @@ namespace MDC.Infrastructure.Services
         {
             BankAccount bankAccount = GetBankAccount(userName);
 
-            if (!VerifyReduceOperation(bankAccount.Cash, amount)) 
+            double money = RoundNumber(amount);
+
+            if (!VerifyReduceOperation(bankAccount.Cash, money)) 
             {
                 return false;
             }
-
-            double money = RoundNumber(amount);
 
             if (!IncreaseUnitBalance(money))
             {
@@ -60,6 +66,7 @@ namespace MDC.Infrastructure.Services
             }
 
             bankAccount.Cash -= money;
+            moneyTransactionsAuditService.ProcessReduceOperation(userName, amount, PaymentMethod.Cash);
             UpdateBankAccount(bankAccount);
 
             return true;
@@ -69,12 +76,12 @@ namespace MDC.Infrastructure.Services
         {
             BankAccount bankAccount = GetBankAccount(userName);
 
-            if (!VerifyReduceOperation(bankAccount.Debit, amount)) 
+            double money = RoundNumber(amount);
+
+            if (!VerifyReduceOperation(bankAccount.Debit, money)) 
             {
                 return false;
             }
-
-            double money = RoundNumber(amount);
 
             if (!IncreaseUnitBalance(money))
             {
@@ -82,6 +89,7 @@ namespace MDC.Infrastructure.Services
             }
 
             bankAccount.Debit -= money;
+            moneyTransactionsAuditService.ProcessReduceOperation(userName, amount, PaymentMethod.Debit);
             UpdateBankAccount(bankAccount);
 
             return true;
@@ -91,12 +99,12 @@ namespace MDC.Infrastructure.Services
         {  
             BankAccount bankAccount = GetBankAccount(userName);
 
-            if (!VerifyReduceOperation(bankAccount.Credit, amount)) 
+            double money = RoundNumber(amount);
+
+            if (!VerifyReduceOperation(bankAccount.Credit, money)) 
             {
                 return false;
             }
-
-            double money = RoundNumber(amount);
 
             if (!IncreaseUnitBalance(money))
             {
@@ -104,6 +112,7 @@ namespace MDC.Infrastructure.Services
             }
 
             bankAccount.Credit -= money;
+            moneyTransactionsAuditService.ProcessReduceOperation(userName, amount, PaymentMethod.Credit);
             UpdateBankAccount(bankAccount);
 
             return true;
@@ -113,12 +122,12 @@ namespace MDC.Infrastructure.Services
         {
             BankAccount bankAccount = GetBankAccount(userName);
 
-            if (!VerifyGiveOperation(amount)) 
+            double money = RoundNumber(amount);
+
+            if (!VerifyGiveOperation(money)) 
             {
                 return false;
             }
-
-            double money = RoundNumber(amount);
 
             if (!DecreaseUnitBalance(money))
             {
@@ -126,6 +135,7 @@ namespace MDC.Infrastructure.Services
             }
 
             bankAccount.Cash += money;
+            moneyTransactionsAuditService.ProcessGiveOperation(userName, amount, PaymentMethod.Cash);
             UpdateBankAccount(bankAccount);
 
             return true;
@@ -135,12 +145,12 @@ namespace MDC.Infrastructure.Services
         {
             BankAccount bankAccount = GetBankAccount(userName);
 
-            if (!VerifyGiveOperation(amount)) 
+            double money = RoundNumber(amount);
+
+            if (!VerifyGiveOperation(money)) 
             {
                 return false;
             }
-
-            double money = RoundNumber(amount);
 
             if (!DecreaseUnitBalance(money))
             {
@@ -148,6 +158,7 @@ namespace MDC.Infrastructure.Services
             }
 
             bankAccount.Debit += money;
+            moneyTransactionsAuditService.ProcessGiveOperation(userName, amount, PaymentMethod.Debit);
             UpdateBankAccount(bankAccount);
 
             return true;
@@ -157,12 +168,12 @@ namespace MDC.Infrastructure.Services
         {
             BankAccount bankAccount = GetBankAccount(userName);
 
-            if (!VerifyGiveOperation(amount)) 
+            double money = RoundNumber(amount);
+
+            if (!VerifyGiveOperation(money)) 
             {
                 return false;
             }
-
-            double money = RoundNumber(amount);
 
             if (!DecreaseUnitBalance(money))
             {
@@ -170,6 +181,7 @@ namespace MDC.Infrastructure.Services
             }
 
             bankAccount.Credit += money;
+            moneyTransactionsAuditService.ProcessGiveOperation(userName, amount, PaymentMethod.Credit);
             UpdateBankAccount(bankAccount);
 
             return true;
