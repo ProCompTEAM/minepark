@@ -62,11 +62,16 @@ namespace MDC.Infrastructure
 
         private static void InitializeServices()
         {
+            InitializeAuditServices();
             RegisterService(new PhonesService());
-            RegisterService(new MoneyTransactionsAuditService());
             RegisterService(new BankingService());
             RegisterService(new UsersService());
             RegisterService(new MapService());
+        }
+
+        private static void InitializeAuditServices()
+        {
+            RegisterService(new MoneyTransactionsAuditService());
         }
     }
 }
