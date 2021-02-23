@@ -25,6 +25,7 @@ use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\event\player\PlayerPreLoginEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\player\PlayerCommandPreprocessEvent;
+use pocketmine\item\Item;
 
 class EventsHandler implements Listener
 {
@@ -116,6 +117,8 @@ class EventsHandler implements Listener
 	
 	public function tapEvent(PlayerInteractEvent $event)
 	{
+		$this->ignoreTapForItems($event);
+
 		if(!$this->isCanActivate($event)) {
 			return;
 		}
@@ -126,8 +129,6 @@ class EventsHandler implements Listener
 			or (($event->getPlayer()->getInventory()->getItemInHand()->getId() == 259) and !$event->getPlayer()->isOp())) {
 				$event->setCancelled();
 		}
-		
-		$this->ignoreTapForItems($event);
 		
 		$this->getCore()->getOrganisationsModule()->shop->tap($event);
 		
@@ -156,6 +157,8 @@ class EventsHandler implements Listener
 	
 	public function blockPlaceEvent(BlockPlaceEvent $event)
 	{
+		$this->getCore()->getLogger()->info($event->getBlock()->getId());
+
 		$this->checkBlockSet($event);
 	}
 	
@@ -222,7 +225,7 @@ class EventsHandler implements Listener
 	{
 		$itemId = $event->getPlayer()->getInventory()->getItemInHand()->getId();
 		
-		$items = [269, 273, 277, 321, 199, 284, 325];
+		$items = [269, 273, 277, 321, 199, 284, 325, 259];
 
 		if(in_array($itemId, $items) and !$event->getPlayer()->isOp()) {
 			$event->setCancelled();
