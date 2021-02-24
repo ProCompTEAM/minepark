@@ -58,19 +58,23 @@ class OrganisationsCommandHandler
 		if ($arguments[0] != self::COMMAND_PREFIX) {
 			return;
 		}
+
+		if (!isset($arguments[1])) {
+			return $this->showHelp($player);
+		}
 		
 		$command = $this->getCommand($arguments[1]);
 		$arguments = array_slice($arguments, 2);
 
-		if($command === null) {
+		if ($command === null) {
 			return;
 		}
 
-		if(!$this->hasPermissions($player, $command)) {
+		if (!$this->hasPermissions($player, $command)) {
 			$player->sendMessage("§cУ вас нет прав на эту команду :(");
 			$player->sendMessage("§6Возможно она станет доступна после покупки: /donate");
 
-			if($event !== null) {
+			if ($event !== null) {
 				$event->setCancelled();
 			}
 
@@ -78,6 +82,37 @@ class OrganisationsCommandHandler
 		}
 
 		$command->execute($player, $arguments, $event);
+	}
+
+	private function showHelp(MineParkPlayer $player)
+	{
+		$player->sendMessage("§b---- §6ПОМОЩЬ ПО КОМАНДАМ §b----");
+
+		$player->sendMessage("§b-- §6ЛИДЕРЫ §b--");
+		$player->sendMessage("§6/o add/join - §bдобавить человека в вашу организацию");
+		$player->sendMessage("§6/o remove/reject - §bуволить человека");
+
+		$player->sendMessage("§b-- §6ПРАВООХРАНИТЕЛЬНЫЕ ОРГАНЫ §b--");
+		$player->sendMessage("§6/o arest - §bарестовать личностей, находящихся в 5 блоков от вас");
+		$player->sendMessage("§6/o info - §bузнать информацию о человеке");
+
+		$player->sendMessage("§b-- §6ПРАВИТЕЛЬСТВО §b--");
+		$player->sendMessage("§6/o changename - §bсменить человеку имя");
+		$player->sendMessage("§6/o givelic - §bвыдать человеку лицензию");
+		$player->sendMessage("§6/o info - §bузнать информацию о человеке");
+
+		$player->sendMessage("§b-- §6БОЛЬНИЦА §b--");
+		$player->sendMessage("§6/o heal - §bвылечить человека");
+
+		$player->sendMessage("§b-- §6ПОЖАРНЫЕ §b--");
+		$player->sendMessage("§6/o nofire/clean/clear - §bпотушить пожар");
+
+		$player->sendMessage("§b-- §6КАССИРЫ §b--");
+		$player->sendMessage("§6/o nofire/clean/clear - §bпотушить пожар");
+
+		$player->sendMessage("§b-- §6ОБЩЕЕ §b--");
+		$player->sendMessage("§6/o r - §bпотушить пожар");
+		$player->sendMessage("§6/o show - §bпоказать свое удостоверение");
 	}
 
 	private function getCommand(string $commandName) : ?OrganisationsCommand
