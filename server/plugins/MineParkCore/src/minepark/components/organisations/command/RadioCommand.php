@@ -27,7 +27,7 @@ class RadioCommand extends OrganisationsCommand
     public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
         if (self::argumentsNo($args)) {
-            $player->sendMessage("§eПравильное использование этой команды: /o r [ТЕКСТ]");
+            return $player->sendMessage("§eПравильное использование этой команды: /o r [ТЕКСТ]");
         }
 
         $oid = $player->getProfile()->organisation;

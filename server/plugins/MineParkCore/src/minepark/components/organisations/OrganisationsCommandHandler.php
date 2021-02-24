@@ -59,7 +59,7 @@ class OrganisationsCommandHandler
 			return;
 		}
 
-		if (!isset($arguments[1])) {
+		if (!OrganisationsCommand::argumentsMin(2, $arguments)) {
 			return $this->showHelp($player);
 		}
 		
@@ -111,7 +111,7 @@ class OrganisationsCommandHandler
 		$player->sendMessage("§6/o nofire/clean/clear - §bпотушить пожар");
 
 		$player->sendMessage("§b-- §6ОБЩЕЕ §b--");
-		$player->sendMessage("§6/o r - §bпотушить пожар");
+		$player->sendMessage("§6/o r <сообщение> - §bрация");
 		$player->sendMessage("§6/o show - §bпоказать свое удостоверение");
 	}
 
