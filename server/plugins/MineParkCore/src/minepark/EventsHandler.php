@@ -135,14 +135,8 @@ class EventsHandler implements Listener
 		$player = MineParkPlayer::cast($event->getPlayer());
 		$block = $event->getBlock();
 
-		if (!$player->getStatesMap()->auth or $block->getId() == Block::IRON_DOOR_BLOCK) {
+		if (!$player->getStatesMap()->auth) {
 			return $event->setCancelled();
-		}
-
-		$itemHeldId = $player->getInventory()->getItemInHand()->getId();
-
-		if (!($player->getProfile()->builder or $player->isOp()) and $itemHeldId == Item::FLINT_AND_STEEL) {
-			$event->setCancelled();
 		}
 
 		if (!$this->isCanActivate($event)) {
