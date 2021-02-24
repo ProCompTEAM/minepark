@@ -1,20 +1,20 @@
 <?php
 namespace minepark;
 
-use pocketmine\tile\Sign;
+use pocketmine\item\Item;
 
+use pocketmine\tile\Sign;
 use pocketmine\block\Block;
-use pocketmine\block\BlockIds;
 use pocketmine\block\SignPost;
 use pocketmine\block\WallSign;
 use pocketmine\event\Listener;
+use minepark\defaults\Defaults;
 use minepark\utils\FixSignEvent;
 use minepark\components\GameChat;
 use pocketmine\entity\object\Painting;
 use pocketmine\event\block\BlockEvent;
 use minepark\providers\data\UsersSource;
 use minepark\common\player\MineParkPlayer;
-use pocketmine\block\Grass;
 use pocketmine\event\block\BlockBurnEvent;
 use pocketmine\event\level\ChunkLoadEvent;
 use pocketmine\event\block\BlockBreakEvent;
@@ -29,7 +29,6 @@ use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\event\player\PlayerPreLoginEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\player\PlayerCommandPreprocessEvent;
-use pocketmine\item\Item;
 
 class EventsHandler implements Listener
 {
@@ -244,7 +243,7 @@ class EventsHandler implements Listener
 	{
 		$itemId = $event->getPlayer()->getInventory()->getItemInHand()->getId();
 
-		if (in_array($itemId, $this->getRestrictedItemsNonOp()) and !$event->getPlayer()->isOp()) {
+		if (in_array($itemId, Defaults::getRestrictedItemsNonOp()) and !$event->getPlayer()->isOp()) {
 			return $event->setCancelled();
 		}
 
@@ -252,33 +251,9 @@ class EventsHandler implements Listener
 			return;
 		}
 
-		if (in_array($itemId, $this->getGunItemIds())) {
+		if (in_array($itemId, Defaults::getGunItemIds())) {
 			$event->setCancelled();
 		}
-	}
-
-	private function getRestrictedItemsNonOp() : array
-	{
-		return [
-			Item::BUCKET,
-			Item::ITEM_FRAME,
-			Item::PAINTING
-		];
-	}
-
-	private function getGunItemIds() : array
-	{
-		return [
-			Item::WOODEN_SHOVEL,
-			Item::STONE_SHOVEL,
-			Item::GOLDEN_SHOVEL,
-			Item::IRON_SHOVEL,
-			Item::DIAMOND_SHOVEL,
-			Item::WOODEN_HOE,
-			Item::STONE_HOE,
-			Item::IRON_HOE,
-			Item::DIAMOND_HOE
-		];
 	}
 
 	private function isCanActivate(PlayerInteractEvent $event) : bool
