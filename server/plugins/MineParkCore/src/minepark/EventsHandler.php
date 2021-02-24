@@ -3,15 +3,18 @@ namespace minepark;
 
 use pocketmine\tile\Sign;
 
-use minepark\components\GameChat;
+use pocketmine\block\Block;
+use pocketmine\block\BlockIds;
 use pocketmine\block\SignPost;
 use pocketmine\block\WallSign;
 use pocketmine\event\Listener;
 use minepark\utils\FixSignEvent;
+use minepark\components\GameChat;
 use pocketmine\entity\object\Painting;
 use pocketmine\event\block\BlockEvent;
 use minepark\providers\data\UsersSource;
 use minepark\common\player\MineParkPlayer;
+use pocketmine\event\block\BlockBurnEvent;
 use pocketmine\event\level\ChunkLoadEvent;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockPlaceEvent;
@@ -25,6 +28,7 @@ use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\event\player\PlayerPreLoginEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\player\PlayerCommandPreprocessEvent;
+use pocketmine\item\Item;
 
 class EventsHandler implements Listener
 {
@@ -42,15 +46,19 @@ class EventsHandler implements Listener
 	
 	public function commandEvent(PlayerCommandPreprocessEvent $event)
 	{
-		if(!$event->getPlayer()->getStatesMap()->auth) {
-			$this->getCore()->getAuthModule()->login($event->getPlayer(), $event->getMessage());
+		$player = MineParkPlayer::cast($event->getPlayer());
+		$playerName = $player->getName();
+		$message = $event->getMessage();
+
+		if(!$player->getStatesMap()->auth) {
+			$this->getCore()->getAuthModule()->login($player, $message);
 			$event->setCancelled();
 			return;
 		}
 
-		$this->getCore()->getApi()->sendToMessagesLog($event->getPlayer()->getName(), $event->getMessage());
-		$this->getCore()->getCommandsHandler()->execute($event->getPlayer(), $event->getMessage(), $event);
-		$this->getCore()->getOrganisationsModule()->getCommandHandler()->execute($event->getPlayer(), $event->getMessage(), $event);
+		$this->getCore()->getApi()->sendToMessagesLog($playerName, $message);
+		$this->getCore()->getCommandsHandler()->execute($player, $message, $event);
+		$this->getCore()->getOrganisationsModule()->getCommandHandler()->execute($player, $message, $event);
 	}
 	
 	public function joinEvent(PlayerJoinEvent $event)
@@ -66,47 +74,53 @@ class EventsHandler implements Listener
 		$event->setJoinMessage(null);
 	}
 	
-	public function chatEvent(PlayerChatEvent $e)
+	public function chatEvent(PlayerChatEvent $event)
 	{
-		$e->setCancelled();
+		$event->setCancelled();
 
-		if($e->getPlayer()->getStatesMap()->phoneRcv != null) {
-			$this->getCore()->getPhone()->handleInCall($e->getPlayer(), $e->getMessage());
-			$this->getCore()->getChatter()->send($e->getPlayer(), $e->getMessage(), " §8говорит в телефон §7>");
-			$this->getCore()->getTrackerModule()->message($e->getPlayer(), $e->getMessage(), 7, "[PHONE]");
+		$player = MineParkPlayer::cast($event->getPlayer());
+		$message = $event->getMessage();
+
+		if ($player->getStatesMap()->phoneRcv != null) {
+			$this->getCore()->getPhone()->handleInCall($player, $message);
+			$this->getCore()->getChatter()->send($player, $message, " §8говорит в телефон §7>");
+			$this->getCore()->getTrackerModule()->message($player, $message, 7, "[PHONE]");
 			return;
 		}
 
-		if ($e->getPlayer()->muted) {
-			$e->getPlayer()->sendMessage("Вы не можете писать в чат, так как вам выдали мут.");
+		if ($player->muted) {
+			$player->sendMessage("Вы не можете писать в чат, так как вам выдали мут.");
 			return;
 		}
 		
-		if($e->getMessage()[0] == GameChat::GLOBAL_CHAT_SIGNATURE) {
-			$this->getCore()->getChatter()->sendGlobal($e->getPlayer(), $e->getMessage());
-		} elseif($e->getMessage()[0] == GameChat::ADMINISTRATION_CHAT_SIGNATURE) {
-			$this->getCore()->getChatter()->sendForAdministration($e->getPlayer(), $e->getMessage());
+		if ($message[0] == GameChat::GLOBAL_CHAT_SIGNATURE) {
+			$this->getCore()->getChatter()->sendGlobal($player, $message);
+		} elseif ($message[0] == GameChat::ADMINISTRATION_CHAT_SIGNATURE) {
+			$this->getCore()->getChatter()->sendForAdministration($player, $message);
 		} else {
-			$this->getCore()->getChatter()->send($e->getPlayer(), $e->getMessage());
-			$this->getCore()->getTrackerModule()->message($e->getPlayer(), $e->getMessage(), 7, "[CHAT]");
+			$this->getCore()->getChatter()->send($player, $message);
+			$this->getCore()->getTrackerModule()->message($player, $message, 7, "[CHAT]");
 		}
 	}
 	
 	public function quitEvent(PlayerQuitEvent $event)
 	{
 		$event->setQuitMessage(null);
+
+		$player = MineParkPlayer::cast($event->getPlayer());
+		$playerName = $player->getName();
 		
-		$this->getCore()->getApi()->sendToMessagesLog($event->getPlayer()->getName(), "*** Выход из игры");
+		$this->getCore()->getApi()->sendToMessagesLog($playerName, "*** Выход из игры");
 		
-		if($event->getPlayer()->getStatesMap()->phoneRcv != null) {
+		if ($player->getStatesMap()->phoneRcv != null) {
 			$this->getCore()->getPhone()->breakCall($event->getPlayer());
 		}
 
-		if ($this->getCore()->getTrackerModule()->isTracked($event->getPlayer())) {
-			$this->getCore()->getTrackerModule()->disableTrack($event->getPlayer());
+		if ($this->getCore()->getTrackerModule()->isTracked($player)) {
+			$this->getCore()->getTrackerModule()->disableTrack($player);
 		}
 
-		$this->getUsersSource()->updateUserQuitStatus($event->getPlayer()->getName());
+		$this->getUsersSource()->updateUserQuitStatus($playerName);
 	}
 	
 	public function preLoginEvent(PlayerPreLoginEvent $event)
@@ -116,25 +130,26 @@ class EventsHandler implements Listener
 	
 	public function tapEvent(PlayerInteractEvent $event)
 	{
-		if(!$this->isCanActivate($event)) {
+		$this->ignoreTapForItems($event);
+
+		$player = MineParkPlayer::cast($event->getPlayer());
+		$block = $event->getBlock();
+
+		if (!$player->getStatesMap()->auth) {
+			return $event->setCancelled();
+		}
+
+		if (!$this->isCanActivate($event)) {
 			return;
 		}
 
-		$this->getCore()->getInitializer()->checkInventoryItems($event->getPlayer());
-
-		if((!$event->getPlayer()->getStatesMap()->auth or $event->getBlock()->getId() == 71)
-			or (($event->getPlayer()->getInventory()->getItemInHand()->getId() == 259) and !$event->getPlayer()->isOp())) {
-				$event->setCancelled();
-		}
-		
-		$this->ignoreTapForItems($event);
+		$this->getCore()->getInitializer()->checkInventoryItems($player);
 		
 		$this->getCore()->getOrganisationsModule()->shop->tap($event);
 		
 		//fix of SignChangeEvent bug
-		if(self::ENABLE_SIGN_EMULATION) {
-			$block = $event->getBlock();
-			if($block instanceof Sign or $block instanceof SignPost or $block instanceof WallSign) {
+		if (self::ENABLE_SIGN_EMULATION) {
+			if ($block instanceof Sign or $block instanceof SignPost or $block instanceof WallSign) {
 				$ev = new FixSignEvent($event);
 				$this->signChangeEvent($ev->getEvent());
 			}
@@ -187,8 +202,9 @@ class EventsHandler implements Listener
 		}
 	}
 
-	public function chunkLoadEvent(ChunkLoadEvent $event) {
-		if($event->isNewChunk()) {
+	public function chunkLoadEvent(ChunkLoadEvent $event) 
+	{
+		if ($event->isNewChunk()) {
 			$x = $event->getChunk()->getX();
 			$z = $event->getChunk()->getZ();
 			
@@ -196,24 +212,29 @@ class EventsHandler implements Listener
 		}
 	}
 
+	public function blockBurnEvent(BlockBurnEvent $event)
+	{
+		$event->setCancelled();
+	}
+
 	private function checkBlockSet(BlockEvent $event)
 	{
 		$player = $event->getPlayer();
 
-		if(!$player->getStatesMap()->auth) {
+		if (!$player->getStatesMap()->auth) {
 			$event->setCancelled();
 			return;
 		}
 
-		if($player->isOp()) {
+		if ($player->isOp()) {
 			$event->setCancelled(false);
 		}
 
-		if($player->getProfile()->builder) {
+		if ($player->getProfile()->builder) {
 			$event->setCancelled(false);
 		}
 
-		if(!$this->getCore()->getWorldProtector()->isInRange($event->getBlock())) {
+		if (!$this->getCore()->getWorldProtector()->isInRange($event->getBlock())) {
 			$event->setCancelled(false);
 		}
 	}
@@ -222,9 +243,10 @@ class EventsHandler implements Listener
 	{
 		$itemId = $event->getPlayer()->getInventory()->getItemInHand()->getId();
 		
+		// обязательно при переписе кора использовать здесь константы из Item
 		$items = [269, 273, 277, 321, 199, 284, 325];
 
-		if(in_array($itemId, $items) and !$event->getPlayer()->isOp()) {
+		if (in_array($itemId, $items) and !$event->getPlayer()->isOp()) {
 			$event->setCancelled();
 		}
 	}
@@ -233,7 +255,7 @@ class EventsHandler implements Listener
 	{
 		$currentTime = time();
 
-		if($currentTime - $event->getPlayer()->getStatesMap()->lastTap > 2) {
+		if ($currentTime - $event->getPlayer()->getStatesMap()->lastTap > 2) {
 			$event->getPlayer()->getStatesMap()->lastTap = $currentTime;
 
 			return true;
