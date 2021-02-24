@@ -145,7 +145,7 @@ class EventsHandler implements Listener
 			$event->setCancelled();
 		}
 
-		if(!$this->isCanActivate($event)) {
+		if (!$this->isCanActivate($event)) {
 			return;
 		}
 
@@ -154,8 +154,8 @@ class EventsHandler implements Listener
 		$this->getCore()->getOrganisationsModule()->shop->tap($event);
 		
 		//fix of SignChangeEvent bug
-		if(self::ENABLE_SIGN_EMULATION) {
-			if($block instanceof Sign or $block instanceof SignPost or $block instanceof WallSign) {
+		if (self::ENABLE_SIGN_EMULATION) {
+			if ($block instanceof Sign or $block instanceof SignPost or $block instanceof WallSign) {
 				$ev = new FixSignEvent($event);
 				$this->signChangeEvent($ev->getEvent());
 			}
