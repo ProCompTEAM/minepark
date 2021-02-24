@@ -59,10 +59,10 @@ class OrganisationsCommandHandler
 			return;
 		}
 
-		if (!OrganisationsCommand::argumentsMin(2, $arguments)) {
+		if (!isset($arguments[1])) {
 			return $this->showHelp($player);
 		}
-		
+
 		$command = $this->getCommand($arguments[1]);
 		$arguments = array_slice($arguments, 2);
 
