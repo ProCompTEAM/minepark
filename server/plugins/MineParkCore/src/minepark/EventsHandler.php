@@ -14,6 +14,7 @@ use pocketmine\entity\object\Painting;
 use pocketmine\event\block\BlockEvent;
 use minepark\providers\data\UsersSource;
 use minepark\common\player\MineParkPlayer;
+use pocketmine\block\Grass;
 use pocketmine\event\block\BlockBurnEvent;
 use pocketmine\event\level\ChunkLoadEvent;
 use pocketmine\event\block\BlockBreakEvent;
@@ -242,13 +243,42 @@ class EventsHandler implements Listener
 	private function ignoreTapForItems(PlayerInteractEvent $event)
 	{
 		$itemId = $event->getPlayer()->getInventory()->getItemInHand()->getId();
-		
-		// обязательно при переписе кора использовать здесь константы из Item
-		$items = [269, 273, 277, 321, 199, 284, 325];
 
-		if (in_array($itemId, $items) and !$event->getPlayer()->isOp()) {
+		if (in_array($itemId, $this->getRestrictedItemsNonOp()) and !$event->getPlayer()->isOp()) {
+			return $event->setCancelled();
+		}
+
+		if ($event->getBlock()->getId() != Block::GRASS) {
+			return;
+		}
+
+		if (in_array($itemId, $this->getGunItemIds())) {
 			$event->setCancelled();
 		}
+	}
+
+	private function getRestrictedItemsNonOp() : array
+	{
+		return [
+			Item::BUCKET,
+			Item::ITEM_FRAME,
+			Item::PAINTING
+		];
+	}
+
+	private function getGunItemIds() : array
+	{
+		return [
+			Item::WOODEN_SHOVEL,
+			Item::STONE_SHOVEL,
+			Item::GOLDEN_SHOVEL,
+			Item::IRON_SHOVEL,
+			Item::DIAMOND_SHOVEL,
+			Item::WOODEN_HOE,
+			Item::STONE_HOE,
+			Item::IRON_HOE,
+			Item::DIAMOND_HOE
+		];
 	}
 
 	private function isCanActivate(PlayerInteractEvent $event) : bool
