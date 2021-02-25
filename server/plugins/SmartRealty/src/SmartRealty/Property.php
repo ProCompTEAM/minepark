@@ -12,6 +12,8 @@ use pocketmine\block\WallSign;
 
 class Property
 {
+	public const MINIMUM_PREMIUM_PROPERTY_PRICE = 1500;
+
 	public $main;
 	public $c;
 	
@@ -157,6 +159,10 @@ class Property
 			$this->checkRented($name);
 			
 			$price = $c->getNested("$name.price");
+
+			if ($price > self::MINIMUM_PREMIUM_PROPERTY_PRICE and $days < 7) {
+				return $player->sendMessage("§cДанную недвижимость нельзя арендовать на менее 7 дней.");
+			}
 			
 			if($c->getNested("$name.owners") != false) 
 				$player->sendMessage("§cСожалеем, но эта недвижимость в данный момент уже кем-то арендована!");
@@ -347,17 +353,22 @@ class Property
 					foreach($data as $line)
 					{
 						//AreaName=0,0,0>>100,100,100
-						$name = explode("=", $line)[0];
+						$splittedLine = explode("=", $line);
+						if (!isset($splittedLine[1])) {
+							continue;
+						}
+						$name = $splittedLine[0];
 						if($namesOnly) array_push($result, $name);
 						else { 
-							$part2 = explode("=", $line)[1];
+							$part2 = $splittedLine[1];
 							$poslist = explode(">>", $part2);
 							$form = array($name);
 							foreach($poslist as $posf)
 							{
-								$x = explode(',',$posf)[0];
-								$y = explode(',',$posf)[1];
-								$z = explode(',',$posf)[2];
+								$splittedPosition = explode(',',$posf);
+								$x = $splittedPosition[0];
+								$y = $splittedPosition[1];
+								$z = $splittedPosition[2];
 								array_push($form, new Vector3($x,$y,$z));
 							}
 							array_push($result, $form);
