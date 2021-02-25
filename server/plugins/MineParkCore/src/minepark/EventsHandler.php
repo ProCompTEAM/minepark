@@ -2,12 +2,11 @@
 namespace minepark;
 
 use pocketmine\tile\Sign;
-
 use pocketmine\block\Block;
-use pocketmine\block\BlockIds;
 use pocketmine\block\SignPost;
 use pocketmine\block\WallSign;
 use pocketmine\event\Listener;
+use minepark\defaults\ItemConstants;
 use minepark\utils\FixSignEvent;
 use minepark\components\GameChat;
 use pocketmine\entity\object\Painting;
@@ -28,7 +27,6 @@ use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\event\player\PlayerPreLoginEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\player\PlayerCommandPreprocessEvent;
-use pocketmine\item\Item;
 
 class EventsHandler implements Listener
 {
@@ -242,11 +240,16 @@ class EventsHandler implements Listener
 	private function ignoreTapForItems(PlayerInteractEvent $event)
 	{
 		$itemId = $event->getPlayer()->getInventory()->getItemInHand()->getId();
-		
-		// обязательно при переписе кора использовать здесь константы из Item
-		$items = [269, 273, 277, 321, 199, 284, 325];
 
-		if (in_array($itemId, $items) and !$event->getPlayer()->isOp()) {
+		if (in_array($itemId, ItemConstants::getRestrictedItemsNonOp()) and !$event->getPlayer()->isOp()) {
+			return $event->setCancelled();
+		}
+
+		if ($event->getBlock()->getId() != Block::GRASS) {
+			return;
+		}
+
+		if (in_array($itemId, ItemConstants::getGunItemIds())) {
 			$event->setCancelled();
 		}
 	}
