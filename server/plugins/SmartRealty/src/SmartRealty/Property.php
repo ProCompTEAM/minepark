@@ -13,6 +13,7 @@ use pocketmine\block\WallSign;
 class Property
 {
 	public const MINIMUM_PREMIUM_PROPERTY_PRICE = 1500;
+	public const MINIMUM_PREMIUM_PROPERTY_RENT_DAYS = 7;
 
 	public $main;
 	public $c;
@@ -160,7 +161,7 @@ class Property
 			
 			$price = $c->getNested("$name.price");
 
-			if ($price > self::MINIMUM_PREMIUM_PROPERTY_PRICE and $days < 7) {
+			if ($price > self::MINIMUM_PREMIUM_PROPERTY_PRICE and $days < self::MINIMUM_PREMIUM_PROPERTY_RENT_DAYS) {
 				return $player->sendMessage("§cДанную недвижимость нельзя арендовать на менее 7 дней.");
 			}
 			
@@ -357,18 +358,22 @@ class Property
 						if (!isset($splittedLine[1])) {
 							continue;
 						}
+
 						$name = $splittedLine[0];
+
 						if($namesOnly) array_push($result, $name);
 						else { 
 							$part2 = $splittedLine[1];
 							$poslist = explode(">>", $part2);
 							$form = array($name);
+
 							foreach($poslist as $posf)
 							{
-								$splittedPosition = explode(',',$posf);
+								$splittedPosition = explode(',', $posf);
 								$x = $splittedPosition[0];
 								$y = $splittedPosition[1];
 								$z = $splittedPosition[2];
+
 								array_push($form, new Vector3($x,$y,$z));
 							}
 							array_push($result, $form);
