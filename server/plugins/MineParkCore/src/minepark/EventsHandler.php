@@ -1,14 +1,12 @@
 <?php
 namespace minepark;
 
-use pocketmine\item\Item;
-
 use pocketmine\tile\Sign;
 use pocketmine\block\Block;
 use pocketmine\block\SignPost;
 use pocketmine\block\WallSign;
 use pocketmine\event\Listener;
-use minepark\defaults\Defaults;
+use minepark\defaults\ItemConstants;
 use minepark\utils\FixSignEvent;
 use minepark\components\GameChat;
 use pocketmine\entity\object\Painting;
@@ -243,7 +241,7 @@ class EventsHandler implements Listener
 	{
 		$itemId = $event->getPlayer()->getInventory()->getItemInHand()->getId();
 
-		if (in_array($itemId, Defaults::getRestrictedItemsNonOp()) and !$event->getPlayer()->isOp()) {
+		if (in_array($itemId, ItemConstants::getRestrictedItemsNonOp()) and !$event->getPlayer()->isOp()) {
 			return $event->setCancelled();
 		}
 
@@ -251,7 +249,7 @@ class EventsHandler implements Listener
 			return;
 		}
 
-		if (in_array($itemId, Defaults::getGunItemIds())) {
+		if (in_array($itemId, ItemConstants::getGunItemIds())) {
 			$event->setCancelled();
 		}
 	}
