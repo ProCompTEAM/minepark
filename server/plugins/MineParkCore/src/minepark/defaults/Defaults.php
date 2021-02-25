@@ -1,8 +1,6 @@
 <?php
 namespace minepark\defaults;
 
-use pocketmine\item\Item;
-
 class Defaults 
 {
     public const PUBLIC_CHAT_PREFIX = "§6MINE§aPARK§8.§eRU §7▶";
