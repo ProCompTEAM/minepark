@@ -38,10 +38,6 @@ class PayCommand extends Command
             return;
         }
 
-        if ($player->getStatesMap()->paymentMethod !== PaymentMethods::CASH) {
-            return $player->sendMessage("CommandPayInvalidMethod");
-        }
-
         $players = $this->getCore()->getApi()->getRegionPlayers($player, self::DISTANCE);
 
         if(count($players) > 2) {
@@ -54,9 +50,9 @@ class PayCommand extends Command
             if($p === $player) {
                 continue;
             } else {
-                if(Providers::getBankingProvider()->takePlayerMoney($player, $args[0])) {
+                if(Providers::getBankingProvider()->reduceCash($player, $args[0])) {
                     $this->getCore()->getChatter()->send($player, "{CommandPayPay}", "§d", self::DISTANCE);
-                    Providers::getBankingProvider()->givePlayerMoney($p, $args[0]);
+                    Providers::getBankingProvider()->giveCash($p, $args[0]);
                 } else {
                     $player->sendMessage("CommandPayNoMoney");
                 }
