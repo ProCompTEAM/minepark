@@ -7,6 +7,7 @@ use pocketmine\event\Event;
 use minepark\defaults\Sounds;
 use minepark\defaults\Permissions;
 use minepark\common\player\MineParkPlayer;
+use minepark\defaults\PaymentMethods;
 
 class PayCommand extends Command
 {
@@ -49,9 +50,9 @@ class PayCommand extends Command
             if($p === $player) {
                 continue;
             } else {
-                if(Providers::getBankingProvider()->takePlayerMoney($player, $args[0])) {
+                if(Providers::getBankingProvider()->reduceCash($player, $args[0])) {
                     $this->getCore()->getChatter()->send($player, "{CommandPayPay}", "§d", self::DISTANCE);
-                    Providers::getBankingProvider()->givePlayerMoney($p, $args[0]);
+                    Providers::getBankingProvider()->giveCash($p, $args[0]);
                 } else {
                     $player->sendMessage("CommandPayNoMoney");
                 }

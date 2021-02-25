@@ -42,8 +42,8 @@ class Phone extends Component
 	{
 		$name = $this->getSource()->getUserNameByNumber($number);
 
-		if(isset($name)) {
-			return $nameOnly ? $name : $this->getCore()->getServer()->getPlayer($nameOnly);
+		if(strlen($name) > 0) {
+			return $nameOnly ? $name : $this->getCore()->getServer()->getPlayer($name);
 		}
 		
 		return null;
@@ -89,6 +89,10 @@ class Phone extends Component
 			$this->sendDisplayMessages($player);
 		} else {
 			$number = $commandArgs[1];
+
+			if (!is_numeric($number)) {
+				return $player->sendMessage("PhoneCheckNum");
+			}
 
 			if($number == self::EMERGENCY_NUMBER1 or $number == self::EMERGENCY_NUMBER2) {
 				$organisationId = Organisations::SECURITY_WORK;
@@ -230,7 +234,7 @@ class Phone extends Component
 		if($commandArgs[0] == "c") {
 			$player->sendMessage("PhoneBeeps");
 
-			if($number == $myNumber or !is_numeric($number)) {
+			if($number == $myNumber) {
 				$player->sendMessage("PhoneCheckNum");
 			} elseif($targetPlayer->getStatesMap()->phoneRcv == null) {
 				$this->getCore()->getChatter()->send($targetPlayer, "{PhoneCallingBeep}", "§d : ", 10);
