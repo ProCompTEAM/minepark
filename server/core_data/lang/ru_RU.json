@@ -63,8 +63,10 @@
     "CommangGPSnoXZ": "§cУказана неверная позиция X Z",
     "CommandGPSPath1": "§aМаршрут к указанной точке проложен;",
     "CommandGPSPath2": "§6Следуйте по направлению указателей навигатора!",
-    "CommandGPSNoPoint": "§6Места §e$point §6на карте не существует!",
-    "CommandGPSToPoint": "§aМаршрут к точке §e$point §aобновлен;",
+    "CommandGPSNoPointPart1": "§6Места§e",
+    "CommandGPSNoPointPart2": "§6на карте не существует!",
+    "CommandGPSToPointPart1": "§aМаршрут к точке§e",
+    "CommandGPSToPointPart2": "§aобновлен;",
 
     "CommandGPSCome": "§aПоздравляем, вы прибыли к месту назначения!",
     "CommandGPSNearUse": "§6Вы можете посмотреть места рядом: §e/gpsnear",
