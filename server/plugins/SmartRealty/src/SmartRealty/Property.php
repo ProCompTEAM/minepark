@@ -138,6 +138,10 @@ class Property
 			$name = $args[1];
 			$days = $args[2];
 			$c = $this->getConfig($player->getPosition());
+
+			if ($c === null) {
+				return $player->sendMessage("§cЗдесь не продается недвижимость!");
+			}
 			
 			if(!$c->exists($name)) {
 				$player->sendMessage("§cНедвижимости §6$name §cнет в этом микрорайоне!");
