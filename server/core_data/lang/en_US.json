@@ -309,6 +309,5 @@
     "ReporterCreateTicketPart2": " §bс содержанием:",
     "ReporterNeedHelp1Part1": "§bНужна помощь игроку §e",
     "ReporterNeedHelp1Part2": "§b. Айди тикета - §e$reportID. Содержание:",
-    "ReporterNeedHelp2": "§bПусть ответит хелпер §e",
-    "CommandPayInvalidMethod": "§сУ Вас должен быть выбраны наличные в качестве платежного метода!"
+    "ReporterNeedHelp2": "§bПусть ответит хелпер §e"
 }
