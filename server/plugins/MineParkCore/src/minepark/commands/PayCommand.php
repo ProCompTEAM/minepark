@@ -7,6 +7,7 @@ use pocketmine\event\Event;
 use minepark\defaults\Sounds;
 use minepark\defaults\Permissions;
 use minepark\common\player\MineParkPlayer;
+use minepark\defaults\PaymentMethods;
 
 class PayCommand extends Command
 {
@@ -35,6 +36,10 @@ class PayCommand extends Command
         if(self::argumentsNo($args) or !is_numeric($args[0])) {
             $player->sendMessage("CommandPayUse");
             return;
+        }
+
+        if ($player->getStatesMap()->paymentMethod !== PaymentMethods::CASH) {
+            return $player->sendMessage("CommandPayInvalidMethod");
         }
 
         $players = $this->getCore()->getApi()->getRegionPlayers($player, self::DISTANCE);
