@@ -32,32 +32,9 @@ class GPSCommand extends Command
     public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
         if(self::argumentsCount(2, $args)) {
-            if(!is_numeric($args[0]) or !is_numeric($args[1])) {
-                $player->sendMessage("CommangGPSnoXZ");
-                return;
-            }
-
-            $player->getStatesMap()->gps = new Position($args[0], $player->getY(), $args[1], $player->getLevel());
-
-            $player->sendMessage("CommandGPSPath1");
-            $player->sendMessage("CommandGPSPath2");
-            return;
-        }
-        
-        if(self::argumentsCount(1, $args)) {
-            $point = $args[0];
-
-            $player->getStatesMap()->gps = $this->getCore()->getMapper()->getPointPosition($point);
-
-            if($player->getStatesMap()->gps == false) {
-                $player->getStatesMap()->gps = null;
-
-                $player->sendMessage("CommandGPSNoPoint");
-            } else {
-                $player->sendMessage("CommandGPSToPoint");
-                $player->sendMessage("CommandGPSPath2");
-            }
-            return;
+            return $this->initializeCoordinatesGps($player, $args);
+        } elseif(self::argumentsCount(1, $args)) {
+            return $this->initializePointGps($player, $args);
         }
 
         $player->getStatesMap()->gps = null;
@@ -66,6 +43,35 @@ class GPSCommand extends Command
         $this->sendInformationWindow($player);
 
         $player->sendSound(Sounds::OPEN_NAVIGATOR);
+    }
+
+    private function initializeCoordinatesGps(MineParkPlayer $player, array $args)
+    {
+        if (!is_numeric($args[0]) or !is_numeric($args[1])) {
+            $player->sendMessage("CommangGPSnoXZ");
+            return;
+        }
+
+        $player->getStatesMap()->gps = new Position($args[0], $player->getY(), $args[1], $player->getLevel());
+
+        $player->sendMessage("CommandGPSPath1");
+        $player->sendMessage("CommandGPSPath2");
+        return;
+    }
+
+    private function initializePointGps(MineParkPlayer $player, array $args)
+    {
+        $point = $args[0];
+
+        $gps = $this->getCore()->getMapper()->getPointPosition($point);
+
+        if ($gps === null) {
+            return $player->sendLocalizedMessage("{CommandGPSNoPointPart1} $point {CommandGPSNoPointPart2");
+        }
+
+        $player->getStatesMap()->gps = $gps;
+        $player->sendLocalizedMessage("{CommandGPSToPointPart1} $point {CommandGPSToPointPart2}");
+        $player->sendMessage("CommandGPSPath2");
     }
 
     private function sendInformationWindow(MineParkPlayer $player) 
