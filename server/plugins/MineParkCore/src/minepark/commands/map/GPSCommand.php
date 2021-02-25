@@ -56,7 +56,6 @@ class GPSCommand extends Command
 
         $player->sendMessage("CommandGPSPath1");
         $player->sendMessage("CommandGPSPath2");
-        return;
     }
 
     private function initializePointGps(MineParkPlayer $player, array $args)

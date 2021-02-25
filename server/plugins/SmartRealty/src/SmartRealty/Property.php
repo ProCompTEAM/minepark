@@ -12,6 +12,9 @@ use pocketmine\block\WallSign;
 
 class Property
 {
+	public const MINIMUM_PREMIUM_PROPERTY_PRICE = 1500;
+	public const MINIMUM_PREMIUM_PROPERTY_RENT_DAYS = 7;
+
 	public $main;
 	public $c;
 	
@@ -149,31 +152,34 @@ class Property
 			}
 			
 			if(count($player->property) == 3 and !$player->isOp()) {
-				$player->sendMessage("§6Дабы все жилье не скупили, государство ограничело количество квартир на человека до трех.");
-				$player->sendMessage("§eВы можете дождаться окончание аренды одного из купленного жилья, а затем сюда вернуться!");
+				$player->sendMessage("§6Дабы все жилье не скупили, государство ограничило количество квартир на человека до трех.");
+				$player->sendMessage("§eВы можете дождаться окончания аренды одного из купленного жилья, а затем вновь вернуться сюда!");
 				return;
 			}
 			
 			$this->checkRented($name);
 			
 			$price = $c->getNested("$name.price");
+
+			if ($price > self::MINIMUM_PREMIUM_PROPERTY_PRICE and $days < self::MINIMUM_PREMIUM_PROPERTY_RENT_DAYS) {
+				return $player->sendMessage("§cДанную недвижимость нельзя арендовать на менее чем 7 дней.");
+			}
 			
-			if($c->getNested("$name.owners") != false) 
-				$player->sendMessage("§cСожалеем, но эта недвижимость в данный момент уже кем-то арендована!");
-			else 
-			{
-				if($this->main->economy->reduceMoney($player, $price * $days)) 
-				{
+			if ($c->getNested("$name.owners") != false) {
+				$player->sendMessage("§cСожалеем, но эта недвижимость в данный момент кем-то арендована!");
+			} else {
+				if ($this->main->economy->reduceMoney($player, $price * $days)) {
 					$c->setNested("$name.owners", strtolower($player->getName()));
 					$c->setNested("$name.rented", time());
 					$c->setNested("$name.rented_days", $days);
 					$c->save();
 					
-					$player->sendMessage("§9Поздравляем! Вы арендовали это помещение на $days суток!");
+					$player->sendMessage("§9Поздравляем! Вы арендовали данное помещение на $days суток!");
 					$this->updatePlayerProperty($player);
+				} else {
+					$player->sendMessage("§cК сожалению, Вам не хватает денег для аренды!"
+					. " Попробуйте арендовать данное жилье на меньшее количество суток.");
 				}
-				else $player->sendMessage("§cК сожалению, в данный момент вам не хватает денег для аренды!"
-					. " Возможно, стоит попробовать арендовать жилье на меньшее количество суток.");
 			}
 			break;
 		}
@@ -187,10 +193,10 @@ class Property
 		if($block instanceof Sign or $block instanceof SignPost or $block instanceof WallSign)
 		{
 			$c = $this->getConfig($player->getPosition());
-			if($c === null)
-			{
-				if($player->hasPermission("realt.creator")) 
+			if($c === null) {
+				if($player->hasPermission("realt.creator"))  {
 					$player->sendMessage("§8Внимание! Микрорайон на этом участке не обозначен!");
+				}
 				return;
 			}
 			foreach($c->getAll(true) as $name) {
@@ -217,7 +223,7 @@ class Property
 							$f .= "§f=> Арендовать помещение: §d/realt rent $name <количество суток>\n";
 						}
 						
-						$f .= "§8Сняв на время помещение вы сможете строить внутри него, проживать и приглашать жить друзей.";
+						$f .= "§8Сняв помещение Вы сможете строить на его территории, проживать и приглашать жить друзей вместе с вами.";
 						
 						$player->sendMessage($f);
 					}
@@ -252,7 +258,7 @@ class Property
 				
 				$player->sendMessage("§aЛинковка произведена!");
 			}
-			else $player->sendMessage("§cНеправильное имя!");
+			else $player->sendMessage("§cНеверное имя!");
 		}
 	}
 	
@@ -347,17 +353,28 @@ class Property
 					foreach($data as $line)
 					{
 						//AreaName=0,0,0>>100,100,100
-						$name = explode("=", $line)[0];
-						if($namesOnly) array_push($result, $name);
-						else { 
-							$part2 = explode("=", $line)[1];
+						$splittedLine = explode("=", $line);
+
+						if (!isset($splittedLine[1])) {
+							continue;
+						}
+
+						$name = $splittedLine[0];
+
+						if ($namesOnly) {
+							array_push($result, $name);
+						} else { 
+							$part2 = $splittedLine[1];
 							$poslist = explode(">>", $part2);
 							$form = array($name);
-							foreach($poslist as $posf)
-							{
-								$x = explode(',',$posf)[0];
-								$y = explode(',',$posf)[1];
-								$z = explode(',',$posf)[2];
+
+							foreach ($poslist as $posf) {
+								$splittedPosition = explode(',', $posf);
+
+								$x = $splittedPosition[0];
+								$y = $splittedPosition[1];
+								$z = $splittedPosition[2];
+
 								array_push($form, new Vector3($x,$y,$z));
 							}
 							array_push($result, $form);
