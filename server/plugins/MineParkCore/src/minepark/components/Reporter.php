@@ -155,7 +155,7 @@ class Reporter extends Component
 			
 		$reporter->sendLocalizedMessage("{ReporterAnswerHelper1Part1}".$replier->getName()."{ReporterAnswerHelper1Part2}");
 		$reporter->sendMessage("§b $reportContent");
-		$reporter->sendMessage("ReporterAnswerHelper2");
+		$reporter->sendLocalizedMessage("{ReporterAnswerHelper2Part1}$reportId{ReporterAnswerHelper2Part2}");
 
 		$replier->sendLocalizedMessage("{ReporterAnswerHelper3Part1}".$reportId."{ReporterAnswerHelper3Part2}".$reporter->getName()."{ReporterAnswerHelper3Part3}");
 		$replier->sendMessage("§b $reportContent");
@@ -186,7 +186,7 @@ class Reporter extends Component
 		
 		if ($allHelpers !== null) {
 			foreach($allHelpers as $helper) {
-				$helper->sendMessage("ReporterTicketClose");
+				$helper->sendLocalizedMessage("{ReporterTicketClosePart1}".$reportId."{ReporterTicketClosePart2}");
 			}
 		}
 
@@ -194,7 +194,7 @@ class Reporter extends Component
 			return true;
 		}
 
-		$reporter->sendLocalizedMessage("{ReporterTicketClose2Part1}".$reportId."{ReporterTicketClose2Part2}");
+		$reporter->sendLocalizedMessage("{ReporterTicketClosePart1}".$reportId."{ReporterTicketClosePart2}");
 		return true;
 	}
 
@@ -225,9 +225,9 @@ class Reporter extends Component
 		$helperName = $this->chooseRandomHelper();
 
 		foreach(self::getHelpers() as $helper) {
-			$helper->sendLocalizedMessage("{ReporterNeedHelp1Part1}".$reporter->getName()."{ReporterNeedHelp1Part2}");
+			$helper->sendLocalizedMessage("{ReporterNeedHelp1Part1}".$reporter->getName()."{ReporterNeedHelp1Part2}$reportID{ReporterNeedHelp1Part3}");
 			$helper->sendMessage("§b$reportContent");
-			$helper->sendMessage("{ReporterNeedHelp2}".$helperName);
+			$helper->sendLocalizedMessage("{ReporterNeedHelp2}".$helperName);
 		}
 	}
 }

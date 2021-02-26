@@ -307,5 +307,10 @@
     "ReporterCreateTicketPart2": " §bс содержанием:",
     "ReporterNeedHelp1Part1": "§bНужна помощь игроку §e",
     "ReporterNeedHelp1Part2": "§b. Айди тикета - §e$reportID. Содержание:",
-    "ReporterNeedHelp2": "§bПусть ответит хелпер §e"
+    "ReporterNeedHelp2": "§bПусть ответит хелпер §e",
+    "ReporterAnswerHelper2Part1": "§bЧто бы ответить на этот репорт, пропишите: /report reply ",
+    "ReporterAnswerHelper2Part2": " <text>",
+    "ReporterTicketClosePart1": "§bТикет §e",
+    "ReporterTicketClosePart2": "§b был закрыт.",
+    "ReporterNeedHelp1Part3": ". Содержание:"
 }
