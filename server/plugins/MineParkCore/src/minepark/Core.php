@@ -21,6 +21,7 @@ use minepark\components\GameChat;
 use minepark\components\Reporter;
 use pocketmine\event\Listener;
 use jojoe77777\FormAPI\FormAPI;
+use minepark\components\Broadcaster;
 use minepark\defaults\Defaults;
 use minepark\components\StatusBar;
 use pocketmine\command\Command;
@@ -59,6 +60,7 @@ class Core extends PluginBase implements Listener
 	private $gpsmod;
 	private $fastfood;
 	private $tracker;
+	private $broadcaster;
 
 	public $webapi;
 
@@ -125,6 +127,7 @@ class Core extends PluginBase implements Listener
 		$this->reporter = new Reporter;
 		$this->webapi = new WebApi;
 		$this->tracker = new Tracker;
+		$this->broadcaster = new Broadcaster;
 	}
 
 	public function getTargetDirectory(bool $strings = false) : string
@@ -235,6 +238,11 @@ class Core extends PluginBase implements Listener
 	public function getTrackerModule() : Tracker
 	{
 		return $this->tracker;
+	}
+
+	public function getBroadcasterModule() : Broadcaster
+	{
+		return $this->broadcaster;
 	}
 
 	public function getNotifierModule() : NotifyPlayers
