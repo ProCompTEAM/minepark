@@ -15,10 +15,9 @@ use Lolya\Loader;
 use Lolya\Shoot;
 use Lolya\GunData;
 use Lolya\GunListener;
-
 use minepark\Core;
 use minepark\Mapper;
-use minepark\components\organizations\Organizations;
+use minepark\components\organisations\Organisations;
 
 class MainClass extends PluginBase implements Listener 
 {
@@ -69,9 +68,8 @@ class MainClass extends PluginBase implements Listener
 			return true;
 		}
 		
-		if (empty($args[0]))
-		{
-			$sender->sendMessage("Вы не указали подфункцию.");
+		if (empty($args[0])) {
+			$sender->sendMessage("Вы не указали подкоманду.");
 			return true;
 		}
 		
@@ -146,7 +144,7 @@ class MainClass extends PluginBase implements Listener
 			return true;
 		}
 
-		if ($player->org == Organizations::SECURITY_WORK) {
+		if ($player->org == Organisations::SECURITY_WORK) {
 			if ($player->distance($this->getMapper()->getPointPosition(self::POINT_NAME)) <= self::POINT_DISTANCE) {
 				return true;
 			}
