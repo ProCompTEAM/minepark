@@ -301,13 +301,18 @@
     "ReporterAnswerHelper4Part2": " §bответил игроку $reporter §bна тикет ",
     "ReporterAnswerHelper4Part3": "§bс сообщением:",
     "ReporterTicketClose": "§bТикет §e $reportId §bбыл закрыт.",
-    "ReporterTicketClose2Part1": "§bВаш тикет с айди §e",
+    "ReporterTicketClose2Part1": "§bВаш тикет с ID §e",
     "ReporterTicketClose2Part2": "§b был закрыт.",
     "ReporterNoHelpers": "§bХелперы и модераторы §eне в сети. §bПожалуйста, попробуйте позже!",
     "ReporterManyWord": "§bСлишком много символов в данном тикете. Попробуйте укоротить.",
     "ReporterCreateTicketPart1": "§bВы создали новый тикет с ID §e",
     "ReporterCreateTicketPart2": " §bс содержанием:",
     "ReporterNeedHelp1Part1": "§bНужна помощь игроку §e",
-    "ReporterNeedHelp1Part2": "§b. Айди тикета - §e$reportID. Содержание:",
-    "ReporterNeedHelp2": "§bПусть ответит хелпер §e"
+    "ReporterNeedHelp1Part2": "§b. ID тикета - §e$reportID. Содержание:",
+    "ReporterNeedHelp2": "§bПусть ответит хелпер §e",
+    "ReporterAnswerHelper2Part1": "§bЧто бы ответить на этот репорт, используйте: /report reply ",
+    "ReporterAnswerHelper2Part2": " <text>",
+    "ReporterTicketClosePart1": "§bТикет §e",
+    "ReporterTicketClosePart2": "§b был закрыт.",
+    "ReporterNeedHelp1Part3": ". Содержание:"
 }

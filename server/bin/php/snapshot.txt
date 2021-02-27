@@ -1,7 +1,7 @@
 This snapshot was automatically generated on
-Wed, 17 Feb 2021 19:54:56 +0000
+Fri, 12 Feb 2021 21:38:56 +0000
 
-Version: 8.0.3RC1
+Version: 8.0.2
 Branch: HEAD
 Build: D:\a\1\s\pocketmine-php-sdk\php-src\x64\Release_TS
 
