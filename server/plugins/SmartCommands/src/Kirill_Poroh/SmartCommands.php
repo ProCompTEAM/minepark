@@ -46,6 +46,8 @@ class SmartCommands extends PluginBase implements Listener
 		$this->command["invsee"] = new InvseeCommand($this);
 		$this->command["timeban"] = new TBCommand($this);
 		$this->command["free"] = new FreeCommand($this);
+		$this->command["day"] = new TimeCommand($this);
+		$this->command["night"] = $this->command["day"];
 	}
 	
 	public function getDirectory()
