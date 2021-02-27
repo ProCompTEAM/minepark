@@ -10,6 +10,7 @@ Thumbs.db
 /server/plugin_data/SmartRealty/*
 /server/plugin_data/Lifts/db/*
 /server/plugin_data/MapImageEngine/instructions/*
+/server/plugin_data/PocketRadio/volume.yml
 /server/players/*
 /server/crashdumps/*
 
