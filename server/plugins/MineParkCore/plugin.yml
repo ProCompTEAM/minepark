@@ -123,6 +123,12 @@ commands:
  bank:
   default: true
   permissions: minepark.all
+ day:
+  default: op
+  permissions: minepark.admin
+ night:
+  default: op
+  permissions: minepark.admin
  
 permissions:
   minepark.admin:
