@@ -9,12 +9,6 @@ commands:
  coffee:
   default: op
   permissions: sc.command.ef
- day:
-  default: op
-  permissions: sc.command.time
- night:
-  default: op
-  permissions: sc.command.time
  pos:
   default: op
   permissions: sc.command.pos
@@ -75,8 +69,6 @@ permissions:
  sc.command.feed:
   default: op
  sc.command.coffee:
-  default: op
- sc.command.time:
   default: op
  sc.command.pos:
   default: op

@@ -3,11 +3,13 @@ namespace minepark;
 
 use pocketmine\event\Event;
 use minepark\commands\Command;
+use minepark\commands\DayCommand;
 use minepark\commands\PayCommand;
 use minepark\commands\BankCommand;
 use minepark\defaults\Permissions;
 use minepark\commands\LevelCommand;
 use minepark\commands\MoneyCommand;
+use minepark\commands\NightCommand;
 use minepark\commands\CasinoCommand;
 use minepark\commands\DonateCommand;
 use minepark\commands\OnlineCommand;
@@ -27,19 +29,19 @@ use minepark\commands\map\AddPointCommand;
 use minepark\commands\report\CloseCommand;
 use minepark\commands\report\ReplyCommand;
 use minepark\commands\roleplay\TryCommand;
+use minepark\common\player\MineParkPlayer;
 use minepark\commands\report\ReportCommand;
 use minepark\commands\ResetPasswordCommand;
 use minepark\commands\roleplay\ShoutCommand;
 use minepark\commands\workers\PutBoxCommand;
 use minepark\commands\GetOrganisationCommand;
+
 use minepark\commands\map\RemovePointCommand;
 use minepark\commands\map\ToNearPointCommand;
-
 use minepark\commands\workers\GetFarmCommand;
 use minepark\commands\workers\PutFarmCommand;
 use minepark\commands\workers\TakeBoxCommand;
 use minepark\commands\roleplay\WhisperCommand;
-use minepark\common\player\MineParkPlayer;
 
 class CommandsHandler
 {
@@ -81,7 +83,9 @@ class CommandsHandler
 			new ReportCommand,
 			new ReplyCommand,
 			new CloseCommand,
-			new BankCommand
+			new BankCommand,
+			new DayCommand,
+			new NightCommand
 		];
 	}
 
