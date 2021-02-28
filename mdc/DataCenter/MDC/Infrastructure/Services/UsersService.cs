@@ -81,7 +81,7 @@ namespace MDC.Infrastructure.Services
             await SetPassword(userName, null);
         }
 
-        public async Task Create(UserDto userDto)
+        public async Task Create(string unitId, UserDto userDto)
         {
             await ValidateIsUserExist(userDto.Name);
 
@@ -90,10 +90,10 @@ namespace MDC.Infrastructure.Services
             await databaseProvider.CommitAsync();
 
             await phonesService.CreateNumberForUser(user.Name);
-            await bankingService.CreateEmptyBankAccount(user.Name);
+            await bankingService.CreateEmptyBankAccount(unitId, user.Name);
         }
 
-        public async Task<UserDto> CreateInternal(string userName)
+        public async Task<UserDto> CreateInternal(string unitId, string userName)
         {
             await ValidateIsUserExist(userName);
 
@@ -101,7 +101,7 @@ namespace MDC.Infrastructure.Services
             await databaseProvider.CreateAsync(user);
             await databaseProvider.CommitAsync();
 
-            await bankingService.CreateEmptyBankAccount(userName);
+            await bankingService.CreateEmptyBankAccount(unitId, userName);
 
             long phoneNumber = await phonesService.CreateNumberForUser(user.Name);
 

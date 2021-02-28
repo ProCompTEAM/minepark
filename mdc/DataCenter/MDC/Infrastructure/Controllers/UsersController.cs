@@ -1,5 +1,8 @@
-﻿using MDC.Data.Dtos;
+﻿using MDC.Common.Network.HttpWeb;
+using MDC.Data.Dtos;
 using MDC.Infrastructure.Controllers.Interfaces;
+using MDC.Infrastructure.Providers;
+using MDC.Infrastructure.Providers.Interfaces;
 using MDC.Infrastructure.Services;
 using MDC.Infrastructure.Services.Interfaces;
 using System.Threading.Tasks;
@@ -10,10 +13,13 @@ namespace MDC.Infrastructure.Controllers
     {
         public string Route { get; set; } = "users";
 
+        private readonly IUnitProvider unitProvider;
+
         private readonly IUsersService usersService;
 
         public UsersController()
         {
+            unitProvider = Store.GetProvider<UnitProvider>();
             usersService = Store.GetService<UsersService>();
         }
 
@@ -47,14 +53,16 @@ namespace MDC.Infrastructure.Controllers
             await usersService.ResetPassword(userName);
         }
 
-        public async Task Create(UserDto user)
+        public async Task Create(UserDto user, RequestContext requestContext)
         {
-            await usersService.Create(user);
+            string unitId = unitProvider.GetCurrentUnitId(requestContext.AccessToken);
+            await usersService.Create(unitId, user);
         }
 
-        public async Task<UserDto> CreateInternal(string userName)
+        public async Task<UserDto> CreateInternal(string userName, RequestContext requestContext)
         {
-            return await usersService.CreateInternal(userName);
+            string unitId = unitProvider.GetCurrentUnitId(requestContext.AccessToken);
+            return await usersService.CreateInternal(unitId, userName);
         }
 
         public async Task Update(UserDto user)

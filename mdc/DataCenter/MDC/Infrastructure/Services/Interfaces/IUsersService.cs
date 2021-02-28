@@ -22,9 +22,9 @@ namespace MDC.Infrastructure.Services.Interfaces
 
         Task ResetPassword(string userName);
 
-        Task Create(UserDto userDto);
+        Task Create(string unitId, UserDto userDto);
 
-        Task<UserDto> CreateInternal(string userName);
+        Task<UserDto> CreateInternal(string unitId, string userName);
 
         Task Update(UserDto userDto);
 

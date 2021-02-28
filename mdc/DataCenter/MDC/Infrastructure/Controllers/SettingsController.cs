@@ -1,4 +1,5 @@
-﻿using MDC.Infrastructure.Controllers.Interfaces;
+﻿using MDC.Common.Network.HttpWeb;
+using MDC.Infrastructure.Controllers.Interfaces;
 using MDC.Infrastructure.Providers;
 using MDC.Infrastructure.Providers.Interfaces;
 using MDC.Infrastructure.Services;
@@ -11,20 +12,20 @@ namespace MDC.Infrastructure.Controllers
     {
         public string Route { get; set; } = "settings";
 
-        private readonly IContextProvider contextProvider;
+        private readonly IUnitProvider unitProvider;
         
         private readonly IBankingService bankingService;
 
         public SettingsController()
         {
-            contextProvider = Store.GetProvider<ContextProvider>();
+            unitProvider = Store.GetProvider<UnitProvider>();
 
             bankingService = Store.GetService<BankingService>();
         }
 
-        public async Task UpgradeUnitId(string unitId)
+        public async Task UpgradeUnitId(string unitId, RequestContext requestContext)
         {
-            contextProvider.SetCurrentUnitId(unitId);
+            unitProvider.SetCurrentUnitId(requestContext.AccessToken, unitId);
             await bankingService.InitializeUnitBalance(unitId);
         }
     }

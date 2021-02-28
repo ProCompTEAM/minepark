@@ -15,67 +15,61 @@ namespace MDC.Infrastructure.Services
     {
         private readonly IDatabaseProvider databaseProvider;
 
-        private readonly IContextProvider contextProvider;
-
         private readonly IMapper mapper;
 
         public MapService()
         {
             databaseProvider = Store.GetProvider<DatabaseProvider>();
-            contextProvider = Store.GetProvider<ContextProvider>();
             mapper = Store.GetMapper();
         }
 
-        public async Task<MapPoint> GetPoint(string name)
+        public async Task<MapPoint> GetPoint(string unitId, string name)
         {
-            string unitId = contextProvider.GetCurrentUnitId();
             return await databaseProvider.SingleOrDefaultAsync<MapPoint>(p => p.UnitId == unitId && p.Name.ToLower() == name.ToLower());
         }
 
-        public async Task<MapPointDto> GetPointDto(string name)
+        public async Task<MapPointDto> GetPointDto(string unitId, string name)
         {
-            MapPoint point = await GetPoint(name);
+            MapPoint point = await GetPoint(unitId, name);
             return mapper.Map<MapPointDto>(point);
         }
 
-        public async Task<int> GetPointGroup(string name)
+        public async Task<int> GetPointGroup(string unitId, string name)
         {
-            return (await GetPoint(name)).GroupId;
+            return (await GetPoint(unitId, name)).GroupId;
         }
 
-        public List<MapPointDto> GetPointsByGroupDtos(int groupId)
+        public List<MapPointDto> GetPointsByGroupDtos(string unitId, int groupId)
         {
-            string unitId = contextProvider.GetCurrentUnitId();
             List<MapPoint> points = databaseProvider.GetAll<MapPoint>(p => p.UnitId == unitId && p.GroupId == groupId);
             return mapper.Map<List<MapPointDto>>(points);
         }
 
-        public List<MapPointDto> GetNearPointsDtos(LocalMapPointDto dto)
+        public List<MapPointDto> GetNearPointsDtos(string unitId, LocalMapPointDto dto)
         {
-            string unitId = contextProvider.GetCurrentUnitId();
             List<MapPoint> points = databaseProvider.GetAll<MapPoint>(p => p.UnitId == unitId && p.Level == dto.Level);
             points = points.Where(p => MathAggregator.Distance(dto.X, dto.Y, dto.Z, p.X, p.Y, p.Z) <= dto.Distance).ToList();
 
             return mapper.Map<List<MapPointDto>>(points);
         }
 
-        public async Task SetPoint(MapPointDto pointDto)
+        public async Task SetPoint(string unitId, MapPointDto pointDto)
         {
-            MapPoint point = await GetPoint(pointDto.Name);
+            MapPoint point = await GetPoint(unitId, pointDto.Name);
 
             if (point == null)
             {
-                await CreatePoint(pointDto);
+                await CreatePoint(unitId, pointDto);
             }
             else
             {
-                await UpdatePoint(point, pointDto);
+                await UpdatePoint(unitId, point, pointDto);
             }
         }
 
-        public async Task<bool> DeletePoint(string name)
+        public async Task<bool> DeletePoint(string unitId, string name)
         {
-            MapPoint point = await GetPoint(name);
+            MapPoint point = await GetPoint(unitId, name);
 
             if(point == null)
             {
@@ -88,15 +82,15 @@ namespace MDC.Infrastructure.Services
             return true;
         }
 
-        private async Task CreatePoint(MapPointDto pointDto)
+        private async Task CreatePoint(string unitId, MapPointDto pointDto)
         {
             MapPoint point = mapper.Map<MapPoint>(pointDto);
-            point.UnitId = contextProvider.GetCurrentUnitId();
+            point.UnitId = unitId;
             await databaseProvider.CreateAsync(point);
             await databaseProvider.CommitAsync();
         }
 
-        private async Task UpdatePoint(MapPoint point, MapPointDto newPointDto)
+        private async Task UpdatePoint(string unitId, MapPoint point, MapPointDto newPointDto)
         {
             point = ObjectComparer.Merge(point, newPointDto,
                     u => u.Id,
@@ -105,7 +99,7 @@ namespace MDC.Infrastructure.Services
                     u => u.CreatedDate
                 );
 
-            point.UnitId = contextProvider.GetCurrentUnitId();
+            point.UnitId = unitId;
 
             databaseProvider.Update(point);
             await databaseProvider.CommitAsync();

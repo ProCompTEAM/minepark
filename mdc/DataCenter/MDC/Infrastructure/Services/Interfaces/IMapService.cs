@@ -7,18 +7,18 @@ namespace MDC.Infrastructure.Services.Interfaces
 {
     public interface IMapService
     {
-        Task<MapPoint> GetPoint(string name);
+        Task<MapPoint> GetPoint(string unitId, string name);
 
-        Task<MapPointDto> GetPointDto(string name);
+        Task<MapPointDto> GetPointDto(string unitId, string name);
 
-        Task<int> GetPointGroup(string name);
+        Task<int> GetPointGroup(string unitId, string name);
 
-        List<MapPointDto> GetPointsByGroupDtos(int groupId);
+        List<MapPointDto> GetPointsByGroupDtos(string unitId, int groupId);
 
-        List<MapPointDto> GetNearPointsDtos(LocalMapPointDto dto);
+        List<MapPointDto> GetNearPointsDtos(string unitId, LocalMapPointDto dto);
 
-        Task SetPoint(MapPointDto pointDto);
+        Task SetPoint(string unitId, MapPointDto pointDto);
 
-        Task<bool> DeletePoint(string name);
+        Task<bool> DeletePoint(string unitId, string name);
     }
 }

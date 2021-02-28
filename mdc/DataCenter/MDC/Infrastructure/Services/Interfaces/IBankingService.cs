@@ -5,31 +5,31 @@ namespace MDC.Infrastructure.Services.Interfaces
 {
     public interface IBankingService
     {
-        Task<double> GetCash(string userName);
+        Task<double> GetCash(string unitId, string userName);
 
-        Task<double> GetDebit(string userName);
+        Task<double> GetDebit(string unitId, string userName);
 
-        Task<double> GetCredit(string userName);
+        Task<double> GetCredit(string unitId, string userName);
 
-        Task<double> GetAllMoney(string userName);
+        Task<double> GetAllMoney(string unitId, string userName);
 
-        Task<bool> ReduceCash(string userName, double amount);
+        Task<bool> ReduceCash(string unitId, string userName, double amount);
 
-        Task<bool> ReduceDebit(string userName, double amount);
+        Task<bool> ReduceDebit(string unitId, string userName, double amount);
 
-        Task<bool> ReduceCredit(string userName, double amount);
+        Task<bool> ReduceCredit(string unitId, string userName, double amount);
 
-        Task<bool> GiveCash(string userName, double amount);
+        Task<bool> GiveCash(string unitId, string userName, double amount);
 
-        Task<bool> GiveDebit(string userName, double amount);
+        Task<bool> GiveDebit(string unitId, string userName, double amount);
 
-        Task<bool> GiveCredit(string userName, double amount);
+        Task<bool> GiveCredit(string unitId, string userName, double amount);
 
-        Task<bool> CreateEmptyBankAccount(string userName);
+        Task<bool> CreateEmptyBankAccount(string unitId, string userName);
 
-        Task<PaymentMethod> GetPaymentMethod(string userName);
+        Task<PaymentMethod> GetPaymentMethod(string unitId, string userName);
 
-        Task<bool> SwitchPaymentMethod(string userName, PaymentMethod method);
+        Task<bool> SwitchPaymentMethod(string unitId, string userName, PaymentMethod method);
 
         Task<double> GetUnitBalance(string unitId);
 

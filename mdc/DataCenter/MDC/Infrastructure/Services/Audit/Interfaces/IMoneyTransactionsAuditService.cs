@@ -5,8 +5,8 @@ namespace MDC.Infrastructure.Services.Audit.Interfaces
 {
     public interface IMoneyTransactionsAuditService
     {
-        Task ProcessGiveOperation(string userName, double amount, PaymentMethod paymentMethod);
+        Task ProcessGiveOperation(string unitId, string userName, double amount, PaymentMethod paymentMethod);
 
-        Task ProcessReduceOperation(string userName, double amount, PaymentMethod paymentMethod);
+        Task ProcessReduceOperation(string unitId, string userName, double amount, PaymentMethod paymentMethod);
     }
 }

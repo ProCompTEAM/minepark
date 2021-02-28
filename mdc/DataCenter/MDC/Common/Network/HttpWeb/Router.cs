@@ -19,14 +19,14 @@ namespace MDC.Common.Network.HttpWeb
 
         private static readonly JsonSerializerOptions jsonDeserializeOptions = GetJsonDeserializeOptions();
 
-        private static readonly IContextProvider contextProvider;
+        private static readonly IUnitProvider unitProvider;
 
         static Router()
         {
-            contextProvider = Store.GetProvider<ContextProvider>();
+            unitProvider = Store.GetProvider<UnitProvider>();
         }
 
-        public static ExecutionResult Execute(RequestInfo requestInfo, string jsonData, string target)
+        public static ExecutionResult Execute(RequestContext requestContext, string jsonData, string target)
         {
             string[] routes = target.Split('/');
 
@@ -35,17 +35,17 @@ namespace MDC.Common.Network.HttpWeb
                 return CreateExecutionResult(HttpStatusCode.BadRequest);
             }
 
-            if(!contextProvider.Authorize())
+            if(!unitProvider.Authorize(requestContext.AccessToken))
             {
-                General.Error("Declined request from ", contextProvider.Address);
-                General.Error("Invalid access token = {0}", contextProvider.AccessToken);
+                General.Error("Declined request from ", requestContext.Address);
+                General.Error("Invalid access token = {0}", requestContext.AccessToken);
                 return CreateExecutionResult(HttpStatusCode.Forbidden);
             }
 
             try
             {
                 IController controller = Store.GetControllerByRoute(routes[0]);
-                string result = ExecuteMethod(controller, routes[1], requestInfo, jsonData);
+                string result = ExecuteMethod(controller, routes[1], requestContext, jsonData);
                 return CreateExecutionResult(HttpStatusCode.OK, result);
             }
             catch(Exception exception)
@@ -64,15 +64,15 @@ namespace MDC.Common.Network.HttpWeb
             };
         }
 
-        private static string ExecuteMethod(IController controller, string methodName, RequestInfo requestInfo, string jsonData)
+        private static string ExecuteMethod(IController controller, string methodName, RequestContext requestContext, string jsonData)
         {
             methodName = NormalizeMethodName(methodName);
             Type currentType = controller.GetType();
             MethodInfo method = currentType.GetMethod(methodName);
 
-            if(!IsMethodContainArgument(method, typeof(RequestInfo)))
+            if(!IsMethodContainArgument(method, typeof(RequestContext)))
             {
-                requestInfo = null;
+                requestContext = null;
             }
 
             object data = null;
@@ -82,7 +82,7 @@ namespace MDC.Common.Network.HttpWeb
                 data = JsonSerializer.Deserialize(jsonData, GetMethodArgumentType(method), jsonDeserializeOptions);
             }
 
-            object result = method.Invoke(controller, PrepareArguments(data, requestInfo));
+            object result = method.Invoke(controller, PrepareArguments(data, requestContext));
             return JsonSerializer.Serialize(result, jsonSerializeOptions);
         }
 
@@ -101,7 +101,7 @@ namespace MDC.Common.Network.HttpWeb
             return jsonData == "null" || jsonData == null || jsonData.Trim() == string.Empty;
         }
 
-        private static object[] PrepareArguments(object data, RequestInfo requestInfo)
+        private static object[] PrepareArguments(object data, RequestContext requestInfo)
         {
             List<object> args = new List<object>();
 

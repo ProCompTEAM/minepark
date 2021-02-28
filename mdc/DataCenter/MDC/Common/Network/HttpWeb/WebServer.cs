@@ -29,16 +29,16 @@ namespace MDC.Common.Network.HttpWeb
 
             while(IsListen)
             {
-                Task<HttpListenerContext> context = httpListener.GetContextAsync();
+                HttpListenerContext context = await httpListener.GetContextAsync();
 
-                AddHeaders(context.Result.Response);
+                AddHeaders(context.Response);
 
-                if (context.Result.Request.HttpMethod == "POST" || context.Result.Request.HttpMethod == "GET")
+                if (context.Request.HttpMethod == "POST" || context.Request.HttpMethod == "GET")
                 {
-                    await HandleRequest(context.Result.Request, context.Result.Response);
+                    await HandleRequest(context.Request, context.Response);
                 }
 
-                context.Result.Response.Close();
+                context.Response.Close();
             }
 
             httpListener.Stop();
@@ -58,9 +58,9 @@ namespace MDC.Common.Network.HttpWeb
         {
             string data = new StreamReader(request.InputStream, request.ContentEncoding).ReadToEnd();
 
-            Context.Current = CreateRequestInfo(request);
+            RequestContext requestContext = CreateRequestContext(request);
 
-            ExecutionResult executionResult = Router.Execute(Context.Current, data, request.Url.LocalPath[1..]);
+            ExecutionResult executionResult = Router.Execute(requestContext, data, request.Url.LocalPath[1..]);
             await SendResponse(response, executionResult, request.ContentEncoding);
 
             General.Log($"{request.HttpMethod} request -> {request.Url.LocalPath}");
@@ -73,9 +73,9 @@ namespace MDC.Common.Network.HttpWeb
             response.AppendHeader("Access-Control-Allow-Origin", "*");
         }
 
-        private RequestInfo CreateRequestInfo(HttpListenerRequest request)
+        private RequestContext CreateRequestContext(HttpListenerRequest request)
         {
-            return new RequestInfo
+            return new RequestContext
             {
                 Address = request.RemoteEndPoint.ToString(),
                 AccessToken = request.Headers.Get("Authorization")
