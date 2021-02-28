@@ -24,18 +24,13 @@ class Broadcaster extends Component
         $randomMessageKey = $localizationKeys[random_int(0, count($localizationKeys) - 1)];
 
         foreach ($this->getCore()->getServer()->getOnlinePlayers() as $player) {
-            $player->sendMessage($this->getLocalization()->take($player->locale, $randomMessageKey));
+            $player->sendMessage($randomMessageKey);
         }
     }
 
     private function getCore() : Core
     {
         return Core::getActive();
-    }
-
-    private function getLocalization() : LocalizationProvider
-    {
-        return Providers::getLocalizationProvider();
     }
 
     private function getMessagesLocalizationKeys() : array
