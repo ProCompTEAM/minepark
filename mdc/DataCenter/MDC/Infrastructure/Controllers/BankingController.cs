@@ -2,6 +2,7 @@ using MDC.Data.Dtos;
 using MDC.Infrastructure.Controllers.Interfaces;
 using MDC.Infrastructure.Services;
 using MDC.Infrastructure.Services.Interfaces;
+using System.Threading.Tasks;
 
 namespace MDC.Infrastructure.Controllers
 {
@@ -16,69 +17,69 @@ namespace MDC.Infrastructure.Controllers
             bankingService = Store.GetService<BankingService>();
         }
         
-        public double GetCash(string userName)
+        public async Task<double> GetCash(string userName)
         {
-            return bankingService.GetCash(userName);
+            return await bankingService.GetCash(userName);
         }
 
-        public double GetDebit(string userName)
+        public async Task<double> GetDebit(string userName)
         {
-            return bankingService.GetDebit(userName);
+            return await bankingService.GetDebit(userName);
         }
 
-        public double GetCredit(string userName)
+        public async Task<double> GetCredit(string userName)
         {
-            return bankingService.GetCredit(userName);
+            return await bankingService.GetCredit(userName);
         }
 
-        public double GetAllMoney(string userName)
+        public async Task<double> GetAllMoney(string userName)
         {
-            return bankingService.GetAllMoney(userName);
+            return await bankingService.GetAllMoney(userName);
         }
 
-        public bool ReduceCash(BankTransactionDto bankDto)
+        public async Task<bool> ReduceCash(BankTransactionDto bankDto)
         {
-            return bankingService.ReduceCash(bankDto.Name, bankDto.Amount);
+            return await bankingService.ReduceCash(bankDto.Name, bankDto.Amount);
         }
 
-        public bool ReduceDebit(BankTransactionDto bankDto)
+        public async Task<bool> ReduceDebit(BankTransactionDto bankDto)
         {
-            return bankingService.ReduceDebit(bankDto.Name, bankDto.Amount);
+            return await bankingService.ReduceDebit(bankDto.Name, bankDto.Amount);
         }
 
-        public bool ReduceCredit(BankTransactionDto bankDto)
+        public async Task<bool> ReduceCredit(BankTransactionDto bankDto)
         {
-            return bankingService.ReduceCredit(bankDto.Name, bankDto.Amount);
+            return await bankingService.ReduceCredit(bankDto.Name, bankDto.Amount);
         }
 
-        public bool GiveCash(BankTransactionDto bankDto)
+        public async Task<bool> GiveCash(BankTransactionDto bankDto)
         {
-            return bankingService.GiveCash(bankDto.Name, bankDto.Amount);
+            return await bankingService.GiveCash(bankDto.Name, bankDto.Amount);
         }
 
-        public bool GiveDebit(BankTransactionDto bankDto)
+        public async Task<bool> GiveDebit(BankTransactionDto bankDto)
         {
-            return bankingService.GiveDebit(bankDto.Name, bankDto.Amount);
+            return await bankingService.GiveDebit(bankDto.Name, bankDto.Amount);
         }
 
-        public bool GiveCredit(BankTransactionDto bankDto)
+        public async Task<bool> GiveCredit(BankTransactionDto bankDto)
         {
-            return bankingService.GiveCredit(bankDto.Name, bankDto.Amount);
+            return await bankingService.GiveCredit(bankDto.Name, bankDto.Amount);
         }
 
-        public int GetPaymentMethod(string userName)
+        public async Task<int> GetPaymentMethod(string userName)
         {
-            return (int) bankingService.GetPaymentMethod(userName);
+            return (int)await bankingService.GetPaymentMethod(userName);
         }
 
-        public bool SwitchPaymentMethod(PaymentMethodDto bankDto)
+        public async Task<bool> SwitchPaymentMethod(PaymentMethodDto bankDto)
         {
-            return bankingService.SwitchPaymentMethod(bankDto.Name, bankDto.Method);
+            return await bankingService.SwitchPaymentMethod(bankDto.Name, bankDto.Method);
         }
 
-        public double GetUnitBalance(string unitId)
+        public async Task<double> GetUnitBalance(string unitId)
         {
-            return bankingService.GetUnitBalance(unitId);
+            return await bankingService.GetUnitBalance(unitId);
         }
     }
 }

@@ -6,6 +6,7 @@ using MDC.Infrastructure.Providers.Interfaces;
 using MDC.Infrastructure.Services.Interfaces;
 using MDC.Utilities;
 using System;
+using System.Threading.Tasks;
 
 namespace MDC.Infrastructure.Services
 {
@@ -32,75 +33,77 @@ namespace MDC.Infrastructure.Services
             mapper = Store.GetMapper();
         }
 
-        public bool Exist(string userName)
+        public Task<bool> Exist(string userName)
         {
-            return databaseProvider.Any<User>(u => u.Name == userName);
+            return databaseProvider.AnyAsync<User>(u => u.Name == userName);
         }
 
-        public User GetUser(string userName)
+        public async Task<User> GetUser(string userName)
         {
-            return databaseProvider.SingleOrDefault<User>(u => u.Name.ToLower() == userName.ToLower());
+            return await databaseProvider.SingleOrDefaultAsync<User>(u => u.Name.ToLower() == userName.ToLower());
         }
 
-        public User GetUser(int userId)
+        public async Task<User> GetUser(int userId)
         {
-            return databaseProvider.GetById<User>(userId);
+            return await databaseProvider.FindPrimary<User>(userId);
         }
 
-        public UserDto GetUserDto(string userName)
+        public async Task<UserDto> GetUserDto(string userName)
         {
-            User user = GetUser(userName);
+            User user = await GetUser(userName);
             UserDto userDto = mapper.Map<UserDto>(user);
-            userDto.PhoneNumber = (long) phonesService.GetNumberForUser(userName);
+            userDto.PhoneNumber = (long)await phonesService.GetNumberForUser(userName);
             return userDto;
         }
 
-        public string GetPassword(string userName)
+        public async Task<string> GetPassword(string userName)
         {
-            return GetUser(userName).Password;
+            User user = await GetUser(userName);
+            return user.Password;
         }
 
-        public bool ExistPassword(string userName)
+        public async Task<bool> ExistPassword(string userName)
         {
-            return GetUser(userName).Password != null;
+            User user = await GetUser(userName);
+            return user.Password != null;
         }
 
-        public void SetPassword(string userName, string password)
+        public async Task SetPassword(string userName, string password)
         {
-            User user = GetUser(userName);
+            User user = await GetUser(userName);
             user.Password = password;
             databaseProvider.Update(user);
-            databaseProvider.Commit();
+            await databaseProvider.CommitAsync();
         }
 
-        public void ResetPassword(string userName)
+        public async Task ResetPassword(string userName)
         {
-            SetPassword(userName, null);
+            await SetPassword(userName, null);
         }
 
-        public void Create(UserDto userDto)
+        public async Task Create(UserDto userDto)
         {
-            ValidateIsUserExist(userDto.Name);
+            await ValidateIsUserExist(userDto.Name);
 
             User user = mapper.Map<User>(userDto);
-            databaseProvider.Create(user);
-            databaseProvider.Commit();
+            await databaseProvider.CreateAsync(user);
+            await databaseProvider.CommitAsync();
 
-            phonesService.CreateNumberForUser(user.Name);
-            bankingService.CreateEmptyBankAccount(user.Name);
+            await phonesService.CreateNumberForUser(user.Name);
+            await bankingService.CreateEmptyBankAccount(user.Name);
         }
 
-        public UserDto CreateInternal(string userName)
+        public async Task<UserDto> CreateInternal(string userName)
         {
-            ValidateIsUserExist(userName);
+            await ValidateIsUserExist(userName);
 
             User user = GetDefaultUserTemplate(userName);
-            databaseProvider.Create(user);
-            databaseProvider.Commit();
+            await databaseProvider.CreateAsync(user);
+            await databaseProvider.CommitAsync();
 
-            bankingService.CreateEmptyBankAccount(userName);
+            await bankingService.CreateEmptyBankAccount(userName);
 
-            long phoneNumber = phonesService.CreateNumberForUser(user.Name);
+            long phoneNumber = await phonesService.CreateNumberForUser(user.Name);
 
             UserDto userDto = mapper.Map<UserDto>(user);
             userDto.PhoneNumber = phoneNumber;
@@ -108,9 +111,9 @@ namespace MDC.Infrastructure.Services
             return userDto;
         }
 
-        public void Update(UserDto userDto)
+        public async Task Update(UserDto userDto)
         {
-            User user = GetUser(userDto.Name);
+            User user = await GetUser(userDto.Name);
 
             user = ObjectComparer.Merge(user, userDto, 
                     u => u.Id,
@@ -123,24 +126,24 @@ namespace MDC.Infrastructure.Services
                 );
             
             databaseProvider.Update(user);
-            databaseProvider.Commit();
+            await databaseProvider.CommitAsync();
         }
 
-        public void UpdateJoinStatus(string userName)
+        public async Task UpdateJoinStatus(string userName)
         {
-            User user = GetUser(userName);
+            User user = await GetUser(userName);
             user.JoinedDate = dateTimeProvider.Now;
             databaseProvider.Update(user);
-            databaseProvider.Commit();
+            await databaseProvider.CommitAsync();
         }
 
-        public void UpdateQuitStatus(string userName)
+        public async Task UpdateQuitStatus(string userName)
         {
-            User user = GetUser(userName);
+            User user = await GetUser(userName);
             user.LeftDate = dateTimeProvider.Now;
             user.MinutesPlayed += GetMinutesLeft(user.JoinedDate, user.LeftDate);
             databaseProvider.Update(user);
-            databaseProvider.Commit();
+            await databaseProvider.CommitAsync();
         }
 
         private int GetMinutesLeft(DateTime joinedDate, DateTime leftDate)
@@ -173,9 +176,9 @@ namespace MDC.Infrastructure.Services
             };
         }
 
-        private void ValidateIsUserExist(string userName)
+        private async Task ValidateIsUserExist(string userName)
         {
-            if (Exist(userName))
+            if (await Exist(userName))
             {
                 throw new InvalidOperationException("User already exists.");
             }

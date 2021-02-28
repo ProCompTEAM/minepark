@@ -4,7 +4,7 @@ using MDC.Infrastructure.Services.Audit.Interfaces;
 using MDC.Infrastructure.Services.Interfaces;
 using MDC.Infrastructure.Providers;
 using MDC.Infrastructure.Providers.Interfaces;
-using MDC.Common;
+using System.Threading.Tasks;
 
 namespace MDC.Infrastructure.Services.Audit
 {
@@ -20,17 +20,17 @@ namespace MDC.Infrastructure.Services.Audit
             contextProvider = Store.GetProvider<ContextProvider>();
         }
 
-        public void ProcessGiveOperation(string userName, double amount, PaymentMethod paymentMethod)
+        public async Task ProcessGiveOperation(string userName, double amount, PaymentMethod paymentMethod)
         {
-            CreateTransaction(userName, amount, paymentMethod, TransactionType.Give);
+            await CreateTransaction(userName, amount, paymentMethod, TransactionType.Give);
         }
 
-        public void ProcessReduceOperation(string userName, double amount, PaymentMethod paymentMethod)
+        public async Task ProcessReduceOperation(string userName, double amount, PaymentMethod paymentMethod)
         {
-            CreateTransaction(userName, amount, paymentMethod, TransactionType.Reduce);
+            await CreateTransaction(userName, amount, paymentMethod, TransactionType.Reduce);
         }
 
-        private void CreateTransaction(string userName, double amount, PaymentMethod targetAccount, TransactionType transactionType)
+        private async Task CreateTransaction(string userName, double amount, PaymentMethod targetAccount, TransactionType transactionType)
         {
             MoneyTransactionAuditRecord moneyTransactionAuditRecord = new MoneyTransactionAuditRecord
             {
@@ -41,7 +41,7 @@ namespace MDC.Infrastructure.Services.Audit
                 TargetAccount = targetAccount
             };
 
-            databaseProvider.Create(moneyTransactionAuditRecord);
+            await databaseProvider.CreateAsync(moneyTransactionAuditRecord);
         }
     }
 }

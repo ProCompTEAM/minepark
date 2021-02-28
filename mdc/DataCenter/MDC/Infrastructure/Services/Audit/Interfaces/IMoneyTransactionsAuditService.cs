@@ -1,11 +1,12 @@
 using MDC.Data.Enums;
+using System.Threading.Tasks;
 
 namespace MDC.Infrastructure.Services.Audit.Interfaces
 {
     public interface IMoneyTransactionsAuditService
     {
-        void ProcessGiveOperation(string userName, double amount, PaymentMethod paymentMethod);
+        Task ProcessGiveOperation(string userName, double amount, PaymentMethod paymentMethod);
 
-        void ProcessReduceOperation(string userName, double amount, PaymentMethod paymentMethod);
+        Task ProcessReduceOperation(string userName, double amount, PaymentMethod paymentMethod);
     }
 }

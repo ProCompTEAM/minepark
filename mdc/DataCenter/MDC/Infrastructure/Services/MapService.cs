@@ -7,6 +7,7 @@ using MDC.Infrastructure.Services.Interfaces;
 using MDC.Utilities;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace MDC.Infrastructure.Services
 {
@@ -25,21 +26,21 @@ namespace MDC.Infrastructure.Services
             mapper = Store.GetMapper();
         }
 
-        public MapPoint GetPoint(string name)
+        public async Task<MapPoint> GetPoint(string name)
         {
             string unitId = contextProvider.GetCurrentUnitId();
-            return databaseProvider.SingleOrDefault<MapPoint>(p => p.UnitId == unitId && p.Name.ToLower() == name.ToLower());
+            return await databaseProvider.SingleOrDefaultAsync<MapPoint>(p => p.UnitId == unitId && p.Name.ToLower() == name.ToLower());
         }
 
-        public MapPointDto GetPointDto(string name)
+        public async Task<MapPointDto> GetPointDto(string name)
         {
-            MapPoint point = GetPoint(name);
+            MapPoint point = await GetPoint(name);
             return mapper.Map<MapPointDto>(point);
         }
 
-        public int GetPointGroup(string name)
+        public async Task<int> GetPointGroup(string name)
         {
-            return GetPoint(name).GroupId;
+            return (await GetPoint(name)).GroupId;
         }
 
         public List<MapPointDto> GetPointsByGroupDtos(int groupId)
@@ -58,23 +59,23 @@ namespace MDC.Infrastructure.Services
             return mapper.Map<List<MapPointDto>>(points);
         }
 
-        public void SetPoint(MapPointDto pointDto)
+        public async Task SetPoint(MapPointDto pointDto)
         {
-            MapPoint point = GetPoint(pointDto.Name);
+            MapPoint point = await GetPoint(pointDto.Name);
 
             if (point == null)
             {
-                CreatePoint(pointDto);
+                await CreatePoint(pointDto);
             }
             else
             {
-                UpdatePoint(point, pointDto);
+                await UpdatePoint(point, pointDto);
             }
         }
 
-        public bool DeletePoint(string name)
+        public async Task<bool> DeletePoint(string name)
         {
-            MapPoint point = GetPoint(name);
+            MapPoint point = await GetPoint(name);
 
             if(point == null)
             {
@@ -82,20 +83,20 @@ namespace MDC.Infrastructure.Services
             }
 
             databaseProvider.Delete(point);
-            databaseProvider.Commit();
+            await databaseProvider.CommitAsync();
 
             return true;
         }
 
-        private void CreatePoint(MapPointDto pointDto)
+        private async Task CreatePoint(MapPointDto pointDto)
         {
             MapPoint point = mapper.Map<MapPoint>(pointDto);
             point.UnitId = contextProvider.GetCurrentUnitId();
-            databaseProvider.Create(point);
-            databaseProvider.Commit();
+            await databaseProvider.CreateAsync(point);
+            await databaseProvider.CommitAsync();
         }
 
-        private void UpdatePoint(MapPoint point, MapPointDto newPointDto)
+        private async Task UpdatePoint(MapPoint point, MapPointDto newPointDto)
         {
             point = ObjectComparer.Merge(point, newPointDto,
                     u => u.Id,
@@ -107,7 +108,7 @@ namespace MDC.Infrastructure.Services
             point.UnitId = contextProvider.GetCurrentUnitId();
 
             databaseProvider.Update(point);
-            databaseProvider.Commit();
+            await databaseProvider.CommitAsync();
         }
     }
 }

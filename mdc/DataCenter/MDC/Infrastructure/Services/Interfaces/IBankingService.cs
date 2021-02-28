@@ -1,37 +1,38 @@
 using MDC.Data.Enums;
+using System.Threading.Tasks;
 
 namespace MDC.Infrastructure.Services.Interfaces
 {
     public interface IBankingService
     {
-        double GetCash(string userName);
+        Task<double> GetCash(string userName);
 
-        double GetDebit(string userName);
+        Task<double> GetDebit(string userName);
 
-        double GetCredit(string userName);
+        Task<double> GetCredit(string userName);
 
-        double GetAllMoney(string userName);
+        Task<double> GetAllMoney(string userName);
 
-        bool ReduceCash(string userName, double amount);
+        Task<bool> ReduceCash(string userName, double amount);
 
-        bool ReduceDebit(string userName, double amount);
+        Task<bool> ReduceDebit(string userName, double amount);
 
-        bool ReduceCredit(string userName, double amount);
+        Task<bool> ReduceCredit(string userName, double amount);
 
-        bool GiveCash(string userName, double amount);
+        Task<bool> GiveCash(string userName, double amount);
 
-        bool GiveDebit(string userName, double amount);
+        Task<bool> GiveDebit(string userName, double amount);
 
-        bool GiveCredit(string userName, double amount);
+        Task<bool> GiveCredit(string userName, double amount);
 
-        bool CreateEmptyBankAccount(string userName);
+        Task<bool> CreateEmptyBankAccount(string userName);
 
-        PaymentMethod GetPaymentMethod(string userName);
+        Task<PaymentMethod> GetPaymentMethod(string userName);
 
-        bool SwitchPaymentMethod(string userName, PaymentMethod method);
+        Task<bool> SwitchPaymentMethod(string userName, PaymentMethod method);
 
-        double GetUnitBalance(string unitId);
+        Task<double> GetUnitBalance(string unitId);
 
-        bool InitializeUnitBalance(string unitId);
+        Task<bool> InitializeUnitBalance(string unitId);
     }
 }

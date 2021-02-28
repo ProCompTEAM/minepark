@@ -3,6 +3,7 @@ using MDC.Infrastructure.Controllers.Interfaces;
 using MDC.Infrastructure.Services;
 using MDC.Infrastructure.Services.Interfaces;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MDC.Infrastructure.Controllers
 {
@@ -17,14 +18,14 @@ namespace MDC.Infrastructure.Controllers
             mapService = Store.GetService<MapService>();
         }
 
-        public MapPointDto GetPoint(string name)
+        public async Task<MapPointDto> GetPoint(string name)
         {
-            return mapService.GetPointDto(name);
+            return await mapService.GetPointDto(name);
         }
 
-        public int GetPointGroup(string name)
+        public async Task<int> GetPointGroup(string name)
         {
-            return mapService.GetPointGroup(name);
+            return await mapService.GetPointGroup(name);
         }
 
         public List<MapPointDto> GetPointsByGroup(int groupId)
@@ -37,14 +38,14 @@ namespace MDC.Infrastructure.Controllers
             return mapService.GetNearPointsDtos(dto);
         }
 
-        public void SetPoint(MapPointDto pointDto)
+        public async Task SetPoint(MapPointDto pointDto)
         {
-            mapService.SetPoint(pointDto);
+            await mapService.SetPoint(pointDto);
         }
 
-        public bool DeletePoint(string name)
+        public async Task<bool> DeletePoint(string name)
         {
-            return mapService.DeletePoint(name);
+            return await mapService.DeletePoint(name);
         }
     }
 }

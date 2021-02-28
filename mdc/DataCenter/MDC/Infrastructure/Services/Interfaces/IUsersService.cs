@@ -1,34 +1,35 @@
 ﻿using MDC.Data.Dtos;
 using MDC.Data.Models;
+using System.Threading.Tasks;
 
 namespace MDC.Infrastructure.Services.Interfaces
 {
     public interface IUsersService
     {
-        bool Exist(string userName);
+        Task<bool> Exist(string userName);
 
-        User GetUser(string userName);
+        Task<User> GetUser(string userName);
 
-        User GetUser(int userId);
+        Task<User> GetUser(int userId);
 
-        UserDto GetUserDto(string userName);
+        Task<UserDto> GetUserDto(string userName);
 
-        string GetPassword(string userName);
+        Task<string> GetPassword(string userName);
 
-        bool ExistPassword(string userName);
+        Task<bool> ExistPassword(string userName);
 
-        void SetPassword(string userName, string password);
+        Task SetPassword(string userName, string password);
 
-        void ResetPassword(string userName);
+        Task ResetPassword(string userName);
 
-        void Create(UserDto userDto);
+        Task Create(UserDto userDto);
 
-        UserDto CreateInternal(string userName);
+        Task<UserDto> CreateInternal(string userName);
 
-        void Update(UserDto userDto);
+        Task Update(UserDto userDto);
 
-        void UpdateJoinStatus(string userName);
+        Task UpdateJoinStatus(string userName);
 
-        void UpdateQuitStatus(string userName);
+        Task UpdateQuitStatus(string userName);
     }
 }

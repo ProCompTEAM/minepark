@@ -3,6 +3,7 @@ using MDC.Infrastructure.Providers;
 using MDC.Infrastructure.Providers.Interfaces;
 using MDC.Infrastructure.Services;
 using MDC.Infrastructure.Services.Interfaces;
+using System.Threading.Tasks;
 
 namespace MDC.Infrastructure.Controllers
 {
@@ -21,10 +22,10 @@ namespace MDC.Infrastructure.Controllers
             bankingService = Store.GetService<BankingService>();
         }
 
-        public void UpgradeUnitId(string unitId)
+        public async Task UpgradeUnitId(string unitId)
         {
             contextProvider.SetCurrentUnitId(unitId);
-            bankingService.InitializeUnitBalance(unitId);
+            await bankingService.InitializeUnitBalance(unitId);
         }
     }
 }

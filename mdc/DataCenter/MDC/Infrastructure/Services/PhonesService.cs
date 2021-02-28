@@ -4,6 +4,7 @@ using MDC.Data.Models;
 using MDC.Infrastructure.Providers;
 using MDC.Infrastructure.Providers.Interfaces;
 using MDC.Infrastructure.Services.Interfaces;
+using System.Threading.Tasks;
 
 namespace MDC.Infrastructure.Services
 {
@@ -16,58 +17,58 @@ namespace MDC.Infrastructure.Services
             databaseProvider = Store.GetProvider<DatabaseProvider>();
         }
 
-        public long CreateNumberForUser(string userName)
+        public async Task<long> CreateNumberForUser(string userName)
         {
-            return CreatePhone(userName, PhoneSubjectType.User);
+            return await CreatePhone(userName, PhoneSubjectType.User);
         }
 
-        public long CreateNumberForOrganization(string organizationName)
+        public async Task<long> CreateNumberForOrganization(string organizationName)
         {
-            return CreatePhone(organizationName, PhoneSubjectType.Organization);
+            return await CreatePhone(organizationName, PhoneSubjectType.Organization);
         }
 
-        public long? GetNumberForUser(string userName)
+        public async Task<long?> GetNumberForUser(string userName)
         {
-            Phone phone = databaseProvider.SingleOrDefault<Phone>(
+            Phone phone = await databaseProvider.SingleOrDefaultAsync<Phone>(
                 phone => phone.SubjectType == PhoneSubjectType.User && 
                 phone.Subject.ToLower() == userName.ToLower());
             return phone?.Number;
         }
 
-        public long? GetNumberForOrganization(string organizationName)
+        public async Task<long?> GetNumberForOrganization(string organizationName)
         {
-            Phone phone = databaseProvider.SingleOrDefault<Phone>(
+            Phone phone = await databaseProvider.SingleOrDefaultAsync<Phone>(
                 phone => phone.SubjectType == PhoneSubjectType.Organization &&
                 phone.Subject == organizationName);
             return phone?.Number;
         }
 
-        public string GetUserNameByNumber(long number)
+        public async Task<string> GetUserNameByNumber(long number)
         {
-            Phone phone = databaseProvider.SingleOrDefault<Phone>(
+            Phone phone = await databaseProvider.SingleOrDefaultAsync<Phone>(
                 phone => phone.SubjectType == PhoneSubjectType.User &&
                 phone.Number == number);
             return phone?.Subject;
         }
 
-        private long CreatePhone(string subject, PhoneSubjectType subjectType)
+        private async Task<long> CreatePhone(string subject, PhoneSubjectType subjectType)
         {
             Phone phone = new Phone
             {
                 Subject = subject,
                 SubjectType = subjectType,
-                Number = CreateNewNumber()
+                Number = await CreateNewNumber()
             };
 
-            databaseProvider.Create(phone);
-            databaseProvider.Commit();
+            await databaseProvider.CreateAsync(phone);
+            await databaseProvider.CommitAsync();
 
             return phone.Number;
         }
 
-        private long CreateNewNumber()
+        private async Task<long> CreateNewNumber()
         {
-            return Defaults.StartPhoneNumber + databaseProvider.Count<Phone>();
+            return Defaults.StartPhoneNumber + await databaseProvider.LongCountAsync<Phone>();
         }
     }
 }

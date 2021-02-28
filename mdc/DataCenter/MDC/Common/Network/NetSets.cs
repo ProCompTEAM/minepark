@@ -1,5 +1,4 @@
 ﻿using MDC.Common.Network.HttpWeb;
-using System.Threading;
 
 namespace MDC.Common.Network
 {
@@ -19,8 +18,7 @@ namespace MDC.Common.Network
 
             webServer = new WebServer(address, port);
 
-            Thread thread = new Thread(webServer.Listen);
-            thread.Start();
+            webServer.Listen().Wait();
         }
     }
 }
