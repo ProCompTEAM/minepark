@@ -10,6 +10,7 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace MDC.Common.Network.HttpWeb
 {
@@ -83,7 +84,18 @@ namespace MDC.Common.Network.HttpWeb
             }
 
             object result = method.Invoke(controller, PrepareArguments(data, requestContext));
-            return JsonSerializer.Serialize(result, jsonSerializeOptions);
+            return GetSerializationResult(result);
+        }
+
+        private static string GetSerializationResult(object invokeResult)
+        {
+            if (invokeResult is Task)
+            {
+                object result = ((Task<object>)invokeResult).Result;
+                return result == null ? null : JsonSerializer.Serialize(result, jsonSerializeOptions);
+            }
+
+            return JsonSerializer.Serialize(invokeResult, jsonSerializeOptions);
         }
 
         private static bool IsMethodContainArgument(MethodInfo method, Type argumentType)
