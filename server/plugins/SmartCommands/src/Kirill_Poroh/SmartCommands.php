@@ -30,8 +30,7 @@ class SmartCommands extends PluginBase implements Listener
 		}
 		
 		$this->command = array();
-		
-		$this->command["time"] = new TimeCommand($this);
+
 		$this->command["pos"] = new PosCommand($this);
 		$this->command["getpos"] = new PosCommand($this);
 		$this->command["mute"] = new MuteCommand($this);

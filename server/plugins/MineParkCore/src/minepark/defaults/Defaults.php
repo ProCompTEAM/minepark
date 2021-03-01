@@ -11,5 +11,7 @@ class Defaults
 
     public const SERVER_LOBBY_ADDRESS = "minepark.ru";
     public const SERVER_LOBBY_PORT = 19132;
+
+    public const AUTO_BROADCAST_TIMEOUT = 120;
 }
 ?>
