@@ -236,12 +236,12 @@ namespace MDC.Infrastructure.Services
 
         private async Task RegisterGiveOperation(string unitId, string userName, double amount, PaymentMethod paymentMethod)
         {
-            await moneyTransactionsAuditService.ProcessGiveOperation(unitId, userName, amount, paymentMethod);
+            await moneyTransactionsAuditService.ProcessGiveOperation(userName, unitId, amount, paymentMethod);
         }
 
         private async Task RegisterReduceOperation(string unitId, string userName, double amount, PaymentMethod paymentMethod)
         {
-            await moneyTransactionsAuditService.ProcessReduceOperation(unitId, userName, amount, paymentMethod);
+            await moneyTransactionsAuditService.ProcessGiveOperation(userName, unitId, amount, paymentMethod);
         }
 
         private bool VerifyReduceOperation(double moneyAmount, double decreaseAmount)
