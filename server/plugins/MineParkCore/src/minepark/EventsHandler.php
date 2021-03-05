@@ -234,7 +234,7 @@ class EventsHandler implements Listener
 
 		$block = $event->getBlock();
 
-		if (!$player->getProfile()->builder && in_array($block->getId(), ItemConstants::getRestrictedBlocksNonBuilder())) {
+		if (!$player->getProfile()->builder and in_array($block->getId(), ItemConstants::getRestrictedBlocksNonBuilder())) {
 			return $event->setCancelled();
 		}
 
@@ -247,7 +247,7 @@ class EventsHandler implements Listener
 	{
 		$itemId = $event->getPlayer()->getInventory()->getItemInHand()->getId();
 
-		if (in_array($itemId, ItemConstants::getRestrictedItemsNonBuilder()) and !$event->getPlayer()->builder) {
+		if (!$event->getPlayer()->builder and in_array($itemId, ItemConstants::getRestrictedItemsNonBuilder())) {
 			return $event->setCancelled();
 		}
 
