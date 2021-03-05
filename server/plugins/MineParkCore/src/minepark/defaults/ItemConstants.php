@@ -8,7 +8,6 @@ class ItemConstants
     public static function getRestrictedItemsNonOp() : array
 	{
 		return [
-			Item::BUCKET,
 			Item::ITEM_FRAME,
 			Item::PAINTING
 		];
