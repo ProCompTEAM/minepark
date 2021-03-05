@@ -76,7 +76,7 @@ namespace MDC
 
         private static void LoadContextData()
         {
-            Store.GetProvider<ContextProvider>().RestoreCredentials();
+            Store.GetProvider<UnitProvider>().RestoreCredentials();
         }
     }
 }

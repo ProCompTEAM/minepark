@@ -1,6 +1,7 @@
 ﻿using MDC.Infrastructure.Controllers.Interfaces;
 using MDC.Infrastructure.Services;
 using MDC.Infrastructure.Services.Interfaces;
+using System.Threading.Tasks;
 
 namespace MDC.Infrastructure.Controllers
 {
@@ -15,24 +16,24 @@ namespace MDC.Infrastructure.Controllers
             phonesService = Store.GetService<PhonesService>();
         }
 
-        public long? GetNumberForUser(string userName)
+        public async Task<long?> GetNumberForUser(string userName)
         {
-            return phonesService.GetNumberForUser(userName);
+            return await phonesService.GetNumberForUser(userName);
         }
 
-        public string GetUserNameByNumber(long number)
+        public async Task<string> GetUserNameByNumber(long number)
         {
-            return phonesService.GetUserNameByNumber(number);
+            return await phonesService.GetUserNameByNumber(number);
         }
 
-        public long? GetNumberForOrganization(string organizationName)
+        public async Task<long?> GetNumberForOrganization(string organizationName)
         {
-            return phonesService.GetNumberForOrganization(organizationName);
+            return await phonesService.GetNumberForOrganization(organizationName);
         }
 
-        public long CreateNumberForOrganization(string organizationName)
+        public async Task<long> CreateNumberForOrganization(string organizationName)
         {
-            return phonesService.CreateNumberForOrganization(organizationName);
+            return await phonesService.CreateNumberForOrganization(organizationName);
         }
     }
 }

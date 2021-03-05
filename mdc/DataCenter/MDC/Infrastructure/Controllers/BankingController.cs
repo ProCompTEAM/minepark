@@ -1,7 +1,11 @@
+using MDC.Common.Network.HttpWeb;
 using MDC.Data.Dtos;
 using MDC.Infrastructure.Controllers.Interfaces;
+using MDC.Infrastructure.Providers;
+using MDC.Infrastructure.Providers.Interfaces;
 using MDC.Infrastructure.Services;
 using MDC.Infrastructure.Services.Interfaces;
+using System.Threading.Tasks;
 
 namespace MDC.Infrastructure.Controllers
 {
@@ -9,76 +13,92 @@ namespace MDC.Infrastructure.Controllers
     {
         public string Route { get; set; } = "banking";
 
+        private readonly IUnitProvider unitProvider;
+
         private readonly IBankingService bankingService;
 
         public BankingController()
         {
+            unitProvider = Store.GetProvider<UnitProvider>();
             bankingService = Store.GetService<BankingService>();
         }
         
-        public double GetCash(string userName)
+        public async Task<double> GetCash(string userName, RequestContext requestContext)
         {
-            return bankingService.GetCash(userName);
+            string unitId = unitProvider.GetCurrentUnitId(requestContext.AccessToken);
+            return await bankingService.GetCash(unitId, userName);
         }
 
-        public double GetDebit(string userName)
+        public async Task<double> GetDebit(string userName, RequestContext requestContext)
         {
-            return bankingService.GetDebit(userName);
+            string unitId = unitProvider.GetCurrentUnitId(requestContext.AccessToken);
+            return await bankingService.GetDebit(unitId, userName);
         }
 
-        public double GetCredit(string userName)
+        public async Task<double> GetCredit(string userName, RequestContext requestContext)
         {
-            return bankingService.GetCredit(userName);
+            string unitId = unitProvider.GetCurrentUnitId(requestContext.AccessToken);
+            return await bankingService.GetCredit(unitId, userName);
         }
 
-        public double GetAllMoney(string userName)
+        public async Task<double> GetAllMoney(string userName, RequestContext requestContext)
         {
-            return bankingService.GetAllMoney(userName);
+            string unitId = unitProvider.GetCurrentUnitId(requestContext.AccessToken);
+            return await bankingService.GetAllMoney(unitId, userName);
         }
 
-        public bool ReduceCash(BankTransactionDto bankDto)
+        public async Task<bool> ReduceCash(BankTransactionDto bankDto, RequestContext requestContext)
         {
-            return bankingService.ReduceCash(bankDto.Name, bankDto.Amount);
+            string unitId = unitProvider.GetCurrentUnitId(requestContext.AccessToken);
+            return await bankingService.ReduceCash(unitId, bankDto.Name, bankDto.Amount);
         }
 
-        public bool ReduceDebit(BankTransactionDto bankDto)
+        public async Task<bool> ReduceDebit(BankTransactionDto bankDto, RequestContext requestContext)
         {
-            return bankingService.ReduceDebit(bankDto.Name, bankDto.Amount);
+            string unitId = unitProvider.GetCurrentUnitId(requestContext.AccessToken);
+            return await bankingService.ReduceDebit(unitId, bankDto.Name, bankDto.Amount);
         }
 
-        public bool ReduceCredit(BankTransactionDto bankDto)
+        public async Task<bool> ReduceCredit(BankTransactionDto bankDto, RequestContext requestContext)
         {
-            return bankingService.ReduceCredit(bankDto.Name, bankDto.Amount);
+            string unitId = unitProvider.GetCurrentUnitId(requestContext.AccessToken);
+            return await bankingService.ReduceCredit(unitId, bankDto.Name, bankDto.Amount);
         }
 
-        public bool GiveCash(BankTransactionDto bankDto)
+        public async Task<bool> GiveCash(BankTransactionDto bankDto, RequestContext requestContext)
         {
-            return bankingService.GiveCash(bankDto.Name, bankDto.Amount);
+            string unitId = unitProvider.GetCurrentUnitId(requestContext.AccessToken);
+            return await bankingService.GiveCash(unitId, bankDto.Name, bankDto.Amount);
         }
 
-        public bool GiveDebit(BankTransactionDto bankDto)
+        public async Task<bool> GiveDebit(BankTransactionDto bankDto, RequestContext requestContext)
         {
-            return bankingService.GiveDebit(bankDto.Name, bankDto.Amount);
+            string unitId = unitProvider.GetCurrentUnitId(requestContext.AccessToken);
+            return await bankingService.GiveDebit(unitId, bankDto.Name, bankDto.Amount);
         }
 
-        public bool GiveCredit(BankTransactionDto bankDto)
+        public async Task<bool> GiveCredit(BankTransactionDto bankDto, RequestContext requestContext)
         {
-            return bankingService.GiveCredit(bankDto.Name, bankDto.Amount);
+            string unitId = unitProvider.GetCurrentUnitId(requestContext.AccessToken);
+            return await bankingService.GiveCredit(unitId, bankDto.Name, bankDto.Amount);
         }
 
-        public int GetPaymentMethod(string userName)
+        public async Task<int> GetPaymentMethod(string userName, RequestContext requestContext)
         {
-            return (int) bankingService.GetPaymentMethod(userName);
+            string unitId = unitProvider.GetCurrentUnitId(requestContext.AccessToken);
+            return (int)await bankingService.GetPaymentMethod(unitId, userName);
         }
 
-        public bool SwitchPaymentMethod(PaymentMethodDto bankDto)
+        public async Task<bool> SwitchPaymentMethod(PaymentMethodDto bankDto, RequestContext requestContext)
         {
-            return bankingService.SwitchPaymentMethod(bankDto.Name, bankDto.Method);
+            string unitId = unitProvider.GetCurrentUnitId(requestContext.AccessToken);
+            return await bankingService.SwitchPaymentMethod(unitId, bankDto.Name, bankDto.Method);
         }
 
-        public double GetUnitBalance(string unitId)
+        public async Task<double> GetUnitBalance(RequestContext requestContext)
         {
-            return bankingService.GetUnitBalance(unitId);
+            string unitId = unitProvider.GetCurrentUnitId(requestContext.AccessToken);
+            return await bankingService.GetUnitBalance(unitId);
         }
     }
 }

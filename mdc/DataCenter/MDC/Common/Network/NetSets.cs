@@ -19,7 +19,7 @@ namespace MDC.Common.Network
 
             webServer = new WebServer(address, port);
 
-            Thread thread = new Thread(webServer.Listen);
+            Thread thread = new Thread(webServer.Listen().Wait);
             thread.Start();
         }
     }

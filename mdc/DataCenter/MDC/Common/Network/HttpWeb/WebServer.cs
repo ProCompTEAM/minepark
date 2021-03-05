@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace MDC.Common.Network.HttpWeb
 {
@@ -20,7 +21,7 @@ namespace MDC.Common.Network.HttpWeb
             this.port = port;
         }
 
-        public void Listen()
+        public async Task Listen()
         {
             IsListen = true;
 
@@ -28,13 +29,13 @@ namespace MDC.Common.Network.HttpWeb
 
             while(IsListen)
             {
-                HttpListenerContext context = httpListener.GetContext();
+                HttpListenerContext context = await httpListener.GetContextAsync();
 
                 AddHeaders(context.Response);
 
                 if (context.Request.HttpMethod == "POST" || context.Request.HttpMethod == "GET")
                 {
-                    HandleRequest(context.Request, context.Response);
+                    await HandleRequest(context.Request, context.Response);
                 }
 
                 context.Response.Close();
@@ -53,14 +54,14 @@ namespace MDC.Common.Network.HttpWeb
             httpListener.Start();
         }
 
-        private void HandleRequest(HttpListenerRequest request, HttpListenerResponse response)
+        private async Task HandleRequest(HttpListenerRequest request, HttpListenerResponse response)
         {
             string data = new StreamReader(request.InputStream, request.ContentEncoding).ReadToEnd();
 
-            Context.Current = CreateRequestInfo(request);
+            RequestContext requestContext = CreateRequestContext(request);
 
-            ExecutionResult executionResult = Router.Execute(Context.Current, data, request.Url.LocalPath.Substring(1));
-            SendResponse(response, executionResult, request.ContentEncoding);
+            ExecutionResult executionResult = Router.Execute(requestContext, data, request.Url.LocalPath[1..]);
+            await SendResponse(response, executionResult, request.ContentEncoding);
 
             General.Log($"{request.HttpMethod} request -> {request.Url.LocalPath}");
         }
@@ -72,16 +73,16 @@ namespace MDC.Common.Network.HttpWeb
             response.AppendHeader("Access-Control-Allow-Origin", "*");
         }
 
-        private RequestInfo CreateRequestInfo(HttpListenerRequest request)
+        private RequestContext CreateRequestContext(HttpListenerRequest request)
         {
-            return new RequestInfo
+            return new RequestContext
             {
                 Address = request.RemoteEndPoint.ToString(),
                 AccessToken = request.Headers.Get("Authorization")
             };
         }
 
-        private void SendResponse(HttpListenerResponse response, ExecutionResult executionResult, Encoding encoding)
+        private async Task SendResponse(HttpListenerResponse response, ExecutionResult executionResult, Encoding encoding)
         {
             response.StatusCode = executionResult.StatusCode;
 
@@ -91,7 +92,7 @@ namespace MDC.Common.Network.HttpWeb
             }
 
             byte[] responseBytes = encoding.GetBytes(executionResult.JsonText);
-            response.OutputStream.Write(responseBytes, 0, responseBytes.Length);
+            await response.OutputStream.WriteAsync(responseBytes, 0, responseBytes.Length);
         }
     }
 }

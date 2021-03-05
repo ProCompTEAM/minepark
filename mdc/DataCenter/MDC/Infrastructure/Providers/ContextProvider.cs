@@ -1,23 +1,18 @@
-﻿using MDC.Common.Network;
-using MDC.Data.Models;
+﻿using MDC.Data.Models;
 using MDC.Infrastructure.Providers.Interfaces;
 using System.Collections.Generic;
 
 namespace MDC.Infrastructure.Providers
 {
-    public class ContextProvider : IContextProvider, IProvider
+    public class UnitProvider : IUnitProvider, IProvider
     {
-        public string Address => Context.Current.Address;
-
-        public string AccessToken => Context.Current.AccessToken;
-
         private readonly IDatabaseProvider databaseProvider;
 
         private List<string> tokens = new List<string>();
 
         private static readonly Dictionary<string, string> tokenUnitIdPairs = new Dictionary<string, string>();
 
-        public ContextProvider()
+        public UnitProvider()
         {
             databaseProvider = Store.GetProvider<DatabaseProvider>();
         }
@@ -27,24 +22,24 @@ namespace MDC.Infrastructure.Providers
             tokens = databaseProvider.GetAll<Credentials, string>(c => c.GeneratedToken);
         }
 
-        public bool Authorize()
+        public bool Authorize(string accessToken)
         {
-            return tokens.Contains(AccessToken);
+            return tokens.Contains(accessToken);
         }
 
-        public string GetCurrentUnitId()
+        public string GetCurrentUnitId(string accessToken)
         {
-            if(tokenUnitIdPairs.ContainsKey(AccessToken))
+            if(tokenUnitIdPairs.ContainsKey(accessToken))
             {
-                return tokenUnitIdPairs[AccessToken];
+                return tokenUnitIdPairs[accessToken];
             }
 
             return null;
         }
 
-        public void SetCurrentUnitId(string unitId)
+        public void SetCurrentUnitId(string accessToken, string unitId)
         {
-            tokenUnitIdPairs[AccessToken] = unitId;
+            tokenUnitIdPairs[accessToken] = unitId;
         }
     }
 }

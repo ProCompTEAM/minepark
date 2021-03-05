@@ -1,6 +1,6 @@
 ﻿namespace MDC.Common.Network.HttpWeb
 {
-    public class RequestInfo
+    public class RequestContext
     {
         public string Address { get; set; }
 

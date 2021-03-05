@@ -8,6 +8,7 @@ using MDC.Infrastructure.Services.Audit;
 using MDC.Infrastructure.Services.Audit.Interfaces;
 using MDC.Data.Enums;
 using MDC.Common;
+using System.Threading.Tasks;
 
 namespace MDC.Infrastructure.Services
 {
@@ -15,43 +16,40 @@ namespace MDC.Infrastructure.Services
     {
         private readonly IDatabaseProvider databaseProvider;
 
-        private readonly IContextProvider contextProvider;
-
         private readonly IMoneyTransactionsAuditService moneyTransactionsAuditService;
 
         public BankingService()
         {
             databaseProvider = Store.GetProvider<DatabaseProvider>();
-            contextProvider = Store.GetProvider<ContextProvider>();
 
             moneyTransactionsAuditService = Store.GetService<MoneyTransactionsAuditService>();
         }
 
-        public double GetCash(string userName)
+        public async Task<double> GetCash(string unitId, string userName)
         {
-            return GetBankAccount(userName).Cash;
+            return (await GetBankAccount(unitId, userName)).Cash;
         }
 
-        public double GetDebit(string userName)
+        public async Task<double> GetDebit(string unitId, string userName)
         {
-            return GetBankAccount(userName).Debit;
+            return (await GetBankAccount(unitId, userName)).Debit;
         }
 
-        public double GetCredit(string userName)
+        public async Task<double> GetCredit(string unitId, string userName)
         {
-            return GetBankAccount(userName).Credit;
+            return (await GetBankAccount(unitId, userName)).Credit;
         }
 
-        public double GetAllMoney(string userName)
+        public async Task<double> GetAllMoney(string unitId, string userName)
         {
-            BankAccount bankAccount = GetBankAccount(userName);
+            BankAccount bankAccount = await GetBankAccount(unitId, userName);
 
             return bankAccount.Cash + bankAccount.Debit + bankAccount.Credit;
         }
 
-        public bool ReduceCash(string userName, double amount)
+        public async Task<bool> ReduceCash(string unitId, string userName, double amount)
         {
-            BankAccount bankAccount = GetBankAccount(userName);
+            BankAccount bankAccount = await GetBankAccount(unitId, userName);
 
             double money = RoundNumber(amount);
 
@@ -60,21 +58,21 @@ namespace MDC.Infrastructure.Services
                 return false;
             }
 
-            if (!IncreaseUnitBalance(money))
+            if (!await IncreaseUnitBalance(unitId, money))
             {
                 return false;
             }
 
             bankAccount.Cash -= money;
-            RegisterReduceOperation(userName, amount, PaymentMethod.Cash);
-            UpdateBankAccount(bankAccount);
+            await RegisterReduceOperation(unitId, userName, amount, PaymentMethod.Cash);
+            await UpdateBankAccount(bankAccount);
 
             return true;
         }
 
-        public bool ReduceDebit(string userName, double amount)
+        public async Task<bool> ReduceDebit(string unitId, string userName, double amount)
         {
-            BankAccount bankAccount = GetBankAccount(userName);
+            BankAccount bankAccount = await GetBankAccount(unitId, userName);
 
             double money = RoundNumber(amount);
 
@@ -83,21 +81,21 @@ namespace MDC.Infrastructure.Services
                 return false;
             }
 
-            if (!IncreaseUnitBalance(money))
+            if (!await IncreaseUnitBalance(unitId, money))
             {
                 return false;
             }
 
             bankAccount.Debit -= money;
-            RegisterReduceOperation(userName, amount, PaymentMethod.Debit);
-            UpdateBankAccount(bankAccount);
+            await RegisterReduceOperation(unitId, userName, amount, PaymentMethod.Debit);
+            await UpdateBankAccount(bankAccount);
 
             return true;
         }
 
-        public bool ReduceCredit(string userName, double amount)
+        public async Task<bool> ReduceCredit(string unitId, string userName, double amount)
         {  
-            BankAccount bankAccount = GetBankAccount(userName);
+            BankAccount bankAccount = await GetBankAccount(unitId, userName);
 
             double money = RoundNumber(amount);
 
@@ -106,21 +104,21 @@ namespace MDC.Infrastructure.Services
                 return false;
             }
 
-            if (!IncreaseUnitBalance(money))
+            if (!await IncreaseUnitBalance(unitId, money))
             {
                 return false;
             }
 
             bankAccount.Credit -= money;
-            RegisterReduceOperation(userName, amount, PaymentMethod.Credit);
-            UpdateBankAccount(bankAccount);
+            await RegisterReduceOperation(unitId, userName, amount, PaymentMethod.Credit);
+            await UpdateBankAccount(bankAccount);
 
             return true;
         }
 
-        public bool GiveCash(string userName, double amount)
+        public async Task<bool> GiveCash(string unitId, string userName, double amount)
         {
-            BankAccount bankAccount = GetBankAccount(userName);
+            BankAccount bankAccount = await GetBankAccount(unitId, userName);
 
             double money = RoundNumber(amount);
 
@@ -129,21 +127,21 @@ namespace MDC.Infrastructure.Services
                 return false;
             }
 
-            if (!DecreaseUnitBalance(money))
+            if (!await DecreaseUnitBalance(unitId, money))
             {
                 return false;
             }
 
             bankAccount.Cash += money;
-            RegisterGiveOperation(userName, amount, PaymentMethod.Cash);
-            UpdateBankAccount(bankAccount);
+            await RegisterGiveOperation(unitId, userName, amount, PaymentMethod.Cash);
+            await UpdateBankAccount(bankAccount);
 
             return true;
         }
 
-        public bool GiveDebit(string userName, double amount)
+        public async Task<bool> GiveDebit(string unitId, string userName, double amount)
         {
-            BankAccount bankAccount = GetBankAccount(userName);
+            BankAccount bankAccount = await GetBankAccount(unitId, userName);
 
             double money = RoundNumber(amount);
 
@@ -152,21 +150,21 @@ namespace MDC.Infrastructure.Services
                 return false;
             }
 
-            if (!DecreaseUnitBalance(money))
+            if (!await DecreaseUnitBalance(unitId, money))
             {
                 return false;
             }
 
             bankAccount.Debit += money;
-            RegisterGiveOperation(userName, amount, PaymentMethod.Debit);
-            UpdateBankAccount(bankAccount);
+            await RegisterGiveOperation(unitId, userName, amount, PaymentMethod.Debit);
+            await UpdateBankAccount(bankAccount);
 
             return true;
         }
 
-        public bool GiveCredit(string userName, double amount)
+        public async Task<bool> GiveCredit(string unitId, string userName, double amount)
         {
-            BankAccount bankAccount = GetBankAccount(userName);
+            BankAccount bankAccount = await GetBankAccount(unitId, userName);
 
             double money = RoundNumber(amount);
 
@@ -175,38 +173,38 @@ namespace MDC.Infrastructure.Services
                 return false;
             }
 
-            if (!DecreaseUnitBalance(money))
+            if (!await DecreaseUnitBalance(unitId, money))
             {
                 return false;
             }
 
             bankAccount.Credit += money;
-            RegisterGiveOperation(userName, amount, PaymentMethod.Credit);
-            UpdateBankAccount(bankAccount);
+            await RegisterGiveOperation(unitId, userName, amount, PaymentMethod.Credit);
+            await UpdateBankAccount(bankAccount);
 
             return true;
         }
 
-        public bool CreateEmptyBankAccount(string userName)
+        public async Task<bool> CreateEmptyBankAccount(string unitId, string userName)
         {
-            BankAccount bankAccount = GetDefaultBankTemplate(userName);
+            BankAccount bankAccount = GetDefaultBankTemplate(unitId, userName);
 
-            databaseProvider.Create(bankAccount);
-            databaseProvider.Commit();
+            await databaseProvider.CreateAsync(bankAccount);
+            await databaseProvider.CommitAsync();
 
             return true;
         }
 
-        public PaymentMethod GetPaymentMethod(string userName)
+        public async Task<PaymentMethod> GetPaymentMethod(string unitId, string userName)
         {
-            BankAccount bankAccount = GetBankAccount(userName);
+            BankAccount bankAccount = await GetBankAccount(unitId, userName);
 
             return bankAccount.PaymentMethod;
         }
 
-        public bool SwitchPaymentMethod(string userName, PaymentMethod method)
+        public async Task<bool> SwitchPaymentMethod(string unitId, string userName, PaymentMethod method)
         {
-            BankAccount bankAccount = GetBankAccount(userName);
+            BankAccount bankAccount = await GetBankAccount(unitId, userName);
 
             if (bankAccount.PaymentMethod == method) 
             {
@@ -214,21 +212,21 @@ namespace MDC.Infrastructure.Services
             }
 
             bankAccount.PaymentMethod = method;
-            UpdateBankAccount(bankAccount);
+            await UpdateBankAccount(bankAccount);
 
             return true;
         }
 
-        public double GetUnitBalance(string unitId)
+        public async Task<double> GetUnitBalance(string unitId)
         {
-            return GetUnitBalanceModel(unitId).Balance;
+            return (await GetUnitBalanceModel(unitId)).Balance;
         }
 
-        public bool InitializeUnitBalance(string unitId)
+        public async Task<bool> InitializeUnitBalance(string unitId)
         {
-            if (!databaseProvider.Any<UnitBalance>(b => b.UnitId == unitId)) 
+            if (!await databaseProvider.AnyAsync<UnitBalance>(b => b.UnitId == unitId)) 
             {
-                CreateUnitBalance(unitId);
+                await CreateUnitBalance(unitId);
 
                 return true;
             }
@@ -236,14 +234,14 @@ namespace MDC.Infrastructure.Services
             return false;
         }
 
-        private void RegisterGiveOperation(string userName, double amount, PaymentMethod paymentMethod)
+        private async Task RegisterGiveOperation(string unitId, string userName, double amount, PaymentMethod paymentMethod)
         {
-            moneyTransactionsAuditService.ProcessGiveOperation(userName, amount, paymentMethod);
+            await moneyTransactionsAuditService.ProcessGiveOperation(userName, unitId, amount, paymentMethod);
         }
 
-        private void RegisterReduceOperation(string userName, double amount, PaymentMethod paymentMethod)
+        private async Task RegisterReduceOperation(string unitId, string userName, double amount, PaymentMethod paymentMethod)
         {
-            moneyTransactionsAuditService.ProcessReduceOperation(userName, amount, paymentMethod);
+            await moneyTransactionsAuditService.ProcessGiveOperation(userName, unitId, amount, paymentMethod);
         }
 
         private bool VerifyReduceOperation(double moneyAmount, double decreaseAmount)
@@ -261,15 +259,19 @@ namespace MDC.Infrastructure.Services
             return increaseAmount >= 0;
         }
 
-        private void UpdateBankAccount(BankAccount bankAccount)
+        private async Task UpdateBankAccount(BankAccount bankAccount)
         {
             databaseProvider.Update(bankAccount);
-            databaseProvider.Commit();
+            await databaseProvider.CommitAsync();
         }
 
-        private BankAccount GetBankAccount(string userName)
+        private async Task<BankAccount> GetBankAccount(string unitId, string userName)
         {
-            BankAccount bankAccount = databaseProvider.SingleOrDefault<BankAccount>(b => b.Name == userName.ToLower());
+            BankAccount bankAccount = await databaseProvider.SingleOrDefaultAsync<BankAccount>(
+                b => 
+                    b.Name == userName.ToLower() &&
+                    b.UnitId == unitId
+                );
 
             if (bankAccount == null) 
             {
@@ -279,11 +281,9 @@ namespace MDC.Infrastructure.Services
             return bankAccount;
         }
 
-        private bool IncreaseUnitBalance(double increaseAmount)
+        private async Task<bool> IncreaseUnitBalance(string unitId, double increaseAmount)
         {
-            string unitId = contextProvider.GetCurrentUnitId();
-
-            UnitBalance unitBalance = GetUnitBalanceModel(unitId);
+            UnitBalance unitBalance = await GetUnitBalanceModel(unitId);
 
             unitBalance.Balance += increaseAmount;
 
@@ -292,11 +292,9 @@ namespace MDC.Infrastructure.Services
             return true;
         }
 
-        private bool DecreaseUnitBalance(double decreaseAmount)
+        private async Task<bool> DecreaseUnitBalance(string unitId, double decreaseAmount)
         {
-            string unitId = contextProvider.GetCurrentUnitId();
-
-            UnitBalance unitBalance = GetUnitBalanceModel(unitId);
+            UnitBalance unitBalance = await GetUnitBalanceModel(unitId);
 
             if (unitBalance.Balance < decreaseAmount)
             {
@@ -310,9 +308,9 @@ namespace MDC.Infrastructure.Services
             return true;
         }
 
-        private UnitBalance GetUnitBalanceModel(string unitId)
+        private async Task<UnitBalance> GetUnitBalanceModel(string unitId)
         {
-            UnitBalance unitBalance = databaseProvider.SingleOrDefault<UnitBalance>(b => b.UnitId == unitId);
+            UnitBalance unitBalance = await databaseProvider.SingleOrDefaultAsync<UnitBalance>(b => b.UnitId == unitId);
 
             if (unitBalance == null) 
             {
@@ -322,7 +320,7 @@ namespace MDC.Infrastructure.Services
             return unitBalance;
         }
 
-        private void CreateUnitBalance(string unitId)
+        private async Task CreateUnitBalance(string unitId)
         {
             UnitBalance unitBalance = new UnitBalance
             {
@@ -330,16 +328,16 @@ namespace MDC.Infrastructure.Services
                 Balance = Defaults.UnitStartBalance
             };
 
-            databaseProvider.Create(unitBalance);
-            databaseProvider.Commit();
+            await databaseProvider.CreateAsync(unitBalance);
+            await databaseProvider.CommitAsync();
         }
 
-        private BankAccount GetDefaultBankTemplate(string userName)
+        private BankAccount GetDefaultBankTemplate(string unitId, string userName)
         {
             return new BankAccount
             {
                 Name = userName.ToLower(),
-                UnitId = contextProvider.GetCurrentUnitId(),
+                UnitId = unitId,
                 Cash = 0.00,
                 Debit = 0.00,
                 Credit = 0.00,

@@ -1,15 +1,17 @@
-﻿namespace MDC.Infrastructure.Services.Interfaces
+﻿using System.Threading.Tasks;
+
+namespace MDC.Infrastructure.Services.Interfaces
 {
     public interface IPhonesService
     {
-        long CreateNumberForUser(string userName);
+        Task<long> CreateNumberForUser(string userName);
 
-        long CreateNumberForOrganization(string organizationName);
+        Task<long> CreateNumberForOrganization(string organizationName);
 
-        long? GetNumberForUser(string userName);
+        Task<long?> GetNumberForUser(string userName);
 
-        long? GetNumberForOrganization(string organizationName);
+        Task<long?> GetNumberForOrganization(string organizationName);
 
-        string GetUserNameByNumber(long number);
+        Task<string> GetUserNameByNumber(long number);
     }
 }

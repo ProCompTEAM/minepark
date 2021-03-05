@@ -4,7 +4,7 @@ using MDC.Infrastructure.Services.Audit.Interfaces;
 using MDC.Infrastructure.Services.Interfaces;
 using MDC.Infrastructure.Providers;
 using MDC.Infrastructure.Providers.Interfaces;
-using MDC.Common;
+using System.Threading.Tasks;
 
 namespace MDC.Infrastructure.Services.Audit
 {
@@ -12,36 +12,33 @@ namespace MDC.Infrastructure.Services.Audit
     {
         private readonly IDatabaseProvider databaseProvider;
 
-        private readonly IContextProvider contextProvider;
-
         public MoneyTransactionsAuditService()
         {
             databaseProvider = Store.GetProvider<DatabaseProvider>();
-            contextProvider = Store.GetProvider<ContextProvider>();
         }
 
-        public void ProcessGiveOperation(string userName, double amount, PaymentMethod paymentMethod)
+        public async Task ProcessGiveOperation(string userName, string unitId, double amount, PaymentMethod paymentMethod)
         {
-            CreateTransaction(userName, amount, paymentMethod, TransactionType.Give);
+            await CreateTransaction(userName, unitId, amount, paymentMethod, TransactionType.Give);
         }
 
-        public void ProcessReduceOperation(string userName, double amount, PaymentMethod paymentMethod)
+        public async Task ProcessReduceOperation(string userName, string unitId, double amount, PaymentMethod paymentMethod)
         {
-            CreateTransaction(userName, amount, paymentMethod, TransactionType.Reduce);
+            await CreateTransaction(userName, unitId, amount, paymentMethod, TransactionType.Reduce);
         }
 
-        private void CreateTransaction(string userName, double amount, PaymentMethod targetAccount, TransactionType transactionType)
+        private async Task CreateTransaction(string userName, string unitId, double amount, PaymentMethod targetAccount, TransactionType transactionType)
         {
             MoneyTransactionAuditRecord moneyTransactionAuditRecord = new MoneyTransactionAuditRecord
             {
                 Subject = userName,
-                UnitId = contextProvider.GetCurrentUnitId(),
+                UnitId = unitId,
                 Amount = amount,
                 TransactionType = transactionType,
                 TargetAccount = targetAccount
             };
 
-            databaseProvider.Create(moneyTransactionAuditRecord);
+            await databaseProvider.CreateAsync(moneyTransactionAuditRecord);
         }
     }
 }

@@ -1,7 +1,11 @@
-﻿using MDC.Data.Dtos;
+﻿using MDC.Common.Network.HttpWeb;
+using MDC.Data.Dtos;
 using MDC.Infrastructure.Controllers.Interfaces;
+using MDC.Infrastructure.Providers;
+using MDC.Infrastructure.Providers.Interfaces;
 using MDC.Infrastructure.Services;
 using MDC.Infrastructure.Services.Interfaces;
+using System.Threading.Tasks;
 
 namespace MDC.Infrastructure.Controllers
 {
@@ -9,66 +13,71 @@ namespace MDC.Infrastructure.Controllers
     {
         public string Route { get; set; } = "users";
 
+        private readonly IUnitProvider unitProvider;
+
         private readonly IUsersService usersService;
 
         public UsersController()
         {
+            unitProvider = Store.GetProvider<UnitProvider>();
             usersService = Store.GetService<UsersService>();
         }
 
-        public bool Exist(string userName)
+        public async Task<bool> Exist(string userName)
         {
-            return usersService.Exist(userName);
+            return await usersService.Exist(userName);
         }
 
-        public UserDto GetUser(string userName)
+        public async Task<UserDto> GetUser(string userName)
         {
-            return usersService.GetUserDto(userName);
+            return await usersService.GetUserDto(userName);
         }
 
-        public string GetPassword(string userName)
+        public async Task<string> GetPassword(string userName)
         {
-            return usersService.GetPassword(userName);
+            return await usersService.GetPassword(userName);
         }
 
-        public bool ExistPassword(string userName)
+        public async Task<bool> ExistPassword(string userName)
         {
-            return usersService.ExistPassword(userName);
+            return await usersService.ExistPassword(userName);
         }
 
-        public void SetPassword(PasswordDto passwordDto)
+        public async Task SetPassword(PasswordDto passwordDto)
         {
-            usersService.SetPassword(passwordDto.Name, passwordDto.Password);
+            await usersService.SetPassword(passwordDto.Name, passwordDto.Password);
         }
 
-        public void ResetPassword(string userName)
+        public async Task ResetPassword(string userName)
         {
-            usersService.ResetPassword(userName);
+            await usersService.ResetPassword(userName);
         }
 
-        public void Create(UserDto user)
+        public async Task Create(UserDto user, RequestContext requestContext)
         {
-            usersService.Create(user);
+            string unitId = unitProvider.GetCurrentUnitId(requestContext.AccessToken);
+            await usersService.Create(unitId, user);
         }
 
-        public UserDto CreateInternal(string userName)
+        public async Task<UserDto> CreateInternal(string userName, RequestContext requestContext)
         {
-            return usersService.CreateInternal(userName);
+            string unitId = unitProvider.GetCurrentUnitId(requestContext.AccessToken);
+            return await usersService.CreateInternal(unitId, userName);
         }
 
-        public void Update(UserDto user)
+        public async Task Update(UserDto user)
         {
-            usersService.Update(user);
+            await usersService.Update(user);
         }
 
-        public void UpdateJoinStatus(string userName)
+        public async Task UpdateJoinStatus(string userName)
         {
-            usersService.UpdateJoinStatus(userName);
+            await usersService.UpdateJoinStatus(userName);
         }
 
-        public void UpdateQuitStatus(string userName)
+        public async Task UpdateQuitStatus(string userName)
         {
-            usersService.UpdateQuitStatus(userName);
+            await usersService.UpdateQuitStatus(userName);
         }
     }
 }
