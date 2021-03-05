@@ -232,7 +232,13 @@ class EventsHandler implements Listener
 			$event->setCancelled(false);
 		}
 
-		if (!$this->getCore()->getWorldProtector()->isInRange($event->getBlock())) {
+		$block = $event->getBlock();
+
+		if (!$player->getProfile()->builder && in_array($block->getId(), ItemConstants::getRestrictedBlocksNonBuilder())) {
+			return $event->setCancelled();
+		}
+
+		if (!$this->getCore()->getWorldProtector()->isInRange($block)) {
 			$event->setCancelled(false);
 		}
 	}
@@ -241,7 +247,7 @@ class EventsHandler implements Listener
 	{
 		$itemId = $event->getPlayer()->getInventory()->getItemInHand()->getId();
 
-		if (in_array($itemId, ItemConstants::getRestrictedItemsNonOp()) and !$event->getPlayer()->isOp()) {
+		if (in_array($itemId, ItemConstants::getRestrictedItemsNonBuilder()) and !$event->getPlayer()->builder) {
 			return $event->setCancelled();
 		}
 
