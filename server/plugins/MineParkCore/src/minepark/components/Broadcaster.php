@@ -26,7 +26,7 @@ class Broadcaster extends Component
     public function broadcastMessage()
     {
         foreach ($this->getCore()->getServer()->getOnlinePlayers() as $player) {
-            $player->sendMessage($$this->localizationKeys[$this->localizationKeysCurrentIndex]);
+            $player->sendMessage($this->localizationKeys[$this->localizationKeysCurrentIndex]);
         }
 
         if($this->localizationKeysCurrentIndex < $this->localizationKeysMaxIndex) {
