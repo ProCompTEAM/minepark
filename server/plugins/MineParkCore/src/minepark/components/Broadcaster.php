@@ -8,11 +8,11 @@ use minepark\utils\CallbackTask;
 
 class Broadcaster extends Component
 {
-    private $localizationKeys;
+    private array $localizationKeys;
 
-    private $localizationKeysMaxIndex;
+    private int $localizationKeysMaxIndex;
 
-    private $localizationKeysCurrentIndex;
+    private int $localizationKeysCurrentIndex;
 
     public function __construct()
     {
