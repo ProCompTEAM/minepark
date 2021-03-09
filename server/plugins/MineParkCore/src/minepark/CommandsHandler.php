@@ -42,6 +42,7 @@ use minepark\commands\workers\GetFarmCommand;
 use minepark\commands\workers\PutFarmCommand;
 use minepark\commands\workers\TakeBoxCommand;
 use minepark\commands\roleplay\WhisperCommand;
+use minepark\commands\TransportsCommand;
 
 class CommandsHandler
 {
@@ -85,7 +86,8 @@ class CommandsHandler
 			new CloseCommand,
 			new BankCommand,
 			new DayCommand,
-			new NightCommand
+			new NightCommand,
+			new TransportsCommand
 		];
 	}
 

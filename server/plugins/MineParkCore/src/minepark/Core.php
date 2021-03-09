@@ -33,6 +33,9 @@ use pocketmine\command\CommandSender;
 use minepark\external\service\Service;
 use pocketmine\command\ConsoleCommandSender;
 use minepark\components\organisations\Organisations;
+use minepark\models\vehicles\BaseVehicle;
+use minepark\models\vehicles\Vehicle1;
+use pocketmine\entity\Entity;
 
 class Core extends PluginBase implements Listener
 {
@@ -76,6 +79,8 @@ class Core extends PluginBase implements Listener
 		$this->initializeMDC();
 
 		$this->initializeEventsHandler();
+
+		$this->registerEntities();
 
 		$this->initialize();
 
@@ -274,6 +279,11 @@ class Core extends PluginBase implements Listener
 		if(!file_exists(Files::DEFAULT_DIRECTORY_STRINGS)) {
 			mkdir(Files::DEFAULT_DIRECTORY_STRINGS);
 		}
+	}
+
+	private function registerEntities()
+	{
+		Entity::registerEntity(Vehicle1::class);
 	}
 
 	private function applyServerSettings()

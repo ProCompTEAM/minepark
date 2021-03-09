@@ -13,6 +13,7 @@ use pocketmine\entity\object\Painting;
 use pocketmine\event\block\BlockEvent;
 use minepark\providers\data\UsersSource;
 use minepark\common\player\MineParkPlayer;
+use minepark\models\vehicles\BaseVehicle;
 use pocketmine\event\block\BlockBurnEvent;
 use pocketmine\event\level\ChunkLoadEvent;
 use pocketmine\event\block\BlockBreakEvent;
@@ -27,6 +28,9 @@ use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\event\player\PlayerPreLoginEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\player\PlayerCommandPreprocessEvent;
+use pocketmine\event\server\DataPacketReceiveEvent;
+use pocketmine\network\mcpe\protocol\InteractPacket;
+use pocketmine\network\mcpe\protocol\PlayerInputPacket;
 
 class EventsHandler implements Listener
 {
@@ -110,12 +114,16 @@ class EventsHandler implements Listener
 		
 		$this->getCore()->getApi()->sendToMessagesLog($playerName, "*** Выход из игры");
 		
-		if ($player->getStatesMap()->phoneRcv != null) {
+		if ($player->getStatesMap()->phoneRcv !== null) {
 			$this->getCore()->getPhone()->breakCall($event->getPlayer());
 		}
 
 		if ($this->getCore()->getTrackerModule()->isTracked($player)) {
 			$this->getCore()->getTrackerModule()->disableTrack($player);
+		}
+
+		if ($player->getStatesMap()->ridingVehicle !== null) {
+			$player->getStatesMap()->ridingVehicle->tryToRemovePlayer($player);
 		}
 
 		$this->getUsersSource()->updateUserQuitStatus($playerName);
@@ -167,6 +175,26 @@ class EventsHandler implements Listener
 		}
 	}
 	
+	public function handleVehicleEvent(DataPacketReceiveEvent $event)
+	{
+		if ($event->getPacket() instanceof PlayerInputPacket) {
+			if ($event->getPacket()->motionX === 0.0 and $event->getPacket()->motionY === 0.0) {
+				return;
+			}
+
+			$event->setCancelled();
+
+			$this->updateVehicleMovement($event);
+		} else if ($event->getPacket() instanceof InteractPacket and $event->getPacket()->action == InteractPacket::ACTION_LEAVE_VEHICLE) {
+			$vehicle = $event->getPlayer()->getLevel()->getEntity($event->getPacket()->target);
+
+			if ($vehicle instanceof BaseVehicle) {
+				$vehicle->tryToRemovePlayer($event->getPlayer());
+				$event->setCancelled();
+			}
+		}
+	}
+	
 	public function blockPlaceEvent(BlockPlaceEvent $event)
 	{
 		$this->checkBlockSet($event);
@@ -213,6 +241,17 @@ class EventsHandler implements Listener
 	public function blockBurnEvent(BlockBurnEvent $event)
 	{
 		$event->setCancelled();
+	}
+
+	private function updateVehicleMovement(DataPacketReceiveEvent $event)
+	{
+		if ($event->getPlayer()->getStatesMap()->ridingVehicle?->getDriver()?->getName() !== $event->getPlayer()->getName()) {
+			return;
+		}
+
+		$vehicle = $event->getPlayer()->getStatesMap()->ridingVehicle;
+		
+		$vehicle->updateMotion($event->getPacket()->motionX, $event->getPacket()->motionY);
 	}
 
 	private function checkBlockSet(BlockEvent $event)
