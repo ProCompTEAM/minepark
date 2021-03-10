@@ -1,7 +1,6 @@
 <?php
 namespace minepark\components\organisations;
 
-use minepark\Core;
 use minepark\Providers;
 use pocketmine\entity\Effect;
 use pocketmine\level\Position;
@@ -9,19 +8,25 @@ use pocketmine\level\Position;
 use pocketmine\entity\EffectInstance;
 use minepark\components\base\Component;
 use minepark\common\player\MineParkPlayer;
+use minepark\defaults\ComponentAttributes;
 
 class Farm extends Component
 {
-	public $core;
+	public const POINT_NAME = "Ферма";
 
-	const POINT_NAME = "Ферма";
+	public function getAttributes() : array
+    {
+        return [
+			ComponentAttributes::STANDALONE
+        ];
+    }
 
 	public function from($player)
 	{
 		if ($this->playerIsNearWheat($player)) {
 			$player->addEffect(new EffectInstance(Effect::getEffect(2), 20 * 9999, 1));
 
-			$this->core->getChatter()->send($player, "§8(§dв корзине собранный урожай |§8)", "§d : ", 12);
+			$this->getCore()->getChatter()->send($player, "§8(§dв корзине собранный урожай |§8)", "§d : ", 12);
 			$player->getStatesMap()->bar = "§eДонесите корзину на пункт сбора около фермы"; 
 			$player->getStatesMap()->loadWeight = 1; 
 		} else {

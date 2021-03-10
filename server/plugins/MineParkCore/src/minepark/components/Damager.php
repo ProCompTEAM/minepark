@@ -23,6 +23,12 @@ class Damager extends Component
         $this->config = new Config($this->getCore()->getTargetDirectory() . "greenZones.json", Config::JSON);
         $this->reasons = array("сотрясения мозга", "потери сознания", "ряда переломов");
 	}
+
+    public function getAttributes() : array
+    {
+        return [
+        ];
+    }
     
     public function getConfig() : Config
     {

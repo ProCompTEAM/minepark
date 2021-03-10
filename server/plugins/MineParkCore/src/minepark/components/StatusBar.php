@@ -1,7 +1,6 @@
 <?php
 namespace minepark\components;
 
-use minepark\Core;
 use minepark\utils\CallbackTask;
 use minepark\components\base\Component;
 
@@ -14,6 +13,12 @@ class StatusBar extends Component
 		$this->getCore()->getScheduler()->scheduleRepeatingTask(new CallbackTask([$this, "timer"]), 20);
 		$this->tmsg = 0;
 	}
+
+	public function getAttributes() : array
+    {
+        return [
+        ];
+    }
 
 	public function timer()
 	{

@@ -23,6 +23,12 @@ class Broadcaster extends Component
         $this->initializeBroadcastTask();
     }
 
+    public function getAttributes() : array
+    {
+        return [
+        ];
+    }
+
     public function broadcastMessage()
     {
         foreach ($this->getCore()->getServer()->getOnlinePlayers() as $player) {

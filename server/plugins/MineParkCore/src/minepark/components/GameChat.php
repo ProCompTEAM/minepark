@@ -21,6 +21,12 @@ class GameChat extends Component
 			"{ChatUserPrefix8}", "{ChatUserPrefix9}", "{ChatUserPrefix10}", "{ChatUserPrefix11}"];
 	}
 
+	public function getAttributes() : array
+    {
+        return [
+        ];
+    }
+
 	public function sendGlobal(MineParkPlayer $sender, string $message) 
 	{
 		if($sender->getStatesMap()->isBeginner) {

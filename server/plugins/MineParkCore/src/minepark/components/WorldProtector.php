@@ -23,6 +23,12 @@ class WorldProtector extends Component
 		$this->loadConfiguration();
 	}
 
+	public function getAttributes() : array
+    {
+        return [
+        ];
+    }
+
 	public function isInRange(Position $position) : bool
 	{
 		return (
