@@ -1,5 +1,5 @@
 <?php
-namespace minepark\components\organisations\command;
+namespace minepark\commands\organisations;
 
 use minepark\components\organisations\Organisations;
 use minepark\defaults\Permissions;
@@ -7,19 +7,14 @@ use minepark\defaults\Permissions;
 use minepark\common\player\MineParkPlayer;
 use pocketmine\event\Event;
 
-class NoFireCommand extends OrganisationsCommand
+class ShowCommand extends OrganisationsCommand
 {
-    public const CURRENT_COMMAND = "nofire";
-
-    public const CURRENT_COMMAND_ALIAS1 = "clean";
-    public const CURRENT_COMMAND_ALIAS2 = "clear";
+    public const CURRENT_COMMAND = "show";
 
     public function getCommand() : array
     {
         return [
-            self::CURRENT_COMMAND,
-            self::CURRENT_COMMAND_ALIAS1,
-            self::CURRENT_COMMAND_ALIAS2
+            self::CURRENT_COMMAND
         ];
     }
 
@@ -36,12 +31,12 @@ class NoFireCommand extends OrganisationsCommand
 
         $oid = $player->getProfile()->organisation;
 
-        if($oid != Organisations::EMERGENCY_WORK) {
-            $player->sendMessage("§cВы не являетесь работником службы спасения!");
+        if($oid == Organisations::NO_WORK) {
+            $player->sendMessage("CommandShowNoWork");
             return;
         }
 
-        $organModule->getNoFire()->clean($player);
+		$this->getCore()->getChatter()->send($player, "{CommandShowHandLic}".$organModule->getName($oid, false)."*§8)", "§d : ", 10);
     }
 }
 ?>

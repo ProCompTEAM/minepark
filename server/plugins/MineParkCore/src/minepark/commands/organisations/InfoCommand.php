@@ -1,5 +1,5 @@
 <?php
-namespace minepark\components\organisations\command;
+namespace minepark\commands\organisations;
 
 use minepark\components\organisations\Organisations;
 use minepark\defaults\Permissions;

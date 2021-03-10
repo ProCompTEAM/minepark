@@ -3,12 +3,11 @@ namespace minepark\components\organisations;
 
 use minepark\Core;
 
-use minepark\components\organisations\Shop;
-use minepark\components\organisations\Workers;
+use minepark\OrganisationsCommandHandler;
 use minepark\components\organisations\Farm;
+use minepark\components\organisations\Shop;
 use minepark\components\organisations\NoFire;
-
-use minepark\components\organisations\OrganisationsCommandHandler;
+use minepark\components\organisations\Workers;
 
 class Organisations
 {
