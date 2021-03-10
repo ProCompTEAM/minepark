@@ -2,7 +2,7 @@
 namespace minepark;
 
 use pocketmine\event\Event;
-use minepark\commands\Command;
+use minepark\commands\base\Command;
 use minepark\commands\DayCommand;
 use minepark\commands\PayCommand;
 use minepark\commands\BankCommand;

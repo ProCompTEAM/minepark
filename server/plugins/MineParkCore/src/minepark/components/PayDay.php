@@ -11,15 +11,9 @@ use minepark\components\organisations\Organisations;
 
 class PayDay extends Component
 {
-	
 	public function __construct()
 	{
 		$this->getCore()->getScheduler()->scheduleRepeatingTask(new CallbackTask([$this, "calcAndShow"]), 20 * 600);
-	}
-	
-	public function getCore() : Core
-	{
-		return Core::getActive();
 	}
 	
 	public function calcAndShow()

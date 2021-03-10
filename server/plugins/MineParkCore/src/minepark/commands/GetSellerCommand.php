@@ -1,13 +1,14 @@
 <?php
 namespace minepark\commands;
 
-use minepark\components\organisations\Organisations;
+use pocketmine\event\Event;
 use minepark\defaults\Sounds;
-use minepark\common\player\MineParkPlayer;
+use pocketmine\level\Position;
 use minepark\defaults\Permissions;
 
-use pocketmine\event\Event;
-use pocketmine\level\Position;
+use minepark\commands\base\Command;
+use minepark\common\player\MineParkPlayer;
+use minepark\components\organisations\Organisations;
 
 class GetSellerCommand extends Command
 {

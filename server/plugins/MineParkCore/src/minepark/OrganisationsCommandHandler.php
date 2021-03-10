@@ -1,23 +1,23 @@
 <?php
-namespace minepark\components\organisations;
+namespace minepark;
 
 use minepark\common\player\MineParkPlayer;
 use pocketmine\event\Event;
 
 use minepark\defaults\Permissions;
 
-use minepark\components\organisations\command\OrganisationsCommand;
-use minepark\components\organisations\command\AddCommand;
-use minepark\components\organisations\command\ArestCommand;
-use minepark\components\organisations\command\ChangeNameCommand;
-use minepark\components\organisations\command\GiveLicCommand;
-use minepark\components\organisations\command\HealCommand;
-use minepark\components\organisations\command\InfoCommand;
-use minepark\components\organisations\command\NoFireCommand;
-use minepark\components\organisations\command\RadioCommand;
-use minepark\components\organisations\command\RemoveCommand;
-use minepark\components\organisations\command\SellCommand;
-use minepark\components\organisations\command\ShowCommand;
+use minepark\commands\organisations\OrganisationsCommand;
+use minepark\commands\organisations\AddCommand;
+use minepark\commands\organisations\ArestCommand;
+use minepark\commands\organisations\ChangeNameCommand;
+use minepark\commands\organisations\GiveLicCommand;
+use minepark\commands\organisations\HealCommand;
+use minepark\commands\organisations\InfoCommand;
+use minepark\commands\organisations\NoFireCommand;
+use minepark\commands\organisations\RadioCommand;
+use minepark\commands\organisations\RemoveCommand;
+use minepark\commands\organisations\SellCommand;
+use minepark\commands\organisations\ShowCommand;
 
 class OrganisationsCommandHandler
 {

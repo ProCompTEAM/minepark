@@ -11,11 +11,6 @@ use minepark\common\player\MineParkPlayer;
 
 class FastFood extends Component
 {
-	public function getCore() : Core
-	{
-		return Core::getActive();
-	}
-
 	public function command(MineParkPlayer $player)
 	{
 		$core = $this->getCore();

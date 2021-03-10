@@ -7,7 +7,7 @@ use minepark\common\player\MineParkPlayer;
 use minepark\defaults\Permissions;
 
 use pocketmine\event\Event;
-use minepark\commands\Command;
+use minepark\commands\base\Command;
 
 class GPSNearCommand extends Command
 {

@@ -7,18 +7,14 @@ use pocketmine\entity\Effect;
 use pocketmine\level\Position;
 
 use pocketmine\entity\EffectInstance;
+use minepark\components\base\Component;
 use minepark\common\player\MineParkPlayer;
 
-class Farm
+class Farm extends Component
 {
 	public $core;
 
 	const POINT_NAME = "Ферма";
-	
-	protected function getCore() : Core
-	{
-		return Core::getActive();
-	}
 
 	public function from($player)
 	{

@@ -5,7 +5,7 @@ use minepark\common\player\MineParkPlayer;
 use pocketmine\event\Event;
 
 use minepark\defaults\Permissions;
-use minepark\commands\Command;
+use minepark\commands\base\Command;
 
 class CloseCommand extends Command
 {

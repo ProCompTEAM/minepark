@@ -17,11 +17,6 @@ class Tracker
 	{
         $this->tracked = [];
 	}
-	
-	public function getCore() : Core
-	{
-		return Core::getActive();
-	}
     
     public function isTracked(MineParkPlayer $player) : bool
     {

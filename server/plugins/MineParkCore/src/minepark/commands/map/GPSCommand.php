@@ -8,7 +8,7 @@ use minepark\common\player\MineParkPlayer;
 use minepark\defaults\Permissions;
 use pocketmine\event\Event;
 
-use minepark\commands\Command;
+use minepark\commands\base\Command;
 use pocketmine\level\Position;
 
 class GPSCommand extends Command

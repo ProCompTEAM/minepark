@@ -3,7 +3,7 @@ namespace minepark\commands\map;
 
 use minepark\common\player\MineParkPlayer;
 
-use minepark\commands\Command;
+use minepark\commands\base\Command;
 use pocketmine\event\Event;
 
 use minepark\defaults\Permissions;

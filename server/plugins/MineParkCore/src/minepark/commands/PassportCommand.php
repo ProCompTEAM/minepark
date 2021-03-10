@@ -2,11 +2,12 @@
 namespace minepark\commands;
 
 use minepark\Api;
-use minepark\defaults\Permissions;
-
-use minepark\common\player\MineParkPlayer;
 use pocketmine\event\Event;
+
 use minepark\defaults\Sounds;
+use minepark\defaults\Permissions;
+use minepark\commands\base\Command;
+use minepark\common\player\MineParkPlayer;
 
 class PassportCommand extends Command
 {
