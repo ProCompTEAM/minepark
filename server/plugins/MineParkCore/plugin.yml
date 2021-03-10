@@ -10,23 +10,23 @@ commands:
   default: op
   permissions: minepark.service
  addpoint:
-  default: op
-  permissions: minepark.admin
+  default: true
+  permissions: minepark.all
  rempoint:
-  default: op
-  permissions: minepark.admin
+  default: true
+  permissions: minepark.all
  topoint:
-  default: op
-  permissions: minepark.admin
+  default: true
+  permissions: minepark.all
  tonearpoint:
-  default: op
-  permissions: minepark.admin
+  default: true
+  permissions: minepark.all
  a:
-  default: op
-  permissions: minepark.admin
+  default: true
+  permissions: minepark.all
  lvl:
-  default: op
-  permissions: minepark.admin
+  default: true
+  permissions: minepark.all
  report:
   default: true
   permissions: minepark.all
@@ -131,8 +131,6 @@ commands:
   permissions: minepark.admin
  
 permissions:
-  minepark.admin:
-   default: op
   minepark.service:
    default: op
   minepark.all:
