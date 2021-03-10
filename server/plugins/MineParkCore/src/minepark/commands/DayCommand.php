@@ -4,8 +4,8 @@ namespace minepark\commands;
 use pocketmine\event\Event;
 use pocketmine\level\Level;
 
-use pocketmine\command\Command;
 use minepark\defaults\Permissions;
+use minepark\commands\base\Command;
 use minepark\common\player\MineParkPlayer;
 
 class DayCommand extends Command

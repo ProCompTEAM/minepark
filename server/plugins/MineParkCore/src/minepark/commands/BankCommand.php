@@ -4,9 +4,9 @@ namespace minepark\commands;
 use minepark\Providers;
 use pocketmine\form\Form;
 use pocketmine\event\Event;
-use pocketmine\command\Command;
 use jojoe77777\FormAPI\SimpleForm;
 use minepark\defaults\Permissions;
+use minepark\commands\base\Command;
 use minepark\defaults\PaymentMethods;
 use minepark\common\player\MineParkPlayer;
 

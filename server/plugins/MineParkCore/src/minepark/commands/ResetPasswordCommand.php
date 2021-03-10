@@ -2,9 +2,9 @@
 namespace minepark\commands;
 
 use pocketmine\event\Event;
-use pocketmine\command\Command;
 
 use minepark\defaults\Permissions;
+use minepark\commands\base\Command;
 use minepark\providers\data\UsersSource;
 use minepark\common\player\MineParkPlayer;
 
