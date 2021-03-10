@@ -8,6 +8,7 @@ use pocketmine\entity\Vehicle;
 use jojoe77777\FormAPI\SimpleForm;
 use pocketmine\nbt\tag\CompoundTag;
 use minepark\common\player\MineParkPlayer;
+use minepark\defaults\Defaults;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\network\mcpe\protocol\types\EntityLink;
@@ -15,15 +16,6 @@ use pocketmine\network\mcpe\protocol\SetActorLinkPacket;
 
 abstract class BaseVehicle extends Vehicle
 {
-    public const ACTION_BE_DRIVER = 1;
-    public const ACTION_BE_PASSENGER = 2;
-
-    public const VEHICLE_TYPE_LAND = 0;
-	public const VEHICLE_TYPE_WATER = 1;
-	public const VEHICLE_TYPE_AIR = 2;
-	public const VEHICLE_TYPE_RAIL = 3;
-	public const VEHICLE_TYPE_UNKNOWN = 9;
-
     public $gravity = 1.0;
 
 	public $width = 1.0;
@@ -39,16 +31,16 @@ abstract class BaseVehicle extends Vehicle
     private int $lastMotionSet;
 
     public function __construct(Level $level, CompoundTag $nbt){
-		parent::__construct($level, $nbt);
+        parent::__construct($level, $nbt);
 
         $this->driver = null;
         $this->passenger = null;
         $this->speed = 0.0;
         $this->lastMotionSet = 0;
 
-		$this->setCanSaveWithChunk(true);
-		$this->saveNBT();
-	}
+        $this->setCanSaveWithChunk(true);
+        $this->saveNBT();
+    }
 
     public function getDriver() : ?MineParkPlayer
     {
@@ -60,7 +52,7 @@ abstract class BaseVehicle extends Vehicle
         return $this->passenger;
     }
 
-    public function performAction(MineParkPlayer $player, ?int $data=null)
+    public function performAction(MineParkPlayer $player, ?int $data = null)
     {
         if (is_null($data)) {
             return;
@@ -68,33 +60,27 @@ abstract class BaseVehicle extends Vehicle
 
         $choice = $data + 1;
 
-        if ($choice === self::ACTION_BE_DRIVER) {
-            if (!$this->setDriver($player)) {
-                return $player->sendMessage("На данный момент есть человек, водящий выберенную вами машину.");
-            } else {
-                return $player->sendTip("Вы успешно сели за руль.");
-            }
-        } else if ($choice === self::ACTION_BE_PASSENGER) {
-            if (!$this->setPassenger($player)) {
-                return $player->sendMessage("На данный момент есть человек, сидящий на пассажирском кресле");
-            } else {
-                return $player->sendTip("Вы успешно сели в машину!");
-            }
+        if ($choice === Defaults::VEHICLE_ACTION_BE_DRIVER) {
+            $this->trySetPlayerDriver($player);
+        } else if ($choice === Defaults::VEHICLE_ACTION_BE_PASSENGER) {
+            $this->trySetPlayerPassenger($player);
         }
     }
 
-    public function attack(EntityDamageEvent $source) : void
+    public function attack(EntityDamageEvent $event) : void
     {
-        if ($source instanceof EntityDamageByEntityEvent) {
-            $this->handleHit($source->getDamager());
+        // check if this entity is being attacked by player
+        if ($event instanceof EntityDamageByEntityEvent) {
+            $this->handleInteract($event->getDamager());
             return;
         }
 
-        parent::attack($source);
+        parent::attack($event);
     }
 
     public function setDriver(MineParkPlayer $player, bool $force = false) : bool
     {
+        // $force means if we have to remove current driver
         if ($force) {
             $this->removeDriver();
         }
@@ -180,7 +166,7 @@ abstract class BaseVehicle extends Vehicle
         return true;
     }
 
-    public function updateMotion(float $x, float $y)
+    public function updateSpeed(float $x, float $y)
     {
         if($x > 0.0) {
             $this->yaw -= $x * $this->getLeftSpeed();
@@ -192,25 +178,45 @@ abstract class BaseVehicle extends Vehicle
             return;
         }
 
-        //$this->lastAccelerationTime = time();
-
-        if ($y > 0 && $this->speed < $this->getMaxSpeed()) {
-            $this->speed += $this->getForwardAcceleration();
+        if ($y > 0 && $this->speed <= $this->getMaxSpeed()) {
+            $this->addSpeed($this->getForwardAcceleration());
         } else if ($this->speed > $this->getReduceMaxSpeed()) {
             if ($this->speed > 0) {
-                $this->speed -= $this->getForwardAcceleration();
+                $this->reduceSpeed($this->getBrakeSpeed());
             } else {
-                $this->speed -= $this->getBackwardAcceleration();
+                $this->reduceSpeed($this->getBackwardAcceleration());
             }
         }
 	}
+
+    public function addSpeed(float $speed)
+    {
+        $calculatedSpeed = $this->speed + $speed;
+
+        if ($calculatedSpeed <= $this->getMaxSpeed()) {
+            $this->speed = $calculatedSpeed;
+        } else {
+            $this->speed = $this->getMaxSpeed();
+        }
+    }
+
+    public function reduceSpeed(float $speed)
+    {
+        $calculatedSpeed = $this->speed - $speed;
+
+        if ($calculatedSpeed >= $this->getReduceMaxSpeed()) {
+            $this->speed -= $speed;
+        } else {
+            $this->speed = $this->getReduceMaxSpeed();
+        }
+    }
 
     public function getBlockForward(Vector3 $directionVector) : ?Block
     {
         $vector3 = $this->asVector3()->add($directionVector->getX(), $directionVector->getY(), $directionVector->getZ());
 
-        $block1 = $this->getLevel()->getBlock($vector3);
-        $block2 = $this->getLevel()->getBlock($vector3->add(0,1,0));
+        $block1 = $this->getLevel()->getBlock($vector3, false, false);
+        $block2 = $this->getLevel()->getBlock($vector3->add(0,1,0), false, false);
 
         if ($block1->getId() === Block::TALL_GRASS) {
             return null;
@@ -235,7 +241,7 @@ abstract class BaseVehicle extends Vehicle
         $blocks = [];
         
         foreach($vectors as $vector) {
-            $block = $this->getLevel()->getBlockAt($vector->getX(), $vector->getY(), $vector->getZ());
+            $block = $this->getLevel()->getBlockAt($vector->getX(), $vector->getY(), $vector->getZ(), false, false);
 
             if ($block->getId() !== Block::AIR) {
                 $blocks[] = $block;
@@ -247,25 +253,20 @@ abstract class BaseVehicle extends Vehicle
     
     public function onUpdate(int $currentTick) : bool
     {
-        //if ($this->lastMotionSet !== 0) {
-        //    $this->lastMotionSet--;
-        //    return parent::onUpdate($currentTick);
-        //}
-
         if ($this->speed === 0) {
             return parent::onUpdate($currentTick);
         }
 
-        if ($this->speed <= 0.007 and $this->speed >= -0.007) {
+        if ($this->speed <= 0.003 and $this->speed >= -0.003) {
             $this->speed = 0;
             return parent::onUpdate($currentTick);
         }
         
         if ($this->speed > 0) {
-            $this->speed -= 0.003;
+            $this->reduceSpeed(0.002);
             $this->performForwardAcceleration();
         } else {
-            $this->speed += 0.003;
+            $this->addSpeed(0.002);
             $this->performBackwardAcceleration();
         }
 
@@ -286,9 +287,29 @@ abstract class BaseVehicle extends Vehicle
 
     abstract public function getReduceMaxSpeed() : float;
 
+    abstract public function getBrakeSpeed() : float;
+
     abstract public function getDriverSeatPosition() : Vector3;
 
     abstract public function getPassengerSeatPosition() : Vector3;
+
+    protected function trySetPlayerDriver(MineParkPlayer $player)
+    {
+        if (!$this->setDriver($player)) {
+            return $player->sendMessage("На данный момент есть человек, сидящий за рулем");
+        } else {
+            return $player->sendTip("Вы успешно сели за руль!");
+        }
+    }
+
+    protected function trySetPlayerPassenger(MineParkPlayer $player)
+    {
+        if (!$this->setPassenger($player)) {
+            return $player->sendMessage("На данный момент есть человек, сидящий на пассажирском кресле");
+        } else {
+            return $player->sendTip("Вы успешно сели в машину!");
+        }
+    }
 
     protected function broadcastLink(MineParkPlayer $player, int $type = EntityLink::TYPE_RIDER)
     {
@@ -356,10 +377,14 @@ abstract class BaseVehicle extends Vehicle
         $this->setGenericFlag(self::DATA_FLAG_SADDLED, $status);
     }
 
-    private function handleHit(MineParkPlayer $player)
+    private function handleInteract(MineParkPlayer $player)
     {
+        if ($player->getStatesMap()->ridingVehicle) {
+            return $player->sendMessage("Вы не сможете перепрыгнуть с одной машины в другую.");
+        }
+
         if (isset($this->driver) && isset($this->passenger)) {
-            return $player->sendMessage("Данная машина уже занята! Вы чего, товарищ?");
+            return $player->sendMessage("В этой машине уже все сидения заняты.");
         }
 
         $form = new SimpleForm([$this, "performAction"]);

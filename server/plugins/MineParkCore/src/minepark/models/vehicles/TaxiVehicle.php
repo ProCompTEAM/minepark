@@ -5,7 +5,7 @@ use pocketmine\level\Level;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
 
-class Vehicle1 extends BaseVehicle
+class TaxiVehicle extends BaseVehicle
 {
     public const NETWORK_ID = self::VILLAGER;
 
@@ -14,8 +14,6 @@ class Vehicle1 extends BaseVehicle
     public function __construct(Level $level, CompoundTag $nbt)
     {
         parent::__construct($level, $nbt);
-
-        $this->propertyManager->setInt(self::DATA_VARIANT, 1);
     }
 
     public function getLeftSpeed() : float

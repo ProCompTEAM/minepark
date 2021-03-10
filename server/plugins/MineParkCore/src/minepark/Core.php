@@ -33,9 +33,7 @@ use pocketmine\command\CommandSender;
 use minepark\external\service\Service;
 use pocketmine\command\ConsoleCommandSender;
 use minepark\components\organisations\Organisations;
-use minepark\models\vehicles\BaseVehicle;
-use minepark\models\vehicles\Vehicle1;
-use pocketmine\entity\Entity;
+use minepark\components\VehicleManager;
 
 class Core extends PluginBase implements Listener
 {
@@ -64,6 +62,7 @@ class Core extends PluginBase implements Listener
 	private $fastfood;
 	private $tracker;
 	private $broadcaster;
+	private $vehicleManager;
 
 	public $webapi;
 
@@ -79,8 +78,6 @@ class Core extends PluginBase implements Listener
 		$this->initializeMDC();
 
 		$this->initializeEventsHandler();
-
-		$this->registerEntities();
 
 		$this->initialize();
 
@@ -133,6 +130,7 @@ class Core extends PluginBase implements Listener
 		$this->webapi = new WebApi;
 		$this->tracker = new Tracker;
 		$this->broadcaster = new Broadcaster;
+		$this->vehicleManager = new VehicleManager;
 	}
 
 	public function getTargetDirectory(bool $strings = false) : string
@@ -255,6 +253,11 @@ class Core extends PluginBase implements Listener
 		return $this->notifier;
 	}
 
+	public function getVehicleManager() : VehicleManager
+	{
+		return $this->vehicleManager;
+	}
+
 	public function getFormApi() : FormAPI
 	{
 		return $this->getServer()->getPluginManager()->getPlugin("FormAPI");
@@ -279,11 +282,6 @@ class Core extends PluginBase implements Listener
 		if(!file_exists(Files::DEFAULT_DIRECTORY_STRINGS)) {
 			mkdir(Files::DEFAULT_DIRECTORY_STRINGS);
 		}
-	}
-
-	private function registerEntities()
-	{
-		Entity::registerEntity(Vehicle1::class);
 	}
 
 	private function applyServerSettings()

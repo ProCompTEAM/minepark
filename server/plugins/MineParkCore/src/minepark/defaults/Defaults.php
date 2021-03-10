@@ -13,5 +13,8 @@ class Defaults
     public const SERVER_LOBBY_PORT = 19132;
 
     public const AUTO_BROADCAST_TIMEOUT = 120;
+
+    public const VEHICLE_ACTION_BE_DRIVER = 1;
+    public const VEHICLE_ACTION_BE_PASSENGER = 2;
 }
 ?>

@@ -175,24 +175,9 @@ class EventsHandler implements Listener
 		}
 	}
 	
-	public function handleVehicleEvent(DataPacketReceiveEvent $event)
+	public function handleDataPacketReceive(DataPacketReceiveEvent $event)
 	{
-		if ($event->getPacket() instanceof PlayerInputPacket) {
-			if ($event->getPacket()->motionX === 0.0 and $event->getPacket()->motionY === 0.0) {
-				return;
-			}
-
-			$event->setCancelled();
-
-			$this->updateVehicleMovement($event);
-		} else if ($event->getPacket() instanceof InteractPacket and $event->getPacket()->action == InteractPacket::ACTION_LEAVE_VEHICLE) {
-			$vehicle = $event->getPlayer()->getLevel()->getEntity($event->getPacket()->target);
-
-			if ($vehicle instanceof BaseVehicle) {
-				$vehicle->tryToRemovePlayer($event->getPlayer());
-				$event->setCancelled();
-			}
-		}
+		$this->getCore()->getVehicleManager()->handleDataPacketReceive($event);
 	}
 	
 	public function blockPlaceEvent(BlockPlaceEvent $event)
@@ -241,17 +226,6 @@ class EventsHandler implements Listener
 	public function blockBurnEvent(BlockBurnEvent $event)
 	{
 		$event->setCancelled();
-	}
-
-	private function updateVehicleMovement(DataPacketReceiveEvent $event)
-	{
-		if ($event->getPlayer()->getStatesMap()->ridingVehicle?->getDriver()?->getName() !== $event->getPlayer()->getName()) {
-			return;
-		}
-
-		$vehicle = $event->getPlayer()->getStatesMap()->ridingVehicle;
-		
-		$vehicle->updateMotion($event->getPacket()->motionX, $event->getPacket()->motionY);
 	}
 
 	private function checkBlockSet(BlockEvent $event)
