@@ -19,11 +19,6 @@ class Auth extends Component
 	public const WELCOME_MESSAGE_TIMEOUT = 2;
 
 	private $ips = [];
-
-	public function getCore() : Core
-	{
-		return Core::getActive();
-	}
 	
 	public function checkState(MineParkPlayer $player) : int
 	{

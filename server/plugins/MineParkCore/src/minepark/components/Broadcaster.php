@@ -36,11 +36,6 @@ class Broadcaster extends Component
         }
     }
 
-    private function getCore() : Core
-    {
-        return Core::getActive();
-    }
-
     private function initializeBroadcastTask()
     {
         $this->getCore()->getScheduler()->scheduleRepeatingTask(new CallbackTask([$this, "broadcastMessage"]), TimeConstants::AUTO_BROADCAST_TIMEOUT * 20);

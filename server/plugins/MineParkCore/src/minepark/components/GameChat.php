@@ -21,11 +21,6 @@ class GameChat extends Component
 			"{ChatUserPrefix8}", "{ChatUserPrefix9}", "{ChatUserPrefix10}", "{ChatUserPrefix11}"];
 	}
 
-	public function getCore() : Core
-	{
-		return Core::getActive();
-	}
-
 	public function sendGlobal(MineParkPlayer $sender, string $message) 
 	{
 		if($sender->getStatesMap()->isBeginner) {

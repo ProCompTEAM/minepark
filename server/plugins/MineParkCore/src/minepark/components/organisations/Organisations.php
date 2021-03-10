@@ -1,6 +1,7 @@
 <?php
 namespace minepark\components\organisations;
 
+use minepark\components\base\Component;
 use minepark\Core;
 
 use minepark\OrganisationsCommandHandler;
@@ -9,7 +10,7 @@ use minepark\components\organisations\Shop;
 use minepark\components\organisations\NoFire;
 use minepark\components\organisations\Workers;
 
-class Organisations
+class Organisations extends Component
 {
     public $shop;
     public $workers;
@@ -43,11 +44,6 @@ class Organisations
 
 		return $this->getCore()->getApi()->getPrefix($id+3, $withColor);
 	}
-
-    protected function getCore() : Core
-    {
-        return Core::getActive();
-    }
 
     public function getShop() : Shop
     {

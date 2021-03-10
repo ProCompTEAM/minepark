@@ -16,11 +16,6 @@ class NotifyPlayers extends Component
 		$this->mapper = $this->getCore()->getMapper();
 	}
 	
-	public function getCore() : Core
-	{
-		return Core::getActive();
-	}
-	
 	public function broadcast()
 	{
 		$points = $this->mapper->getPointsByGroup(Mapper::POINT_GROUP_GENERIC);

@@ -21,11 +21,6 @@ class Reporter extends Component
 		$this->playerReports = [];
 	}
 	
-	public function getCore() : Core
-	{
-		return Core::getActive();
-	}
-	
 	public static function getPlayerId(MineParkPlayer $player) : string
 	{
 		return strtolower($player->getName());

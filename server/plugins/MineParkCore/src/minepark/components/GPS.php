@@ -14,11 +14,6 @@ class GPS extends Component
 		$this->getCore()->getScheduler()->scheduleRepeatingTask(new CallbackTask([$this, "timer"]), 40);
 		$this->level = $this->getCore()->getServer()->getDefaultLevel();
 	}
-	
-	public function getCore() : Core
-	{
-		return Core::getActive();
-	}
 
 	public function timer()
 	{

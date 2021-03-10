@@ -14,11 +14,6 @@ class StatusBar extends Component
 		$this->getCore()->getScheduler()->scheduleRepeatingTask(new CallbackTask([$this, "timer"]), 20);
 		$this->tmsg = 0;
 	}
-	
-	public function getCore() : Core
-	{
-		return Core::getActive();
-	}
 
 	public function timer()
 	{

@@ -28,11 +28,6 @@ class Phone extends Component
 		$this->getCore()->getScheduler()->scheduleRepeatingTask(new CallbackTask([$this, "takeFee"]), 20 * 60);
 	}
 	
-	public function getCore() : Core
-	{
-		return Core::getActive();
-	}
-	
 	public function getNumber(MineParkPlayer $player) : int
 	{
 		return $this->getSource()->getNumberForUser($player->getName());
