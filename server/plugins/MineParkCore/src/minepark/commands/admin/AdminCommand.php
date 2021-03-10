@@ -1,14 +1,14 @@
 <?php
 namespace minepark\commands\admin;
 
-use minepark\defaults\Sounds;
-
-use minepark\common\player\MineParkPlayer;
-use minepark\defaults\Permissions;
-
 use pocketmine\event\Event;
-use minepark\commands\Command;
+
+use minepark\defaults\Sounds;
 use minepark\defaults\Defaults;
+
+use minepark\defaults\Permissions;
+use minepark\commands\base\Command;
+use minepark\common\player\MineParkPlayer;
 
 class AdminCommand extends Command
 {

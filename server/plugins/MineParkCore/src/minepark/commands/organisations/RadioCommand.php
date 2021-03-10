@@ -1,10 +1,11 @@
 <?php
 namespace minepark\commands\organisations;
 
-use minepark\common\player\MineParkPlayer;
 use pocketmine\event\Event;
-
 use minepark\defaults\Permissions;
+
+use minepark\common\player\MineParkPlayer;
+use minepark\commands\organisations\base\OrganisationsCommand;
 
 class RadioCommand extends OrganisationsCommand
 {

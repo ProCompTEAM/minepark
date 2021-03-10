@@ -7,6 +7,7 @@ use pocketmine\event\Event;
 use minepark\defaults\Permissions;
 use minepark\common\player\MineParkPlayer;
 use minepark\components\organisations\Organisations;
+use minepark\commands\organisations\base\OrganisationsCommand;
 
 class HealCommand extends OrganisationsCommand
 {

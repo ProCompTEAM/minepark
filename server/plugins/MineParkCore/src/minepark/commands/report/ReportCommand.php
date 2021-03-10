@@ -4,7 +4,7 @@ namespace minepark\commands\report;
 use minepark\common\player\MineParkPlayer;
 use pocketmine\event\Event;
 
-use minepark\commands\Command;
+use minepark\commands\base\Command;
 use minepark\defaults\Permissions;
 
 use minepark\utils\CallbackTask;

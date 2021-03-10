@@ -5,6 +5,7 @@ use minepark\Providers;
 use pocketmine\event\Event;
 
 use minepark\defaults\Permissions;
+use minepark\commands\base\Command;
 use minepark\common\player\MineParkPlayer;
 
 class MoneyCommand extends Command

@@ -6,6 +6,7 @@ use pocketmine\event\Event;
 use pocketmine\level\Position;
 
 use minepark\defaults\Permissions;
+use minepark\commands\base\Command;
 use minepark\common\player\MineParkPlayer;
 
 class CasinoCommand extends Command

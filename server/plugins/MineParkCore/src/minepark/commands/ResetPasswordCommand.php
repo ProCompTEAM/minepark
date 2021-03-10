@@ -1,11 +1,12 @@
 <?php
 namespace minepark\commands;
 
-use minepark\common\player\MineParkPlayer;
-use minepark\defaults\Permissions;
-
 use pocketmine\event\Event;
+use pocketmine\command\Command;
+
+use minepark\defaults\Permissions;
 use minepark\providers\data\UsersSource;
+use minepark\common\player\MineParkPlayer;
 
 class ResetPasswordCommand extends Command
 {

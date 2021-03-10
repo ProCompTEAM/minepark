@@ -1,11 +1,12 @@
 <?php
 namespace minepark\commands\organisations;
 
-use minepark\components\organisations\Organisations;
+use pocketmine\event\Event;
 use minepark\defaults\Permissions;
 
 use minepark\common\player\MineParkPlayer;
-use pocketmine\event\Event;
+use minepark\components\organisations\Organisations;
+use minepark\commands\organisations\base\OrganisationsCommand;
 
 class ShowCommand extends OrganisationsCommand
 {
