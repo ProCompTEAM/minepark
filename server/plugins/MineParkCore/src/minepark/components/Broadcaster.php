@@ -3,7 +3,7 @@ namespace minepark\components;
 
 use minepark\components\base\Component;
 use minepark\Core;
-use minepark\defaults\Defaults;
+use minepark\defaults\TimeConstants;
 use minepark\utils\CallbackTask;
 
 class Broadcaster extends Component
@@ -43,7 +43,7 @@ class Broadcaster extends Component
 
     private function initializeBroadcastTask()
     {
-        $this->getCore()->getScheduler()->scheduleRepeatingTask(new CallbackTask([$this, "broadcastMessage"]), Defaults::AUTO_BROADCAST_TIMEOUT * 20);
+        $this->getCore()->getScheduler()->scheduleRepeatingTask(new CallbackTask([$this, "broadcastMessage"]), TimeConstants::AUTO_BROADCAST_TIMEOUT * 20);
     }
 
     private function getMessagesLocalizationKeys() : array
