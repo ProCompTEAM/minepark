@@ -1,7 +1,6 @@
 <?php
 namespace minepark\components;
 
-use minepark\Core;
 use minepark\Mapper;
 use minepark\Providers;
 
@@ -12,6 +11,7 @@ use minepark\components\base\Component;
 use minepark\providers\data\PhonesSource;
 use minepark\common\player\MineParkPlayer;
 use minepark\components\organisations\Organisations;
+use minepark\defaults\ComponentAttributes;
 
 class Phone extends Component
 {
@@ -27,6 +27,13 @@ class Phone extends Component
 		$this->source = $this->getCore()->getMDC()->getSource(PhonesSource::ROUTE);
 		$this->getCore()->getScheduler()->scheduleRepeatingTask(new CallbackTask([$this, "takeFee"]), 20 * 60);
 	}
+
+	public function getAttributes() : array
+    {
+        return [
+			ComponentAttributes::STANDALONE
+        ];
+    }
 	
 	public function getNumber(MineParkPlayer $player) : int
 	{

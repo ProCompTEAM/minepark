@@ -2,12 +2,12 @@
 namespace minepark\components;
 
 use minepark\Api;
-use minepark\Core;
 use minepark\Providers;
 use minepark\utils\CallbackTask;
 use minepark\components\base\Component;
 use minepark\common\player\MineParkPlayer;
 use minepark\components\organisations\Organisations;
+use minepark\defaults\ComponentAttributes;
 
 class PayDay extends Component
 {
@@ -15,6 +15,13 @@ class PayDay extends Component
 	{
 		$this->getCore()->getScheduler()->scheduleRepeatingTask(new CallbackTask([$this, "calcAndShow"]), 20 * 600);
 	}
+
+	public function getAttributes() : array
+    {
+        return [
+			ComponentAttributes::STANDALONE
+        ];
+    }
 	
 	public function calcAndShow()
 	{

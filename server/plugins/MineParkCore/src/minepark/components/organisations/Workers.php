@@ -11,6 +11,7 @@ use pocketmine\level\Position;
 use pocketmine\entity\EffectInstance;
 use minepark\common\player\MineParkPlayer;
 use minepark\components\base\Component;
+use minepark\defaults\ComponentAttributes;
 
 class Workers extends Component
 {
@@ -35,6 +36,13 @@ class Workers extends Component
             "Комплектующие для ноутбука","*Play Station 5*","Топовый ПК","Микроскоп","Книжная полка","Рачки"
         ];//90
 	}
+
+    public function getAttributes() : array
+    {
+        return [
+            ComponentAttributes::STANDALONE
+        ];
+    }
 
 	public function sign(Event $event)
 	{

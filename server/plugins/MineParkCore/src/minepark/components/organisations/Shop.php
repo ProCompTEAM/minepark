@@ -1,9 +1,9 @@
 <?php
 namespace minepark\components\organisations;
 
-use minepark\Core;
 use minepark\common\player\MineParkPlayer;
 use minepark\components\base\Component;
+use minepark\defaults\ComponentAttributes;
 use pocketmine\item\Item;
 use pocketmine\tile\Sign;
 use pocketmine\utils\Config;
@@ -23,6 +23,13 @@ class Shop extends Component
 	{
 		$this->c = new Config($this->getCore()->getTargetDirectory()."shops.json", Config::JSON);
 	}
+
+	public function getAttributes() : array
+    {
+        return [
+			ComponentAttributes::STANDALONE
+        ];
+    }
 
 	public function tap(PlayerInteractEvent $event)
 	{

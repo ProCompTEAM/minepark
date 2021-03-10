@@ -4,6 +4,7 @@ namespace minepark\components;
 use minepark\Core;
 use minepark\utils\CallbackTask;
 use minepark\components\base\Component;
+use minepark\defaults\ComponentAttributes;
 
 class GPS extends Component
 {
@@ -14,6 +15,13 @@ class GPS extends Component
 		$this->getCore()->getScheduler()->scheduleRepeatingTask(new CallbackTask([$this, "timer"]), 40);
 		$this->level = $this->getCore()->getServer()->getDefaultLevel();
 	}
+
+	public function getAttributes() : array
+    {
+        return [
+			ComponentAttributes::STANDALONE
+        ];
+    }
 
 	public function timer()
 	{

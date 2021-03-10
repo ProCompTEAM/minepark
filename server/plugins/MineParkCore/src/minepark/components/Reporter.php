@@ -7,6 +7,7 @@ use pocketmine\Server;
 use minepark\defaults\Permissions;
 use minepark\components\base\Component;
 use minepark\common\player\MineParkPlayer;
+use minepark\defaults\ComponentAttributes;
 
 class Reporter extends Component
 {
@@ -20,6 +21,13 @@ class Reporter extends Component
 	{
 		$this->playerReports = [];
 	}
+
+	public function getAttributes() : array
+    {
+        return [
+			ComponentAttributes::STANDALONE
+        ];
+    }
 	
 	public static function getPlayerId(MineParkPlayer $player) : string
 	{

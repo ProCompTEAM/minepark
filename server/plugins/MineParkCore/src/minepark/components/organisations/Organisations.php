@@ -2,7 +2,6 @@
 namespace minepark\components\organisations;
 
 use minepark\components\base\Component;
-use minepark\Core;
 
 use minepark\OrganisationsCommandHandler;
 use minepark\components\organisations\Farm;
@@ -34,6 +33,12 @@ class Organisations extends Component
         $this->farm = new Farm;
         $this->noFire = new NoFire;
         $this->cmdHandler = new OrganisationsCommandHandler;
+    }
+
+    public function getAttributes() : array
+    {
+        return [
+        ];
     }
 
     public function getName($id, $withColor = true)
