@@ -134,6 +134,7 @@ class Initializer extends Component
         $statesMap->paymentMethod = PaymentMethods::CASH;
 
         $statesMap->ridingVehicle = null;
+        $statesMap->rentedVehicle = null;
 
         $player->setStatesMap($statesMap);
     }

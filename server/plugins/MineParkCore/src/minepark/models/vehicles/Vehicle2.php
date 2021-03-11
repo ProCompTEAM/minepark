@@ -30,12 +30,12 @@ class Vehicle2 extends BaseVehicle
 
     public function getForwardAcceleration(): float
     {
-        return 0.023;
+        return 0.026;
     }
 
     public function getBackwardAcceleration(): float
     {
-        return 0.015;
+        return 0.017;
     }
 
     public function getBrakeSpeed(): float
@@ -43,14 +43,24 @@ class Vehicle2 extends BaseVehicle
         return 0.05;
     }
 
+    public function getVehicleNameTag(): ?string
+    {
+        return null;
+    }
+
     public function getMaxSpeed() : float
     {
-        return 1.5;
+        return 0.6;
     }
 
     public function getReduceMaxSpeed(): float
     {
-        return -0.6;
+        return -0.3;
+    }
+
+    public function getCost(): float
+    {
+        return 10.0;
     }
 
     public function getDriverSeatPosition() : Vector3

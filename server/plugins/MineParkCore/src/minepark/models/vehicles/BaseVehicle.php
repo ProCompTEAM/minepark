@@ -1,6 +1,7 @@
 <?php
 namespace minepark\models\vehicles;
 
+use jojoe77777\FormAPI\ModalForm;
 use pocketmine\block\Block;
 use pocketmine\level\Level;
 use pocketmine\math\Vector3;
@@ -9,8 +10,10 @@ use jojoe77777\FormAPI\SimpleForm;
 use pocketmine\nbt\tag\CompoundTag;
 use minepark\common\player\MineParkPlayer;
 use minepark\defaults\Defaults;
+use minepark\Providers;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
+use pocketmine\event\player\PlayerEvent;
 use pocketmine\network\mcpe\protocol\types\EntityLink;
 use pocketmine\network\mcpe\protocol\SetActorLinkPacket;
 
@@ -26,17 +29,22 @@ abstract class BaseVehicle extends Vehicle
 
     protected ?MineParkPlayer $driver;
     protected ?MineParkPlayer $passenger;
+    protected ?MineParkPlayer $rentedBy;
 
     private float $speed;
-    private int $lastMotionSet;
 
     public function __construct(Level $level, CompoundTag $nbt){
         parent::__construct($level, $nbt);
 
         $this->driver = null;
         $this->passenger = null;
+        $this->rentedBy = null;
         $this->speed = 0.0;
-        $this->lastMotionSet = 0;
+
+        if ($this->getVehicleNameTag() !== null) {
+            $this->setNameTag($this->getVehicleNameTag());
+            $this->setNameTagAlwaysVisible(true);
+        }
 
         $this->setCanSaveWithChunk(true);
         $this->saveNBT();
@@ -52,6 +60,27 @@ abstract class BaseVehicle extends Vehicle
         return $this->passenger;
     }
 
+    public function kill() : void
+    {
+        if (isset($this->driver)) {
+            $this->driver->getStatesMap()->ridingVehicle = null;
+        }
+
+        if (isset($this->rentedBy)) {
+            $this->rentedBy->getStatesMap()->rentedVehicle = null;
+        }
+
+        if (isset($this->passenger)) {
+            $this->passenger->getStatesMap()->ridingVehicle = null;
+        }
+
+        if (isset($this->health)) {
+            $this->health = 0;
+        }
+
+		$this->scheduleUpdate();
+	}
+
     public function performAction(MineParkPlayer $player, ?int $data = null)
     {
         if (is_null($data)) {
@@ -64,6 +93,27 @@ abstract class BaseVehicle extends Vehicle
             $this->trySetPlayerDriver($player);
         } else if ($choice === Defaults::VEHICLE_ACTION_BE_PASSENGER) {
             $this->trySetPlayerPassenger($player);
+        }
+    }
+
+    public function buyVehicle(MineParkPlayer $player, ?bool $choice = null)
+    {
+        if (!isset($choice)) {
+            return;
+        }
+
+        if (!$choice) {
+            return;
+        }
+
+        if (isset($this->rentedBy)) {
+            return $player->sendMessage("Извините, но эту машину уже видимо арендовали");
+        }
+
+        if (Providers::getBankingProvider()->takePlayerMoney($player, $this->getCost())) {
+            $this->setRented($player);
+        } else {
+            $player->sendMessage("Вам не хватило денег :(");
         }
     }
 
@@ -115,6 +165,11 @@ abstract class BaseVehicle extends Vehicle
 
         $this->broadcastLink($this->getPassenger(), EntityLink::TYPE_PASSENGER);
         return true;
+    }
+
+    public function removeRentedStatus()
+    {
+        $this->rentedBy = null;
     }
 
     public function tryToRemovePlayer(MineParkPlayer $player) : bool
@@ -289,17 +344,32 @@ abstract class BaseVehicle extends Vehicle
 
     abstract public function getBrakeSpeed() : float;
 
+    abstract public function getVehicleNameTag() : ?string;
+
     abstract public function getDriverSeatPosition() : Vector3;
 
     abstract public function getPassengerSeatPosition() : Vector3;
 
+    public function getCost() : float
+    {
+        return 0.0;
+    }
+
     protected function trySetPlayerDriver(MineParkPlayer $player)
     {
-        if (!$this->setDriver($player)) {
-            return $player->sendMessage("На данный момент есть человек, сидящий за рулем");
-        } else {
-            return $player->sendTip("Вы успешно сели за руль!");
+        if (is_null($this->rentedBy) && $this->getCost() !== 0.0) {
+            return $this->showRentForm($player);
+        } else if (is_null($this->rentedBy)) {
+            $this->rentedBy = $player;
+            
+            $player->sendMessage("Вы успешно арендовали машину!");
+        } else if ($this->rentedBy->getName() !== $player->getName()) {
+            return $player->sendMessage("Эта машина уже кем-то арендована.. :(");
         }
+
+        $this->setDriver($player);
+        
+        $player->sendTip("Вы успешно сели за руль!");
     }
 
     protected function trySetPlayerPassenger(MineParkPlayer $player)
@@ -323,6 +393,19 @@ abstract class BaseVehicle extends Vehicle
 
 			$viewer->sendDataPacket($pk);
 		}
+    }
+
+    private function setRented(MineParkPlayer $player)
+    {
+        $player->sendMessage("Вы успешно арендовали данную машину!");
+
+        $this->rentedBy = $player;
+
+        if (isset($player->getStatesMap()->rentedVehicle)) {
+            $player->getStatesMap()->rentedVehicle->removeRentedStatus();
+        }
+
+        $player->getStatesMap()->rentedVehicle = $this;
     }
 
     private function performForwardAcceleration()
@@ -393,6 +476,17 @@ abstract class BaseVehicle extends Vehicle
         $form->setContent("Выберите, что вы хотите сделать с машиной!");
         $form->addButton("Водить машиной");
         $form->addButton("Стать пассажиром");
+
+        $player->sendForm($form);
+    }
+
+    private function showRentForm(MineParkPlayer $player)
+    {
+        $form = new ModalForm([$this, "buyVehicle"]);
+
+        $form->setContent("Данную машину нужно арендовать за ".$this->getCost()."! Желаете ли Вы ее арендовать?");
+        $form->setButton1("Да");
+        $form->setButton2("Нет");
 
         $player->sendForm($form);
     }

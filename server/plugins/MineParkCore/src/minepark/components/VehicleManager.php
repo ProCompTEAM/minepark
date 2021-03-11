@@ -65,7 +65,6 @@ class VehicleManager extends Component
             }
 
             $vehicle = $event->getPlayer()->getLevel()->getEntity($event->getPacket()->target);
-
 			if ($vehicle instanceof BaseVehicle) {
 				$vehicle->tryToRemovePlayer($event->getPlayer());
 				$event->setCancelled();

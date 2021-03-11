@@ -32,5 +32,7 @@ class StatesMap
 	public int $lastTap;
 
 	public ?BaseVehicle $ridingVehicle;
+
+	public ?BaseVehicle $rentedVehicle;
 }
 ?>

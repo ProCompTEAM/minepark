@@ -43,14 +43,24 @@ class Vehicle1 extends BaseVehicle
         return 0.05;
     }
 
+    public function getVehicleNameTag(): ?string
+    {
+        return null;
+    }
+
     public function getMaxSpeed() : float
     {
-        return 1.5;
+        return 0.55;
     }
 
     public function getReduceMaxSpeed(): float
     {
-        return -0.6;
+        return -0.3;
+    }
+
+    public function getCost(): float
+    {
+        return 10.0;
     }
 
     public function getDriverSeatPosition() : Vector3

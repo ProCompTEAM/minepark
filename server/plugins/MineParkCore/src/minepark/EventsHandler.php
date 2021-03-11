@@ -126,6 +126,10 @@ class EventsHandler implements Listener
 			$player->getStatesMap()->ridingVehicle->tryToRemovePlayer($player);
 		}
 
+		if ($player->getStatesMap()->rentedVehicle !== null) {
+			$player->getStatesMap()->rentedVehicle->removeRentedStatus();
+		}
+
 		$this->getUsersSource()->updateUserQuitStatus($playerName);
 	}
 	
