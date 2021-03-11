@@ -1,10 +1,11 @@
 <?php
 namespace minepark\commands;
 
-use minepark\common\player\MineParkPlayer;
 use pocketmine\event\Event;
-
 use minepark\defaults\Permissions;
+
+use minepark\commands\base\Command;
+use minepark\common\player\MineParkPlayer;
 
 class OnlineCommand extends Command
 {

@@ -24,9 +24,10 @@ class Damager extends Component
         $this->reasons = array("сотрясения мозга", "потери сознания", "ряда переломов");
 	}
 
-	public function getCore() : Core
-	{
-		return Core::getActive();
+    public function getAttributes() : array
+    {
+        return [
+        ];
     }
     
     public function getConfig() : Config

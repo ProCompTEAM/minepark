@@ -21,10 +21,11 @@ class GameChat extends Component
 			"{ChatUserPrefix8}", "{ChatUserPrefix9}", "{ChatUserPrefix10}", "{ChatUserPrefix11}"];
 	}
 
-	public function getCore() : Core
-	{
-		return Core::getActive();
-	}
+	public function getAttributes() : array
+    {
+        return [
+        ];
+    }
 
 	public function sendGlobal(MineParkPlayer $sender, string $message) 
 	{

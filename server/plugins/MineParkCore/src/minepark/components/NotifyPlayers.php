@@ -15,11 +15,12 @@ class NotifyPlayers extends Component
 		$this->getCore()->getScheduler()->scheduleRepeatingTask(new CallbackTask([$this, "broadcast"]), 20 * 763);
 		$this->mapper = $this->getCore()->getMapper();
 	}
-	
-	public function getCore() : Core
-	{
-		return Core::getActive();
-	}
+
+	public function getAttributes() : array
+    {
+        return [
+        ];
+    }
 	
 	public function broadcast()
 	{

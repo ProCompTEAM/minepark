@@ -20,9 +20,10 @@ class Initializer extends Component
 
     public const MINIMAL_SKILL_MINUTES_PLAYED = 60;
 
-    public function getCore() : Core
+    public function getAttributes() : array
     {
-        return Core::getActive();
+        return [
+        ];
     }
 
     public function getProfiler() : Profiler

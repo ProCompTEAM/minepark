@@ -6,6 +6,7 @@ use pocketmine\form\Form;
 use pocketmine\event\Event;
 use jojoe77777\FormAPI\SimpleForm;
 use minepark\defaults\Permissions;
+use minepark\commands\base\Command;
 use minepark\defaults\PaymentMethods;
 use minepark\common\player\MineParkPlayer;
 
@@ -33,6 +34,21 @@ class BankCommand extends Command
         $player->sendForm($form);
     }
 
+    private function getChooseForm(string $language) : Form
+    {
+        $contents     = Providers::getLocalizationProvider()->take($language, "CommandBankFormContent");
+        $buttonCash   = Providers::getLocalizationProvider()->take($language, "CommandBankFormButton1");
+        $buttonDebit  = Providers::getLocalizationProvider()->take($language, "CommandBankFormButton2");
+        $buttonCredit = Providers::getLocalizationProvider()->take($language, "CommandBankFormButton3");
+
+        $form = new SimpleForm([$this, "answerForm"]);
+        $form->setContent($contents);
+        $form->addButton($buttonCash);
+        $form->addButton($buttonDebit);
+        $form->addButton($buttonCredit);
+        return $form;
+    }
+
     public function answerForm(MineParkPlayer $player, ?int $data = null)
     {
         if (is_null($data)) {
@@ -52,21 +68,6 @@ class BankCommand extends Command
         }
 
         $player->sendMessage("CommandBankError1");
-    }
-
-    private function getChooseForm(string $language) : Form
-    {
-        $contents     = Providers::getLocalizationProvider()->take($language, "CommandBankFormContent");
-        $buttonCash   = Providers::getLocalizationProvider()->take($language, "CommandBankFormButton1");
-        $buttonDebit  = Providers::getLocalizationProvider()->take($language, "CommandBankFormButton2");
-        $buttonCredit = Providers::getLocalizationProvider()->take($language, "CommandBankFormButton3");
-
-        $form = new SimpleForm([$this, "answerForm"]);
-        $form->setContent($contents);
-        $form->addButton($buttonCash);
-        $form->addButton($buttonDebit);
-        $form->addButton($buttonCredit);
-        return $form;
     }
 }
 ?>

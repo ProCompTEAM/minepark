@@ -1,15 +1,17 @@
 <?php
-namespace minepark\components\organisations\command;
+namespace minepark\commands\organisations;
 
-use minepark\components\organisations\Organisations;
-use minepark\defaults\Permissions;
-
-use minepark\common\player\MineParkPlayer;
+use minepark\Providers;
 use pocketmine\event\Event;
 
-class GiveLicCommand extends OrganisationsCommand
+use minepark\defaults\Permissions;
+use minepark\common\player\MineParkPlayer;
+use minepark\components\organisations\Organisations;
+use minepark\commands\organisations\base\OrganisationsCommand;
+
+class ChangeNameCommand extends OrganisationsCommand
 {
-    public const CURRENT_COMMAND = "givelic";
+    public const CURRENT_COMMAND = "changename";
 
     public const POINT_NAME = "Мэрия";
 
@@ -30,19 +32,19 @@ class GiveLicCommand extends OrganisationsCommand
     public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
         if (!$this->canGiveDocuments($player)) {
-            $player->sendMessage("CommandGiveLicNoCanGive");
+            $player->sendMessage("CommandChangeNameNoCanGive");
             return;
         }
 
         if (!$this->isNearPoint($player)) {
-            $player->sendMessage("CommandGiveLicNoGov");
+            $player->sendMessage("CommandChangeNameNoGov");
             return;
         }
 
         $plrs = $this->getPlayersNear($player);
 
         if (self::argumentsNo($plrs)) {
-            $player->sendMessage("CommandGiveLicNoPlayer");
+            $player->sendMessage("CommandChangeNameNoPlayer");
             return;
         }
 
@@ -51,28 +53,36 @@ class GiveLicCommand extends OrganisationsCommand
             return;
         }
 
-        $this->tryGiveLicense($plrs[0], $player);
+        if (!self::argumentsMin(2, $args)) {
+            $player->sendMessage("CommandChangeNameHelp");
+            return;
+        }
+
+        $this->tryChangeName($plrs[0], $player, $args[0], $args[1]);
     }
 
-    private function tryGiveLicense(MineParkPlayer $toPlayer, MineParkPlayer $government)
+    private function tryChangeName(MineParkPlayer $toPlayer, MineParkPlayer $government, string $name, string $surname)
     {
-        $this->getCore()->getChatter()->send($government, "{CommandGiveLicKeys}", "§d : ", 10);
+        
+        $oldname = $toPlayer->getProfile()->fullName;
+        $toPlayer->getProfile()->fullName = $name . ' ' . $surname;
 
-        $government->sendMessage("CommandGiveLicNoLic1");
-        $toPlayer->sendMessage("CommandGiveLicNoLic2");
+        $this->getCore()->getProfiler()->saveProfile($toPlayer);
+        $toPlayer->sendTip("§aпоздравляем!","§9$oldname §7>>> §e".$toPlayer->getProfile()->fullName, 5);
+
+        Providers::getBankingProvider()->givePlayerMoney($government, 10);
+        $government->sendLocalizedMessage("{CommandChangeName}".$toPlayer->getProfile()->fullName);
     }
 
     private function moveThemOut(array $plrs, MineParkPlayer $government)
     {
-        $this->getCore()->getChatter()->send($government, "{CommandGiveLicManyPlayers1}");
-
-        foreach($plrs as $id => $p) {
+        $this->getCore()->getChatter()->send($government, "{CommandChangeNameManyPlayers1}");
+        foreach($plrs as $id => $player) {
             if($id > 1) {
-                $p->sendMessage("CommandGiveLicManyPlayers2");
+                $player->sendMessage("CommandChangeNameManyPlayers2");
             }
         }
-
-        $government->sendMessage("CommandGiveLicManyPlayers3");
+        $government->sendMessage("CommandChangeNameManyPlayers3");
     }
 
     private function canGiveDocuments(MineParkPlayer $player) : bool

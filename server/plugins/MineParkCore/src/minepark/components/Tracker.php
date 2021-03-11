@@ -1,10 +1,6 @@
 <?php
 namespace minepark\components;
 
-use minepark\utils\CallbackTask;
-use minepark\Core;
-use minepark\defaults\Permissions;
-
 use minepark\common\player\MineParkPlayer;
 
 class Tracker
@@ -17,11 +13,12 @@ class Tracker
 	{
         $this->tracked = [];
 	}
-	
-	public function getCore() : Core
-	{
-		return Core::getActive();
-	}
+
+    public function getAttributes() : array
+    {
+        return [
+        ];
+    }
     
     public function isTracked(MineParkPlayer $player) : bool
     {

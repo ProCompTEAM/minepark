@@ -23,6 +23,12 @@ class VehicleManager extends Component
         $this->loadVehicles();
     }
 
+    public function getAttributes(): array
+    {
+        return [
+        ];
+    }
+
     public function createVehicle(string $vehicleName, Level $level, Vector3 $pos) : bool
     {
         $vehicleClassName = $this->getVehicle($vehicleName);

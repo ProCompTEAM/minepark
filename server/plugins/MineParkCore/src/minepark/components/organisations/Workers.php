@@ -10,8 +10,10 @@ use pocketmine\entity\Effect;
 use pocketmine\level\Position;
 use pocketmine\entity\EffectInstance;
 use minepark\common\player\MineParkPlayer;
+use minepark\components\base\Component;
+use minepark\defaults\ComponentAttributes;
 
-class Workers
+class Workers extends Component
 {
     public array $words;
 	
@@ -34,10 +36,12 @@ class Workers
             "Комплектующие для ноутбука","*Play Station 5*","Топовый ПК","Микроскоп","Книжная полка","Рачки"
         ];//90
 	}
-    
-    protected function getCore() : Core
+
+    public function getAttributes() : array
     {
-        return Core::getActive();
+        return [
+            ComponentAttributes::STANDALONE
+        ];
     }
 
 	public function sign(Event $event)

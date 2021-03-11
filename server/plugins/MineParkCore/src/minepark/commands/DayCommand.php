@@ -5,6 +5,7 @@ use pocketmine\event\Event;
 use pocketmine\level\Level;
 
 use minepark\defaults\Permissions;
+use minepark\commands\base\Command;
 use minepark\common\player\MineParkPlayer;
 
 class DayCommand extends Command

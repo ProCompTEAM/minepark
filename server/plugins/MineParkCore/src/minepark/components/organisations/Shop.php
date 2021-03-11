@@ -1,8 +1,9 @@
 <?php
 namespace minepark\components\organisations;
 
-use minepark\Core;
 use minepark\common\player\MineParkPlayer;
+use minepark\components\base\Component;
+use minepark\defaults\ComponentAttributes;
 use pocketmine\item\Item;
 use pocketmine\tile\Sign;
 use pocketmine\utils\Config;
@@ -13,7 +14,7 @@ use pocketmine\event\block\BlockEvent;
 use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\event\block\SignChangeEvent;
 
-class Shop
+class Shop extends Component
 {
 	const MINIMAL_PRICE = 0;
 	const MAXIMAL_PRICE = 20000;
@@ -22,10 +23,12 @@ class Shop
 	{
 		$this->c = new Config($this->getCore()->getTargetDirectory()."shops.json", Config::JSON);
 	}
-    
-    protected function getCore() : Core
+
+	public function getAttributes() : array
     {
-        return Core::getActive();
+        return [
+			ComponentAttributes::STANDALONE
+        ];
     }
 
 	public function tap(PlayerInteractEvent $event)

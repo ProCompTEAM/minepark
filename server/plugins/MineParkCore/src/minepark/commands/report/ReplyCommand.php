@@ -6,7 +6,7 @@ use pocketmine\event\Event;
 
 use minepark\defaults\Permissions;
 
-use minepark\commands\Command;
+use minepark\commands\base\Command;
 
 class ReplyCommand extends Command
 {

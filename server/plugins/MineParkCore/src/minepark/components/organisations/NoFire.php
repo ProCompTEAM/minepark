@@ -2,27 +2,30 @@
 namespace minepark\components\organisations;
 
 use minepark\common\player\MineParkPlayer;
-use minepark\Core;
+use minepark\components\base\Component;
 use minepark\Providers;
 
 use pocketmine\block\Block;
 use pocketmine\level\Position;
 use minepark\utils\CallbackTask;
 use minepark\components\organisations\Organisations;
+use minepark\defaults\ComponentAttributes;
 
-class NoFire
+class NoFire extends Component
 {
-	public $oldpoint;
+	public ?Position $oldpoint;
 	
 	public function __construct()
 	{
 		$this->getCore()->getScheduler()->scheduleRepeatingTask(new CallbackTask([$this, "timeToFire"]), 20 * 60 * 3);
 		$this->oldpoint = null;
     }
-    
-    protected function getCore() : Core
+
+    public function getAttributes() : array
     {
-        return Core::getActive();
+        return [
+            ComponentAttributes::STANDALONE
+        ];
     }
 	
 	public function timeToFire()

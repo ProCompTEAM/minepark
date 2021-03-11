@@ -1,16 +1,15 @@
 <?php
 namespace minepark\components\organisations;
 
-use minepark\Core;
+use minepark\components\base\Component;
 
-use minepark\components\organisations\Shop;
-use minepark\components\organisations\Workers;
+use minepark\OrganisationsCommandHandler;
 use minepark\components\organisations\Farm;
+use minepark\components\organisations\Shop;
 use minepark\components\organisations\NoFire;
+use minepark\components\organisations\Workers;
 
-use minepark\components\organisations\OrganisationsCommandHandler;
-
-class Organisations
+class Organisations extends Component
 {
     public $shop;
     public $workers;
@@ -36,6 +35,12 @@ class Organisations
         $this->cmdHandler = new OrganisationsCommandHandler;
     }
 
+    public function getAttributes() : array
+    {
+        return [
+        ];
+    }
+
     public function getName($id, $withColor = true)
 	{
 		if($id == 0) {
@@ -44,11 +49,6 @@ class Organisations
 
 		return $this->getCore()->getApi()->getPrefix($id+3, $withColor);
 	}
-
-    protected function getCore() : Core
-    {
-        return Core::getActive();
-    }
 
     public function getShop() : Shop
     {

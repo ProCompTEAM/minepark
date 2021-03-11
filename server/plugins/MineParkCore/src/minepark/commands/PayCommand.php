@@ -6,8 +6,8 @@ use pocketmine\event\Event;
 
 use minepark\defaults\Sounds;
 use minepark\defaults\Permissions;
+use minepark\commands\base\Command;
 use minepark\common\player\MineParkPlayer;
-use minepark\defaults\PaymentMethods;
 
 class PayCommand extends Command
 {

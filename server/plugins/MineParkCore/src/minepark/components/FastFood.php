@@ -8,13 +8,16 @@ use minepark\Providers;
 use pocketmine\item\Item;
 use minepark\components\base\Component;
 use minepark\common\player\MineParkPlayer;
+use minepark\defaults\ComponentAttributes;
 
 class FastFood extends Component
 {
-	public function getCore() : Core
-	{
-		return Core::getActive();
-	}
+	public function getAttributes() : array
+    {
+        return [
+			ComponentAttributes::STANDALONE
+        ];
+    }
 
 	public function command(MineParkPlayer $player)
 	{

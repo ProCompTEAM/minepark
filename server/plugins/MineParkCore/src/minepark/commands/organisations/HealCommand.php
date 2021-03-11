@@ -1,5 +1,5 @@
 <?php
-namespace minepark\components\organisations\command;
+namespace minepark\commands\organisations;
 
 use minepark\Providers;
 use pocketmine\event\Event;
@@ -7,6 +7,7 @@ use pocketmine\event\Event;
 use minepark\defaults\Permissions;
 use minepark\common\player\MineParkPlayer;
 use minepark\components\organisations\Organisations;
+use minepark\commands\organisations\base\OrganisationsCommand;
 
 class HealCommand extends OrganisationsCommand
 {

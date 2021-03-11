@@ -1,5 +1,5 @@
 <?php
-namespace minepark\commands;
+namespace minepark\commands\base;
 
 use minepark\Core;
 

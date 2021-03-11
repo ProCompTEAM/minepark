@@ -20,10 +20,11 @@ class Auth extends Component
 
 	private $ips = [];
 
-	public function getCore() : Core
-	{
-		return Core::getActive();
-	}
+	public function getAttributes() : array
+    {
+        return [
+        ];
+    }
 	
 	public function checkState(MineParkPlayer $player) : int
 	{

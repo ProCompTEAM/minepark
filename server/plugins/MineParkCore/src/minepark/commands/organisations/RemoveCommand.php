@@ -1,16 +1,17 @@
 <?php
-namespace minepark\components\organisations\command;
+namespace minepark\commands\organisations;
 
-use minepark\defaults\Permissions;
 use minepark\Api;
-
-use minepark\common\player\MineParkPlayer;
 use pocketmine\event\Event;
 
-class AddCommand extends OrganisationsCommand
+use minepark\defaults\Permissions;
+use minepark\common\player\MineParkPlayer;
+use minepark\commands\organisations\base\OrganisationsCommand;
+
+class RemoveCommand extends OrganisationsCommand
 {
-    public const CURRENT_COMMAND = "add";
-    public const CURRENT_COMMAND_ALIAS = "join";
+    public const CURRENT_COMMAND = "remove";
+    public const CURRENT_COMMAND_ALIAS = "reject";
 
     public function getCommand() : array
     {
@@ -30,31 +31,35 @@ class AddCommand extends OrganisationsCommand
     public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
         if (!$this->isBoss($player)) {
-            $player->sendMessage("CommandAddNoBoss");
+            $player->sendMessage("CommandRemoveNoBoss");
             return;
         }
 
         $plrs = $this->getPlayersNear($player);
 
         if (self::argumentsNo($plrs)) {
-            $player->sendMessage("CommandAddNoPlayers");
+            $player->sendMessage("CommandRemoveNoPlayers");
             return;
         }
 
         if (self::argumentsMin(2, $plrs)) {
-            $player->sendMessage("CommandAddManyPlayers");
+            $player->sendMessage("CommandRemoveManyPlayers");
         }
 
-        $this->tryChangeOrganisation($plrs[0], $player);
+        $this->tryRejectGuy($plrs[0], $player);
     }
 
-    private function tryChangeOrganisation(MineParkPlayer $player, MineParkPlayer $boss)
+    private function tryRejectGuy(MineParkPlayer $player, MineParkPlayer $boss)
     {
-        $player->getProfile()->organisation = $boss->getProfile()->organisation;
-        $this->getCore()->getProfiler()->saveProfile($player);
+        if ($player->getProfile()->organisation != $boss->getProfile()->organisation) {
+            $boss->sendMessage("CommandRemoveNoOrg");
+        }
 
-		$boss->sendLocalizedMessage("{CommandAdd}" . $player->getProfile()->fullName);
-		$player->sendLocalizedMessage("{GroupYou}".$this->core->getOrganisationsModule()->getName($player->getProfile()->organisation));
+        $player->getProfile()->organisation = 0;
+        $this->core->getInitializer()->updatePlayerSaves($player);
+
+        $boss->sendLocalizedMessage("{CommandRemoveDo1}" . $player->getProfile()->fullName);
+        $player->sendLocalizedMessage("{CommandRemoveDo2}". $boss->getProfile()->fullName ."!");
     }
 
     private function isBoss(MineParkPlayer $player) : bool
@@ -67,7 +72,6 @@ class AddCommand extends OrganisationsCommand
         $allplayers = $this->getCore()->getApi()->getRegionPlayers($player, 5);
 
         $players = array();
-
         foreach ($allplayers as $currp) {
             if ($currp->getName() != $player->getName()) {
                 $players[] = $currp;
