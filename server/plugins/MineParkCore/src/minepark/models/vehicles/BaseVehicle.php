@@ -1,19 +1,20 @@
 <?php
 namespace minepark\models\vehicles;
 
-use jojoe77777\FormAPI\ModalForm;
+use minepark\Providers;
 use pocketmine\block\Block;
 use pocketmine\level\Level;
 use pocketmine\math\Vector3;
 use pocketmine\entity\Vehicle;
+use minepark\defaults\Defaults;
+use jojoe77777\FormAPI\ModalForm;
 use jojoe77777\FormAPI\SimpleForm;
 use pocketmine\nbt\tag\CompoundTag;
+use minepark\defaults\VehicleConstants;
+use pocketmine\event\player\PlayerEvent;
 use minepark\common\player\MineParkPlayer;
-use minepark\defaults\Defaults;
-use minepark\Providers;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
-use pocketmine\event\player\PlayerEvent;
 use pocketmine\network\mcpe\protocol\types\EntityLink;
 use pocketmine\network\mcpe\protocol\SetActorLinkPacket;
 
@@ -89,9 +90,9 @@ abstract class BaseVehicle extends Vehicle
 
         $choice = $data + 1;
 
-        if ($choice === Defaults::VEHICLE_ACTION_BE_DRIVER) {
+        if ($choice === VehicleConstants::ACTION_BE_DRIVER) {
             $this->trySetPlayerDriver($player);
-        } else if ($choice === Defaults::VEHICLE_ACTION_BE_PASSENGER) {
+        } else if ($choice === VehicleConstants::ACTION_BE_PASSENGER) {
             $this->trySetPlayerPassenger($player);
         }
     }
@@ -165,6 +166,11 @@ abstract class BaseVehicle extends Vehicle
 
         $this->broadcastLink($this->getPassenger(), EntityLink::TYPE_PASSENGER);
         return true;
+    }
+
+    public function setVillagerProfession(int $profession)
+    {
+        $this->propertyManager->setInt(self::DATA_VARIANT, $profession);
     }
 
     public function removeRentedStatus()

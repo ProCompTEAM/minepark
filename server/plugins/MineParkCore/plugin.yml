@@ -125,13 +125,13 @@ commands:
   permissions: minepark.all
  day:
   default: op
-  permissions: minepark.admin
+  permissions: minepark.all
  night:
   default: op
-  permissions: minepark.admin
+  permissions: minepark.all
  t:
   default: op
-  permissions: minepark.admin
+  permissions: minepark.all
 
 permissions:
   minepark.service:

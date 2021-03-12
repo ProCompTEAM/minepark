@@ -15,7 +15,7 @@ class Vehicle2 extends BaseVehicle
     {
         parent::__construct($level, $nbt);
 
-        $this->propertyManager->setInt(self::DATA_VARIANT, 2);
+        $this->setVillagerProfession(2);
     }
 
     public function getLeftSpeed() : float

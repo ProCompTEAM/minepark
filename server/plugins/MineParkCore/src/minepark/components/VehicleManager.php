@@ -71,22 +71,22 @@ class VehicleManager extends Component
             }
 
             $vehicle = $event->getPlayer()->getLevel()->getEntity($event->getPacket()->target);
-			if ($vehicle instanceof BaseVehicle) {
-				$vehicle->tryToRemovePlayer($event->getPlayer());
-				$event->setCancelled();
-			}
+            if ($vehicle instanceof BaseVehicle) {
+                $vehicle->tryToRemovePlayer($event->getPlayer());
+                $event->setCancelled();
+            }
         }
     }
 
     protected function handleVehicleMove(DataPacketReceiveEvent $event)
     {
         if ($event->getPlayer()->getStatesMap()->ridingVehicle?->getDriver()?->getName() !== $event->getPlayer()->getName()) {
-			return;
-		}
+            return;
+        }
 
-		$vehicle = $event->getPlayer()->getStatesMap()->ridingVehicle;
-		
-		$vehicle->updateSpeed($event->getPacket()->motionX, $event->getPacket()->motionY);
+        $vehicle = $event->getPlayer()->getStatesMap()->ridingVehicle;
+
+        $vehicle->updateSpeed($event->getPacket()->motionX, $event->getPacket()->motionY);
     }
 
     private function loadVehicles()
