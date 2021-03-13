@@ -113,6 +113,8 @@ abstract class BaseCar extends Vehicle
 
         if (Providers::getBankingProvider()->takePlayerMoney($player, $this->getCost())) {
             $this->setRented($player);
+
+            $this->trySetPlayerDriver($player);
         } else {
             $player->sendMessage("Вам не хватило денег :(");
         }
@@ -369,19 +371,21 @@ abstract class BaseCar extends Vehicle
 
     protected function trySetPlayerDriver(MineParkPlayer $player)
     {
-        if (is_null($this->rentedBy) && $this->getCost() !== 0.0) {
+        if (is_null($this->rentedBy) && $this->getCost() !== 0.0 && !$player->getProfile()->administrator) {
             return $this->showRentForm($player);
-        } else if (is_null($this->rentedBy)) {
+        } else if (is_null($this->rentedBy) && !$player->getProfile()->administrator) {
             $this->rentedBy = $player;
             
             $player->sendMessage("Вы успешно арендовали машину!");
-        } else if ($this->rentedBy->getName() !== $player->getName()) {
+        } else if ($this->rentedBy?->getName() !== $player->getName() && !$player->getProfile()->administrator) {
             return $player->sendMessage("Эта машина уже кем-то арендована.. :(");
         }
 
-        $this->setDriver($player);
-        
-        $player->sendTip("Вы успешно сели за руль!");
+        if (!$this->setDriver($player)) {
+            $player->sendTip("Кто-то сидит за рулём!");
+        } else {
+            $player->sendTip("Вы успешно сели за руль!");
+        }
     }
 
     protected function trySetPlayerPassenger(MineParkPlayer $player)
@@ -450,15 +454,15 @@ abstract class BaseCar extends Vehicle
             }
 
             $repeats = $speed/ ($this->getMaxSpeed() / 10);
-        } else if ($speed < 0.02) {
-            if ($speed - 0.004 > $this->getReduceMaxSpeed()) {
-                $speed = $this->getMaxSpeed();
+        } else if ($speed < -0.02) {
+            if ($speed - 0.004 < $this->getReduceMaxSpeed()) {
+                $speed = $this->getReduceMaxSpeed();
             }
 
             $repeats = $speed/ ($this->getReduceMaxSpeed() / 10);
         } else {
             $speed = 0;
-            return;
+            $repeats = 0;
         }
 
         $speedKmh = $speed * 100;
@@ -539,7 +543,7 @@ abstract class BaseCar extends Vehicle
     {
         $form = new ModalForm([$this, "buyVehicle"]);
 
-        $form->setContent("Данную машину нужно арендовать за ".$this->getCost()."! Желаете ли Вы ее арендовать?");
+        $form->setContent("Данную машину нужно арендовать за ".$this->getCost()." рублей! Желаете ли Вы ее арендовать?");
         $form->setButton1("Да");
         $form->setButton2("Нет");
 
