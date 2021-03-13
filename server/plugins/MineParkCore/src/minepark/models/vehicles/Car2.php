@@ -1,11 +1,12 @@
 <?php
 namespace minepark\models\vehicles;
 
+use minepark\models\vehicles\base\BaseCar;
 use pocketmine\level\Level;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
 
-class Vehicle2 extends BaseVehicle
+class Car2 extends BaseCar
 {
     public const NETWORK_ID = self::VILLAGER;
 
@@ -60,7 +61,7 @@ class Vehicle2 extends BaseVehicle
 
     public function getCost(): float
     {
-        return 10.0;
+        return 20.0;
     }
 
     public function getDriverSeatPosition() : Vector3

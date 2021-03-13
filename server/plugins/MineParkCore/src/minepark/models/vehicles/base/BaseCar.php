@@ -1,5 +1,5 @@
 <?php
-namespace minepark\models\vehicles;
+namespace minepark\models\vehicles\base;
 
 use minepark\Providers;
 use pocketmine\block\Block;
@@ -18,7 +18,7 @@ use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\network\mcpe\protocol\types\EntityLink;
 use pocketmine\network\mcpe\protocol\SetActorLinkPacket;
 
-abstract class BaseVehicle extends Vehicle
+abstract class BaseCar extends Vehicle
 {
     public $gravity = 1.0;
 
@@ -201,6 +201,8 @@ abstract class BaseVehicle extends Vehicle
             $this->broadcastLink($this->driver, EntityLink::TYPE_REMOVE);
 
             $this->driver->getStatesMap()->ridingVehicle = null;
+
+            $this->driver->getStatesMap()->bar = null;
         }
 
         $this->driver = null;
@@ -331,6 +333,10 @@ abstract class BaseVehicle extends Vehicle
             $this->performBackwardAcceleration();
         }
 
+        if (isset($this->driver)) {
+            $this->updateSpeedMeter();
+        }
+
         parent::onUpdate($currentTick);
 
         return true;
@@ -432,6 +438,49 @@ abstract class BaseVehicle extends Vehicle
         $motionZ *= $this->speed;
 
         $this->motion = new Vector3($motionX, $motionY, $motionZ);
+    }
+
+    private function updateSpeedMeter()
+    {
+        $speed = $this->speed;
+
+        if ($speed > 0.02) {
+            if ($speed + 0.004 > $this->getMaxSpeed()) {
+                $speed = $this->getMaxSpeed();
+            }
+
+            $repeats = $speed/ ($this->getMaxSpeed() / 10);
+        } else if ($speed < 0.02) {
+            if ($speed - 0.004 > $this->getReduceMaxSpeed()) {
+                $speed = $this->getMaxSpeed();
+            }
+
+            $repeats = $speed/ ($this->getReduceMaxSpeed() / 10);
+        } else {
+            $speed = 0;
+            return;
+        }
+
+        $speedKmh = $speed * 100;
+
+        $bar = $speedKmh."km/h\n";
+        $bar .= $this->generateProgressBar($repeats);
+
+        $this->driver->getStatesMap()->bar = $bar;
+    }
+
+    private function generateProgressBar(int $repeats) : string
+    {
+        $generated = "§0[§a";
+        
+        for ($i=0;$i<10;$i++) {
+            if ($i === $repeats) {
+                $generated .= "§f";
+            }
+            $generated .= "▎";
+        }
+
+        return $generated."§0]";
     }
 
     private function performBackwardAcceleration()

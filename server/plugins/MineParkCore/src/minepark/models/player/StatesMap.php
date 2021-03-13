@@ -2,7 +2,7 @@
 namespace minepark\models\player;
 
 use minepark\common\player\MineParkPlayer;
-use minepark\models\vehicles\BaseVehicle;
+use minepark\models\vehicles\base\BaseCar;
 use pocketmine\level\Position;
 
 class StatesMap
@@ -31,8 +31,8 @@ class StatesMap
 
 	public int $lastTap;
 
-	public ?BaseVehicle $ridingVehicle;
+	public ?BaseCar $ridingVehicle;
 
-	public ?BaseVehicle $rentedVehicle;
+	public ?BaseCar $rentedVehicle;
 }
 ?>

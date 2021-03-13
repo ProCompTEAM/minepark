@@ -2,12 +2,13 @@
 namespace minepark\components;
 
 use minepark\components\base\Component;
+use minepark\models\vehicles\base\BaseCar;
 use minepark\models\vehicles\BaseVehicle;
-use minepark\models\vehicles\TaxiVehicle;
-use minepark\models\vehicles\Vehicle1;
-use minepark\models\vehicles\Vehicle2;
-use minepark\models\vehicles\Vehicle3;
-use minepark\models\vehicles\Vehicle4;
+use minepark\models\vehicles\Car1;
+use minepark\models\vehicles\Car2;
+use minepark\models\vehicles\Car3;
+use minepark\models\vehicles\Car4;
+use minepark\models\vehicles\TaxiCar;
 use pocketmine\event\server\DataPacketReceiveEvent;
 use pocketmine\level\Level;
 use pocketmine\math\Vector3;
@@ -29,7 +30,7 @@ class VehicleManager extends Component
         ];
     }
 
-    public function createVehicle(string $vehicleName, Level $level, Vector3 $pos) : bool
+    public function createVehicle(string $vehicleName, Level $level, Vector3 $pos, float $yaw) : bool
     {
         $vehicleClassName = $this->getVehicle($vehicleName);
 
@@ -37,7 +38,7 @@ class VehicleManager extends Component
             return false;
         }
 
-        (new $vehicleClassName($level, BaseVehicle::createBaseNBT($pos)))->spawnToAll();
+        (new $vehicleClassName($level, BaseCar::createBaseNBT($pos, null, $yaw)))->spawnToAll();
 
         return true;
     }
@@ -71,7 +72,7 @@ class VehicleManager extends Component
             }
 
             $vehicle = $event->getPlayer()->getLevel()->getEntity($event->getPacket()->target);
-            if ($vehicle instanceof BaseVehicle) {
+            if ($vehicle instanceof BaseCar) {
                 $vehicle->tryToRemovePlayer($event->getPlayer());
                 $event->setCancelled();
             }
@@ -92,15 +93,15 @@ class VehicleManager extends Component
     private function loadVehicles()
     {
         $this->vehicles = [
-            "car1" => Vehicle1::class,
-            "car2" => Vehicle2::class,
-            "car3" => Vehicle3::class,
-            "car4" => Vehicle4::class,
-            "taxi" => TaxiVehicle::class
+            "car1" => Car1::class,
+            "car2" => Car2::class,
+            "car3" => Car3::class,
+            "car4" => Car4::class,
+            "taxi" => TaxiCar::class
         ];
 
         foreach ($this->vehicles as $name => $class) {
-            BaseVehicle::registerEntity($class);
+            BaseCar::registerEntity($class);
         }
     }
 }
