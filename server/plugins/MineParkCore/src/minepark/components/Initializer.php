@@ -131,10 +131,13 @@ class Initializer extends Component
         $statesMap->loadWeight = null;
 
         $statesMap->damageDisabled = false;
-        
+
         $statesMap->lastTap = time();
 
         $statesMap->paymentMethod = PaymentMethods::CASH;
+
+        $statesMap->ridingVehicle = null;
+        $statesMap->rentedVehicle = null;
 
         $player->setStatesMap($statesMap);
     }

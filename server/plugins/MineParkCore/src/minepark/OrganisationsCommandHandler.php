@@ -1,14 +1,15 @@
 <?php
 namespace minepark;
 
+use minepark\commands\base\Command;
 use minepark\common\player\MineParkPlayer;
 use pocketmine\event\Event;
 
 use minepark\defaults\Permissions;
 
-use minepark\commands\organisations\OrganisationsCommand;
 use minepark\commands\organisations\AddCommand;
 use minepark\commands\organisations\ArestCommand;
+use minepark\commands\organisations\base\OrganisationsCommand;
 use minepark\commands\organisations\ChangeNameCommand;
 use minepark\commands\organisations\GiveLicCommand;
 use minepark\commands\organisations\HealCommand;

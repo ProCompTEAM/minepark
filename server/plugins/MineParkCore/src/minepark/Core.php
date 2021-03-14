@@ -33,6 +33,7 @@ use pocketmine\command\CommandSender;
 use minepark\external\service\Service;
 use pocketmine\command\ConsoleCommandSender;
 use minepark\components\organisations\Organisations;
+use minepark\components\VehicleManager;
 
 class Core extends PluginBase implements Listener
 {
@@ -61,6 +62,7 @@ class Core extends PluginBase implements Listener
 	private $fastfood;
 	private $tracker;
 	private $broadcaster;
+	private $vehicleManager;
 
 	public $webapi;
 
@@ -128,6 +130,7 @@ class Core extends PluginBase implements Listener
 		$this->webapi = new WebApi;
 		$this->tracker = new Tracker;
 		$this->broadcaster = new Broadcaster;
+		$this->vehicleManager = new VehicleManager;
 	}
 
 	public function getTargetDirectory(bool $strings = false) : string
@@ -248,6 +251,11 @@ class Core extends PluginBase implements Listener
 	public function getNotifierModule() : NotifyPlayers
 	{
 		return $this->notifier;
+	}
+
+	public function getVehicleManager() : VehicleManager
+	{
+		return $this->vehicleManager;
 	}
 
 	public function getFormApi() : FormAPI

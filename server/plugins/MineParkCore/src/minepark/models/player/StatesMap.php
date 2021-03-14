@@ -2,6 +2,7 @@
 namespace minepark\models\player;
 
 use minepark\common\player\MineParkPlayer;
+use minepark\models\vehicles\base\BaseCar;
 use pocketmine\level\Position;
 
 class StatesMap
@@ -29,6 +30,10 @@ class StatesMap
 	public int $paymentMethod;
 
 	public int $lastTap;
+
+	public ?BaseCar $ridingVehicle;
+
+	public ?BaseCar $rentedVehicle;
 
 	public bool $gpsLightsVisible;
 }

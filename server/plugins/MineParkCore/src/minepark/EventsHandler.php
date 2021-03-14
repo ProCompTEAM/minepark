@@ -13,6 +13,7 @@ use pocketmine\entity\object\Painting;
 use pocketmine\event\block\BlockEvent;
 use minepark\providers\data\UsersSource;
 use minepark\common\player\MineParkPlayer;
+use minepark\models\vehicles\BaseVehicle;
 use pocketmine\event\block\BlockBurnEvent;
 use pocketmine\event\level\ChunkLoadEvent;
 use pocketmine\event\block\BlockBreakEvent;
@@ -27,6 +28,9 @@ use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\event\player\PlayerPreLoginEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\player\PlayerCommandPreprocessEvent;
+use pocketmine\event\server\DataPacketReceiveEvent;
+use pocketmine\network\mcpe\protocol\InteractPacket;
+use pocketmine\network\mcpe\protocol\PlayerInputPacket;
 
 class EventsHandler implements Listener
 {
@@ -110,12 +114,20 @@ class EventsHandler implements Listener
 		
 		$this->getCore()->getApi()->sendToMessagesLog($playerName, "*** Выход из игры");
 		
-		if ($player->getStatesMap()->phoneRcv != null) {
+		if ($player->getStatesMap()->phoneRcv !== null) {
 			$this->getCore()->getPhone()->breakCall($event->getPlayer());
 		}
 
 		if ($this->getCore()->getTrackerModule()->isTracked($player)) {
 			$this->getCore()->getTrackerModule()->disableTrack($player);
+		}
+
+		if ($player->getStatesMap()->ridingVehicle !== null) {
+			$player->getStatesMap()->ridingVehicle->tryToRemovePlayer($player);
+		}
+
+		if ($player->getStatesMap()->rentedVehicle !== null) {
+			$player->getStatesMap()->rentedVehicle->removeRentedStatus();
 		}
 
 		$this->getUsersSource()->updateUserQuitStatus($playerName);
@@ -165,6 +177,11 @@ class EventsHandler implements Listener
 		if(!$e->getPlayer()->getStatesMap()->auth) {
 			$e->setCancelled();
 		}
+	}
+	
+	public function handleDataPacketReceive(DataPacketReceiveEvent $event)
+	{
+		$this->getCore()->getVehicleManager()->handleDataPacketReceive($event);
 	}
 	
 	public function blockPlaceEvent(BlockPlaceEvent $event)

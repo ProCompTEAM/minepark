@@ -2,11 +2,11 @@
 namespace minepark;
 
 use pocketmine\event\Event;
-use minepark\commands\base\Command;
 use minepark\commands\DayCommand;
 use minepark\commands\PayCommand;
 use minepark\commands\BankCommand;
 use minepark\defaults\Permissions;
+use minepark\commands\base\Command;
 use minepark\commands\LevelCommand;
 use minepark\commands\MoneyCommand;
 use minepark\commands\NightCommand;
@@ -19,6 +19,7 @@ use minepark\commands\PassportCommand;
 use minepark\commands\AnimationCommand;
 use minepark\commands\GetSellerCommand;
 use minepark\commands\phone\SmsCommand;
+use minepark\commands\TransportCommand;
 use minepark\commands\phone\CallCommand;
 use minepark\commands\admin\AdminCommand;
 use minepark\commands\map\GPSNearCommand;
@@ -35,7 +36,6 @@ use minepark\commands\ResetPasswordCommand;
 use minepark\commands\roleplay\ShoutCommand;
 use minepark\commands\workers\PutBoxCommand;
 use minepark\commands\GetOrganisationCommand;
-
 use minepark\commands\map\RemovePointCommand;
 use minepark\commands\map\ToNearPointCommand;
 use minepark\commands\workers\GetFarmCommand;
@@ -85,7 +85,8 @@ class CommandsHandler
 			new CloseCommand,
 			new BankCommand,
 			new DayCommand,
-			new NightCommand
+			new NightCommand,
+			new TransportCommand
 		];
 	}
 
