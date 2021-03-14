@@ -155,10 +155,10 @@ class GPSCommand extends Command
     private function castToMapPointDto(object $point) : MapPointDto
     {
         if($point instanceof MapPointDto) {
-			return $point;
-		} else {
-			throw new Exception("Object isn't MapPointDto");
-		}
+            return $point;
+        } else {
+            throw new Exception("Object isn't MapPointDto");
+        }
     }
 }
 ?>
