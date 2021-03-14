@@ -31,12 +31,12 @@ class Car3 extends BaseCar
 
     public function getForwardAcceleration(): float
     {
-        return 0.029;
+        return 0.011;
     }
 
     public function getBackwardAcceleration(): float
     {
-        return 0.019;
+        return 0.007;
     }
 
     public function getBrakeSpeed(): float
@@ -51,12 +51,12 @@ class Car3 extends BaseCar
 
     public function getMaxSpeed() : float
     {
-        return 0.65;
+        return 0.75;
     }
 
     public function getReduceMaxSpeed(): float
     {
-        return -0.32;
+        return -0.3;
     }
 
     public function getCost(): float

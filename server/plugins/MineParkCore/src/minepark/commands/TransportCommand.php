@@ -28,12 +28,12 @@ class TransportCommand extends Command
     public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
         if(self::argumentsNo($args)) {
-            return $player->sendMessage("Неправильное использование команнды. /t spawn <машина>");
+            return $player->sendMessage("Неправильное использование команды. /t spawn <машина>");
         }
         
         if ($args[0] === "spawn") {
             if (!self::argumentsMin(2, $args)) {
-                return $player->sendMessage("Неправильное использование команнды. /t spawn <машина>");
+                return $player->sendMessage("Неправильное использование команды. /t spawn <машина>");
             }
 
             if (!$this->spawnCar($player, $args[1])) {

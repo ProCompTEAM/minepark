@@ -29,12 +29,12 @@ class TaxiCar extends BaseCar
 
     public function getForwardAcceleration(): float
     {
-        return 0.04;
+        return 0.011;
     }
 
     public function getBackwardAcceleration(): float
     {
-        return 0.03;
+        return 0.007;
     }
 
     public function getBrakeSpeed(): float
@@ -49,12 +49,12 @@ class TaxiCar extends BaseCar
 
     public function getMaxSpeed() : float
     {
-        return 0.75;
+        return 0.7;
     }
 
     public function getReduceMaxSpeed(): float
     {
-        return -0.38;
+        return -0.3;
     }
 
     public function getCost(): float

@@ -60,7 +60,7 @@ class VehicleManager extends Component
     public function handleDataPacketReceive(DataPacketReceiveEvent $event)
     {
         if ($event->getPacket() instanceof PlayerInputPacket) {
-            if ($event->getPacket()->motionX === 0 && $event->getPacket()->motionY === 0) {
+            if ($event->getPacket()->motionX === 0 AND $event->getPacket()->motionY === 0) {
                 return;
             }
 
@@ -100,7 +100,7 @@ class VehicleManager extends Component
             "taxi" => TaxiCar::class
         ];
 
-        foreach ($this->vehicles as $name => $class) {
+        foreach ($this->getVehicles() as $name => $class) {
             BaseCar::registerEntity($class);
         }
     }
