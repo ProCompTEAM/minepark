@@ -60,7 +60,7 @@ class VehicleManager extends Component
     public function handleDataPacketReceive(DataPacketReceiveEvent $event)
     {
         if ($event->getPacket() instanceof PlayerInputPacket) {
-            if ($event->getPacket()->motionX === 0 AND $event->getPacket()->motionY === 0) {
+            if ($event->getPacket()->motionX === 0 and $event->getPacket()->motionY === 0) {
                 return;
             }
 
