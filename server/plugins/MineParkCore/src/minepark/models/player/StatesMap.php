@@ -34,5 +34,7 @@ class StatesMap
 	public ?BaseCar $ridingVehicle;
 
 	public ?BaseCar $rentedVehicle;
+
+	public bool $gpsLightsVisible;
 }
 ?>

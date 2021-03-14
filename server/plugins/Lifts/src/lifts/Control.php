@@ -165,7 +165,7 @@ class Control extends PluginBase implements Listener
 
 		$form1 = "$x:$y:$z:$wname";
 
-		if($e->getBlock()->getId() == 42 && is_array($list)) { 
+		if($e->getBlock()->getId() == 42 and is_array($list)) { 
 			foreach($list as $i) { 
 				$x = $i->getX(); $y = $i->getY()-1; $z = $i->getZ(); 
 				$wname = $i->getLevel()->getName(); $form2 = "$x:$y:$z:$wname"; 
