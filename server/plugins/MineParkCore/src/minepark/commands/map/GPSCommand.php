@@ -38,7 +38,7 @@ class GPSCommand extends Command
         if(self::argumentsCount(2, $args)) {
             return $this->initializeCoordinatesGps($player, $args);
         } elseif(self::argumentsCount(1, $args)) {
-            if($args[0] == "lights") {
+            if($args[0] === "lights") {
                 return $this->updateLights($player);
             } else {
                 return $this->initializePointGps($player, $args);
@@ -131,7 +131,7 @@ class GPSCommand extends Command
         foreach($points as $point) {
             $point = $this->castToMapPointDto($point);
 
-            if(strtolower($player->getLevel()->getName()) == $point->level) {
+            if(strtolower($player->getLevel()->getName()) === $point->level) {
                 $level = $this->getCore()->getServer()->getLevelByName($point->level);
                 $position = new Position($point->x, $point->y, $point->z, $level);
                 $player->setFloatingText($position, $prefix . $point->name, self::FLOATING_TEXT_TAG);
