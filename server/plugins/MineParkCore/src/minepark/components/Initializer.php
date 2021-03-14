@@ -117,6 +117,8 @@ class Initializer extends Component
         $statesMap->auth = false;
         $statesMap->isNew = false;
         $statesMap->isBeginner = false;
+
+        $statesMap->gpsLightsVisible = false;
         
         $statesMap->gps = null;
         $statesMap->bar = null;
@@ -145,7 +147,7 @@ class Initializer extends Component
 
     private function updateBegginerStatus(MineParkPlayer $player) 
     {
-        $status = $player->getStatesMap()->isNew || 
+        $status = $player->getStatesMap()->isNew or 
             $player->getProfile()->minutesPlayed < self::MINIMAL_SKILL_MINUTES_PLAYED;
         $player->getStatesMap()->isBeginner = $status;
     }

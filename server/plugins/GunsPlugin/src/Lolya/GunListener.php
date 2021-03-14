@@ -135,7 +135,7 @@ class GunListener implements Listener
 		$player = $event->getEntityHit();
 		$entity = $event->getEntity();
 
-		if (!$player instanceof Player || !$entity instanceof BulletEntity) {
+		if (!$player instanceof Player or !$entity instanceof BulletEntity) {
 			return;
 		}
 
