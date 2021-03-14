@@ -84,7 +84,7 @@ class MineParkPlayer extends Player
 
 	public function isAdministrator() : bool
 	{
-		return $this->profile->administrator || $this->isOp();
+		return $this->profile->administrator or $this->isOp();
 	}
 
 	public function isVip() : bool

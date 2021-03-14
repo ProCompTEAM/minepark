@@ -104,7 +104,7 @@ class Api
 		$list = [];
 
 		foreach($this->getCore()->getServer()->getOnlinePlayers() as $player) {
-			if ($player->hasPermission(Permissions::ADMINISTRATOR) || $player->isOp()) {
+			if ($player->hasPermission(Permissions::ADMINISTRATOR) or $player->isOp()) {
 				$namesOnly ? array_push($list, $player->getName()) : array_push($list, $player);
 			}
 		}

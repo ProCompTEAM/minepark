@@ -58,7 +58,7 @@ class LocalizationProvider extends Provider
     public function getKeyArray(string $langKey, string $arrayKey) : ?array
     {
         if(!isset($this->data[$langKey][$arrayKey]) ) {
-            return isset($this->data[Defaults::DEFAULT_LANGUAGE_KEY][$arrayKey]) && is_array($this->data[Defaults::DEFAULT_LANGUAGE_KEY][$arrayKey])
+            return isset($this->data[Defaults::DEFAULT_LANGUAGE_KEY][$arrayKey]) and is_array($this->data[Defaults::DEFAULT_LANGUAGE_KEY][$arrayKey])
                 ? $this->data[Defaults::DEFAULT_LANGUAGE_KEY][$arrayKey]
                 : null;
         }

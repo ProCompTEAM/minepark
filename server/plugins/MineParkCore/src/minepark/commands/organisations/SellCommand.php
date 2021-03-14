@@ -62,7 +62,7 @@ class SellCommand extends OrganisationsCommand
 
     public static function isSeller(MineParkPlayer $player) : bool
     {
-        return $player->getProfile()->organisation == Organisations::SELLER_WORK || $player->isOp();
+        return $player->getProfile()->organisation == Organisations::SELLER_WORK or $player->isOp();
     }
 
     private function noPointsNear(array $points) : bool
