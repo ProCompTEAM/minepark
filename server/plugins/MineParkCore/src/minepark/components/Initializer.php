@@ -117,6 +117,8 @@ class Initializer extends Component
         $statesMap->auth = false;
         $statesMap->isNew = false;
         $statesMap->isBeginner = false;
+
+        $statesMap->gpsLightsVisible = false;
         
         $statesMap->gps = null;
         $statesMap->bar = null;

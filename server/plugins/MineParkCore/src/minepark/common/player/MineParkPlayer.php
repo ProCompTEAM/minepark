@@ -5,11 +5,14 @@ use Exception;
 
 use minepark\Core;
 use pocketmine\Player;
+use minepark\Providers;
 use pocketmine\math\Vector3;
+use pocketmine\level\Position;
 use minepark\models\dtos\UserDto;
 use minepark\models\player\StatesMap;
-use minepark\Providers;
 use pocketmine\network\SourceInterface;
+use minepark\models\player\FloatingText;
+use pocketmine\level\particle\FloatingTextParticle;
 use pocketmine\network\mcpe\protocol\PlaySoundPacket;
 use pocketmine\event\player\PlayerCommandPreprocessEvent;
 use pocketmine\network\mcpe\protocol\ModalFormRequestPacket;
@@ -19,6 +22,8 @@ class MineParkPlayer extends Player
 	private StatesMap $statesMap;
 
 	private UserDto $profile;
+
+	private array $floatingTexts = [];
 
 	public static function cast(Player $player) : ?MineParkPlayer {
 		if($player === null) {
@@ -68,6 +73,26 @@ class MineParkPlayer extends Player
 	{
 		$this->statesMap = $map;
 	}
+
+	public function isAdministrator() : bool
+	{
+		return $this->profile->administrator || $this->isOp();
+	}
+
+	public function isVip() : bool
+	{
+		return $this->profile->vip;
+	}
+
+	public function isBuilder() : bool
+	{
+		return $this->profile->builder;
+	}
+
+	public function isRealtor() : bool
+	{
+		return $this->profile->realtor;
+	}
 	
 	public function sendWindowMessage($text, $title = "")
 	{
@@ -79,7 +104,7 @@ class MineParkPlayer extends Player
 		$data["buttons"] = [];
 		
 		$pk = new ModalFormRequestPacket();
-		$pk->formId = 999;
+		$pk->formId = 2147483647;
 		$pk->formData = json_encode($data);
 		$this->dataPacket($pk);
     }
@@ -118,9 +143,81 @@ class MineParkPlayer extends Player
 		$ev->call();
 	}
 
-	public function isAdministrator() : bool
+	public function setFloatingText(Position $position, string $text, string $tag = null) : FloatingText
 	{
-		return $this->profile->administrator || $this->isOp();
+		$floatingText = new FloatingText;
+		$floatingText->delivered = false;
+		$floatingText->position = $position;
+		$floatingText->text = $text;
+		$floatingText->tag = $tag;
+		$floatingText->particle = new FloatingTextParticle($position, $text, "");
+
+		array_push($this->floatingTexts, $floatingText);
+
+		return $floatingText;
+	}
+
+	public function getFloatingText(Position $position) : ?FloatingText
+	{
+		foreach($this->floatingTexts as $floatingText) {
+			if($floatingText->position == $position) {
+				return $floatingText;
+			}
+		}
+
+		return null;
+	}
+
+	public function getFloatingTextsByTag(string $tag) : array
+	{
+		$floatingTexts = [];
+
+		foreach($this->floatingTexts as $floatingText) {
+			if($floatingText->tag == $tag) {
+				array_push($floatingTexts, $floatingText);
+			}
+		}
+
+		return $floatingTexts;
+	}
+
+	public function getFloatingTextsByText(string $text) : array
+	{
+		$floatingTexts = [];
+
+		foreach($this->floatingTexts as $floatingText) {
+			if($floatingText->text == $text) {
+				array_push($floatingTexts, $floatingText);
+			}
+		}
+
+		return $floatingTexts;
+	}
+
+	public function unsetFloatingText(FloatingText $floatingText)
+	{
+		$level = $floatingText->position->getLevel();
+
+		$floatingText->particle->setInvisible(true);
+		$level->addParticle($floatingText->particle, [$this]);
+		
+		foreach($this->floatingTexts as $key => $value) {
+			if($floatingText == $value) {
+				unset($this->floatingTexts[$key]);
+				return;
+			}
+		}
+	}
+
+	public function showFloatingTexts()
+	{
+		foreach($this->floatingTexts as $floatingText) {
+			if(!$floatingText->delivered) {
+				$level = $floatingText->position->getLevel();
+				$level->addParticle($floatingText->particle, [$this]);
+				$floatingText->delivered = true;
+			}
+		}
 	}
 
 	/*

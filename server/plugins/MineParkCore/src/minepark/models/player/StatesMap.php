@@ -29,5 +29,7 @@ class StatesMap
 	public int $paymentMethod;
 
 	public int $lastTap;
+
+	public bool $gpsLightsVisible;
 }
 ?>
