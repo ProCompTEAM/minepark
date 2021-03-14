@@ -109,7 +109,7 @@ class MineParkPlayer extends Player
 		$this->dataPacket($pk);
     }
     
-	public function sendSound(string $soundName, Vector3 $vector3 = null, int $volume = 500, int $pitch = 1)
+	public function sendSound(string $soundName, Vector3 $vector3 = null, int $volume = 100, int $pitch = 1)
 	{
 		if($vector3 == null) {
             $vector3 = $this->getPosition()->add(0, 1, 0);
