@@ -54,6 +54,10 @@ class MineParkPlayer extends Player
 		$this->$name = $value;
 	}
 
+	/*
+		Basic Getters
+	*/
+
 	public function getProfile() : UserDto
 	{
 		return $this->profile;
@@ -74,6 +78,10 @@ class MineParkPlayer extends Player
 		$this->statesMap = $map;
 	}
 
+	/*
+		Permissions API
+	*/
+
 	public function isAdministrator() : bool
 	{
 		return $this->profile->administrator || $this->isOp();
@@ -93,6 +101,10 @@ class MineParkPlayer extends Player
 	{
 		return $this->profile->realtor;
 	}
+
+	/*
+		Common Player Functions
+	*/
 	
 	public function sendWindowMessage($text, $title = "")
 	{
@@ -142,6 +154,10 @@ class MineParkPlayer extends Player
 		$ev = new PlayerCommandPreprocessEvent($this, $command);
 		$ev->call();
 	}
+
+	/*
+		Floating Texts API
+	*/
 
 	public function setFloatingText(Position $position, string $text, string $tag = null) : FloatingText
 	{
