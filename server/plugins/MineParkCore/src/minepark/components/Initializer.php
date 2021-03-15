@@ -139,6 +139,8 @@ class Initializer extends Component
         $statesMap->ridingVehicle = null;
         $statesMap->rentedVehicle = null;
 
+        $statesMap->bossBarSession = null;
+
         $player->setStatesMap($statesMap);
     }
 

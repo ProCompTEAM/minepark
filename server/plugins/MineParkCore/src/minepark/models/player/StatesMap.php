@@ -7,34 +7,36 @@ use pocketmine\level\Position;
 
 class StatesMap
 {
-	public bool $auth;
+    public bool $auth;
 
-	public bool $isNew;
+    public bool $isNew;
 
-	public bool $isBeginner;
+    public bool $isBeginner;
 
-	public ?Position $gps;
+    public ?Position $gps;
 
-	public ?string $bar;
+    public ?string $bar;
 
-	public ?MineParkPlayer $phoneRcv;
+    public ?MineParkPlayer $phoneRcv;
 
-	public ?MineParkPlayer $phoneReq;
+    public ?MineParkPlayer $phoneReq;
 
-	public array $goods;
+    public array $goods;
 
-	public ?int $loadWeight;
+    public ?int $loadWeight;
 
-	public bool $damageDisabled;
+    public bool $damageDisabled;
 
-	public int $paymentMethod;
+    public int $paymentMethod;
 
-	public int $lastTap;
+    public int $lastTap;
 
-	public ?BaseCar $ridingVehicle;
+    public ?BaseCar $ridingVehicle;
 
-	public ?BaseCar $rentedVehicle;
+    public ?BaseCar $rentedVehicle;
 
-	public bool $gpsLightsVisible;
+    public bool $gpsLightsVisible;
+
+    public ?BossBarSession $bossBarSession;
 }
 ?>
