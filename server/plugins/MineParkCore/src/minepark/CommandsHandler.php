@@ -47,117 +47,117 @@ use minepark\commands\workers\TakeBoxCommand;
 
 class CommandsHandler
 {
-	private $commands;
-	
-	public function __construct()
-	{
-		$this->commands = [
-			new AdminCommand,
-			new AddPointCommand,
-			new GPSCommand,
-			new GPSNearCommand,
-			new RemovePointCommand,
-			new ToNearPointCommand,
-			new ToPointCommand,
-			new CallCommand,
-			new SmsCommand,
-			new DoCommand,
-			new MeCommand,
-			new ShoutCommand,
-			new TryCommand,
-			new WhisperCommand,
-			new GetFarmCommand,
-			new PutBoxCommand,
-			new PutFarmCommand,
-			new TakeBoxCommand,
-			new AnimationCommand,
-			new CasinoCommand,
-			new DonateCommand,
-			new GetOrganisationCommand,
-			new GetSellerCommand,
-			new JailExitCommand,
-			new LevelCommand,
-			new MoneyCommand,
-			new OnlineCommand,
-			new PassportCommand,
-			new PayCommand,
-			new ResetPasswordCommand,
-			new ReportCommand,
-			new ReplyCommand,
-			new CloseCommand,
-			new BankCommand,
-			new DayCommand,
-			new NightCommand,
-			new TransportCommand
-		];
-	}
+    private $commands;
+    
+    public function __construct()
+    {
+        $this->commands = [
+            new AdminCommand,
+            new AddPointCommand,
+            new GPSCommand,
+            new GPSNearCommand,
+            new RemovePointCommand,
+            new ToNearPointCommand,
+            new ToPointCommand,
+            new CallCommand,
+            new SmsCommand,
+            new DoCommand,
+            new MeCommand,
+            new ShoutCommand,
+            new TryCommand,
+            new WhisperCommand,
+            new GetFarmCommand,
+            new PutBoxCommand,
+            new PutFarmCommand,
+            new TakeBoxCommand,
+            new AnimationCommand,
+            new CasinoCommand,
+            new DonateCommand,
+            new GetOrganisationCommand,
+            new GetSellerCommand,
+            new JailExitCommand,
+            new LevelCommand,
+            new MoneyCommand,
+            new OnlineCommand,
+            new PassportCommand,
+            new PayCommand,
+            new ResetPasswordCommand,
+            new ReportCommand,
+            new ReplyCommand,
+            new CloseCommand,
+            new BankCommand,
+            new DayCommand,
+            new NightCommand,
+            new TransportCommand
+        ];
+    }
 
-	public function getCommands() : array
-	{
-		return $this->commands;
-	}
-	
-	public function execute(MineParkPlayer $player, string $rawCommand, Event $event = null)
-	{
-		if ($rawCommand[0] !== "/") {
-			return;
-		}
+    public function getCommands() : array
+    {
+        return $this->commands;
+    }
+    
+    public function execute(MineParkPlayer $player, string $rawCommand, Event $event = null)
+    {
+        if ($rawCommand[0] !== "/") {
+            return;
+        }
 
-		$rawCommand = substr($rawCommand, 1);
+        $rawCommand = substr($rawCommand, 1);
 
-		$arguments = explode(' ', $rawCommand);
-		$command = $this->getCommand($arguments[0]);
+        $arguments = explode(' ', $rawCommand);
+        $command = $this->getCommand($arguments[0]);
 
-		if ($command === null) {
-			return;
-		}
+        if ($command === null) {
+            return;
+        }
 
-		$arguments = array_slice($arguments, 1);
+        $arguments = array_slice($arguments, 1);
 
-		if (!$this->hasPermissions($player, $command)) {
-			$player->sendMessage("§cУ вас нет прав на эту команду :(");
-			$player->sendMessage("§6Возможно она станет доступна после покупки: /donate");
+        if (!$this->hasPermissions($player, $command)) {
+            $player->sendMessage("§cУ вас нет прав на эту команду :(");
+            $player->sendMessage("§6Возможно она станет доступна после покупки: /donate");
 
-			if($event !== null) {
-				$event->setCancelled();
-			}
+            if($event !== null) {
+                $event->setCancelled();
+            }
 
-			return;
-		}
+            return;
+        }
 
-		$command->execute($player, $arguments, $event);
-	}
+        $command->execute($player, $arguments, $event);
+    }
 
-	private function getCommand(string $commandName) : ?Command
-	{
-		foreach ($this->commands as $command) {
-			if (in_array($commandName, $command->getCommand())) {
-				return $command;
-			}
-		}
+    private function getCommand(string $commandName) : ?Command
+    {
+        foreach ($this->commands as $command) {
+            if (in_array($commandName, $command->getCommand())) {
+                return $command;
+            }
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	private function hasPermissions(MineParkPlayer $player, Command $command) : bool
-	{
-		$permissions = $command->getPermissions();
+    private function hasPermissions(MineParkPlayer $player, Command $command) : bool
+    {
+        $permissions = $command->getPermissions();
 
-		if (in_array(Permissions::ANYBODY, $permissions)) {
-			return true;
-		}
+        if (in_array(Permissions::ANYBODY, $permissions)) {
+            return true;
+        }
 
-		if (in_array(Permissions::OPERATOR, $permissions) and $player->isOp()) {
-			return true;
-		}
+        if (in_array(Permissions::OPERATOR, $permissions) and $player->isOp()) {
+            return true;
+        }
 
-		foreach ($permissions as $permission) {
-			if ($player->hasPermission($permission)) {
-				return true;
-			}
-		}
+        foreach ($permissions as $permission) {
+            if ($player->hasPermission($permission)) {
+                return true;
+            }
+        }
 
-		return false;
-	}
+        return false;
+    }
 }
 ?>
