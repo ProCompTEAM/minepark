@@ -36,263 +36,265 @@ class EventsHandler implements Listener
 {
     public const ENABLE_SIGN_EMULATION = false;
 
-	public function getCore() : Core
-	{
-		return Core::getActive();
-	}
+    public function getCore() : Core
+    {
+        return Core::getActive();
+    }
     
     public function onCreation(PlayerCreationEvent $event)
-	{
-		$event->setPlayerClass(MineParkPlayer::class);
-	}
-	
-	public function commandEvent(PlayerCommandPreprocessEvent $event)
-	{
-		$player = MineParkPlayer::cast($event->getPlayer());
-		$playerName = $player->getName();
-		$message = $event->getMessage();
+    {
+        $event->setPlayerClass(MineParkPlayer::class);
+    }
+    
+    public function commandEvent(PlayerCommandPreprocessEvent $event)
+    {
+        $player = MineParkPlayer::cast($event->getPlayer());
+        $playerName = $player->getName();
+        $message = $event->getMessage();
 
-		if(!$player->getStatesMap()->auth) {
-			$this->getCore()->getAuthModule()->login($player, $message);
-			$event->setCancelled();
-			return;
-		}
+        if(!$player->getStatesMap()->auth) {
+            $this->getCore()->getAuthModule()->login($player, $message);
+            $event->setCancelled();
+            return;
+        }
 
-		$this->getCore()->getApi()->sendToMessagesLog($playerName, $message);
-		$this->getCore()->getCommandsHandler()->execute($player, $message, $event);
-		$this->getCore()->getOrganisationsModule()->getCommandHandler()->execute($player, $message, $event);
-	}
-	
-	public function joinEvent(PlayerJoinEvent $event)
-	{
-		$this->getCore()->getApi()->sendToMessagesLog($event->getPlayer()->getName(), "Вход осуществлен ***");
+        $this->getCore()->getApi()->sendToMessagesLog($playerName, $message);
+        $this->getCore()->getCommandsHandler()->execute($player, $message, $event);
+        $this->getCore()->getOrganisationsModule()->getCommandHandler()->execute($player, $message, $event);
+    }
+    
+    public function joinEvent(PlayerJoinEvent $event)
+    {
+        $this->getCore()->getApi()->sendToMessagesLog($event->getPlayer()->getName(), "Вход осуществлен ***");
 
-		$this->getCore()->getAuthModule()->preLogin($event->getPlayer());
-		
-		$this->getCore()->getInitializer()->join($event->getPlayer());
+        $this->getCore()->getAuthModule()->preLogin($event->getPlayer());
+        
+        $this->getCore()->getInitializer()->join($event->getPlayer());
 
-		$this->getUsersSource()->updateUserJoinStatus($event->getPlayer()->getName());
+        $this->getUsersSource()->updateUserJoinStatus($event->getPlayer()->getName());
 
-		$event->setJoinMessage(null);
-	}
-	
-	public function chatEvent(PlayerChatEvent $event)
-	{
-		$event->setCancelled();
+        $this->getCore()->getBossBarModule()->initializePlayerSession($event->getPlayer());
 
-		$player = MineParkPlayer::cast($event->getPlayer());
-		$message = $event->getMessage();
+        $event->setJoinMessage(null);
+    }
 
-		if ($player->getStatesMap()->phoneRcv != null) {
-			$this->getCore()->getPhone()->handleInCall($player, $message);
-			$this->getCore()->getChatter()->send($player, $message, " §8говорит в телефон §7>");
-			$this->getCore()->getTrackerModule()->message($player, $message, 7, "[PHONE]");
-			return;
-		}
+    public function chatEvent(PlayerChatEvent $event)
+    {
+        $event->setCancelled();
 
-		if ($player->muted) {
-			$player->sendMessage("Вы не можете писать в чат, так как вам выдали мут.");
-			return;
-		}
-		
-		if ($message[0] == GameChat::GLOBAL_CHAT_SIGNATURE) {
-			$this->getCore()->getChatter()->sendGlobal($player, $message);
-		} elseif ($message[0] == GameChat::ADMINISTRATION_CHAT_SIGNATURE) {
-			$this->getCore()->getChatter()->sendForAdministration($player, $message);
-		} else {
-			$this->getCore()->getChatter()->send($player, $message);
-			$this->getCore()->getTrackerModule()->message($player, $message, 7, "[CHAT]");
-		}
-	}
-	
-	public function quitEvent(PlayerQuitEvent $event)
-	{
-		$event->setQuitMessage(null);
+        $player = MineParkPlayer::cast($event->getPlayer());
+        $message = $event->getMessage();
 
-		$player = MineParkPlayer::cast($event->getPlayer());
-		$playerName = $player->getName();
-		
-		$this->getCore()->getApi()->sendToMessagesLog($playerName, "*** Выход из игры");
-		
-		if ($player->getStatesMap()->phoneRcv !== null) {
-			$this->getCore()->getPhone()->breakCall($event->getPlayer());
-		}
+        if ($player->getStatesMap()->phoneRcv != null) {
+            $this->getCore()->getPhone()->handleInCall($player, $message);
+            $this->getCore()->getChatter()->send($player, $message, " §8говорит в телефон §7>");
+            $this->getCore()->getTrackerModule()->message($player, $message, 7, "[PHONE]");
+            return;
+        }
 
-		if ($this->getCore()->getTrackerModule()->isTracked($player)) {
-			$this->getCore()->getTrackerModule()->disableTrack($player);
-		}
+        if ($player->muted) {
+            $player->sendMessage("Вы не можете писать в чат, так как вам выдали мут.");
+            return;
+        }
+        
+        if ($message[0] == GameChat::GLOBAL_CHAT_SIGNATURE) {
+            $this->getCore()->getChatter()->sendGlobal($player, $message);
+        } elseif ($message[0] == GameChat::ADMINISTRATION_CHAT_SIGNATURE) {
+            $this->getCore()->getChatter()->sendForAdministration($player, $message);
+        } else {
+            $this->getCore()->getChatter()->send($player, $message);
+            $this->getCore()->getTrackerModule()->message($player, $message, 7, "[CHAT]");
+        }
+    }
+    
+    public function quitEvent(PlayerQuitEvent $event)
+    {
+        $event->setQuitMessage(null);
 
-		if ($player->getStatesMap()->ridingVehicle !== null) {
-			$player->getStatesMap()->ridingVehicle->tryToRemovePlayer($player);
-		}
+        $player = MineParkPlayer::cast($event->getPlayer());
+        $playerName = $player->getName();
+        
+        $this->getCore()->getApi()->sendToMessagesLog($playerName, "*** Выход из игры");
+        
+        if ($player->getStatesMap()->phoneRcv !== null) {
+            $this->getCore()->getPhone()->breakCall($event->getPlayer());
+        }
 
-		if ($player->getStatesMap()->rentedVehicle !== null) {
-			$player->getStatesMap()->rentedVehicle->removeRentedStatus();
-		}
+        if ($this->getCore()->getTrackerModule()->isTracked($player)) {
+            $this->getCore()->getTrackerModule()->disableTrack($player);
+        }
 
-		$this->getUsersSource()->updateUserQuitStatus($playerName);
-	}
-	
-	public function preLoginEvent(PlayerPreLoginEvent $event)
-	{
-		$this->getCore()->getInitializer()->initialize($event->getPlayer());
-	}
-	
-	public function tapEvent(PlayerInteractEvent $event)
-	{
-		$this->ignoreTapForItems($event);
+        if ($player->getStatesMap()->ridingVehicle !== null) {
+            $player->getStatesMap()->ridingVehicle->tryToRemovePlayer($player);
+        }
 
-		$player = MineParkPlayer::cast($event->getPlayer());
-		$block = $event->getBlock();
+        if ($player->getStatesMap()->rentedVehicle !== null) {
+            $player->getStatesMap()->rentedVehicle->removeRentedStatus();
+        }
 
-		if (!$player->getStatesMap()->auth) {
-			return $event->setCancelled();
-		}
+        $this->getUsersSource()->updateUserQuitStatus($playerName);
+    }
+    
+    public function preLoginEvent(PlayerPreLoginEvent $event)
+    {
+        $this->getCore()->getInitializer()->initialize($event->getPlayer());
+    }
+    
+    public function tapEvent(PlayerInteractEvent $event)
+    {
+        $this->ignoreTapForItems($event);
 
-		if (!$this->isCanActivate($event)) {
-			return;
-		}
+        $player = MineParkPlayer::cast($event->getPlayer());
+        $block = $event->getBlock();
 
-		$this->getCore()->getInitializer()->checkInventoryItems($player);
-		
-		$this->getCore()->getOrganisationsModule()->shop->tap($event);
-		
-		//fix of SignChangeEvent bug
-		if (self::ENABLE_SIGN_EMULATION) {
-			if ($block instanceof Sign or $block instanceof SignPost or $block instanceof WallSign) {
-				$ev = new FixSignEvent($event);
-				$this->signChangeEvent($ev->getEvent());
-			}
-		}
-	}
-	
-	public function signChangeEvent($ev)
-	{
-		$this->getCore()->getOrganisationsModule()->shop->sign($ev);
-		$this->getCore()->getOrganisationsModule()->workers->sign($ev);
-	}
-	
-	public function signSetEvent(SignChangeEvent $e)
-	{
-		if(!$e->getPlayer()->getStatesMap()->auth) {
-			$e->setCancelled();
-		}
-	}
-	
-	public function handleDataPacketReceive(DataPacketReceiveEvent $event)
-	{
-		$this->getCore()->getVehicleManager()->handleDataPacketReceive($event);
-	}
-	
-	public function blockPlaceEvent(BlockPlaceEvent $event)
-	{
-		$this->checkBlockSet($event);
-	}
-	
-	public function blockBreakEvent(BlockBreakEvent $event)
-	{
-		$this->checkBlockSet($event);
-	}
-	
-	public function playerDmgEvent(EntityDamageEvent $event)
-	{
-		$cancel = false;
+        if (!$player->getStatesMap()->auth) {
+            return $event->setCancelled();
+        }
 
-		if(($event instanceof EntityDamageByEntityEvent and $event->getEntity() instanceof Painting) 
-			and ($event->getDamager() instanceof MineParkPlayer and !$event->getDamager()->isOp())) {
-			$cancel = true;
-		}
+        if (!$this->isCanActivate($event)) {
+            return;
+        }
 
-		if($event instanceof EntityDamageByEntityEvent and $event->getDamager() instanceof MineParkPlayer and $event->getEntity() instanceof MineParkPlayer) {
-			$cancel = $this->getCore()->getDamager()->kick($event->getEntity(), $event->getDamager());
-		}
+        $this->getCore()->getInitializer()->checkInventoryItems($player);
+        
+        $this->getCore()->getOrganisationsModule()->shop->tap($event);
+        
+        //fix of SignChangeEvent bug
+        if (self::ENABLE_SIGN_EMULATION) {
+            if ($block instanceof Sign or $block instanceof SignPost or $block instanceof WallSign) {
+                $ev = new FixSignEvent($event);
+                $this->signChangeEvent($ev->getEvent());
+            }
+        }
+    }
+    
+    public function signChangeEvent($ev)
+    {
+        $this->getCore()->getOrganisationsModule()->shop->sign($ev);
+        $this->getCore()->getOrganisationsModule()->workers->sign($ev);
+    }
+    
+    public function signSetEvent(SignChangeEvent $e)
+    {
+        if(!$e->getPlayer()->getStatesMap()->auth) {
+            $e->setCancelled();
+        }
+    }
+    
+    public function handleDataPacketReceive(DataPacketReceiveEvent $event)
+    {
+        $this->getCore()->getVehicleManager()->handleDataPacketReceive($event);
+    }
+    
+    public function blockPlaceEvent(BlockPlaceEvent $event)
+    {
+        $this->checkBlockSet($event);
+    }
+    
+    public function blockBreakEvent(BlockBreakEvent $event)
+    {
+        $this->checkBlockSet($event);
+    }
+    
+    public function playerDmgEvent(EntityDamageEvent $event)
+    {
+        $cancel = false;
 
-		if(($event->getEntity()->getHealth() - $event->getFinalDamage()) <= 0 and $event->getEntity() instanceof MineParkPlayer and $event->getEntity()->getGamemode() != 1) {
-			$damager = $event instanceof EntityDamageByEntityEvent ? $event->getDamager() : null;
-			$cancel = $this->getCore()->getDamager()->kill($event->getEntity(), $damager);
-		}
-		
-		if($cancel) {
-			$event->setCancelled();
-		}
-	}
+        if(($event instanceof EntityDamageByEntityEvent and $event->getEntity() instanceof Painting) 
+            and ($event->getDamager() instanceof MineParkPlayer and !$event->getDamager()->isOp())) {
+            $cancel = true;
+        }
 
-	public function chunkLoadEvent(ChunkLoadEvent $event) 
-	{
-		if ($event->isNewChunk()) {
-			$x = $event->getChunk()->getX();
-			$z = $event->getChunk()->getZ();
-			
-			$event->getLevel()->unloadChunk($x, $z);
-		}
-	}
+        if($event instanceof EntityDamageByEntityEvent and $event->getDamager() instanceof MineParkPlayer and $event->getEntity() instanceof MineParkPlayer) {
+            $cancel = $this->getCore()->getDamager()->kick($event->getEntity(), $event->getDamager());
+        }
 
-	public function blockBurnEvent(BlockBurnEvent $event)
-	{
-		$event->setCancelled();
-	}
+        if(($event->getEntity()->getHealth() - $event->getFinalDamage()) <= 0 and $event->getEntity() instanceof MineParkPlayer and $event->getEntity()->getGamemode() != 1) {
+            $damager = $event instanceof EntityDamageByEntityEvent ? $event->getDamager() : null;
+            $cancel = $this->getCore()->getDamager()->kill($event->getEntity(), $damager);
+        }
+        
+        if($cancel) {
+            $event->setCancelled();
+        }
+    }
 
-	private function checkBlockSet(BlockEvent $event)
-	{
-		$player = $event->getPlayer();
+    public function chunkLoadEvent(ChunkLoadEvent $event) 
+    {
+        if ($event->isNewChunk()) {
+            $x = $event->getChunk()->getX();
+            $z = $event->getChunk()->getZ();
+            
+            $event->getLevel()->unloadChunk($x, $z);
+        }
+    }
 
-		if (!$player->getStatesMap()->auth) {
-			$event->setCancelled();
-			return;
-		}
+    public function blockBurnEvent(BlockBurnEvent $event)
+    {
+        $event->setCancelled();
+    }
 
-		if ($player->isOp()) {
-			$event->setCancelled(false);
-		}
+    private function checkBlockSet(BlockEvent $event)
+    {
+        $player = $event->getPlayer();
 
-		if ($player->getProfile()->builder) {
-			$event->setCancelled(false);
-		}
+        if (!$player->getStatesMap()->auth) {
+            $event->setCancelled();
+            return;
+        }
 
-		$block = $event->getBlock();
+        if ($player->isOp()) {
+            $event->setCancelled(false);
+        }
 
-		if (!$player->getProfile()->builder and in_array($block->getId(), ItemConstants::getRestrictedBlocksNonBuilder())) {
-			return $event->setCancelled();
-		}
+        if ($player->getProfile()->builder) {
+            $event->setCancelled(false);
+        }
 
-		if (!$this->getCore()->getWorldProtector()->isInRange($block)) {
-			$event->setCancelled(false);
-		}
-	}
+        $block = $event->getBlock();
 
-	private function ignoreTapForItems(PlayerInteractEvent $event)
-	{
-		$itemId = $event->getPlayer()->getInventory()->getItemInHand()->getId();
+        if (!$player->getProfile()->builder and in_array($block->getId(), ItemConstants::getRestrictedBlocksNonBuilder())) {
+            return $event->setCancelled();
+        }
 
-		if (!$event->getPlayer()->builder and in_array($itemId, ItemConstants::getRestrictedItemsNonBuilder())) {
-			return $event->setCancelled();
-		}
+        if (!$this->getCore()->getWorldProtector()->isInRange($block)) {
+            $event->setCancelled(false);
+        }
+    }
 
-		if ($event->getBlock()->getId() != Block::GRASS) {
-			return;
-		}
+    private function ignoreTapForItems(PlayerInteractEvent $event)
+    {
+        $itemId = $event->getPlayer()->getInventory()->getItemInHand()->getId();
 
-		if (in_array($itemId, ItemConstants::getGunItemIds())) {
-			$event->setCancelled();
-		}
-	}
+        if (!$event->getPlayer()->builder and in_array($itemId, ItemConstants::getRestrictedItemsNonBuilder())) {
+            return $event->setCancelled();
+        }
 
-	private function isCanActivate(PlayerInteractEvent $event) : bool
-	{
-		$currentTime = time();
+        if ($event->getBlock()->getId() != Block::GRASS) {
+            return;
+        }
 
-		if ($currentTime - $event->getPlayer()->getStatesMap()->lastTap > 2) {
-			$event->getPlayer()->getStatesMap()->lastTap = $currentTime;
+        if (in_array($itemId, ItemConstants::getGunItemIds())) {
+            $event->setCancelled();
+        }
+    }
 
-			return true;
-		}
-		
-		return false;
-	}
+    private function isCanActivate(PlayerInteractEvent $event) : bool
+    {
+        $currentTime = time();
 
-	private function getUsersSource() : UsersSource
-	{
-		return $this->getCore()->getMDC()->getSource(UsersSource::ROUTE);
-	}
+        if ($currentTime - $event->getPlayer()->getStatesMap()->lastTap > 2) {
+            $event->getPlayer()->getStatesMap()->lastTap = $currentTime;
+
+            return true;
+        }
+        
+        return false;
+    }
+
+    private function getUsersSource() : UsersSource
+    {
+        return $this->getCore()->getMDC()->getSource(UsersSource::ROUTE);
+    }
 }
 ?>
