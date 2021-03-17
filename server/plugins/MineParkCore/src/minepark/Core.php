@@ -21,6 +21,7 @@ use minepark\components\GameChat;
 use minepark\components\Reporter;
 use pocketmine\event\Listener;
 use jojoe77777\FormAPI\FormAPI;
+use minepark\components\BossBar;
 use minepark\components\Broadcaster;
 use minepark\defaults\Defaults;
 use minepark\components\StatusBar;
@@ -37,261 +38,268 @@ use minepark\components\VehicleManager;
 
 class Core extends PluginBase implements Listener
 {
-	private static $_core;
+    private static $_core;
 
-	private $eventsHandler;
+    private $eventsHandler;
 
-	private $mdc;
+    private $mdc;
 
-	private $sapi;
-	private $scmd;
-	private $organisations;
-	private $service;
-	private $profiler;
-	private $mapper;
-	private $chatter;
-	private $initializer;
-	private $damager;
-	private $reporter;
-	private $protector;
-	private $phone;
-	private $statusbar;
-	private $auth;
-	private $notifier;
-	private $gpsmod;
-	private $fastfood;
-	private $tracker;
-	private $broadcaster;
-	private $vehicleManager;
+    private $sapi;
+    private $scmd;
+    private $organisations;
+    private $service;
+    private $profiler;
+    private $mapper;
+    private $chatter;
+    private $initializer;
+    private $damager;
+    private $reporter;
+    private $protector;
+    private $phone;
+    private $statusbar;
+    private $auth;
+    private $notifier;
+    private $gpsmod;
+    private $fastfood;
+    private $tracker;
+    private $broadcaster;
+    private $vehicleManager;
+    private $bossBar;
 
-	public $webapi;
+    public $webapi;
 
-	public static function getActive() : Core
-	{
-		return self::$_core;
-	}
-	
-    public function onEnable()
-	{
-		Core::$_core = $this;
-
-		$this->initializeMDC();
-
-		$this->initializeEventsHandler();
-
-		$this->initialize();
-
-		Providers::initializeAll();
-
-		$this->initializeDefaultDirectories();
-
-		$this->applyServerSettings();
+    public static function getActive() : Core
+    {
+        return self::$_core;
     }
-	
-	public function onDisable()
-	{
-		foreach($this->getServer()->getOnlinePlayers() as $player) {
-			$player->transfer(Defaults::SERVER_LOBBY_ADDRESS, Defaults::SERVER_LOBBY_PORT);
-		}
-	}
+    
+    public function onEnable()
+    {
+        Core::$_core = $this;
 
-	public function initializeMDC()
-	{
-		$this->mdc = new MDC;
-		$this->getMDC()->initializeAll();
-	}
+        $this->initializeMDC();
 
-	public function initializeEventsHandler()
-	{
-		$this->eventsHandler = new EventsHandler;
-		$this->getServer()->getPluginManager()->registerEvents($this->eventsHandler, $this);
-	}
+        $this->initializeEventsHandler();
 
-	public function initialize()
-	{
-		$this->sapi = new Api;
-		$this->scmd = new CommandsHandler;
-		$this->organisations = new Organisations;
-		$this->service = new Service;
-		$this->profiler = new Profiler;
-		$this->mapper = new Mapper;
-		$this->chatter = new GameChat;
-		$this->initializer = new Initializer;
-		$this->damager = new Damager;
-		$this->protector = new WorldProtector;
-		$this->phone = new Phone;
-		$this->statusbar = new StatusBar;
-		$this->auth = new Auth;
-		$this->payday = new PayDay;
-		$this->notifier = new NotifyPlayers;
-		$this->gpsmod = new GPS;
-		$this->fastfood = new FastFood;
-		$this->reporter = new Reporter;
-		$this->webapi = new WebApi;
-		$this->tracker = new Tracker;
-		$this->broadcaster = new Broadcaster;
-		$this->vehicleManager = new VehicleManager;
-	}
+        $this->initialize();
 
-	public function getTargetDirectory(bool $strings = false) : string
-	{
-		return $strings ? Files::DEFAULT_DIRECTORY_STRINGS : Files::DEFAULT_DIRECTORY;
-	}
+        Providers::initializeAll();
 
-	public function getMDC() : MDC
-	{
-		return $this->mdc;
-	}
+        $this->initializeDefaultDirectories();
 
-	public function getEventsHandler() : EventsHandler
-	{
-		return $this->eventsHandler;
-	}
-	
-	public function getApi() : Api
-	{
-		return $this->sapi;
-	}
+        $this->applyServerSettings();
+    }
+    
+    public function onDisable()
+    {
+        foreach($this->getServer()->getOnlinePlayers() as $player) {
+            $player->transfer(Defaults::SERVER_LOBBY_ADDRESS, Defaults::SERVER_LOBBY_PORT);
+        }
+    }
 
-	public function getWebApi() : WebApi
-	{
-		return $this->webapi;
-	}
+    public function initializeMDC()
+    {
+        $this->mdc = new MDC;
+        $this->getMDC()->initializeAll();
+    }
 
-	public function getService() : Service
-	{
-		return $this->service;
-	}
-	
-	public function getReporter() : Reporter
-	{
-		return $this->reporter;
-	}
-	
-	public function getCommandsHandler() : CommandsHandler
-	{
-		return $this->scmd;
-	}
+    public function initializeEventsHandler()
+    {
+        $this->eventsHandler = new EventsHandler;
+        $this->getServer()->getPluginManager()->registerEvents($this->eventsHandler, $this);
+    }
 
-	public function getOrganisationsModule() : Organisations
-	{
-		return $this->organisations;
-	}
+    public function initialize()
+    {
+        $this->sapi = new Api;
+        $this->scmd = new CommandsHandler;
+        $this->organisations = new Organisations;
+        $this->service = new Service;
+        $this->profiler = new Profiler;
+        $this->mapper = new Mapper;
+        $this->chatter = new GameChat;
+        $this->initializer = new Initializer;
+        $this->damager = new Damager;
+        $this->protector = new WorldProtector;
+        $this->phone = new Phone;
+        $this->statusbar = new StatusBar;
+        $this->auth = new Auth;
+        $this->payday = new PayDay;
+        $this->notifier = new NotifyPlayers;
+        $this->gpsmod = new GPS;
+        $this->fastfood = new FastFood;
+        $this->reporter = new Reporter;
+        $this->webapi = new WebApi;
+        $this->tracker = new Tracker;
+        $this->broadcaster = new Broadcaster;
+        $this->vehicleManager = new VehicleManager;
+        $this->bossBar = new BossBar;
+    }
 
-	public function getProfiler() : Profiler
-	{
-		return $this->profiler;
-	}
+    public function getTargetDirectory(bool $strings = false) : string
+    {
+        return $strings ? Files::DEFAULT_DIRECTORY_STRINGS : Files::DEFAULT_DIRECTORY;
+    }
 
-	public function getMapper() : Mapper
-	{
-		return $this->mapper;
-	}
-	
-	public function getChatter() : GameChat
-	{
-		return $this->chatter;
-	}
+    public function getMDC() : MDC
+    {
+        return $this->mdc;
+    }
 
-	public function getInitializer() : Initializer
-	{
-		return $this->initializer;
-	}
+    public function getEventsHandler() : EventsHandler
+    {
+        return $this->eventsHandler;
+    }
+    
+    public function getApi() : Api
+    {
+        return $this->sapi;
+    }
 
-	public function getDamager() : Damager
-	{
-		return $this->damager;
-	}
+    public function getWebApi() : WebApi
+    {
+        return $this->webapi;
+    }
 
-	public function getWorldProtector() : WorldProtector
-	{
-		return $this->protector;
-	}
+    public function getService() : Service
+    {
+        return $this->service;
+    }
+    
+    public function getReporter() : Reporter
+    {
+        return $this->reporter;
+    }
+    
+    public function getCommandsHandler() : CommandsHandler
+    {
+        return $this->scmd;
+    }
 
-	public function getPhone() : Phone
-	{
-		return $this->phone;
-	}
+    public function getOrganisationsModule() : Organisations
+    {
+        return $this->organisations;
+    }
 
-	public function getNavigator() : GPS
-	{
-		return $this->gpsmod;
-	}
-	
-	public function getStatusBar() : StatusBar
-	{
-		return $this->statusbar;
-	}
+    public function getProfiler() : Profiler
+    {
+        return $this->profiler;
+    }
 
-	public function getAuthModule() : Auth
-	{
-		return $this->auth;
-	}
+    public function getMapper() : Mapper
+    {
+        return $this->mapper;
+    }
+    
+    public function getChatter() : GameChat
+    {
+        return $this->chatter;
+    }
 
-	public function getFoodModule() : FastFood
-	{
-		return $this->fastfood;
-	}
+    public function getInitializer() : Initializer
+    {
+        return $this->initializer;
+    }
 
-	public function getPayDayModule() : PayDay
-	{
-		return $this->payday;
-	}
+    public function getDamager() : Damager
+    {
+        return $this->damager;
+    }
 
-	public function getTrackerModule() : Tracker
-	{
-		return $this->tracker;
-	}
+    public function getWorldProtector() : WorldProtector
+    {
+        return $this->protector;
+    }
 
-	public function getBroadcasterModule() : Broadcaster
-	{
-		return $this->broadcaster;
-	}
+    public function getPhone() : Phone
+    {
+        return $this->phone;
+    }
 
-	public function getNotifierModule() : NotifyPlayers
-	{
-		return $this->notifier;
-	}
+    public function getNavigator() : GPS
+    {
+        return $this->gpsmod;
+    }
+    
+    public function getStatusBar() : StatusBar
+    {
+        return $this->statusbar;
+    }
 
-	public function getVehicleManager() : VehicleManager
-	{
-		return $this->vehicleManager;
-	}
+    public function getAuthModule() : Auth
+    {
+        return $this->auth;
+    }
 
-	public function getFormApi() : FormAPI
-	{
-		return $this->getServer()->getPluginManager()->getPlugin("FormAPI");
-	}
+    public function getFoodModule() : FastFood
+    {
+        return $this->fastfood;
+    }
 
-	public function onCommand(CommandSender $sender, Command $command, string $label, array $args) : bool
-	{
-		if($command == Service::COMMAND and $sender instanceof ConsoleCommandSender) {
-			$this->getService()->handle($args);
-			return true;
-		}
+    public function getPayDayModule() : PayDay
+    {
+        return $this->payday;
+    }
 
-		return false;
-	}
+    public function getTrackerModule() : Tracker
+    {
+        return $this->tracker;
+    }
 
-	private function initializeDefaultDirectories()
-	{
-		if(!file_exists(Files::DEFAULT_DIRECTORY)) {
-			mkdir(Files::DEFAULT_DIRECTORY);
-		}
+    public function getBroadcasterModule() : Broadcaster
+    {
+        return $this->broadcaster;
+    }
 
-		if(!file_exists(Files::DEFAULT_DIRECTORY_STRINGS)) {
-			mkdir(Files::DEFAULT_DIRECTORY_STRINGS);
-		}
-	}
+    public function getNotifierModule() : NotifyPlayers
+    {
+        return $this->notifier;
+    }
 
-	private function applyServerSettings()
-	{
-		$this->getApi()->removeDefaultServerCommand("say");
-		$this->getApi()->removeDefaultServerCommand("defaultgamemode");
-		$this->getApi()->removeDefaultServerCommand("version");
-		$this->getApi()->removeDefaultServerCommand("difficulty");
-		$this->getApi()->removeDefaultServerCommand("tell");
-		$this->getApi()->removeDefaultServerCommand("kill");
-	}
+    public function getVehicleManager() : VehicleManager
+    {
+        return $this->vehicleManager;
+    }
+
+    public function getBossBarModule() : BossBar
+    {
+        return $this->bossBar;
+    }
+
+    public function getFormApi() : FormAPI
+    {
+        return $this->getServer()->getPluginManager()->getPlugin("FormAPI");
+    }
+
+    public function onCommand(CommandSender $sender, Command $command, string $label, array $args) : bool
+    {
+        if ($command === Service::COMMAND and $sender instanceof ConsoleCommandSender) {
+            $this->getService()->handle($args);
+            return true;
+        }
+
+        return false;
+    }
+
+    private function initializeDefaultDirectories()
+    {
+        if(!file_exists(Files::DEFAULT_DIRECTORY)) {
+            mkdir(Files::DEFAULT_DIRECTORY);
+        }
+
+        if(!file_exists(Files::DEFAULT_DIRECTORY_STRINGS)) {
+            mkdir(Files::DEFAULT_DIRECTORY_STRINGS);
+        }
+    }
+
+    private function applyServerSettings()
+    {
+        $this->getApi()->removeDefaultServerCommand("say");
+        $this->getApi()->removeDefaultServerCommand("defaultgamemode");
+        $this->getApi()->removeDefaultServerCommand("version");
+        $this->getApi()->removeDefaultServerCommand("difficulty");
+        $this->getApi()->removeDefaultServerCommand("tell");
+        $this->getApi()->removeDefaultServerCommand("kill");
+    }
 }
 ?>

@@ -19,292 +19,321 @@ use pocketmine\network\mcpe\protocol\ModalFormRequestPacket;
 
 class MineParkPlayer extends Player
 {	
-	private StatesMap $statesMap;
+    private StatesMap $statesMap;
 
-	private UserDto $profile;
+    private UserDto $profile;
 
-	private array $floatingTexts = [];
+    private array $floatingTexts = [];
 
-	public static function cast(Player $player) : ?MineParkPlayer {
-		if($player === null) {
-			return null;
-		} elseif($player instanceof MineParkPlayer) {
-			return $player;
-		} else {
-			throw new Exception("Player isn't MineParkPlayer");
-		}
-	}
+    public static function cast(Player $player) : ?MineParkPlayer {
+        if($player === null) {
+            return null;
+        } elseif($player instanceof MineParkPlayer) {
+            return $player;
+        } else {
+            throw new Exception("Player isn't MineParkPlayer");
+        }
+    }
 
-	public function __construct(SourceInterface $interface, string $ip, int $port)
-	{
-		parent::__construct($interface, $ip, $port);
-	}
-	
-	public function __get($name) //rudiment
-	{
-		if(!isset($this->$name)) {
-			return null;
-		}
-		
-		return $this->$name;
-	}
-	
-	public function __set($name, $value) //rudiment
-	{
-		$this->$name = $value;
-	}
-
-	/*
-		Basic Getters
-	*/
-
-	public function getProfile() : UserDto
-	{
-		return $this->profile;
-	}
-
-	public function setProfile(UserDto $profile)
-	{
-		$this->profile = $profile;
-	}
-
-	public function getStatesMap() : StatesMap
-	{
-		return $this->statesMap;
-	}
-
-	public function setStatesMap(StatesMap $map)
-	{
-		$this->statesMap = $map;
-	}
-
-	/*
-		Permissions API
-	*/
-
-	public function isAdministrator() : bool
-	{
-		return $this->profile->administrator or $this->isOp();
-	}
-
-	public function isVip() : bool
-	{
-		return $this->profile->vip;
-	}
-
-	public function isBuilder() : bool
-	{
-		return $this->profile->builder;
-	}
-
-	public function isRealtor() : bool
-	{
-		return $this->profile->realtor;
-	}
-
-	/*
-		Common Player Functions
-	*/
-	
-	public function sendWindowMessage($text, $title = "")
-	{
-		$data = [];
-		
-		$data["type"] = "form";
-		$data["title"] = $title;
-		$data["content"] = $text;
-		$data["buttons"] = [];
-		
-		$pk = new ModalFormRequestPacket();
-		$pk->formId = 2147483647;
-		$pk->formData = json_encode($data);
-		$this->dataPacket($pk);
+    public function __construct(SourceInterface $interface, string $ip, int $port)
+    {
+        parent::__construct($interface, $ip, $port);
     }
     
-	public function sendSound(string $soundName, Vector3 $vector3 = null, int $volume = 100, int $pitch = 1)
-	{
-		if($vector3 == null) {
+    public function __get($name) //rudiment
+    {
+        if(!isset($this->$name)) {
+            return null;
+        }
+        
+        return $this->$name;
+    }
+    
+    public function __set($name, $value) //rudiment
+    {
+        $this->$name = $value;
+    }
+
+    /*
+        Basic Getters
+    */
+
+    public function getProfile() : UserDto
+    {
+        return $this->profile;
+    }
+
+    public function setProfile(UserDto $profile)
+    {
+        $this->profile = $profile;
+    }
+
+    public function getStatesMap() : StatesMap
+    {
+        return $this->statesMap;
+    }
+
+    public function setStatesMap(StatesMap $map)
+    {
+        $this->statesMap = $map;
+    }
+
+    /*
+        Permissions API
+    */
+
+    public function isAdministrator() : bool
+    {
+        return $this->profile->administrator or $this->isOp();
+    }
+
+    public function isVip() : bool
+    {
+        return $this->profile->vip;
+    }
+
+    public function isBuilder() : bool
+    {
+        return $this->profile->builder;
+    }
+
+    public function isRealtor() : bool
+    {
+        return $this->profile->realtor;
+    }
+
+    /*
+        Common Player Functions
+    */
+    
+    public function sendWindowMessage($text, $title = "")
+    {
+        $data = [];
+        
+        $data["type"] = "form";
+        $data["title"] = $title;
+        $data["content"] = $text;
+        $data["buttons"] = [];
+        
+        $pk = new ModalFormRequestPacket();
+        $pk->formId = 2147483647;
+        $pk->formData = json_encode($data);
+        $this->dataPacket($pk);
+    }
+    
+    public function sendSound(string $soundName, Vector3 $vector3 = null, int $volume = 100, int $pitch = 1)
+    {
+        if($vector3 == null) {
             $vector3 = $this->getPosition()->add(0, 1, 0);
         }
-		
-		$pk = new PlaySoundPacket();
-		$pk->soundName = $soundName;
-		$pk->x = $vector3->getX();
-		$pk->y = $vector3->getY();
-		$pk->z = $vector3->getZ();
-		$pk->volume = $volume;
-		$pk->pitch = $pitch;
-		
-		$this->dataPacket($pk);
-	}
-	
-	public function hasPermissions(array $permissions)
-	{
-		foreach($permissions as $permission) {
-			if($this->hasPermission($permission)) {
-				return true;
-			}
-		}
+        
+        $pk = new PlaySoundPacket();
+        $pk->soundName = $soundName;
+        $pk->x = $vector3->getX();
+        $pk->y = $vector3->getY();
+        $pk->z = $vector3->getZ();
+        $pk->volume = $volume;
+        $pk->pitch = $pitch;
+        
+        $this->dataPacket($pk);
+    }
+    
+    public function hasPermissions(array $permissions)
+    {
+        foreach($permissions as $permission) {
+            if($this->hasPermission($permission)) {
+                return true;
+            }
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	public function sendCommand(string $command)
-	{
-		$ev = new PlayerCommandPreprocessEvent($this, $command);
-		$ev->call();
-	}
+    public function sendCommand(string $command)
+    {
+        $ev = new PlayerCommandPreprocessEvent($this, $command);
+        $ev->call();
+    }
 
-	/*
-		Floating Texts API
-	*/
+    public function getCore() : Core
+    {
+        return Core::getActive();
+    }
 
-	public function setFloatingText(Position $position, string $text, string $tag = null) : FloatingText
-	{
-		$floatingText = new FloatingText;
-		$floatingText->delivered = false;
-		$floatingText->position = $position;
-		$floatingText->text = $text;
-		$floatingText->tag = $tag;
-		$floatingText->particle = new FloatingTextParticle($position, $text, "");
+    /*
+        BossBar API
+    */
 
-		array_push($this->floatingTexts, $floatingText);
+    public function setBossBar(?string $title = null, ?int $percents = null)
+    {
+        $this->getCore()->getBossBarModule()->setBossBar($this, $title, $percents);
+    }
 
-		return $floatingText;
-	}
+    public function setBossBarTitle(string $title)
+    {
+        $this->getCore()->getBossBarModule()->setTitle($this, $this->getStatesMap()->bossBarSession->fakeEntityId, $title);
+    }
 
-	public function getFloatingText(Position $position) : ?FloatingText
-	{
-		foreach($this->floatingTexts as $floatingText) {
-			if($floatingText->position === $position) {
-				return $floatingText;
-			}
-		}
+    public function setBossBarPercentage(int $percents)
+    {
+        $this->getCore()->getBossBarModule()->setPercentage($this, $this->getStatesMap()->bossBarSession->fakeEntityId, $percents);
+    }
 
-		return null;
-	}
+    public function hideBossBar()
+    {
+        $this->getCore()->getBossBarModule()->hideBossBar($this);
+    }
 
-	public function getFloatingTextsByTag(string $tag) : array
-	{
-		$floatingTexts = [];
+    /*
+        Floating Texts API
+    */
 
-		foreach($this->floatingTexts as $floatingText) {
-			if($floatingText->tag === $tag) {
-				array_push($floatingTexts, $floatingText);
-			}
-		}
+    public function setFloatingText(Position $position, string $text, string $tag = null) : FloatingText
+    {
+        $floatingText = new FloatingText;
+        $floatingText->delivered = false;
+        $floatingText->position = $position;
+        $floatingText->text = $text;
+        $floatingText->tag = $tag;
+        $floatingText->particle = new FloatingTextParticle($position, $text, "");
 
-		return $floatingTexts;
-	}
+        array_push($this->floatingTexts, $floatingText);
 
-	public function getFloatingTextsByText(string $text) : array
-	{
-		$floatingTexts = [];
+        return $floatingText;
+    }
 
-		foreach($this->floatingTexts as $floatingText) {
-			if($floatingText->text === $text) {
-				array_push($floatingTexts, $floatingText);
-			}
-		}
+    public function getFloatingText(Position $position) : ?FloatingText
+    {
+        foreach($this->floatingTexts as $floatingText) {
+            if($floatingText->position === $position) {
+                return $floatingText;
+            }
+        }
 
-		return $floatingTexts;
-	}
+        return null;
+    }
 
-	public function unsetFloatingText(FloatingText $floatingText)
-	{
-		$level = $floatingText->position->getLevel();
+    public function getFloatingTextsByTag(string $tag) : array
+    {
+        $floatingTexts = [];
 
-		$floatingText->particle->setInvisible(true);
-		$level->addParticle($floatingText->particle, [$this]);
-		
-		foreach($this->floatingTexts as $key => $value) {
-			if($floatingText == $value) {
-				unset($this->floatingTexts[$key]);
-				return;
-			}
-		}
-	}
+        foreach($this->floatingTexts as $floatingText) {
+            if($floatingText->tag === $tag) {
+                array_push($floatingTexts, $floatingText);
+            }
+        }
 
-	public function showFloatingTexts()
-	{
-		foreach($this->floatingTexts as $floatingText) {
-			if(!$floatingText->delivered) {
-				$level = $floatingText->position->getLevel();
-				$level->addParticle($floatingText->particle, [$this]);
-				$floatingText->delivered = true;
-			}
-		}
-	}
+        return $floatingTexts;
+    }
 
-	/*
-		Localization
-	*/
+    public function getFloatingTextsByText(string $text) : array
+    {
+        $floatingTexts = [];
 
-	public function sendMessage($message)
-	{
-		parent::sendMessage(Providers::getLocalizationProvider()->take($this->locale, $message) ?? $message);
-	}
+        foreach($this->floatingTexts as $floatingText) {
+            if($floatingText->text === $text) {
+                array_push($floatingTexts, $floatingText);
+            }
+        }
 
-	public function sendLocalizedMessage(string $message)
-	{
-		parent::sendMessage(Providers::getLocalizationProvider()->translateFrom($this->locale, $message));
-	}
+        return $floatingTexts;
+    }
 
-	public function sendTip(string $message)
-	{
-		parent::sendTip(Providers::getLocalizationProvider()->take($this->locale, $message) ?? $message);
-	}
+    public function unsetFloatingText(FloatingText $floatingText)
+    {
+        $level = $floatingText->position->getLevel();
 
-	public function sendLocalizedTip(string $message)
-	{
-		parent::sendTip(Providers::getLocalizationProvider()->translateFrom($this->locale, $message));
-	}
+        $floatingText->particle->setInvisible(true);
+        $level->addParticle($floatingText->particle, [$this]);
+        
+        foreach($this->floatingTexts as $key => $value) {
+            if($floatingText == $value) {
+                unset($this->floatingTexts[$key]);
+                return;
+            }
+        }
+    }
 
-	public function sendWhisper(string $sender, string $message)
-	{
-		parent::sendWhisper($sender, Providers::getLocalizationProvider()->take($this->locale, $message) ?? $message);
-	}
+    public function showFloatingTexts()
+    {
+        foreach($this->floatingTexts as $floatingText) {
+            if(!$floatingText->delivered) {
+                $level = $floatingText->position->getLevel();
+                $level->addParticle($floatingText->particle, [$this]);
+                $floatingText->delivered = true;
+            }
+        }
+    }
 
-	public function sendLocalizedWhisper(string $sender, string $message)
-	{
-		parent::sendWhisper($sender, Providers::getLocalizationProvider()->translateFrom($this->locale, $message));
-	}
+    /*
+        Localization
+    */
 
-	public function sendPopup(string $message, string $subtitle = "")
-	{
-		parent::sendPopup(Providers::getLocalizationProvider()->take($this->locale, $message) ?? $message);
-	}
+    public function sendMessage($message)
+    {
+        parent::sendMessage(Providers::getLocalizationProvider()->take($this->locale, $message) ?? $message);
+    }
 
-	public function sendLocalizedPopup(string $message)
-	{
-		parent::sendPopup(Providers::getLocalizationProvider()->translateFrom($this->locale, $message));
-	}
+    public function sendLocalizedMessage(string $message)
+    {
+        parent::sendMessage(Providers::getLocalizationProvider()->translateFrom($this->locale, $message));
+    }
 
-	public function addTitle(string $title, string $subtitle = "", int $fadeIn = -1, int $stay = -1, int $fadeOut = -1)
-	{
-		$title = Providers::getLocalizationProvider()->take($this->locale, $title) ?? $title;
-		$subtitle = Providers::getLocalizationProvider()->take($this->locale, $subtitle) ?? $subtitle;
+    public function sendTip(string $message)
+    {
+        parent::sendTip(Providers::getLocalizationProvider()->take($this->locale, $message) ?? $message);
+    }
 
-		parent::sendTitle($title, $subtitle, $fadeIn, $stay, $fadeOut);
-	}
+    public function sendLocalizedTip(string $message)
+    {
+        parent::sendTip(Providers::getLocalizationProvider()->translateFrom($this->locale, $message));
+    }
 
-	public function addLocalizedTitle(string $title, string $subtitle = "", int $fadeIn = -1, int $stay = -1, int $fadeOut = -1)
-	{
-		$title = Providers::getLocalizationProvider()->translateFrom($this->locale, $title);
-		$subtitle = Providers::getLocalizationProvider()->translateFrom($this->locale, $subtitle);
+    public function sendWhisper(string $sender, string $message)
+    {
+        parent::sendWhisper($sender, Providers::getLocalizationProvider()->take($this->locale, $message) ?? $message);
+    }
 
-		parent::sendTitle($title, $subtitle, $fadeIn, $stay, $fadeOut);
-	}
+    public function sendLocalizedWhisper(string $sender, string $message)
+    {
+        parent::sendWhisper($sender, Providers::getLocalizationProvider()->translateFrom($this->locale, $message));
+    }
 
-	public function kick(string $reason = "", bool $isAdmin = true, $quitMessage = null) : bool
-	{
-		if($reason === "") {
-			return parent::kick();
-		}
+    public function sendPopup(string $message, string $subtitle = "")
+    {
+        parent::sendPopup(Providers::getLocalizationProvider()->take($this->locale, $message) ?? $message);
+    }
 
-		$reason = Providers::getLocalizationProvider()->take($this->locale, $reason) ?? $reason;
+    public function sendLocalizedPopup(string $message)
+    {
+        parent::sendPopup(Providers::getLocalizationProvider()->translateFrom($this->locale, $message));
+    }
 
-		return parent::kick($reason, $isAdmin, $quitMessage);
-	}
+    public function addTitle(string $title, string $subtitle = "", int $fadeIn = -1, int $stay = -1, int $fadeOut = -1)
+    {
+        $title = Providers::getLocalizationProvider()->take($this->locale, $title) ?? $title;
+        $subtitle = Providers::getLocalizationProvider()->take($this->locale, $subtitle) ?? $subtitle;
+
+        parent::sendTitle($title, $subtitle, $fadeIn, $stay, $fadeOut);
+    }
+
+    public function addLocalizedTitle(string $title, string $subtitle = "", int $fadeIn = -1, int $stay = -1, int $fadeOut = -1)
+    {
+        $title = Providers::getLocalizationProvider()->translateFrom($this->locale, $title);
+        $subtitle = Providers::getLocalizationProvider()->translateFrom($this->locale, $subtitle);
+
+        parent::sendTitle($title, $subtitle, $fadeIn, $stay, $fadeOut);
+    }
+
+    public function kick(string $reason = "", bool $isAdmin = true, $quitMessage = null) : bool
+    {
+        if($reason === "") {
+            return parent::kick();
+        }
+
+        $reason = Providers::getLocalizationProvider()->take($this->locale, $reason) ?? $reason;
+
+        return parent::kick($reason, $isAdmin, $quitMessage);
+    }
 }
 ?>
