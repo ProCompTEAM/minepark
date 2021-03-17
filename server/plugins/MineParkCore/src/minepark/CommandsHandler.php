@@ -1,7 +1,6 @@
 <?php
 namespace minepark;
 
-// please, place usings better
 use pocketmine\event\Event;
 use minepark\defaults\Permissions;
 use minepark\common\player\MineParkPlayer;
