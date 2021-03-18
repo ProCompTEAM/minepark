@@ -46,6 +46,8 @@ use minepark\commands\workers\TakeBoxCommand;
 
 class CommandsHandler
 {
+    private const COMMAND_PREFIX = "/";
+
     private $commands;
     
     public function __construct()
@@ -98,13 +100,13 @@ class CommandsHandler
     
     public function execute(MineParkPlayer $player, string $rawCommand, Event $event = null)
     {
-        if ($rawCommand[0] !== "/") {
+        if ($rawCommand[0] !== SELF::COMMAND_PREFIX) {
             return;
         }
 
         $rawCommand = substr($rawCommand, 1);
 
-        $arguments = explode(' ', $rawCommand);
+        $arguments = explode(Command::ARGUMENTS_SEPERATOR, $rawCommand);
         $command = $this->getCommand($arguments[0]);
 
         if ($command === null) {
