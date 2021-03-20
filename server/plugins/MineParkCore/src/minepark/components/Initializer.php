@@ -47,12 +47,12 @@ class Initializer extends Component
     }
 
     public function join(MineParkPlayer $player)
-	{
-		$player->removeAllEffects();
+    {
+        $player->removeAllEffects();
         $player->setNameTag("");
 
         if($player->getStatesMap()->isNew) {
-			$this->handleNewPlayer($player);
+            $this->handleNewPlayer($player);
         }
 
         Providers::getBankingProvider()->initializePlayerPaymentMethod($player);
@@ -63,55 +63,55 @@ class Initializer extends Component
     }
 
     public function checkInventoryItems(MineParkPlayer $player)
-	{
+    {
         $itemId = $player->getInventory()->getItemInHand()->getId();
 
         //CHECK ITEMS DEFAULT KIT
-		if($itemId == 336) { //336 - phone
-			$player->sendCommand("/c");
-		}
+        if($itemId == 336) { //336 - phone
+            $player->sendCommand("/c");
+        }
 
-		if($itemId == 340) { //340 - passport
-			$player->sendCommand("/doc");
-		}
+        if($itemId == 340) { //340 - passport
+            $player->sendCommand("/doc");
+        }
 
-		if($itemId == 405) { //405 - gps
-			$player->sendCommand("/gps");
-		}
-	}
+        if($itemId == 405) { //405 - gps
+            $player->sendCommand("/gps");
+        }
+    }
 
     private function addInventoryItems(MineParkPlayer $player)
-	{
+    {
         //GIVING ITEMS DEFAULT KIT
-		$phone = Item::get(336, 0, 1);
+        $phone = Item::get(336, 0, 1);
         $phone->setCustomName("Телефон");
         
-		$passport = Item::get(340, 0, 1);
+        $passport = Item::get(340, 0, 1);
         $passport->setCustomName("Паспорт");
         
-		$gps = Item::get(405, 0, 1);
-		$gps->setCustomName("Навигатор");
-		
-		if(!$player->getInventory()->contains($phone)) {
+        $gps = Item::get(405, 0, 1);
+        $gps->setCustomName("Навигатор");
+        
+        if(!$player->getInventory()->contains($phone)) {
             $player->getInventory()->setItem(0, $phone);
         }
-		
-		if(!$player->getInventory()->contains($passport)) {
+        
+        if(!$player->getInventory()->contains($passport)) {
             $player->getInventory()->setItem(1, $passport);
         }
-		
-		if(!$player->getInventory()->contains($gps)) {
+        
+        if(!$player->getInventory()->contains($gps)) {
             $player->getInventory()->setItem(2, $gps);
         }
 
         if($player->getProfile()->organisation == Organisations::SECURITY_WORK) {
-			$item = Item::get(280, 0, 1);
-			$player->getInventory()->addItem($item);
+            $item = Item::get(280, 0, 1);
+            $player->getInventory()->addItem($item);
         }
     }
 
     private function setDefaults(MineParkPlayer $player)
-	{
+    {
         $statesMap = new StatesMap();
 
         $statesMap->auth = false;
@@ -164,28 +164,28 @@ class Initializer extends Component
     }
 
     private function handleNewPlayer(MineParkPlayer $player)
-	{
+    {
         Providers::getBankingProvider()->givePlayerMoney($player, self::DEFAULT_MONEY_PRESENT);
         $this->getCore()->getTrackerModule()->enableTrack($player);
         $this->presentNewPlayer($player);
     }
 
     private function presentNewPlayer(MineParkPlayer $newPlayer)
-	{
+    {
         foreach($this->getCore()->getServer()->getOnlinePlayers() as $player) {
             $player->sendTitle("§6" . $newPlayer->getName(), "§aВ парке новый посетитель!", 5);
         }
     }
     
     private function setPermissions(MineParkPlayer $player)
-	{
+    {
         $player->addAttachment($this->getCore(), Permissions::ANYBODY, true);
 
         $this->addCustomPermissions($player);
     }
     
     private function showDonaterStatus(MineParkPlayer $donater)
-	{
+    {
         if(!$donater->hasPermission("group.custom")){
             return;
         }
@@ -199,7 +199,7 @@ class Initializer extends Component
     }
     
     private function getDonaterLabel(MineParkPlayer $donater)
-	{
+    {
         if($donater->isOp()) {
             return "§7⚑РУКОВОДСТВО ПАРКА";
         }
@@ -268,7 +268,7 @@ class Initializer extends Component
 
         if($hasCustomPermissions) {
             $player->addAttachment($this->getCore(), Permissions::CUSTOM, true);
-		}
+        }
     }
     
     private function addAdministratorPermissions(MineParkPlayer $player)

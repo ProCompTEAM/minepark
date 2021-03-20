@@ -2,17 +2,18 @@
 namespace minepark\components;
 
 use minepark\common\player\MineParkPlayer;
+use minepark\components\base\Component;
 
-class Tracker
+class Tracker extends Component
 {
     public const CHAT_PREFIX = "§b[Track]";
 
     public $tracked;
 
-	public function __construct()
-	{
+    public function __construct()
+    {
         $this->tracked = [];
-	}
+    }
 
     public function getAttributes() : array
     {

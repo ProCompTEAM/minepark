@@ -16,7 +16,7 @@ class WebApi
 
     private $socket;
 
-	public function __construct()
+    public function __construct()
     {
         if(!self::API_ENABLED) {
             return;
@@ -32,8 +32,8 @@ class WebApi
     }
 
     public function getCore() : Core
-	{
-		return Core::getActive();
+    {
+        return Core::getActive();
     }
     
     public function accept()

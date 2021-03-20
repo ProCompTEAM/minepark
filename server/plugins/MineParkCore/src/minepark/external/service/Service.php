@@ -19,18 +19,18 @@ class Service
     }
 
     public function getCore() : Core
-	{
-		return Core::getActive();
+    {
+        return Core::getActive();
     }
 
     public function getScripts() : array
-	{
-		return $this->scripts;
+    {
+        return $this->scripts;
     }
 
     public function register(Script $script)
-	{
-		return array_push($this->scripts, $script);
+    {
+        return array_push($this->scripts, $script);
     }
 
     public function handle(array $arguments)

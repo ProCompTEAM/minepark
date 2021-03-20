@@ -11,86 +11,86 @@ use minepark\defaults\ComponentAttributes;
 
 class PayDay extends Component
 {
-	public function __construct()
-	{
-		$this->getCore()->getScheduler()->scheduleRepeatingTask(new CallbackTask([$this, "calcAndShow"]), 20 * 600);
-	}
+    public function __construct()
+    {
+        $this->getCore()->getScheduler()->scheduleRepeatingTask(new CallbackTask([$this, "calcAndShow"]), 20 * 600);
+    }
 
-	public function getAttributes() : array
+    public function getAttributes() : array
     {
         return [
-			ComponentAttributes::STANDALONE
+            ComponentAttributes::STANDALONE
         ];
     }
-	
-	public function calcAndShow()
-	{
-		foreach($this->getCore()->getServer()->getOnlinePlayers() as $player) {
-			$player = MineParkPlayer::cast($player);
+    
+    public function calcAndShow()
+    {
+        foreach($this->getCore()->getServer()->getOnlinePlayers() as $player) {
+            $player = MineParkPlayer::cast($player);
 
-			$salary = $this->getSalaryValue($player); 
-			$special = 0;
+            $salary = $this->getSalaryValue($player); 
+            $special = 0;
 
-			if(!$player->getStatesMap()->isNew) {
-				$special += 200;
-			}
+            if(!$player->getStatesMap()->isNew) {
+                $special += 200;
+            }
 
-			if($player->getProfile()->organisation == Organisations::NO_WORK) {
-				$special += 100;
-			}
+            if($player->getProfile()->organisation == Organisations::NO_WORK) {
+                $special += 100;
+            }
 
-			if($this->getCore()->getApi()->existsAttr($player, Api::ATTRIBUTE_BOSS)) {
-				$salary *= 2;
-			}
+            if($this->getCore()->getApi()->existsAttr($player, Api::ATTRIBUTE_BOSS)) {
+                $salary *= 2;
+            }
 
-			$summ = ($salary + $special);
+            $summ = ($salary + $special);
 
-			if($summ > 0) {
-				Providers::getBankingProvider()->giveDebit($player, $summ);
-			}
+            if($summ > 0) {
+                Providers::getBankingProvider()->giveDebit($player, $summ);
+            }
 
-			if($summ < 0) {
-				Providers::getBankingProvider()->reduceDebit($player, $summ);
-			}
+            if($summ < 0) {
+                Providers::getBankingProvider()->reduceDebit($player, $summ);
+            }
 
-			$this->sendForm($player, $salary, $special, $summ);
-		}
-	}
+            $this->sendForm($player, $salary, $special, $summ);
+        }
+    }
 
-	private function sendForm(MineParkPlayer $player, int $salary, int $special, int $summ) 
-	{
-		$form = "§7----=====§eВРЕМЯ ЗАРПЛАТЫ§7=====----";
-		$form .= "\n §3> §fЗаработано: §2" . $salary;
-		$form .= "\n §3> §fПособие: §2" . $special;
-		$form .= "\n§8- - - -== -==- ==- - - -";
-		$form .= "\n §3☛ §fИтого: §2" . $summ;
+    private function sendForm(MineParkPlayer $player, int $salary, int $special, int $summ) 
+    {
+        $form = "§7----=====§eВРЕМЯ ЗАРПЛАТЫ§7=====----";
+        $form .= "\n §3> §fЗаработано: §2" . $salary;
+        $form .= "\n §3> §fПособие: §2" . $special;
+        $form .= "\n§8- - - -== -==- ==- - - -";
+        $form .= "\n §3☛ §fИтого: §2" . $summ;
 
-		if($player->getStatesMap()->auth) {
-			$player->sendMessage($form);
-		}
-	}
+        if($player->getStatesMap()->auth) {
+            $player->sendMessage($form);
+        }
+    }
 
-	private function getSalaryValue(MineParkPlayer $player) : int
-	{
-		switch($player->getProfile()->organisation)
-		{
-			case Organisations::TAXI_WORK: 
-				return 200;
-			case Organisations::DOCTOR_WORK: 
-				return 600;
-			case Organisations::LAWYER_WORK: 
-				return 500;
-			case Organisations::SECURITY_WORK: 
-				return 300;
-			case Organisations::SELLER_WORK: 
-				return 400;
-			case Organisations::GOVERNMENT_WORK:
-				return 2000;
-			case Organisations::EMERGENCY_WORK: 
-				return 500;
-		}
+    private function getSalaryValue(MineParkPlayer $player) : int
+    {
+        switch($player->getProfile()->organisation)
+        {
+            case Organisations::TAXI_WORK: 
+                return 200;
+            case Organisations::DOCTOR_WORK: 
+                return 600;
+            case Organisations::LAWYER_WORK: 
+                return 500;
+            case Organisations::SECURITY_WORK: 
+                return 300;
+            case Organisations::SELLER_WORK: 
+                return 400;
+            case Organisations::GOVERNMENT_WORK:
+                return 2000;
+            case Organisations::EMERGENCY_WORK: 
+                return 500;
+        }
 
-		return 0;
-	}
+        return 0;
+    }
 }
 ?>

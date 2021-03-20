@@ -93,16 +93,16 @@ class ChangeNameCommand extends OrganisationsCommand
     private function isNearPoint(MineParkPlayer $player) : bool
     {
         $plist = $this->getCore()->getMapper()->getNearPoints($player->getPosition(), 32);
-		return in_array(self::POINT_NAME, $plist);
+        return in_array(self::POINT_NAME, $plist);
     }
 
     private function getPlayersNear(MineParkPlayer $player) : array
     {
-        $allplayers = $this->getCore()->getApi()->getRegionPlayers($player, 5);
+        $allPlayers = $this->getCore()->getApi()->getRegionPlayers($player, 5);
 
         $players = array();
-        foreach ($allplayers as $currp) {
-            if ($currp->getName() != $player->getName()) {
+        foreach ($allPlayers as $currp) {
+            if ($currp->getName() !== $player->getName()) {
                 $players[] = $currp;
             }
         }

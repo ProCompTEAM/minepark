@@ -100,7 +100,7 @@ class CommandsHandler
     
     public function execute(MineParkPlayer $player, string $rawCommand, Event $event = null)
     {
-        if ($rawCommand[0] !== SELF::COMMAND_PREFIX) {
+        if ($rawCommand[0] !== self::COMMAND_PREFIX) {
             return;
         }
 

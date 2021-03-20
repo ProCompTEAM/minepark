@@ -29,7 +29,7 @@ class ToPointCommand extends Command
 
     public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
-        if(!self::argumentsMin(1, $args)) {
+        if (self::argumentsNo($args)) {
             $player->sendMessage("PointNoArg");
             return;
         }

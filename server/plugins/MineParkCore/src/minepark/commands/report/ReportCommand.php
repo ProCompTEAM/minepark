@@ -29,14 +29,14 @@ class ReportCommand extends Command
 
     public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
-		if (self::argumentsNo($args)) {
-			$player->sendMessage("NoArguments2");
-			return;
-		}
+        if (self::argumentsNo($args)) {
+            $player->sendMessage("NoArguments2");
+            return;
+        }
 
-		$reportMessage = implode(" ", $args);
-		
-		$this->getCore()->getReporter()->playerReport($player, $reportMessage);
+        $reportMessage = implode(" ", $args);
+        
+        $this->getCore()->getReporter()->playerReport($player, $reportMessage);
     }
 }
 ?>

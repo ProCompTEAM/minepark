@@ -36,7 +36,7 @@ class HealCommand extends OrganisationsCommand
             return;
         }
 
-		if (!$this->isNearPoint($player)) {
+        if (!$this->isNearPoint($player)) {
             $player->sendMessage("CommandHealNoHospital");
             return;
         }
@@ -61,7 +61,7 @@ class HealCommand extends OrganisationsCommand
     {
         $plist = $this->getCore()->getMapper()->getNearPoints($player->getPosition(), 32);
 
-		return in_array(self::POINT_NAME, $plist);
+        return in_array(self::POINT_NAME, $plist);
     }
 
     private function moveThemOut(array $plrs, MineParkPlayer $healer)
@@ -97,8 +97,8 @@ class HealCommand extends OrganisationsCommand
         $playerToHeal->removeAllEffects();
         $playerToHeal->setHealth($playerToHeal->getMaxHealth());
 
-		$this->getCore()->getChatter()->send($healer, "{CommandHealDo}");
-		Providers::getBankingProvider()->givePlayerMoney($healer, 500);
+        $this->getCore()->getChatter()->send($healer, "{CommandHealDo}");
+        Providers::getBankingProvider()->givePlayerMoney($healer, 500);
     }
 }
 ?>

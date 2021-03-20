@@ -31,7 +31,7 @@ class PutBoxCommand extends Command
     {
         $this->getCore()->getOrganisationsModule()->workers->putbox($player);
 
-		$player->sendSound(Sounds::ROLEPLAY);
+        $player->sendSound(Sounds::ROLEPLAY);
     }
 }
 ?>

@@ -31,7 +31,7 @@ class GetFarmCommand extends Command
     {
         $this->getCore()->getOrganisationsModule()->farm->from($player);
 
-		$player->sendSound(Sounds::ROLEPLAY);
+        $player->sendSound(Sounds::ROLEPLAY);
     }
 }
 ?>

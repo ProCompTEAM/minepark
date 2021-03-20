@@ -54,8 +54,8 @@ class AddCommand extends OrganisationsCommand
         $player->getProfile()->organisation = $boss->getProfile()->organisation;
         $this->getCore()->getProfiler()->saveProfile($player);
 
-		$boss->sendLocalizedMessage("{CommandAdd}" . $player->getProfile()->fullName);
-		$player->sendLocalizedMessage("{GroupYou}".$this->core->getOrganisationsModule()->getName($player->getProfile()->organisation));
+        $boss->sendLocalizedMessage("{CommandAdd}" . $player->getProfile()->fullName);
+        $player->sendLocalizedMessage("{GroupYou}".$this->core->getOrganisationsModule()->getName($player->getProfile()->organisation));
     }
 
     private function isBoss(MineParkPlayer $player) : bool

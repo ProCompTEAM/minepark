@@ -34,12 +34,12 @@ class GPSNearCommand extends Command
         $nearPoints = $this->getCore()->getMapper()->getNearPoints($player->getPosition(), self::DISTANCE);
         $list = " §7(отсутствуют)  ";
         
-		if(count($nearPoints) > 0) { 
+        if(count($nearPoints) > 0) { 
             $list = implode(", ", $nearPoints);
         } 
         
         $player->sendLocalizedMessage("{CommandGPSNear}" . $list);
-		$player->sendSound(Sounds::OPEN_NAVIGATOR);
+        $player->sendSound(Sounds::OPEN_NAVIGATOR);
     }
 }
 ?>

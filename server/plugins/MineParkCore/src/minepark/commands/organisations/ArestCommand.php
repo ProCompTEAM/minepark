@@ -43,14 +43,14 @@ class ArestCommand extends OrganisationsCommand
             return;
         }
 
-        foreach($plrs as $plr) {
+        foreach ($plrs as $plr) {
             $this->arrestPlayer($plr, $player);
         }
     }
 
     private function canArrest(MineParkPlayer $player) : bool
     {
-        return $p->getProfile()->organisation == Organisations::GOVERNMENT_WORK or $player->getProfile()->organisation == Organisations::SECURITY_WORK;
+        return $player->getProfile()->organisation === Organisations::GOVERNMENT_WORK or $player->getProfile()->organisation === Organisations::SECURITY_WORK;
     }
 
     private function getPlayersNear(MineParkPlayer $player) : array
@@ -60,7 +60,7 @@ class ArestCommand extends OrganisationsCommand
         $players = array();
 
         foreach ($allplayers as $currp) {
-            if ($currp->getName() != $player->getName()) {
+            if ($currp->getName() !== $player->getName()) {
                 $players[] = $currp;
             }
         }

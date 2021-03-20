@@ -31,7 +31,7 @@ class PutFarmCommand extends Command
     {
         $this->getCore()->getOrganisationsModule()->farm->to($player);
 
-		$player->sendSound(Sounds::ROLEPLAY);
+        $player->sendSound(Sounds::ROLEPLAY);
     }
 }
 ?>
