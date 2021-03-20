@@ -34,7 +34,7 @@ class LevelCommand extends Command
         }
 
         $lvl = $this->getCore()->getServer()->getLevelByName($args[0]);
-		if($lvl != null) {
+        if($lvl != null) {
             $player->teleport($lvl->getSafeSpawn());
         } else {
             $player->sendMessage("CommandLevelInvalid");

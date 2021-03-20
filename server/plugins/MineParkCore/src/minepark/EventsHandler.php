@@ -13,7 +13,6 @@ use pocketmine\entity\object\Painting;
 use pocketmine\event\block\BlockEvent;
 use minepark\providers\data\UsersSource;
 use minepark\common\player\MineParkPlayer;
-use minepark\models\vehicles\BaseVehicle;
 use pocketmine\event\block\BlockBurnEvent;
 use pocketmine\event\level\ChunkLoadEvent;
 use pocketmine\event\block\BlockBreakEvent;
@@ -29,8 +28,6 @@ use pocketmine\event\player\PlayerPreLoginEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\player\PlayerCommandPreprocessEvent;
 use pocketmine\event\server\DataPacketReceiveEvent;
-use pocketmine\network\mcpe\protocol\InteractPacket;
-use pocketmine\network\mcpe\protocol\PlayerInputPacket;
 
 class EventsHandler implements Listener
 {
@@ -270,7 +267,7 @@ class EventsHandler implements Listener
             return $event->setCancelled();
         }
 
-        if ($event->getBlock()->getId() != Block::GRASS) {
+        if ($event->getBlock()->getId() !== Block::GRASS) {
             return;
         }
 

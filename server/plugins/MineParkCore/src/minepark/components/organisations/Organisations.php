@@ -42,13 +42,13 @@ class Organisations extends Component
     }
 
     public function getName($id, $withColor = true)
-	{
-		if($id == 0) {
+    {
+        if($id == 0) {
             return "Безработный";
         }
 
-		return $this->getCore()->getApi()->getPrefix($id+3, $withColor);
-	}
+        return $this->getCore()->getApi()->getPrefix($id+3, $withColor);
+    }
 
     public function getShop() : Shop
     {

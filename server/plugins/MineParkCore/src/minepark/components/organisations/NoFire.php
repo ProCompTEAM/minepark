@@ -13,12 +13,12 @@ use minepark\defaults\ComponentAttributes;
 
 class NoFire extends Component
 {
-	public ?Position $oldpoint;
-	
-	public function __construct()
-	{
-		$this->getCore()->getScheduler()->scheduleRepeatingTask(new CallbackTask([$this, "timeToFire"]), 20 * 60 * 3);
-		$this->oldpoint = null;
+    public ?Position $oldpoint;
+    
+    public function __construct()
+    {
+        $this->getCore()->getScheduler()->scheduleRepeatingTask(new CallbackTask([$this, "timeToFire"]), 20 * 60 * 3);
+        $this->oldpoint = null;
     }
 
     public function getAttributes() : array
@@ -27,16 +27,16 @@ class NoFire extends Component
             ComponentAttributes::STANDALONE
         ];
     }
-	
-	public function timeToFire()
-	{
-		$players = $this->getAllNoFire();
-		
-		$fire_created = $this->handleCreateFire($players);
-		
-		if($fire_created != null) {
-			$this->fireWarning($players, $fire_created);
-		}
+    
+    public function timeToFire()
+    {
+        $players = $this->getAllNoFire();
+        
+        $fire_created = $this->handleCreateFire($players);
+        
+        if($fire_created != null) {
+            $this->fireWarning($players, $fire_created);
+        }
     }
     
     public static function emptyArray(array $array) : bool
@@ -44,35 +44,35 @@ class NoFire extends Component
         return count($array) <= 0;
     }
 
-	public function clean($player)
-	{
-		if($player->getProfile()->organisation == Organisations::EMERGENCY_WORK) {
+    public function clean($player)
+    {
+        if($player->getProfile()->organisation == Organisations::EMERGENCY_WORK) {
             $this->core->getChatter()->send($player, "§8(§dв руках огнетушитель§8)", "§d : ", 10);
             
-			if($this->clearPlace($player->getPosition(), 5)) {
-				Providers::getBankingProvider()->givePlayerMoney($player, 2000);
-				$player->sendMessage("§c[§e➪§c] §aОчаг потушен! (+2000)");
-			}
-		}
-	}
-	
-	public function clearPlace(Position $pos, $rad) : bool
-	{
+            if($this->clearPlace($player->getPosition(), 5)) {
+                Providers::getBankingProvider()->givePlayerMoney($player, 2000);
+                $player->sendMessage("§c[§e➪§c] §aОчаг потушен! (+2000)");
+            }
+        }
+    }
+    
+    public function clearPlace(Position $pos, $rad) : bool
+    {
         $status = false;
 
         $y = $pos->getY();
 
-		for($x = ($pos->getX() - $rad); $x < ($pos->getX() + $rad); $x++) {
-			for($z = ($pos->getZ() - $rad); $z < ($pos->getZ() + $rad); $z++) {
+        for($x = ($pos->getX() - $rad); $x < ($pos->getX() + $rad); $x++) {
+            for($z = ($pos->getZ() - $rad); $z < ($pos->getZ() + $rad); $z++) {
                 $statusz = $this->tryToClearPlace($pos, $x, $y, $z);
     
                 if ($statusz) {
                     $status = true;
                 }
-			}
+            }
         }
 
-		return $status;
+        return $status;
     }
     
     private function getAllNoFire() : array
@@ -97,13 +97,13 @@ class NoFire extends Component
 
         $points = $this->getCore()->getMapper()->getNearPoints($noFires[0], 5000);
 
-		if((count($points) > 0)) {
+        if((count($points) > 0)) {
             $point = $points[mt_rand(0, count($points) - 1)];
 
-			if($this->getCore()->getMapper()->getPointGroup($point) < 3) {
-				return $this->makeRandomFire($point);
-			}
-		}
+            if($this->getCore()->getMapper()->getPointGroup($point) < 3) {
+                return $this->makeRandomFire($point);
+            }
+        }
     }
 
     private function makeRandomFire(string $point) : ?string
@@ -133,31 +133,31 @@ class NoFire extends Component
     private function fireWarning(array $noFires, string $fire_created)
     {
         foreach($noFires as $p) {
-			$p->sendMessage("§c[§e➪§c] §6!!! §e<=== §6ЭКСТРЕННЫЙ ВЫЗОВ (ОТПРАВЛЯЙТЕСЬ) §e===>");
-			$p->sendMessage("§c[§e➪§c] §6!!! §cТРЕВОГА! §eВОЗГОРАНИЕ НА ТЕРРИТОРИИ  $fire_created !");
-			$p->sendMessage("§c[§e➪§c] §6!!! §eНЕМЕДЛЕННО ВЫЕЗЖАЙТЕ: §7/gps §b $fire_created");
-		}
-			
-		foreach($this->getCore()->getServer()->getOnlinePlayers() as $p) {
-			if($p->isOp()) {
-				$p->sendMessage("§7[§6!§7] Fire : На территории $fire_created начался пожар!");
-			}
-		}
-			
-		if($this->oldpoint != null) {
+            $p->sendMessage("§c[§e➪§c] §6!!! §e<=== §6ЭКСТРЕННЫЙ ВЫЗОВ (ОТПРАВЛЯЙТЕСЬ) §e===>");
+            $p->sendMessage("§c[§e➪§c] §6!!! §cТРЕВОГА! §eВОЗГОРАНИЕ НА ТЕРРИТОРИИ  $fire_created !");
+            $p->sendMessage("§c[§e➪§c] §6!!! §eНЕМЕДЛЕННО ВЫЕЗЖАЙТЕ: §7/gps §b $fire_created");
+        }
+            
+        foreach($this->getCore()->getServer()->getOnlinePlayers() as $p) {
+            if($p->isOp()) {
+                $p->sendMessage("§7[§6!§7] Fire : На территории $fire_created начался пожар!");
+            }
+        }
+            
+        if($this->oldpoint != null) {
             $this->clearPlace($this->oldpoint, 20);
         }
 
-		$this->oldpoint = $this->getCore()->getMapper()->getPointPosition($fire_created);
+        $this->oldpoint = $this->getCore()->getMapper()->getPointPosition($fire_created);
     }
 
     private function tryToClearPlace(Position $pos, float $x, float $y, float $z) : bool
     {
         $newpos = new Position($x, $y, $z, $pos->getLevel());
 
-		if($pos->getLevel()->getBlock($newpos)->getId() == 51) {
-			$newpos->getLevel()->setBlock($newpos, Block::get(0), true, true);
-			return true;
+        if($pos->getLevel()->getBlock($newpos)->getId() == 51) {
+            $newpos->getLevel()->setBlock($newpos, Block::get(0), true, true);
+            return true;
         }
 
         return false;

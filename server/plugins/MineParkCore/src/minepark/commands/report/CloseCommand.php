@@ -28,17 +28,17 @@ class CloseCommand extends Command
 
     public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
-		if (self::argumentsNo($args)) {
-			$player->sendMessage("NoArguments");
-			return;
-		}
-			
-		$response = $this->getCore()->getReporter()->closeReport(intval($args[0]));
+        if (self::argumentsNo($args)) {
+            $player->sendMessage("NoArguments");
+            return;
+        }
+            
+        $response = $this->getCore()->getReporter()->closeReport(intval($args[0]));
 
-		if (!$response)
-		{
-			$player->sendMessage("ReportCloseNoID");
-		}
+        if (!$response)
+        {
+            $player->sendMessage("ReportCloseNoID");
+        }
     }
 }
 ?>

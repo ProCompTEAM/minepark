@@ -84,7 +84,7 @@ class GiveLicCommand extends OrganisationsCommand
     private function isNearPoint(MineParkPlayer $player) : bool
     {
         $plist = $this->getCore()->getMapper()->getNearPoints($player->getPosition(), 32);
-		return in_array(self::POINT_NAME, $plist);
+        return in_array(self::POINT_NAME, $plist);
     }
 
     private function getPlayersNear(MineParkPlayer $player) : array

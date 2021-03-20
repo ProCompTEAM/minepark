@@ -21,7 +21,7 @@ class ReplyCommand extends Command
 
     public function getPermissions() : array
     {
-		return [
+        return [
             Permissions::OPERATOR,
             Permissions::ADMINISTRATOR
         ];
@@ -29,17 +29,17 @@ class ReplyCommand extends Command
 
     public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
-		if (!self::argumentsMin(2, $args)) {
+        if (!self::argumentsMin(2, $args)) {
             $player->sendMessage("ReportReplyNoArgs");
             return;
-		}
-		
-		$ticketID = intval($args[0]);
+        }
+        
+        $ticketID = intval($args[0]);
 
-		$messageArray = array_slice($args, 1);
-		$messageToSend = implode(" ", $messageArray);
+        $messageArray = array_slice($args, 1);
+        $messageToSend = implode(" ", $messageArray);
 
-		$this->getCore()->getReporter()->replyReport($player, $ticketID, $messageToSend);
+        $this->getCore()->getReporter()->replyReport($player, $ticketID, $messageToSend);
     }
 }
 ?>

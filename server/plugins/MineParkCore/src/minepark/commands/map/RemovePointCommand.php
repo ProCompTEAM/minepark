@@ -36,7 +36,7 @@ class RemovePointCommand extends Command
 
         $status = $this->getCore()->getMapper()->removePoint($args[0]);
         
-		$player->sendMessage($status ? "CommandRemovePointSuccess" : "CommandRemovePointUnsuccess");
+        $player->sendMessage($status ? "CommandRemovePointSuccess" : "CommandRemovePointUnsuccess");
     }
 }
 ?>

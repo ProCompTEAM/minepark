@@ -30,7 +30,7 @@ class DayCommand extends Command
     public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
         $player->getLevel()->setTime(Level::TIME_DAY);
-	    $player->sendMessage("§9⌚ Вы включили §dдень §9в игровом мире §e" . $player->getLevel()->getName());
+        $player->sendMessage("§9⌚ Вы включили §dдень §9в игровом мире §e" . $player->getLevel()->getName());
     }
 }
 ?>

@@ -56,8 +56,8 @@ class GetSellerCommand extends Command
     {
         $shops = $this->getCore()->getMapper()->getNearPoints($position, self::DISTANCE);
         
-		foreach($shops as $point) {
-			if($this->getCore()->getMapper()->getPointGroup($point) == 2) {
+        foreach($shops as $point) {
+            if($this->getCore()->getMapper()->getPointGroup($point) == 2) {
                 return $point;
             }
         }

@@ -16,11 +16,11 @@ use minepark\defaults\ComponentAttributes;
 class Workers extends Component
 {
     public array $words;
-	
-	public function __construct()
-	{
-		$this->words = [
-			"Сельдь *Московская*","Картофель *Беларус*","Боярышник","*Contex Classic*",
+    
+    public function __construct()
+    {
+        $this->words = [
+            "Сельдь *Московская*","Картофель *Беларус*","Боярышник","*Contex Classic*",
             "*Contex с пупырышками*","Шоколад *Алёнка*","Трубы водопроводные","Пойманные морские обитатели",
             "Сало","Коньяк SHABO","Кактус декоративный","Стекло","Гельдуш *Аноним*","Падаль","Очищенная питьевая вода",
             "Морковь","Вода Бонаква","Сигареты *Prima*","Диски *WannaCry*","Спец. корм для Летающих особей",
@@ -35,7 +35,7 @@ class Workers extends Component
             "Вазоны","Шаверма","Журнал *Мирный Мир*","Маршрутизаторы","Флешкарты","Спец. корм для Травоядных",
             "Комплектующие для ноутбука","*Play Station 5*","Топовый ПК","Микроскоп","Книжная полка","Рачки"
         ];//90
-	}
+    }
 
     public function getAttributes() : array
     {
@@ -44,40 +44,40 @@ class Workers extends Component
         ];
     }
 
-	public function sign(Event $event)
-	{
-		$player = $event->getPlayer();
+    public function sign(Event $event)
+    {
+        $player = $event->getPlayer();
         $lns = $event->getLines();
 
-		if ($lns[0] == "[workers1]" and $player->isOp()) {
-			$this->handleWorker1($event);
-		} elseif ($lns[0] == "[workers2]" and $player->isOp()) {
-			$this->handleWorker2($event);
-		}
+        if ($lns[0] == "[workers1]" and $player->isOp()) {
+            $this->handleWorker1($event);
+        } elseif ($lns[0] == "[workers2]" and $player->isOp()) {
+            $this->handleWorker2($event);
+        }
     }
     
     private function handleWorker1(Event $event)
     {
         $event->setLine(0, "§eЗдесь можно"); 
-		$event->setLine(1, "§eподзаработать");
-		$event->setLine(2, "§f(грузчики)");
-		$event->setLine(3, "§b/takebox");
+        $event->setLine(1, "§eподзаработать");
+        $event->setLine(2, "§f(грузчики)");
+        $event->setLine(3, "§b/takebox");
     }
     
     private function handleWorker2(Event $event)
     {
         $event->setLine(0, "§aЗдесь находится"); 
-		$event->setLine(1, "§aточка разгрузки");
-		$event->setLine(2, "§f(грузчики)");
-		$event->setLine(3, "§6Разгрузиться: §b/putbox");
+        $event->setLine(1, "§aточка разгрузки");
+        $event->setLine(2, "§f(грузчики)");
+        $event->setLine(3, "§6Разгрузиться: §b/putbox");
     }
 
     public function ifPointIsNearPlayer(Position $pos, int $group)
     {
         $points = $this->getCore()->getMapper()->getNearPoints($pos, 6);
 
-		foreach($points as $point) {
-			if($this->getCore()->getMapper()->getPointGroup($point) == $group) {
+        foreach($points as $point) {
+            if($this->getCore()->getMapper()->getPointGroup($point) == $group) {
                 return true;
             }
         }
@@ -85,11 +85,11 @@ class Workers extends Component
         return false;
     }
 
-	public function takebox(MineParkPlayer $player)
-	{
+    public function takebox(MineParkPlayer $player)
+    {
         $hasPoint = $this->ifPointIsNearPlayer($player->getPosition(), Mapper::POINT_GROUP_WORK1);
 
-		if(!$hasPoint) {
+        if(!$hasPoint) {
             $player->sendMessage("§cРядом нет площадки с ящиками!");
             return;
         }
@@ -100,27 +100,27 @@ class Workers extends Component
         }
 
         $player->sendMessage("§cСначала положите ящик из ваших рук на склад!");
-	}
+    }
     
     private function handleBoxTake(MineParkPlayer $player)
     {
         $player->addEffect(new EffectInstance(Effect::getEffect(2), 20 * 9999, 3));
 
-		$box = $this->words[mt_rand(0, count($this->words))]; 
+        $box = $this->words[mt_rand(0, count($this->words))]; 
         $player->getStatesMap()->loadWeight = mt_rand(1, 12); 
         
         $player->sendMessage("§7Найдите точку разгрузки и положите ящик!");
         
         $this->getCore()->getChatter()->send($player, "§8(§dв руках ящик с надписью | $box |§8)", "§d : ", 12);
     
-		$player->getStatesMap()->bar = "§aВ руках ящик около " . $player->getStatesMap()->loadWeight . " кг";
+        $player->getStatesMap()->bar = "§aВ руках ящик около " . $player->getStatesMap()->loadWeight . " кг";
     }
 
-	public function putbox(MineParkPlayer $player)
-	{
+    public function putbox(MineParkPlayer $player)
+    {
         $hasPoint = $this->ifPointIsNearPlayer($player->getPosition(), Mapper::POINT_GROUP_WORK2);
 
-		if(!$hasPoint) {
+        if(!$hasPoint) {
             $player->sendMessage("§cРядом нет точек для разрузки!");
             return;
         }

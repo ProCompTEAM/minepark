@@ -31,7 +31,7 @@ class ToNearPointCommand extends Command
     {
         $nearPoints = $this->getCore()->getMapper()->getNearPoints($player->getPosition(), 15);
 
-		if(count($nearPoints) > 0)  {
+        if(count($nearPoints) > 0)  {
             $this->getCore()->getMapper()->teleportPoint($player, $nearPoints[0]);
         } else {
             $player->sendMessage("CommandNoToNearPoint");

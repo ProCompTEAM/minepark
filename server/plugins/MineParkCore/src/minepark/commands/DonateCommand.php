@@ -34,20 +34,20 @@ class DonateCommand extends Command
     {
         $file = $this->getFileSource();
         $content = file_exists($file) ? $this->clearData(file_get_contents($file)) : "*";
-		$player->sendMessage($content);
+        $player->sendMessage($content);
     }
 
     private function clearData($str) : string
-	{
-		$lines = explode("\r",$str);
-		$result = array();
-		
-		foreach($lines as $line)
-		{
-			array_push($result, mb_strcut($line, 2));
+    {
+        $lines = explode("\r",$str);
+        $result = array();
+        
+        foreach($lines as $line)
+        {
+            array_push($result, mb_strcut($line, 2));
         }
         
-		return implode("\n", $result);
+        return implode("\n", $result);
     }
 }
 ?>

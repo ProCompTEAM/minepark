@@ -36,8 +36,8 @@ class PassportCommand extends Command
         $player->sendSound(Sounds::PASSPORT_OPEN);
 
         $form = $this->getPassportForm($player);
-		
-		$this->showPassportForm($player, $form);
+        
+        $this->showPassportForm($player, $form);
         
         $this->getCore()->getChatter()->send($player, "{CommandPassportTake}", "§d", 10);
     }
@@ -48,11 +48,11 @@ class PassportCommand extends Command
         $outputRank = (($this->getCore()->getApi()->existsAttr($player, Api::ATTRIBUTE_BOSS)) ? " §7[§bНачальник§7]" : "");
         $outputPhone = $player->getProfile()->phoneNumber;
         
-		$form = "§5Паспортные данные | Печать | WorldDoc";
+        $form = "§5Паспортные данные | Печать | WorldDoc";
         $form .= "\n§d★ §eПолное имя§6: §3" . $player->getProfile()->fullName
              . "(" . $player->getName() . ")";
-		$form .= "\n§d★ §eОрганизация§6: ". $outputOrg . $outputRank;
-			
+        $form .= "\n§d★ §eОрганизация§6: ". $outputOrg . $outputRank;
+            
         if(isset($player->subtag)) {
             $form .= $player->subtag == "§f" ? "\n§d★ §fГостевая карта пропуска" : "\n§d★ §eКарта пропуска§6: " . $player->subtag;
         }
@@ -65,12 +65,12 @@ class PassportCommand extends Command
     private function showPassportForm(MineParkPlayer $player, string $form)
     {
         foreach($this->getCore()->getApi()->getRegionPlayers($player, 4) as $p) {
-			$p->sendWindowMessage($form, "Паспорт " . $player->getName());
-				
-			if(strpos($p->getProfile()->people, strtolower($player->getName())) === false and $p !== $player) {
-				$p->getProfile()->people .= strtolower($player->getName());
-				$this->getCore()->getProfiler()->saveProfile($p);
-			}
+            $p->sendWindowMessage($form, "Паспорт " . $player->getName());
+                
+            if(strpos($p->getProfile()->people, strtolower($player->getName())) === false and $p !== $player) {
+                $p->getProfile()->people .= strtolower($player->getName());
+                $this->getCore()->getProfiler()->saveProfile($p);
+            }
         }
     }
 }

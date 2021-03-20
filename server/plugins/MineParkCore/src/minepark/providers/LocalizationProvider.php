@@ -19,17 +19,17 @@ class LocalizationProvider extends Provider
     }
 
     public function __construct()
-	{
+    {
         $this->supportedLanguages = $this->getKeys();
 
         @mkdir($this->getDirectory());
 
         $this->initialize();
-	}
+    }
 
     public function getLanguages() : array
-	{
-		return [
+    {
+        return [
             "ru_RU" => "Русский",
             "en_US" => "English",
             "uk_UA" => "Український"
@@ -37,22 +37,22 @@ class LocalizationProvider extends Provider
     }
 
     public function getKeys() : array
-	{
-		return array_keys($this->getLanguages());
+    {
+        return array_keys($this->getLanguages());
     }
 
     public function getLangData() : array
-	{
-		return $this->data;
+    {
+        return $this->data;
     }
 
     public function take(string $langKey, string $stringKey) : ?string
-	{
+    {
         if(!isset($this->data[$langKey])) {
             $langKey = Defaults::INTERNATIONAL_LANGUAGE_KEY;
         }
 
-		return $this->takeValue($langKey, $stringKey);
+        return $this->takeValue($langKey, $stringKey);
     }
 
     public function getKeyArray(string $langKey, string $arrayKey) : ?array
@@ -67,7 +67,7 @@ class LocalizationProvider extends Provider
     }
 
     public function translateFrom(string $langKey, string $text) : string
-	{
+    {
         $result = "";
         $stringKey = "";
 

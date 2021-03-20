@@ -31,49 +31,49 @@ class AdminCommand extends Command
 
     public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
-		if (self::argumentsNo($args)) {
-			$player->sendMessage("§eВсе аргументы пусты :(");
-			return;
-		}
-		
+        if (self::argumentsNo($args)) {
+            $player->sendMessage("§eВсе аргументы пусты :(");
+            return;
+        }
+        
         $command = strtolower($args[0]);
 
         switch($command) {
             case 'msg':
-			case 'sms':
-				$this->commandMessage($args);
+            case 'sms':
+                $this->commandMessage($args);
             break;
 
-			case 'setorg':
-				$this->commandSetOrg($player, $args);
+            case 'setorg':
+                $this->commandSetOrg($player, $args);
             break;
 
-			case 'near':
-				$this->commandNear($player);
+            case 'near':
+                $this->commandNear($player);
             break;
 
-			case 'arest':
-				$this->commandArest($player, $args);
+            case 'arest':
+                $this->commandArest($player, $args);
             break;
 
-			case 'tags':
-				$this->commandTags($player, $args);
+            case 'tags':
+                $this->commandTags($player, $args);
             break;
 
-			case 'addtag':
-				$this->commandAddTag($player, $args);
+            case 'addtag':
+                $this->commandAddTag($player, $args);
             break;
 
-			case 'remtag':
-				$this->commandRemoveTag($player, $args);
+            case 'remtag':
+                $this->commandRemoveTag($player, $args);
             break;
 
-			case 'hide':
-				$this->commandHide($player);
+            case 'hide':
+                $this->commandHide($player);
             break;
 
-			case 'show':
-				$this->commandShow($player);
+            case 'show':
+                $this->commandShow($player);
             break;
             
             case 'track':
@@ -87,7 +87,7 @@ class AdminCommand extends Command
             case 'siren':
                 $this->commandSiren();
             break;
-		}
+        }
     }
 
     public function commandMessage(array $args)
@@ -109,15 +109,15 @@ class AdminCommand extends Command
         $oid = $args[2];
         $targetPlayer = MineParkPlayer::cast($this->getCore()->getServer()->getPlayer($args[1]));
         
-		if($targetPlayer === null) {
+        if($targetPlayer === null) {
             return;
         }
 
         $targetPlayer->getProfile()->organisation = $oid; 
         $this->getCore()->getProfiler()->saveProfile($targetPlayer);
 
-		$player->sendMessage("AdminCmdSetOrg1");
-		$targetPlayer->sendLocalizedMessage("{GroupYou}". $this->getCore()->getOrganisationsModule()->getName($oid));
+        $player->sendMessage("AdminCmdSetOrg1");
+        $targetPlayer->sendLocalizedMessage("{GroupYou}". $this->getCore()->getOrganisationsModule()->getName($oid));
     }
 
     public function commandNear(MineParkPlayer $player)
@@ -141,7 +141,7 @@ class AdminCommand extends Command
 
         $targetPlayer = MineParkPlayer::cast($this->getCore()->getServer()->getPlayer($args[1]));
 
-		if($targetPlayer === null) {
+        if($targetPlayer === null) {
             return;
         }
 
@@ -158,11 +158,11 @@ class AdminCommand extends Command
 
         $targetPlayer = MineParkPlayer::cast($this->getCore()->getServer()->getPlayer($args[1]));
 
-		if($targetPlayer === null) {
+        if($targetPlayer === null) {
             return;
         }
 
-		$player->sendMessage($targetPlayer->getProfile()->attributes);
+        $player->sendMessage($targetPlayer->getProfile()->attributes);
     }
 
     public function commandAddTag(MineParkPlayer $player, array $args)

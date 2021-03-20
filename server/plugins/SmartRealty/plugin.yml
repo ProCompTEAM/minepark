@@ -18,4 +18,3 @@ permissions:
  realt.creator: 
   default: op
   description: "Право регистрировать недвижимость"
-  

@@ -44,7 +44,7 @@ class AddPointCommand extends Command
 
         $this->getCore()->getMapper()->addPoint($player->getPosition(), $param1, $param2);
         
-		$player->sendMessage("AddPoint");
+        $player->sendMessage("AddPoint");
     }
 }
 ?>
