@@ -112,7 +112,7 @@ class GameChat extends Component
     private function handleInCallMessage(MineParkPlayer $player, string $message)
     {
         $this->getCore()->getPhone()->handleInCall($player, $message);
-        $this->getCore()->getChatter()->sendLocalMessage($player, $message, " §8говорит в телефон §7>");
+        $this->getCore()->getChatter()->sendLocalMessage($player, $message, "{ChatSpeakPhone}");
         $this->getCore()->getTrackerModule()->message($player, $message, 7, "[PHONE]");
     }
 

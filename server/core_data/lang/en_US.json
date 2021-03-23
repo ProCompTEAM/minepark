@@ -357,5 +357,7 @@
     "AutoMessage27": "AutoMessage",
     "AutoMessage28": "AutoMessage",
     "AutoMessage29": "AutoMessage",
-    "AutoMessage30": "AutoMessage"
+    "AutoMessage30": "AutoMessage",
+    "ChatSpeakPhone": " §8говорит в телефон §7>",
+    "ChatLaugh": "посмеялся(ась)."
 }
