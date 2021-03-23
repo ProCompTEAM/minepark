@@ -37,7 +37,7 @@ class SellCommand extends OrganisationsCommand
             $player->sendMessage("CommandSellNoSeller");
             return;
         }
-        $this->getCore()->getChatter()->send($player, "§8(§dв руках ключ от кассового аппарата§8)", "§d : ", 10);
+        $this->getCore()->getChatter()->sendLocalMessage($player, "§8(§dв руках ключ от кассового аппарата§8)", "§d : ", 10);
         $plist = $this->getCore()->getMapper()->getNearPoints($player->getPosition(), 15);
 
         if ($this->noPointsNear($plist)) {

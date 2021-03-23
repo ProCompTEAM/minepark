@@ -41,7 +41,7 @@ class JailExitCommand extends Command
         }
         
         if(Providers::getBankingProvider()->takePlayerMoney($player, self::FREE_PRICE)) {
-            $this->getCore()->getChatter()->send($player, "{CommandJailExit}", "§d", self::DOOR_DISTANCE);
+            $this->getCore()->getChatter()->sendLocalMessage($player, "{CommandJailExit}", "§d", self::DOOR_DISTANCE);
 
             $this->getCore()->getApi()->changeAttr($player, "A", false);
             $this->getCore()->getApi()->changeAttr($player, "W", false);

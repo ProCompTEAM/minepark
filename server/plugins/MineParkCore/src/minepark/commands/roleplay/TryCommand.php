@@ -40,7 +40,7 @@ class TryCommand extends Command
         
         $actResult = mt_rand(1, 2) == 1 ? "CommandRolePlayTrySucces" : "CommandRolePlayTryUnsucces";
         
-        $this->getCore()->getChatter()->send($player, $message . " " . $actResult, "§d", self::DISTANCE);
+        $this->getCore()->getChatter()->sendLocalMessage($player, $message . " " . $actResult, "§d", self::DISTANCE);
         $player->sendSound(Sounds::ROLEPLAY);
 
         $this->getCore()->getTrackerModule()->actionRP($player, $message . " " . $actResult, self::DISTANCE, "[TRY]");

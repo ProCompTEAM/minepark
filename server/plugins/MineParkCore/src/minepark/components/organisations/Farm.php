@@ -26,7 +26,7 @@ class Farm extends Component
         if ($this->playerIsNearWheat($player)) {
             $player->addEffect(new EffectInstance(Effect::getEffect(2), 20 * 9999, 1));
 
-            $this->getCore()->getChatter()->send($player, "§8(§dв корзине собранный урожай |§8)", "§d : ", 12);
+            $this->getCore()->getChatter()->sendLocalMessage($player, "§8(§dв корзине собранный урожай |§8)", "§d : ", 12);
             $player->getStatesMap()->bar = "§eДонесите корзину на пункт сбора около фермы"; 
             $player->getStatesMap()->loadWeight = 1; 
         } else {
@@ -57,7 +57,7 @@ class Farm extends Component
     {
         $player->removeAllEffects();
 
-        $this->getCore()->getChatter()->send($player, "высыпал из корзины урожай", "§d ", 12);
+        $this->getCore()->getChatter()->sendLocalMessage($player, "высыпал из корзины урожай", "§d ", 12);
         Providers::getBankingProvider()->givePlayerMoney($player, 150);
 
         $player->getStatesMap()->loadWeight = null; 

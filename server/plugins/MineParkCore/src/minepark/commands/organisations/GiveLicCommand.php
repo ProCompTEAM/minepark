@@ -57,7 +57,7 @@ class GiveLicCommand extends OrganisationsCommand
 
     private function tryGiveLicense(MineParkPlayer $toPlayer, MineParkPlayer $government)
     {
-        $this->getCore()->getChatter()->send($government, "{CommandGiveLicKeys}", "§d : ", 10);
+        $this->getCore()->getChatter()->sendLocalMessage($government, "{CommandGiveLicKeys}", "§d : ", 10);
 
         $government->sendMessage("CommandGiveLicNoLic1");
         $toPlayer->sendMessage("CommandGiveLicNoLic2");
@@ -65,7 +65,7 @@ class GiveLicCommand extends OrganisationsCommand
 
     private function moveThemOut(array $plrs, MineParkPlayer $government)
     {
-        $this->getCore()->getChatter()->send($government, "{CommandGiveLicManyPlayers1}");
+        $this->getCore()->getChatter()->sendLocalMessage($government, "{CommandGiveLicManyPlayers1}");
 
         foreach($plrs as $id => $p) {
             if($id > 1) {

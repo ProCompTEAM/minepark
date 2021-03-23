@@ -39,7 +39,7 @@ class PassportCommand extends Command
         
         $this->showPassportForm($player, $form);
         
-        $this->getCore()->getChatter()->send($player, "{CommandPassportTake}", "§d", 10);
+        $this->getCore()->getChatter()->sendLocalMessage($player, "{CommandPassportTake}", "§d", 10);
     }
 
     private function getPassportForm(MineParkPlayer $player) : string

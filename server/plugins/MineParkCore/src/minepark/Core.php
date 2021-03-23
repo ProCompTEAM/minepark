@@ -273,7 +273,7 @@ class Core extends PluginBase implements Listener
 
     public function onCommand(CommandSender $sender, Command $command, string $label, array $args) : bool
     {
-        if ($command === Service::COMMAND and $sender instanceof ConsoleCommandSender) {
+        if ($command->getName() === Service::COMMAND and $sender instanceof ConsoleCommandSender) {
             $this->getService()->handle($args);
             return true;
         }

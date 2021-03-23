@@ -24,7 +24,7 @@ class FastFood extends Component
         $core = $this->getCore();
 
         if($core->getMapper()->hasNearPointWithType($player, 5, Mapper::POINT_GROUP_FASTFOOD)) {
-            $core->getChatter()->send($player, "{FastFoodNear}", "§d : ", 10);
+            $core->getChatter()->sendLocalMessage($player, "{FastFoodNear}", "§d : ", 10);
 
             if(Providers::getBankingProvider()->getPlayerMoney($player) >= 50) {
                 $core->uiWindows->sendFastfoodWindow($player);
@@ -53,7 +53,7 @@ class FastFood extends Component
     
     public function giveItem($player, $goodId)
     {
-        $this->getCore()->getChatter()->send($player, "§8(§dслышен звук торгового автомата§8)", "§d : ", 18);
+        $this->getCore()->getChatter()->sendLocalMessage($player, "§8(§dслышен звук торгового автомата§8)", "§d : ", 18);
         
         $item = Item::get(0, 0, 1); //Item::get(<id>,<meta>,<count>)
 
@@ -72,7 +72,7 @@ class FastFood extends Component
         }
 
         $label = $this->getAllGoods()[$goodId];
-        $this->getCore()->getChatter()->send($player, "§8(§dв руке товар с надписью ".$label." §8)", "§d : ", 10);
+        $this->getCore()->getChatter()->sendLocalMessage($player, "§8(§dв руке товар с надписью ".$label." §8)", "§d : ", 10);
 
         $player->getInventory()->addItem($item);
     }
