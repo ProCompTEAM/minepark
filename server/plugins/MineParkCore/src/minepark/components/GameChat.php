@@ -50,7 +50,7 @@ class GameChat extends Component
 
     public function sendLocalMessage(MineParkPlayer $player, string $message, string $prefix = self::CHAT_MESSAGE_PREFIX, int $radius = ChatConstants::LOCAL_CHAT_HEAR_RADIUS, bool $checkForEmotions = false)
     {
-        $senderName = $player->getProfile()->fullName;
+        $senderFullName = $player->getProfile()->fullName;
 
         if ($checkForEmotions and $this->checkForEmotion($player, $message)) {
             return;
@@ -60,13 +60,13 @@ class GameChat extends Component
             return;
         }
 
-        $isFriendRequest = $this->isFriendsRequest(strtolower($senderName), $message);
+        $isFriendRequest = $this->isFriendsRequest($senderFullName, $message);
 
         $randomPrefix = "§7" . $this->getRandomUserPrefix();
 
         foreach ($this->getCore()->getServer()->getOnlinePlayers() as $onlinePlayer) {
             if ($onlinePlayer->distance($player) <= $radius) {
-                $this->sendMessage($onlinePlayer, $message, $player->getLowerCaseName(), $senderName, $isFriendRequest, $randomPrefix, $prefix);
+                $this->sendMessage($onlinePlayer, $message, $player->getLowerCaseName(), $senderFullName, $isFriendRequest, $randomPrefix, $prefix);
             }
         }
     }
@@ -133,11 +133,11 @@ class GameChat extends Component
         $targetPlayer->sendLocalizedMessage($userPrefix . $chatPrefix . " $message");
     }
 
-    private function isFriendsRequest(string $personName, string $message) : bool
+    private function isFriendsRequest(string $personFullName, string $message) : bool
     {
         $message = mb_strtolower($message);
 
-        foreach ($this->getFriendRequestDictionary($personName) as $requestWord) {
+        foreach ($this->getFriendRequestDictionary($personFullName) as $requestWord) {
             if (str_contains($message, $requestWord)) {
                 return true;
             }
@@ -176,7 +176,7 @@ class GameChat extends Component
 
     private function getRandomUserPrefix()
     {
-        return "{ChatUserPrefix" . mt_rand(1, $this->getUserChatPrefixesCount()) . "}";;
+        return "{ChatUserPrefix" . mt_rand(1, $this->getUserChatPrefixesCount()) . "}";
     }
 
     private function getUserChatPrefixesCount() : int
@@ -188,7 +188,7 @@ class GameChat extends Component
     {
         return [
             "мое имя", "меня зовут", "звать меня", "my name","мене звати", "mam na imię",
-            "mano vardas", "ich heiße", "mon nom est", "Менің атым", "mi chiamo", $personName
+            "mano vardas", "ich heiße", "mon nom est", "Менің атым", "mi chiamo", strtolower($personName)
         ];
     }
 

@@ -31,14 +31,14 @@ class TryCommand extends Command
 
     public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
-        if(self::argumentsNo($args)) {
+        if (self::argumentsNo($args)) {
             $player->sendMessage("CommandRolePlayTryUse");
             return;
         }
 
         $message = implode(self::ARGUMENTS_SEPERATOR, $args);
         
-        $actResult = mt_rand(1, 2) == 1 ? "CommandRolePlayTrySucces" : "CommandRolePlayTryUnsucces";
+        $actResult = mt_rand(1, 2) === 1 ? "{CommandRolePlayTrySucces}" : "{CommandRolePlayTryUnsucces}";
         
         $this->getCore()->getChatter()->sendLocalMessage($player, $message . " " . $actResult, "§d", self::DISTANCE);
         $player->sendSound(Sounds::ROLEPLAY);
