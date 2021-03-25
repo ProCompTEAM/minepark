@@ -13,6 +13,7 @@ use pocketmine\entity\object\Painting;
 use pocketmine\event\block\BlockEvent;
 use minepark\providers\data\UsersSource;
 use minepark\common\player\MineParkPlayer;
+use minepark\defaults\ChatConstants;
 use pocketmine\event\block\BlockBurnEvent;
 use pocketmine\event\level\ChunkLoadEvent;
 use pocketmine\event\block\BlockBreakEvent;
@@ -77,31 +78,7 @@ class EventsHandler implements Listener
 
     public function chatEvent(PlayerChatEvent $event)
     {
-        $event->setCancelled();
-
-        $player = MineParkPlayer::cast($event->getPlayer());
-        $message = $event->getMessage();
-
-        if ($player->getStatesMap()->phoneRcv != null) {
-            $this->getCore()->getPhone()->handleInCall($player, $message);
-            $this->getCore()->getChatter()->send($player, $message, " §8говорит в телефон §7>");
-            $this->getCore()->getTrackerModule()->message($player, $message, 7, "[PHONE]");
-            return;
-        }
-
-        if ($player->muted) {
-            $player->sendMessage("Вы не можете писать в чат, так как вам выдали мут.");
-            return;
-        }
-        
-        if ($message[0] == GameChat::GLOBAL_CHAT_SIGNATURE) {
-            $this->getCore()->getChatter()->sendGlobal($player, $message);
-        } elseif ($message[0] == GameChat::ADMINISTRATION_CHAT_SIGNATURE) {
-            $this->getCore()->getChatter()->sendForAdministration($player, $message);
-        } else {
-            $this->getCore()->getChatter()->send($player, $message);
-            $this->getCore()->getTrackerModule()->message($player, $message, 7, "[CHAT]");
-        }
+        $this->getCore()->getChatter()->handleMessageEvent($event);
     }
     
     public function quitEvent(PlayerQuitEvent $event)

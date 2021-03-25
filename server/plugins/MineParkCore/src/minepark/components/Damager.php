@@ -38,8 +38,8 @@ class Damager extends Component
     public function kick(MineParkPlayer $player, MineParkPlayer $damager) : bool
     {
         if($damager->getProfile()->organisation == 4 and $damager->getInventory()->getItemInHand()->getName() == "Stick") {
-            $this->getCore()->getChatter()->send($damager, "§8(§dв руках дубинка-электрошокер§8)", "§d : ", 10);
-            $this->getCore()->getChatter()->send($player, "§8(§dлежит на полу | ослеплен§8)", "§d : ", 12);
+            $this->getCore()->getChatter()->sendLocalMessage($damager, "§8(§dв руках дубинка-электрошокер§8)", "§d : ", 10);
+            $this->getCore()->getChatter()->sendLocalMessage($player, "§8(§dлежит на полу | ослеплен§8)", "§d : ", 12);
             
             $this->getCore()->getApi()->changeAttr($player, Api::ATTRIBUTE_WANTED);
 

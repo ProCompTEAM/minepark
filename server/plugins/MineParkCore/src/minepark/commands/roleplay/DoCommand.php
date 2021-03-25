@@ -38,7 +38,7 @@ class DoCommand extends Command
 
         $message = implode(self::ARGUMENTS_SEPERATOR, $args);
         
-        $this->getCore()->getChatter()->send($player, $message, "§d : ", self::DISTANCE);
+        $this->getCore()->getChatter()->sendLocalMessage($player, $message, "§d : ", self::DISTANCE);
         $player->sendSound(Sounds::ROLEPLAY);
 
         $this->getCore()->getTrackerModule()->actionRP($player, $message, self::DISTANCE, "[DO]");

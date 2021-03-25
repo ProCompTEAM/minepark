@@ -37,7 +37,7 @@ class ShowCommand extends OrganisationsCommand
             return;
         }
 
-        $this->getCore()->getChatter()->send($player, "{CommandShowHandLic}".$organModule->getName($oid, false)."*§8)", "§d : ", 10);
+        $this->getCore()->getChatter()->sendLocalMessage($player, "{CommandShowHandLic}".$organModule->getName($oid, false)."*§8)", "§d : ", 10);
     }
 }
 ?>

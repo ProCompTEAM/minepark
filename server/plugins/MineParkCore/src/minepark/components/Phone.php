@@ -85,7 +85,7 @@ class Phone extends Component
     
     public function cmd(MineParkPlayer $player, array $commandArgs)
     {
-        $this->getCore()->getChatter()->send($player, "§8(§dв руках телефон§8)", "§d : ", 10);
+        $this->getCore()->getChatter()->sendLocalMessage($player, "§8(§dв руках телефон§8)", "§d : ", 10);
 
         if(!isset($commandArgs[1])) {
             $this->sendDisplayMessages($player);
@@ -239,7 +239,7 @@ class Phone extends Component
             if($number == $myNumber) {
                 $player->sendMessage("PhoneCheckNum");
             } elseif($targetPlayer->getStatesMap()->phoneRcv == null) {
-                $this->getCore()->getChatter()->send($targetPlayer, "{PhoneCallingBeep}", "§d : ", 10);
+                $this->getCore()->getChatter()->sendLocalMessage($targetPlayer, "{PhoneCallingBeep}", "§d : ", 10);
 
                 $targetPlayer->sendLocalizedMessage("{PhoneCalling1}".$myNumber.".");
                 $targetPlayer->sendMessage("PhoneCalling2");
@@ -250,7 +250,7 @@ class Phone extends Component
             }
         } else {
             if(Providers::getBankingProvider()->takePlayerMoney($player, 20)) {
-                $this->getCore()->getChatter()->send($targetPlayer, "{PhoneSmsBeep}", "§d : ", 10);
+                $this->getCore()->getChatter()->sendLocalMessage($targetPlayer, "{PhoneSmsBeep}", "§d : ", 10);
 
                 $sms = $this->sendMessage($number, $this->getCore()->getApi()->getFromArray($commandArgs, 2), $myNumber);
 

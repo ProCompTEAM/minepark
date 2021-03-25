@@ -47,7 +47,7 @@ class NoFire extends Component
     public function clean($player)
     {
         if($player->getProfile()->organisation == Organisations::EMERGENCY_WORK) {
-            $this->core->getChatter()->send($player, "§8(§dв руках огнетушитель§8)", "§d : ", 10);
+            $this->core->getChatter()->sendLocalMessage($player, "§8(§dв руках огнетушитель§8)", "§d : ", 10);
             
             if($this->clearPlace($player->getPosition(), 5)) {
                 Providers::getBankingProvider()->givePlayerMoney($player, 2000);

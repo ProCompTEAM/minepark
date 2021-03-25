@@ -34,7 +34,7 @@ class ArestCommand extends OrganisationsCommand
             return;
         }
 
-        $this->getCore()->getChatter()->send($player, "{CommandArestCuff}", "§d : ", 10);
+        $this->getCore()->getChatter()->sendLocalMessage($player, "{CommandArestCuff}", "§d : ", 10);
 
         $plrs = $this->getPlayersNear($player);
 

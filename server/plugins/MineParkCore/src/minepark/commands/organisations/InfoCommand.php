@@ -34,7 +34,7 @@ class InfoCommand extends OrganisationsCommand
             return;
         }
 
-        $this->getCore()->getChatter()->send($player, "{CommandInfoPrint}", "§d : ", 10);
+        $this->getCore()->getChatter()->sendLocalMessage($player, "{CommandInfoPrint}", "§d : ", 10);
 
         $plrs = $this->getPlayersNear($player);
 

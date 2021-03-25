@@ -111,7 +111,7 @@ class Workers extends Component
         
         $player->sendMessage("§7Найдите точку разгрузки и положите ящик!");
         
-        $this->getCore()->getChatter()->send($player, "§8(§dв руках ящик с надписью | $box |§8)", "§d : ", 12);
+        $this->getCore()->getChatter()->sendLocalMessage($player, "§8(§dв руках ящик с надписью | $box |§8)", "§d : ", 12);
     
         $player->getStatesMap()->bar = "§aВ руках ящик около " . $player->getStatesMap()->loadWeight . " кг";
     }
@@ -137,7 +137,7 @@ class Workers extends Component
     {
         $player->removeAllEffects();
 
-        $this->getCore()->getChatter()->send($player, "§8(§dЯщик расположился на складе§8)", "§d : ", 12);
+        $this->getCore()->getChatter()->sendLocalMessage($player, "§8(§dЯщик расположился на складе§8)", "§d : ", 12);
         Providers::getBankingProvider()->givePlayerMoney($player, 20 * $player->getStatesMap()->loadWeight);
 
         $player->getStatesMap()->loadWeight = null; 

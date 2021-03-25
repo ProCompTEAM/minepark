@@ -76,7 +76,7 @@ class ChangeNameCommand extends OrganisationsCommand
 
     private function moveThemOut(array $plrs, MineParkPlayer $government)
     {
-        $this->getCore()->getChatter()->send($government, "{CommandChangeNameManyPlayers1}");
+        $this->getCore()->getChatter()->sendLocalMessage($government, "{CommandChangeNameManyPlayers1}");
         foreach($plrs as $id => $player) {
             if($id > 1) {
                 $player->sendMessage("CommandChangeNameManyPlayers2");

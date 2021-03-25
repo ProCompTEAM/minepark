@@ -66,7 +66,7 @@ class HealCommand extends OrganisationsCommand
 
     private function moveThemOut(array $plrs, MineParkPlayer $healer)
     {
-        $this->getCore()->getChatter()->send($healer, "{CommandHealManyPlayers1}");
+        $this->getCore()->getChatter()->sendLocalMessage($healer, "{CommandHealManyPlayers1}");
 
         foreach($plrs as $id => $p) {
             if($id > 1) {
@@ -97,7 +97,7 @@ class HealCommand extends OrganisationsCommand
         $playerToHeal->removeAllEffects();
         $playerToHeal->setHealth($playerToHeal->getMaxHealth());
 
-        $this->getCore()->getChatter()->send($healer, "{CommandHealDo}");
+        $this->getCore()->getChatter()->sendLocalMessage($healer, "{CommandHealDo}");
         Providers::getBankingProvider()->givePlayerMoney($healer, 500);
     }
 }

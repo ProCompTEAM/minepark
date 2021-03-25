@@ -45,13 +45,13 @@ class PayCommand extends Command
             return;
         }
 
-        $this->getCore()->getChatter()->send($player, "{CommandPayTake}", "§d : ", self::DISTANCE);
+        $this->getCore()->getChatter()->sendLocalMessage($player, "{CommandPayTake}", "§d : ", self::DISTANCE);
         foreach($players as $p) {
             if($p === $player) {
                 continue;
             } else {
                 if(Providers::getBankingProvider()->reduceCash($player, $args[0])) {
-                    $this->getCore()->getChatter()->send($player, "{CommandPayPay}", "§d", self::DISTANCE);
+                    $this->getCore()->getChatter()->sendLocalMessage($player, "{CommandPayPay}", "§d", self::DISTANCE);
                     Providers::getBankingProvider()->giveCash($p, $args[0]);
                 } else {
                     $player->sendMessage("CommandPayNoMoney");
@@ -59,7 +59,7 @@ class PayCommand extends Command
             }
         }
         
-        $this->getCore()->getChatter()->send($player, "{CommandPayPut}", "§d", self::DISTANCE);
+        $this->getCore()->getChatter()->sendLocalMessage($player, "{CommandPayPut}", "§d", self::DISTANCE);
         
         $event->setCancelled();
     }
