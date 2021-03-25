@@ -3,15 +3,15 @@
    "header" : {
       "description" : "vk.com/mcperp",
       "name" : "MineParkRU",
-      "uuid" : "b68714f1-4ecc-4bb3-ac0b-2656bef84a02",
-      "version" : [ 6, 0, 2 ]
+      "uuid" : "b68714f1-4ecc-4bb3-ac0b-2656bef84a03",
+      "version" : [ 6, 1, 0 ]
    },
    "modules" : [
       {
          "description" : "MineParkRU",
          "type" : "resources",
-         "uuid" : "2e8651b1-8550-433a-85dd-b235518365af",
-         "version" : [ 6, 0, 2 ]
+         "uuid" : "2e8651b1-8550-433a-85dd-b235518365ac",
+         "version" : [ 6, 1, 0 ]
       }
    ]
 }
