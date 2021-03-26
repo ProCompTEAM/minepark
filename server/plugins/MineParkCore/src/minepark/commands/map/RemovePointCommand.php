@@ -1,12 +1,13 @@
 <?php
 namespace minepark\commands\map;
 
-use minepark\common\player\MineParkPlayer;
+use minepark\Providers;
+
+use pocketmine\event\Event;
+use minepark\defaults\Permissions;
 
 use minepark\commands\base\Command;
-use pocketmine\event\Event;
-
-use minepark\defaults\Permissions;
+use minepark\common\player\MineParkPlayer;
 
 class RemovePointCommand extends Command
 {
@@ -34,7 +35,7 @@ class RemovePointCommand extends Command
             return;
         }
 
-        $status = $this->getCore()->getMapper()->removePoint($args[0]);
+        $status = Providers::getMapProvider()->removePoint($args[0]);
         
         $player->sendMessage($status ? "CommandRemovePointSuccess" : "CommandRemovePointUnsuccess");
     }

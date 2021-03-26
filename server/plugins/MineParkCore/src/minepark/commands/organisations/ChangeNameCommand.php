@@ -92,7 +92,7 @@ class ChangeNameCommand extends OrganisationsCommand
 
     private function isNearPoint(MineParkPlayer $player) : bool
     {
-        $plist = $this->getCore()->getMapper()->getNearPoints($player->getPosition(), 32);
+        $plist = Providers::getMapProvider()->getNearPoints($player->getPosition(), 32);
         return in_array(self::POINT_NAME, $plist);
     }
 

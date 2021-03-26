@@ -36,7 +36,7 @@ class Farm extends Component
 
     public function playerIsAtPlace(Position $pos) : bool
     {
-        $points = $this->getCore()->getMapper()->getNearPoints($pos, 3);
+        $points = Providers::getMapProvider()->getNearPoints($pos, 3);
 
         return in_array(self::POINT_NAME, $points);
     }

@@ -9,6 +9,7 @@ use minepark\defaults\Permissions;
 use minepark\commands\base\Command;
 use minepark\common\player\MineParkPlayer;
 use minepark\components\organisations\Organisations;
+use minepark\Providers;
 
 class GetSellerCommand extends Command
 {
@@ -54,10 +55,10 @@ class GetSellerCommand extends Command
 
     private function getShop(Position $position) : ?string
     {
-        $shops = $this->getCore()->getMapper()->getNearPoints($position, self::DISTANCE);
+        $shops = Providers::getMapProvider()->getNearPoints($position, self::DISTANCE);
         
         foreach($shops as $point) {
-            if($this->getCore()->getMapper()->getPointGroup($point) == 2) {
+            if(Providers::getMapProvider()->getPointGroup($point) == 2) {
                 return $point;
             }
         }

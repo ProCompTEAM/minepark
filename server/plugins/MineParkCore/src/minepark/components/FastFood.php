@@ -1,14 +1,12 @@
 <?php
 namespace minepark\components;
 
-use minepark\Core;
-use minepark\Mapper;
-
 use minepark\Providers;
 use pocketmine\item\Item;
 use minepark\components\base\Component;
 use minepark\common\player\MineParkPlayer;
 use minepark\defaults\ComponentAttributes;
+use minepark\defaults\MapConstants;
 
 class FastFood extends Component
 {
@@ -23,7 +21,7 @@ class FastFood extends Component
     {
         $core = $this->getCore();
 
-        if($core->getMapper()->hasNearPointWithType($player, 5, Mapper::POINT_GROUP_FASTFOOD)) {
+        if(Providers::getMapProvider()->hasNearPointWithType($player, 5, MapConstants::POINT_GROUP_FASTFOOD)) {
             $core->getChatter()->sendLocalMessage($player, "{FastFoodNear}", "§d : ", 10);
 
             if(Providers::getBankingProvider()->getPlayerMoney($player) >= 50) {

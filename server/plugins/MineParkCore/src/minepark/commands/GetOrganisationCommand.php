@@ -14,9 +14,9 @@ class GetOrganisationCommand extends Command
 {
     public const CURRENT_COMMAND = "getorg";
 
-    public const DEFAUlT_POINT_NAME = "Мэрия";
+    public const DEFAULT_POINT_NAME = "Мэрия";
 
-    public const DEFAUlT_POINT_DISTANCE = 20;
+    public const DEFAULT_POINT_DISTANCE = 20;
 
     public function getCommand() : array
     {
@@ -50,11 +50,11 @@ class GetOrganisationCommand extends Command
 
     private function getDefaultPoint(Position $position) : ?string
     {
-        $plist = $this->getCore()->getMapper()->getNearPoints($position, self::DEFAUlT_POINT_DISTANCE); 
+        $plist = Providers::getMapProvider()->getNearPoints($position, self::DEFAULT_POINT_DISTANCE); 
         
         foreach($plist as $point)
         {
-            if($point == self::DEFAUlT_POINT_NAME) {
+            if($point == self::DEFAULT_POINT_NAME) {
                 return $point;
             }
         }
@@ -76,7 +76,7 @@ class GetOrganisationCommand extends Command
 
     private function switchOrg(MineParkPlayer $player, string $orgId)
     {
-        if(Providers::getBankingProvider()->takePlayerMoney($player, 1000)) {
+        if (Providers::getBankingProvider()->takePlayerMoney($player, 1000)) {
             switch($orgId)
             {
                 case 1: $orgId = 5; break;

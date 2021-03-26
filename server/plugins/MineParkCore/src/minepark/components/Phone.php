@@ -1,7 +1,6 @@
 <?php
 namespace minepark\components;
 
-use minepark\Mapper;
 use minepark\Providers;
 
 use pocketmine\math\Vector3;
@@ -12,6 +11,7 @@ use minepark\providers\data\PhonesSource;
 use minepark\common\player\MineParkPlayer;
 use minepark\components\organisations\Organisations;
 use minepark\defaults\ComponentAttributes;
+use minepark\defaults\MapConstants;
 
 class Phone extends Component
 {
@@ -53,7 +53,7 @@ class Phone extends Component
     
     public function hasStream(Vector3 $pos) : bool
     {
-        return $this->getCore()->getMapper()->hasNearPointWithType($pos, self::MAX_STREAM_DISTANCE, Mapper::POINT_GROUP_STREAM);
+        return Providers::getMapProvider()->hasNearPointWithType($pos, self::MAX_STREAM_DISTANCE, MapConstants::POINT_GROUP_STREAM);
     }
 
     public function handleInCall(MineParkPlayer $player, string $message) 
@@ -200,7 +200,7 @@ class Phone extends Component
 
     private function emergencyCall(MineParkPlayer $player, int $organisationId)
     {
-        $streams = $this->getCore()->getMapper()->getNearPoints($player->getPosition(), 15);
+        $streams = Providers::getMapProvider()->getNearPoints($player->getPosition(), 15);
 
         foreach($this->getCore()->getServer()->getOnlinePlayers() as $onlinePlayer) {
             $onlinePlayer = MineParkPlayer::cast($onlinePlayer);

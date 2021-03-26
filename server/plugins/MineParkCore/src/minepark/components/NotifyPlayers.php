@@ -1,19 +1,16 @@
 <?php
 namespace minepark\components;
 
-use minepark\Core;
-use minepark\Mapper;
+use minepark\Providers;
 use minepark\utils\CallbackTask;
 use minepark\components\base\Component;
+use minepark\defaults\MapConstants;
 
 class NotifyPlayers extends Component
 {
-    public $mapper;
-
     public function __construct()
     {
         $this->getCore()->getScheduler()->scheduleRepeatingTask(new CallbackTask([$this, "broadcast"]), 20 * 763);
-        $this->mapper = $this->getCore()->getMapper();
     }
 
     public function getAttributes() : array
@@ -24,7 +21,7 @@ class NotifyPlayers extends Component
     
     public function broadcast()
     {
-        $points = $this->mapper->getPointsByGroup(Mapper::POINT_GROUP_GENERIC);
+        $points = Providers::getMapProvider()->getPointsByGroup(MapConstants::POINT_GROUP_GENERIC);
         $pointsCount = array();
         $playerCounted = array();
         
@@ -40,7 +37,7 @@ class NotifyPlayers extends Component
                 }
 
                 $vector1 = $plr->asVector3();
-                $vector2 = $this->mapper->getPointPosition($pointName)->asVector3();
+                $vector2 = Providers::getMapProvider()->getPointPosition($pointName)->asVector3();
                 
                 if ($vector1->distance($vector2) < 50) {
                     $evenOnePlayer = true;

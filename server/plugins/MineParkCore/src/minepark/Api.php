@@ -5,6 +5,7 @@ use minepark\defaults\Files;
 use pocketmine\level\Position;
 use minepark\defaults\Permissions;
 use minepark\common\player\MineParkPlayer;
+use minepark\defaults\MapConstants;
 
 class Api
 {
@@ -85,7 +86,7 @@ class Api
     
     public function arest(MineParkPlayer $player)
     {
-        $this->getCore()->getMapper()->teleportPoint($player, Mapper::POINT_NAME_JAIL);
+        Providers::getMapProvider()->teleportPoint($player, MapConstants::POINT_NAME_JAIL);
         $this->getCore()->getApi()->changeAttr($player, self::ATTRIBUTE_ARRESTED);
         $this->getCore()->getApi()->changeAttr($player, self::ATTRIBUTE_WANTED, false);
 

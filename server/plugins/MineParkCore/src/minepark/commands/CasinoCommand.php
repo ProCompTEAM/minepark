@@ -58,7 +58,7 @@ class CasinoCommand extends Command
 
     private function getCasinoPoint(Position $position) : ?string
     {
-        $plist = $this->getCore()->getMapper()->getNearPoints($position, self::CASINO_DISTANCE); 
+        $plist = Providers::getMapProvider()->getNearPoints($position, self::CASINO_DISTANCE); 
         
         foreach($plist as $point)
         {

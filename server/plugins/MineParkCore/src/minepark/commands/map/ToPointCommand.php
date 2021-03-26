@@ -1,12 +1,13 @@
 <?php
 namespace minepark\commands\map;
 
-use minepark\common\player\MineParkPlayer;
+use minepark\Providers;
+
+use pocketmine\event\Event;
+use minepark\defaults\Permissions;
 
 use minepark\commands\base\Command;
-use pocketmine\event\Event;
-
-use minepark\defaults\Permissions;
+use minepark\common\player\MineParkPlayer;
 
 class ToPointCommand extends Command
 {
@@ -34,7 +35,7 @@ class ToPointCommand extends Command
             return;
         }
 
-        $this->getCore()->getMapper()->teleportPoint($player, $args[0]);
+        Providers::getMapProvider()->teleportPoint($player, $args[0]);
     }
 }
 ?>

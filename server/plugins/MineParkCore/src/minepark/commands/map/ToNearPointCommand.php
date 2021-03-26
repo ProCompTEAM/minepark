@@ -1,12 +1,13 @@
 <?php
 namespace minepark\commands\map;
 
-use minepark\common\player\MineParkPlayer;
+use minepark\Providers;
+
+use pocketmine\event\Event;
+use minepark\defaults\Permissions;
 
 use minepark\commands\base\Command;
-use pocketmine\event\Event;
-
-use minepark\defaults\Permissions;
+use minepark\common\player\MineParkPlayer;
 
 class ToNearPointCommand extends Command
 {
@@ -29,10 +30,10 @@ class ToNearPointCommand extends Command
 
     public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
-        $nearPoints = $this->getCore()->getMapper()->getNearPoints($player->getPosition(), 15);
+        $nearPoints = Providers::getMapProvider()->getNearPoints($player->getPosition(), 15);
 
         if(count($nearPoints) > 0)  {
-            $this->getCore()->getMapper()->teleportPoint($player, $nearPoints[0]);
+            Providers::getMapProvider()->teleportPoint($player, $nearPoints[0]);
         } else {
             $player->sendMessage("CommandNoToNearPoint");
         }

@@ -1,7 +1,6 @@
 <?php
 namespace minepark\commands\organisations;
 
-use minepark\Mapper;
 use minepark\Providers;
 use pocketmine\item\Item;
 
@@ -10,6 +9,7 @@ use minepark\defaults\Permissions;
 use minepark\common\player\MineParkPlayer;
 use minepark\components\organisations\Organisations;
 use minepark\commands\organisations\base\OrganisationsCommand;
+use minepark\defaults\MapConstants;
 
 class SellCommand extends OrganisationsCommand
 {
@@ -38,7 +38,7 @@ class SellCommand extends OrganisationsCommand
             return;
         }
         $this->getCore()->getChatter()->sendLocalMessage($player, "§8(§dв руках ключ от кассового аппарата§8)", "§d : ", 10);
-        $plist = $this->getCore()->getMapper()->getNearPoints($player->getPosition(), 15);
+        $plist = Providers::getMapProvider()->getNearPoints($player->getPosition(), 15);
 
         if ($this->noPointsNear($plist)) {
             $player->sendMessage("CommandSellKey");
@@ -72,7 +72,7 @@ class SellCommand extends OrganisationsCommand
 
     private function ifIsNearShops(MineParkPlayer $player)
     {
-        return $this->getCore()->getMapper()->hasNearPointWithType($player, self::MARKETPLACE_DISTANCE, Mapper::POINT_GROUP_MARKETPLACE);
+        return Providers::getMapProvider()->hasNearPointWithType($player, self::MARKETPLACE_DISTANCE, MapConstants::POINT_GROUP_MARKETPLACE);
     }
 
     private function getBuyersNear(MineParkPlayer $player)
