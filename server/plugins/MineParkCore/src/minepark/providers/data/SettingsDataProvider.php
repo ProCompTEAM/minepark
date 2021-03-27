@@ -1,7 +1,9 @@
 <?php
 namespace minepark\providers\data;
 
-class SettingsSource extends RemoteSource
+use minepark\providers\base\DataProvider;
+
+class SettingsDataProvider extends DataProvider
 {
     public const ROUTE = "settings";
 

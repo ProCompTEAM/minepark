@@ -7,8 +7,8 @@ use minepark\utils\CallbackTask;
 use minepark\defaults\MapConstants;
 use minepark\models\dtos\PasswordDto;
 use minepark\components\base\Component;
-use minepark\providers\data\UsersSource;
 use minepark\common\player\MineParkPlayer;
+use minepark\providers\data\UsersDataProvider;
 
 class Auth extends Component
 {
@@ -28,7 +28,7 @@ class Auth extends Component
     
     public function checkState(MineParkPlayer $player) : int
     {
-        if(!$this->getRemoteSource()->isUserPasswordExist($player->getName())) {
+        if(!$this->getDataProvider()->isUserPasswordExist($player->getName())) {
             return self::STATE_REGISTER;
         } else {
             if(isset($this->ips[$player->getName()]) and $this->ips[$player->getName()] == $player->getAddress()) {
@@ -75,7 +75,7 @@ class Auth extends Component
         } elseif($state == self::STATE_NEED_AUTH) {
             if(strlen($password) < 6) {
                 $player->kick("AuthLen");
-            } elseif(md5($password) == $this->getRemoteSource()->getUserPassword($player->getName())) {
+            } elseif(md5($password) == $this->getDataProvider()->getUserPassword($player->getName())) {
                 $this->logInUser($player);
             } else {
                 $player->kick("AuthInvalid");
@@ -139,7 +139,7 @@ class Auth extends Component
         $passwordDto->name = $player->getName();
         $passwordDto->password = md5($password);
 
-        $this->getRemoteSource()->setUserPassword($passwordDto);
+        $this->getDataProvider()->setUserPassword($passwordDto);
     }
 
     private function autoLogInUser(MineParkPlayer $player)
@@ -153,9 +153,9 @@ class Auth extends Component
             new CallbackTask(array($this, "sendWelcomeText"), array($player)), 20 * self::WELCOME_MESSAGE_TIMEOUT);
     }
 
-    private function getRemoteSource() : UsersSource
+    private function getDataProvider() : UsersDataProvider
     {
-        return $this->getCore()->getMDC()->getSource(UsersSource::ROUTE);
+        return Providers::getUsersDataProvider();
     }
 }
 ?>

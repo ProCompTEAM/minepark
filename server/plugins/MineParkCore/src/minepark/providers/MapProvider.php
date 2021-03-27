@@ -5,41 +5,42 @@ use pocketmine\level\Position;
 use minepark\defaults\MapConstants;
 use minepark\models\dtos\MapPointDto;
 use minepark\providers\base\Provider;
-use minepark\providers\data\MapSource;
 use minepark\common\player\MineParkPlayer;
 use minepark\models\dtos\LocalMapPointDto;
+use minepark\Providers;
+use minepark\providers\data\MapDataProvider;
 
 class MapProvider extends Provider
 {
     private const DEFAULT_NEAR_POINTS_DISTANCE = 7;
 
-    private MapSource $source;
+    private MapDataProvider $dataProvider;
 
     public function __construct()
     {
-        $this->source = $this->getCore()->getMDC()->getSource(MapSource::ROUTE);
+        $this->dataProvider = Providers::getMapDataProvider();
     }
 
-    private function getSource()
+    private function getDataProvider()
     {
-        return $this->source;
+        return $this->dataProvider;
     }
 
     public function addPoint(Position $position, string $pointName, int $group = MapConstants::POINT_GROUP_GENERIC)
     {
         $pointDto = $this->getMapPointDto($pointName, $group, $position);
 
-        $this->getSource()->setPoint($pointDto);
+        $this->getDataProvider()->setPoint($pointDto);
     }
 
     public function removePoint(string $pointName) : bool
     {
-        return $this->getSource()->deletePoint($pointName);
+        return $this->getDataProvider()->deletePoint($pointName);
     }
 
     public function getPointPosition(string $pointName) : ?Position
     {
-        $pointData = $this->getSource()->getPoint($pointName);
+        $pointData = $this->getDataProvider()->getPoint($pointName);
 
         if (!isset($pointData)) {
             return null;
@@ -52,12 +53,12 @@ class MapProvider extends Provider
 
     public function getPointGroup(string $pointName) : ?int
     {
-        return $this->getSource()->getPointGroup($pointName);
+        return $this->getDataProvider()->getPointGroup($pointName);
     }
 
     public function getPointsByGroup(int $group, bool $namesOnly = true) : array
     {
-        $points = $this->getSource()->getPointsByGroup($group);
+        $points = $this->getDataProvider()->getPointsByGroup($group);
 
         return $namesOnly ? $this->getPointsNames($points) : $points;
     }
@@ -66,7 +67,7 @@ class MapProvider extends Provider
     {
         $localMapPointDto = $this->getLocalMapPointDto($position, $distance);
 
-        $points = $this->getSource()->getNearPoints($localMapPointDto);
+        $points = $this->getDataProvider()->getNearPoints($localMapPointDto);
 
         return $namesOnly ? $this->getPointsNames($points) : $points;
     }

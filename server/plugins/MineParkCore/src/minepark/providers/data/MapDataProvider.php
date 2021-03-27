@@ -3,8 +3,9 @@ namespace minepark\providers\data;
 
 use minepark\models\dtos\MapPointDto;
 use minepark\models\dtos\LocalMapPointDto;
+use minepark\providers\base\DataProvider;
 
-class MapSource extends RemoteSource
+class MapDataProvider extends DataProvider
 {
     public const ROUTE = "map";
 

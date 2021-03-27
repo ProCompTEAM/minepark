@@ -1,7 +1,9 @@
 <?php
 namespace minepark\providers\data;
 
-class PhonesSource extends RemoteSource
+use minepark\providers\base\DataProvider;
+
+class PhonesDataProvider extends DataProvider
 {
     public const ROUTE = "phones";
 

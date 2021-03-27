@@ -3,8 +3,9 @@ namespace minepark\providers\data;
 
 use minepark\models\dtos\PaymentMethodDto;
 use minepark\models\dtos\BankTransactionDto;
+use minepark\providers\base\DataProvider;
 
-class BankingSource extends RemoteSource
+class BankingDataProvider extends DataProvider
 {
     public const ROUTE = "banking";
 

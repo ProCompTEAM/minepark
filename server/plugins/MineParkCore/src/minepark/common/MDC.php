@@ -2,13 +2,8 @@
 namespace minepark\common;
 
 use minepark\Core;
+use minepark\Providers;
 use pocketmine\utils\Config;
-use minepark\providers\data\MapSource;
-use minepark\providers\data\UsersSource;
-use minepark\providers\data\PhonesSource;
-use minepark\providers\data\RemoteSource;
-use minepark\providers\data\BankingSource;
-use minepark\providers\data\SettingsSource;
 
 class MDC
 {
@@ -17,8 +12,6 @@ class MDC
     private $token;
 
     private $unitId;
-
-    private $sources;
 
     public function getCore() : Core
     {
@@ -38,17 +31,7 @@ class MDC
     public function initializeAll() 
     {
         $this->initializeConfig();
-        $this->initializeSources();
         $this->sendUnitId();
-    }
-
-    public function getSource(string $sourceName) : RemoteSource 
-    {
-        foreach($this->sources as $source) {
-            if($source->getName() === $sourceName) {
-                return $source;
-            }
-        }
     }
 
     public function createRequest(string $remoteController, string $remoteMethod, $data)
@@ -87,21 +70,10 @@ class MDC
         $this->unitId = $config->get("UnitId");
     }
 
-    private function initializeSources() 
-    {
-        $this->sources = [
-            new UsersSource,
-            new SettingsSource,
-            new MapSource,
-            new PhonesSource,
-            new BankingSource
-        ];
-    }
-
     private function sendUnitId()
     {
         $unitId = $this->getUnitId();
-        $this->getSource(SettingsSource::ROUTE)->upgradeUnitId($unitId);
+        Providers::getSettingsDataProvider()->upgradeUnitId($unitId);
     }
 }
 ?>

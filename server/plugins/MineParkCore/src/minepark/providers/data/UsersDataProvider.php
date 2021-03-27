@@ -3,8 +3,9 @@ namespace minepark\providers\data;
 
 use minepark\models\dtos\PasswordDto;
 use minepark\models\dtos\UserDto;
+use minepark\providers\base\DataProvider;
 
-class UsersSource extends RemoteSource
+class UsersDataProvider extends DataProvider
 {
     public const ROUTE = "users";
 

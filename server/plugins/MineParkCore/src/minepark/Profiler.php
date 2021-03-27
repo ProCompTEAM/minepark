@@ -1,16 +1,16 @@
 <?php
 namespace minepark;
 
-use minepark\providers\data\UsersSource;
 use minepark\common\player\MineParkPlayer;
+use minepark\providers\data\UsersDataProvider;
 
 class Profiler
 {
-    private $source;
+    private $dataProvider;
     
     public function __construct()
     {
-        $this->source = $this->getCore()->getMDC()->getSource(UsersSource::ROUTE);
+        $this->dataProvider = Providers::getUsersDataProvider();
     }
 
     public function getCore() : Core
@@ -20,13 +20,13 @@ class Profiler
     
     public function isNewPlayer(MineParkPlayer $player) : bool
     {
-        return !$this->getSource()->isUserExist($player->getName());
+        return !$this->getDataProvider()->isUserExist($player->getName());
     }
     
     public function initializeProfile(MineParkPlayer $player)
     {
         if($player->getStatesMap()->isNew) {
-            $createdUserProfile = $this->getSource()->createUserInternal($player->getName());
+            $createdUserProfile = $this->getDataProvider()->createUserInternal($player->getName());
             $player->setProfile($createdUserProfile);
         } else {
             $this->loadProfile($player);
@@ -35,18 +35,18 @@ class Profiler
     
     public function loadProfile(MineParkPlayer $player)
     {
-        $profile = $this->getSource()->getUser($player->getName());
+        $profile = $this->getDataProvider()->getUser($player->getName());
         $player->setProfile($profile);
     }
     
     public function saveProfile(MineParkPlayer $player)
     {
-        $this->getSource()->updateUserData($player->getProfile());
+        $this->getDataProvider()->updateUserData($player->getProfile());
     }
     
-    private function getSource() : UsersSource
+    private function getDataProvider() : UsersDataProvider
     {
-        return $this->source;
+        return $this->dataProvider;
     }
 }
 ?>
