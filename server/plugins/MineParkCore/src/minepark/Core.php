@@ -75,13 +75,13 @@ class Core extends PluginBase implements Listener
     {
         Core::$_core = $this;
 
+        Providers::initializeAll();
+
         $this->initializeMDC();
 
         $this->initializeEventsHandler();
 
         $this->initialize();
-
-        Providers::initializeAll();
 
         $this->initializeDefaultDirectories();
 

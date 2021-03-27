@@ -8,12 +8,10 @@ use pocketmine\block\WallSign;
 use pocketmine\event\Listener;
 use minepark\defaults\ItemConstants;
 use minepark\utils\FixSignEvent;
-use minepark\components\GameChat;
 use pocketmine\entity\object\Painting;
 use pocketmine\event\block\BlockEvent;
-use minepark\providers\data\UsersSource;
 use minepark\common\player\MineParkPlayer;
-use minepark\defaults\ChatConstants;
+use minepark\providers\data\UsersDataProvider;
 use pocketmine\event\block\BlockBurnEvent;
 use pocketmine\event\level\ChunkLoadEvent;
 use pocketmine\event\block\BlockBreakEvent;
@@ -69,7 +67,7 @@ class EventsHandler implements Listener
         
         $this->getCore()->getInitializer()->join($event->getPlayer());
 
-        $this->getUsersSource()->updateUserJoinStatus($event->getPlayer()->getName());
+        $this->getUsersDataProvider()->updateUserJoinStatus($event->getPlayer()->getName());
 
         $this->getCore()->getBossBarModule()->initializePlayerSession($event->getPlayer());
 
@@ -106,7 +104,7 @@ class EventsHandler implements Listener
             $player->getStatesMap()->rentedVehicle->removeRentedStatus();
         }
 
-        $this->getUsersSource()->updateUserQuitStatus($playerName);
+        $this->getUsersDataProvider()->updateUserQuitStatus($playerName);
     }
     
     public function preLoginEvent(PlayerPreLoginEvent $event)
@@ -266,9 +264,9 @@ class EventsHandler implements Listener
         return false;
     }
 
-    private function getUsersSource() : UsersSource
+    private function getUsersDataProvider() : UsersDataProvider
     {
-        return $this->getCore()->getMDC()->getSource(UsersSource::ROUTE);
+        return Providers::getUsersDataProvider();
     }
 }
 ?>

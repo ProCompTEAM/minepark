@@ -8,6 +8,8 @@ use minepark\defaults\PaymentMethods;
 use minepark\models\dtos\PaymentMethodDto;
 use minepark\providers\data\BankingSource;
 use minepark\models\dtos\BankTransactionDto;
+use minepark\Providers;
+use minepark\providers\data\BankingDataProvider;
 
 class BankingProvider extends Provider
 {
@@ -78,70 +80,70 @@ class BankingProvider extends Provider
 
     public function getCash(MineParkPlayer $player) : float
     {
-        return $this->getRemoteSource()->getCash($player->getName());
+        return $this->getDataProvider()->getCash($player->getName());
     }
 
     public function getDebit(MineParkPlayer $player) : float
     {
-        return $this->getRemoteSource()->getDebit($player->getName());
+        return $this->getDataProvider()->getDebit($player->getName());
     }
 
     public function getCredit(MineParkPlayer $player) : float
     {
-        return $this->getRemoteSource()->getCredit($player->getName());
+        return $this->getDataProvider()->getCredit($player->getName());
     }
 
     public function getAllMoney(MineParkPlayer $player) : float
     {
-        return $this->getRemoteSource()->getAllMoney($player->getName());
+        return $this->getDataProvider()->getAllMoney($player->getName());
     }
 
     public function giveCash(MineParkPlayer $player, float $amount) : bool
     {
         $dto = $this->getBankTransactionDto($player->getName(), $amount);
-        return $this->getRemoteSource()->giveCash($dto);
+        return $this->getDataProvider()->giveCash($dto);
     }
 
     public function giveDebit(MineParkPlayer $player, float $amount) : bool
     {
         $dto = $this->getBankTransactionDto($player->getName(), $amount);
-        return $this->getRemoteSource()->giveDebit($dto);
+        return $this->getDataProvider()->giveDebit($dto);
     }
 
     public function giveCredit(MineParkPlayer $player, float $amount) : bool
     {
         $dto = $this->getBankTransactionDto($player->getName(), $amount);
-        return $this->getRemoteSource()->giveCredit($dto);
+        return $this->getDataProvider()->giveCredit($dto);
     }
 
     public function reduceCash(MineParkPlayer $player, float $amount) : bool
     {
         $dto = $this->getBankTransactionDto($player->getName(), $amount);
-        return $this->getRemoteSource()->reduceCash($dto);
+        return $this->getDataProvider()->reduceCash($dto);
     }
 
     public function reduceDebit(MineParkPlayer $player, float $amount) : bool
     {
         $dto = $this->getBankTransactionDto($player->getName(), $amount);
-        return $this->getRemoteSource()->reduceDebit($dto);
+        return $this->getDataProvider()->reduceDebit($dto);
     }
 
     public function reduceCredit(MineParkPlayer $player, float $amount) : bool
     {
         $dto = $this->getBankTransactionDto($player->getName(), $amount);
-        return $this->getRemoteSource()->reduceCredit($dto);
+        return $this->getDataProvider()->reduceCredit($dto);
     }
 
     public function getPaymentMethod(MineParkPlayer $player) : int
     {
-        return $this->getRemoteSource()->getPaymentMethod($player->getName());
+        return $this->getDataProvider()->getPaymentMethod($player->getName());
     }
 
     public function switchPaymentMethod(MineParkPlayer $player, int $method) : bool
     {
         $dto = $this->getPaymentMethodDto($player->getName(), $method);
 
-        $status = $this->getRemoteSource()->switchPaymentMethod($dto);
+        $status = $this->getDataProvider()->switchPaymentMethod($dto);
 
         if ($status) {
             $player->getStatesMap()->paymentMethod = $method;
@@ -152,7 +154,7 @@ class BankingProvider extends Provider
 
     public function initializePlayerPaymentMethod(MineParkPlayer $player)
     {
-        $player->getStatesMap()->paymentMethod = $this->getRemoteSource()->getPaymentMethod($player->getName());
+        $player->getStatesMap()->paymentMethod = $this->getDataProvider()->getPaymentMethod($player->getName());
     }
 
     private function getPaymentMethodDto(string $userName, int $method) : PaymentMethodDto
@@ -171,9 +173,9 @@ class BankingProvider extends Provider
         return $dto;
     }
 
-    private function getRemoteSource() : BankingSource
+    private function getDataProvider() : BankingDataProvider
     {
-        return Core::getActive()->getMDC()->getSource(BankingSource::ROUTE);
+        return Providers::getBankingDataProvider();
     }
 }
 ?>

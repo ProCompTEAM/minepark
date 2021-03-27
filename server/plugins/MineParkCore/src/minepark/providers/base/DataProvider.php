@@ -1,9 +1,9 @@
 <?php
-namespace minepark\providers\data;
+namespace minepark\providers\base;
 
 use minepark\Core;
 
-abstract class RemoteSource
+abstract class DataProvider extends Provider
 {
     public abstract function getName() : string;
 
@@ -11,7 +11,7 @@ abstract class RemoteSource
 
     public function createRequest(string $remoteMethod, $data)
     {
-        return Core::getActive()->getMDC()->createRequest($this->getName(), $remoteMethod, $data);
+        return $this->getCore()->getMDC()->createRequest($this->getName(), $remoteMethod, $data);
     }
 }
 ?>

@@ -5,8 +5,9 @@ use pocketmine\event\Event;
 
 use minepark\defaults\Permissions;
 use minepark\commands\base\Command;
-use minepark\providers\data\UsersSource;
 use minepark\common\player\MineParkPlayer;
+use minepark\Providers;
+use minepark\providers\data\UsersDataProvider;
 
 class ResetPasswordCommand extends Command
 {
@@ -36,7 +37,7 @@ class ResetPasswordCommand extends Command
         
         $targetPlayerName = $args[0];
 
-        if(!$this->getRemoteSource()->isUserExist($targetPlayerName)){
+        if(!$this->getDataProvider()->isUserExist($targetPlayerName)){
             $player->sendMessage("Указанного игрока не существует.");
             return;
         }
@@ -44,14 +45,14 @@ class ResetPasswordCommand extends Command
         $this->resetPassword($player, $targetPlayerName);
     }
     
-    private function getRemoteSource() : UsersSource
+    private function getDataProvider() : UsersDataProvider
     {
-        return $this->getCore()->getMDC()->getSource(UsersSource::ROUTE);
+        return Providers::getUsersDataProvider();
     }
 
     private function resetPassword(MineParkPlayer $sender, string $targetPlayerName)
     {
-        $this->getRemoteSource()->resetUserPassword($targetPlayerName);
+        $this->getDataProvider()->resetUserPassword($targetPlayerName);
         $sender->sendMessage("Сброс пароля игрока $targetPlayerName прошёл успешно.");
         $targetPlayer = $this->getCore()->getServer()->getPlayer($targetPlayerName);
 

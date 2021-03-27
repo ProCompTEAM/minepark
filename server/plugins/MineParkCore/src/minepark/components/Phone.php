@@ -7,11 +7,11 @@ use pocketmine\math\Vector3;
 
 use minepark\utils\CallbackTask;
 use minepark\components\base\Component;
-use minepark\providers\data\PhonesSource;
 use minepark\common\player\MineParkPlayer;
 use minepark\components\organisations\Organisations;
 use minepark\defaults\ComponentAttributes;
 use minepark\defaults\MapConstants;
+use minepark\providers\data\PhonesDataProvider;
 
 class Phone extends Component
 {
@@ -20,11 +20,11 @@ class Phone extends Component
     public const EMERGENCY_NUMBER1 = "02";
     public const EMERGENCY_NUMBER2 = "03";
 
-    private $source;
+    private $dataProvider;
 
     public function __construct()
     {
-        $this->source = $this->getCore()->getMDC()->getSource(PhonesSource::ROUTE);
+        $this->dataProvider = Providers::getPhonesDataProvider();
         $this->getCore()->getScheduler()->scheduleRepeatingTask(new CallbackTask([$this, "takeFee"]), 20 * 60);
     }
 
@@ -37,12 +37,12 @@ class Phone extends Component
     
     public function getNumber(MineParkPlayer $player) : int
     {
-        return $this->getSource()->getNumberForUser($player->getName());
+        return $this->getDataProvider()->getNumberForUser($player->getName());
     }
     
     public function getPlayer(int $number, bool $nameOnly = false) : ?MineParkPlayer
     {
-        $name = $this->getSource()->getUserNameByNumber($number);
+        $name = $this->getDataProvider()->getUserNameByNumber($number);
 
         if(strlen($name) > 0) {
             return $nameOnly ? $name : $this->getCore()->getServer()->getPlayer($name);
@@ -157,9 +157,9 @@ class Phone extends Component
         }
     }
 
-    private function getSource() : PhonesSource
+    private function getDataProvider() : PhonesDataProvider
     {
-        return $this->source;
+        return $this->dataProvider;
     }
 
     private function sendDisplayMessages(MineParkPlayer $player)
