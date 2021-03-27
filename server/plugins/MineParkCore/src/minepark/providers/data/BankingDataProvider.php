@@ -9,7 +9,7 @@ class BankingDataProvider extends DataProvider
 {
     public const ROUTE = "banking";
 
-    public function getName() : string
+    public function getRoute() : string
     {
         return self::ROUTE;
     }

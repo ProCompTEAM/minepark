@@ -7,7 +7,7 @@ class SettingsDataProvider extends DataProvider
 {
     public const ROUTE = "settings";
 
-    public function getName() : string
+    public function getRoute() : string
     {
         return self::ROUTE;
     }

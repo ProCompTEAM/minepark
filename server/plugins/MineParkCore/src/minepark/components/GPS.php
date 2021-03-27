@@ -2,7 +2,9 @@
 namespace minepark\components;
 
 use minepark\Core;
+use minepark\Tasks;
 use minepark\utils\CallbackTask;
+use minepark\defaults\TimeConstants;
 use minepark\components\base\Component;
 use minepark\defaults\ComponentAttributes;
 
@@ -12,7 +14,7 @@ class GPS extends Component
     
     public function __construct()
     {
-        $this->getCore()->getScheduler()->scheduleRepeatingTask(new CallbackTask([$this, "timer"]), 40);
+        Tasks::registerRepeatingAction(TimeConstants::NAVIGATION_ROUTES_UPDATE_INTERVAL, [$this, "updateRoutes"]);
         $this->level = $this->getCore()->getServer()->getDefaultLevel();
     }
 
@@ -23,7 +25,7 @@ class GPS extends Component
         ];
     }
 
-    public function timer()
+    public function updateRoutes()
     {
         foreach($this->getCore()->getServer()->getOnlinePlayers() as $player) {
             if($player->getStatesMap()->gps != null) {

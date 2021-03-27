@@ -1,16 +1,17 @@
 <?php
 namespace minepark\components;
 
+use minepark\Tasks;
 use minepark\Providers;
-use minepark\utils\CallbackTask;
-use minepark\components\base\Component;
 use minepark\defaults\MapConstants;
+use minepark\defaults\TimeConstants;
+use minepark\components\base\Component;
 
 class NotifyPlayers extends Component
 {
     public function __construct()
     {
-        $this->getCore()->getScheduler()->scheduleRepeatingTask(new CallbackTask([$this, "broadcast"]), 20 * 763);
+        Tasks::registerRepeatingAction(TimeConstants::SHOW_PLAYERS_LIST_INTERVAL, [$this, "broadcast"]);
     }
 
     public function getAttributes() : array

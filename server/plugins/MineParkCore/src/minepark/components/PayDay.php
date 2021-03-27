@@ -2,18 +2,20 @@
 namespace minepark\components;
 
 use minepark\Api;
+use minepark\Tasks;
 use minepark\Providers;
 use minepark\utils\CallbackTask;
+use minepark\defaults\TimeConstants;
 use minepark\components\base\Component;
 use minepark\common\player\MineParkPlayer;
-use minepark\components\organisations\Organisations;
 use minepark\defaults\ComponentAttributes;
+use minepark\components\organisations\Organisations;
 
 class PayDay extends Component
 {
     public function __construct()
     {
-        $this->getCore()->getScheduler()->scheduleRepeatingTask(new CallbackTask([$this, "calcAndShow"]), 20 * 600);
+        Tasks::registerRepeatingAction(TimeConstants::PAYDAY_INTERVAL, [$this, "calculateAndShow"]);
     }
 
     public function getAttributes() : array
@@ -23,7 +25,7 @@ class PayDay extends Component
         ];
     }
     
-    public function calcAndShow()
+    public function calculateAndShow()
     {
         foreach($this->getCore()->getServer()->getOnlinePlayers() as $player) {
             $player = MineParkPlayer::cast($player);
