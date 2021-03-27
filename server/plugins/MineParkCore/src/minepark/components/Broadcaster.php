@@ -44,7 +44,7 @@ class Broadcaster extends Component
 
     private function initializeBroadcastTask()
     {
-        $this->getCore()->getScheduler()->scheduleRepeatingTask(new CallbackTask([$this, "broadcastMessage"]), TimeConstants::AUTO_BROADCAST_TIMEOUT * 20);
+        $this->getCore()->getScheduler()->scheduleRepeatingTask(new CallbackTask([$this, "broadcastMessage"]), TimeConstants::AUTO_BROADCAST_INTERVAL * 20);
     }
 
     private function getMessagesLocalizationKeys() : array

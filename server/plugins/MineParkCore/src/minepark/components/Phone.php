@@ -1,17 +1,18 @@
 <?php
 namespace minepark\components;
 
+use minepark\Tasks;
+
 use minepark\Providers;
 
 use pocketmine\math\Vector3;
-
-use minepark\utils\CallbackTask;
+use minepark\defaults\MapConstants;
+use minepark\defaults\TimeConstants;
 use minepark\components\base\Component;
 use minepark\common\player\MineParkPlayer;
-use minepark\components\organisations\Organisations;
 use minepark\defaults\ComponentAttributes;
-use minepark\defaults\MapConstants;
 use minepark\providers\data\PhonesDataProvider;
+use minepark\components\organisations\Organisations;
 
 class Phone extends Component
 {
@@ -24,8 +25,8 @@ class Phone extends Component
 
     public function __construct()
     {
+        Tasks::registerRepeatingAction(TimeConstants::PHONE_TAKE_FEE_INTERVAL, [$this, "takeFee"]);
         $this->dataProvider = Providers::getPhonesDataProvider();
-        $this->getCore()->getScheduler()->scheduleRepeatingTask(new CallbackTask([$this, "takeFee"]), 20 * 60);
     }
 
     public function getAttributes() : array

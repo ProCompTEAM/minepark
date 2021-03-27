@@ -9,7 +9,7 @@ abstract class DataProvider extends Provider
 
     public function createRequest(string $remoteMethod, $data)
     {
-        return $this->getCore()->getMDC()->createRequest($this->getName(), $remoteMethod, $data);
+        return $this->getCore()->getMDC()->createRequest($this->getRoute(), $remoteMethod, $data);
     }
 }
 ?>
