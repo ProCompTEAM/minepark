@@ -2,8 +2,8 @@
 namespace minepark\external;
 
 use minepark\Core;
+use minepark\Tasks;
 use minepark\defaults\Files;
-use minepark\utils\CallbackTask;
 
 class WebApi
 {
@@ -27,8 +27,7 @@ class WebApi
         $this->socket = socket_create_listen(self::PORT, 1);
         socket_set_nonblock($this->socket);
 
-        $this->getCore()->getScheduler()->scheduleRepeatingTask(
-            new CallbackTask([$this, "accept"]), 20 * self::ACCEPT_SECONDS_TIMEOUT);
+        Tasks::registerRepeatingAction(self::ACCEPT_SECONDS_TIMEOUT, [$this, "accept"]);
     }
 
     public function getCore() : Core
