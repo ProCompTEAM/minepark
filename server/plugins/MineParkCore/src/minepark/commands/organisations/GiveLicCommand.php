@@ -1,15 +1,15 @@
 <?php
 namespace minepark\commands\organisations;
 
+use minepark\commands\base\Command;
 use minepark\Providers;
 use pocketmine\event\Event;
 
 use minepark\defaults\Permissions;
 use minepark\common\player\MineParkPlayer;
 use minepark\components\organisations\Organisations;
-use minepark\commands\organisations\base\OrganisationsCommand;
 
-class GiveLicCommand extends OrganisationsCommand
+class GiveLicCommand extends Command
 {
     public const CURRENT_COMMAND = "givelic";
 

@@ -2,14 +2,14 @@
 namespace minepark\commands\organisations;
 
 use minepark\Api;
+use minepark\commands\base\Command;
 use pocketmine\event\Event;
 use minepark\defaults\Permissions;
 
 use minepark\common\player\MineParkPlayer;
 use minepark\components\organisations\Organisations;
-use minepark\commands\organisations\base\OrganisationsCommand;
 
-class InfoCommand extends OrganisationsCommand
+class InfoCommand extends Command
 {
     public const CURRENT_COMMAND = "info";
 

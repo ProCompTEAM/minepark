@@ -1,15 +1,15 @@
 <?php
 namespace minepark\commands\organisations;
 
+use minepark\commands\base\Command;
 use minepark\Providers;
 use pocketmine\event\Event;
 
 use minepark\defaults\Permissions;
 use minepark\common\player\MineParkPlayer;
 use minepark\components\organisations\Organisations;
-use minepark\commands\organisations\base\OrganisationsCommand;
 
-class ChangeNameCommand extends OrganisationsCommand
+class ChangeNameCommand extends Command
 {
     public const CURRENT_COMMAND = "changename";
 

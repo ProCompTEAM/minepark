@@ -2,13 +2,13 @@
 namespace minepark\commands\organisations;
 
 use minepark\Api;
+use minepark\commands\base\Command;
 use pocketmine\event\Event;
 
 use minepark\defaults\Permissions;
 use minepark\common\player\MineParkPlayer;
-use minepark\commands\organisations\base\OrganisationsCommand;
 
-class RemoveCommand extends OrganisationsCommand
+class RemoveCommand extends Command
 {
     public const CURRENT_COMMAND = "remove";
     public const CURRENT_COMMAND_ALIAS = "reject";
