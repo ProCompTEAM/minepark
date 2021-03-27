@@ -2,8 +2,9 @@
 namespace minepark\commands\organisations;
 
 use minepark\Api;
-use pocketmine\event\Event;
+use minepark\Providers;
 
+use pocketmine\event\Event;
 use minepark\defaults\Permissions;
 use minepark\common\player\MineParkPlayer;
 use minepark\commands\organisations\base\OrganisationsCommand;
@@ -52,7 +53,7 @@ class AddCommand extends OrganisationsCommand
     private function tryChangeOrganisation(MineParkPlayer $player, MineParkPlayer $boss)
     {
         $player->getProfile()->organisation = $boss->getProfile()->organisation;
-        $this->getCore()->getProfiler()->saveProfile($player);
+        Providers::getProfileProvider()->saveProfile($player);
 
         $boss->sendLocalizedMessage("{CommandAdd}" . $player->getProfile()->fullName);
         $player->sendLocalizedMessage("{GroupYou}".$this->core->getOrganisationsModule()->getName($player->getProfile()->organisation));

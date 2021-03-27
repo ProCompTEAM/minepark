@@ -67,7 +67,7 @@ class ChangeNameCommand extends OrganisationsCommand
         $oldname = $toPlayer->getProfile()->fullName;
         $toPlayer->getProfile()->fullName = $name . ' ' . $surname;
 
-        $this->getCore()->getProfiler()->saveProfile($toPlayer);
+        Providers::getProfileProvider()->saveProfile($toPlayer);
         $toPlayer->sendTip("§aпоздравляем!","§9$oldname §7>>> §e".$toPlayer->getProfile()->fullName, 5);
 
         Providers::getBankingProvider()->givePlayerMoney($government, 10);

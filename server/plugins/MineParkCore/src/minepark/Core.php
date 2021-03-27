@@ -2,7 +2,6 @@
 namespace minepark;
 
 use minepark\Api;
-use minepark\Profiler;
 use minepark\Providers;
 use minepark\common\MDC;
 use minepark\components\GPS;
@@ -47,7 +46,6 @@ class Core extends PluginBase implements Listener
     private $scmd;
     private $organisations;
     private $service;
-    private $profiler;
     private $chatter;
     private $initializer;
     private $damager;
@@ -113,7 +111,6 @@ class Core extends PluginBase implements Listener
         $this->scmd = new CommandsHandler;
         $this->organisations = new Organisations;
         $this->service = new Service;
-        $this->profiler = new Profiler;
         $this->chatter = new GameChat;
         $this->initializer = new Initializer;
         $this->damager = new Damager;
@@ -176,11 +173,6 @@ class Core extends PluginBase implements Listener
     public function getOrganisationsModule() : Organisations
     {
         return $this->organisations;
-    }
-
-    public function getProfiler() : Profiler
-    {
-        return $this->profiler;
     }
     
     public function getChatter() : GameChat
