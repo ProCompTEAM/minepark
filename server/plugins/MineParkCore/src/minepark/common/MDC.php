@@ -55,15 +55,20 @@ class MDC
     {
         $url = "http://" . $this->address . "/$remoteController/$remoteMethod";
 
-        $result = file_get_contents($url, false, stream_context_create(array(
-            'http' => array(
-                'method'  => 'POST',
-                'header'  => 
-                    "Content-type: application/json\r\n".
-                    "Authorization: " . $this->token . "\r\n",
-                'content' => json_encode($data->scalar ?? $data)
-            )
-        )));
+        $curl = curl_init();
+
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_POST, 1);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data->scalar ?? $data));
+        curl_setopt($curl, CURLOPT_HTTPHEADER, [
+            "Content-type: application/json",
+            "Authorization: " . $this->token
+        ]);
+
+        $result = curl_exec($curl);
+
+        curl_close($curl);
 
         return json_decode($result, true);
     }

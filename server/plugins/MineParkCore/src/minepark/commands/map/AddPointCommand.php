@@ -7,6 +7,7 @@ use minepark\commands\base\Command;
 use pocketmine\event\Event;
 
 use minepark\defaults\Permissions;
+use minepark\Providers;
 
 class AddPointCommand extends Command
 {
@@ -42,7 +43,7 @@ class AddPointCommand extends Command
             return;
         }
 
-        $this->getCore()->getMapper()->addPoint($player->getPosition(), $param1, $param2);
+        Providers::getMapProvider()->addPoint($player->getPosition(), $param1, $param2);
         
         $player->sendMessage("AddPoint");
     }

@@ -95,12 +95,12 @@ class NoFire extends Component
             return null;
         }
 
-        $points = $this->getCore()->getMapper()->getNearPoints($noFires[0], 5000);
+        $points = Providers::getMapProvider()->getNearPoints($noFires[0], 5000);
 
         if((count($points) > 0)) {
             $point = $points[mt_rand(0, count($points) - 1)];
 
-            if($this->getCore()->getMapper()->getPointGroup($point) < 3) {
+            if(Providers::getMapProvider()->getPointGroup($point) < 3) {
                 return $this->makeRandomFire($point);
             }
         }
@@ -114,7 +114,7 @@ class NoFire extends Component
             $offsetX = mt_rand(0, 5);
             $offsetZ = mt_rand(0, 5);
 
-            $cpos = $this->getCore()->getMapper()->getPointPosition($point);
+            $cpos = Providers::getMapProvider()->getPointPosition($point);
 
             $pos = new Position($cpos->getX() + $offsetX, $cpos->getY(), $cpos->getZ() + $offsetZ, $cpos->getLevel());
             
@@ -148,7 +148,7 @@ class NoFire extends Component
             $this->clearPlace($this->oldpoint, 20);
         }
 
-        $this->oldpoint = $this->getCore()->getMapper()->getPointPosition($fire_created);
+        $this->oldpoint = Providers::getMapProvider()->getPointPosition($fire_created);
     }
 
     private function tryToClearPlace(Position $pos, float $x, float $y, float $z) : bool

@@ -1,8 +1,6 @@
 <?php
 namespace minepark\components\organisations;
 
-use minepark\Core;
-use minepark\Mapper;
 use minepark\Providers;
 use pocketmine\event\Event;
 use pocketmine\entity\Effect;
@@ -12,6 +10,7 @@ use pocketmine\entity\EffectInstance;
 use minepark\common\player\MineParkPlayer;
 use minepark\components\base\Component;
 use minepark\defaults\ComponentAttributes;
+use minepark\defaults\MapConstants;
 
 class Workers extends Component
 {
@@ -74,10 +73,10 @@ class Workers extends Component
 
     public function ifPointIsNearPlayer(Position $pos, int $group)
     {
-        $points = $this->getCore()->getMapper()->getNearPoints($pos, 6);
+        $points = Providers::getMapProvider()->getNearPoints($pos, 6);
 
         foreach($points as $point) {
-            if($this->getCore()->getMapper()->getPointGroup($point) == $group) {
+            if(Providers::getMapProvider()->getPointGroup($point) == $group) {
                 return true;
             }
         }
@@ -87,7 +86,7 @@ class Workers extends Component
 
     public function takebox(MineParkPlayer $player)
     {
-        $hasPoint = $this->ifPointIsNearPlayer($player->getPosition(), Mapper::POINT_GROUP_WORK1);
+        $hasPoint = $this->ifPointIsNearPlayer($player->getPosition(), MapConstants::POINT_GROUP_WORK1);
 
         if(!$hasPoint) {
             $player->sendMessage("§cРядом нет площадки с ящиками!");
@@ -118,7 +117,7 @@ class Workers extends Component
 
     public function putbox(MineParkPlayer $player)
     {
-        $hasPoint = $this->ifPointIsNearPlayer($player->getPosition(), Mapper::POINT_GROUP_WORK2);
+        $hasPoint = $this->ifPointIsNearPlayer($player->getPosition(), MapConstants::POINT_GROUP_WORK2);
 
         if(!$hasPoint) {
             $player->sendMessage("§cРядом нет точек для разрузки!");

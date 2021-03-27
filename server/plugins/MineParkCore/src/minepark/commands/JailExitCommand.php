@@ -2,7 +2,6 @@
 namespace minepark\commands;
 
 use minepark\Api;
-use minepark\Mapper;
 
 use minepark\Providers;
 use pocketmine\event\Event;
@@ -10,6 +9,7 @@ use pocketmine\level\Position;
 use minepark\defaults\Permissions;
 use minepark\commands\base\Command;
 use minepark\common\player\MineParkPlayer;
+use minepark\defaults\MapConstants;
 
 class JailExitCommand extends Command
 {
@@ -46,7 +46,7 @@ class JailExitCommand extends Command
             $this->getCore()->getApi()->changeAttr($player, "A", false);
             $this->getCore()->getApi()->changeAttr($player, "W", false);
 
-            $this->getCore()->getMapper()->teleportPoint($player, Mapper::POINT_NAME_ADIMINISTRATION);
+            Providers::getMapProvider()->teleportPoint($player, MapConstants::POINT_NAME_ADIMINISTRATION);
 
             $player->getStatesMap()->bar = null;
         } else {
@@ -56,11 +56,11 @@ class JailExitCommand extends Command
 
     private function getJailPoint(Position $position) : ?string
     {
-        $plist = $this->getCore()->getMapper()->getNearPoints($position, self::DOOR_DISTANCE); 
+        $plist = Providers::getMapProvider()->getNearPoints($position, self::DOOR_DISTANCE); 
         
         foreach($plist as $point)
         {
-            if($point == Mapper::POINT_NAME_JAIL) {
+            if($point == MapConstants::POINT_NAME_JAIL) {
                 return $point;
             }
         }

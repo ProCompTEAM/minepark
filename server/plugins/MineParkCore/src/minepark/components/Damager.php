@@ -2,8 +2,7 @@
 namespace minepark\components;
 
 use minepark\Api;
-use minepark\Core;
-use minepark\Mapper;
+use minepark\Providers;
 use pocketmine\utils\Config;
 use pocketmine\entity\Effect;
 use pocketmine\entity\Entity;
@@ -11,6 +10,7 @@ use minepark\defaults\Permissions;
 use pocketmine\entity\EffectInstance;
 use minepark\components\base\Component;
 use minepark\common\player\MineParkPlayer;
+use minepark\defaults\MapConstants;
 
 class Damager extends Component
 {
@@ -54,7 +54,7 @@ class Damager extends Component
 
     public function kill(MineParkPlayer $player, ?Entity $damager) : bool
     {
-        $this->getCore()->getMapper()->teleportPoint($player, Mapper::POINT_NAME_HOSPITAL);
+        Providers::getMapProvider()->teleportPoint($player, MapConstants::POINT_NAME_HOSPITAL);
 
         $player->addEffect(new EffectInstance(Effect::getEffect(2), 5000, 1));
         $player->addEffect(new EffectInstance(Effect::getEffect(18), 5000, 1));

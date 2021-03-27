@@ -2,13 +2,13 @@
 namespace minepark\components;
 
 use minepark\Api;
-use minepark\Core;
-use minepark\common\player\MineParkPlayer;
-use minepark\components\base\Component;
+use minepark\Providers;
 use minepark\utils\CallbackTask;
-use minepark\Mapper;
+use minepark\defaults\MapConstants;
 use minepark\models\dtos\PasswordDto;
+use minepark\components\base\Component;
 use minepark\providers\data\UsersSource;
+use minepark\common\player\MineParkPlayer;
 
 class Auth extends Component
 {
@@ -111,7 +111,7 @@ class Auth extends Component
         $this->ips[$player->getName()] = $player->getAddress();
         
         if($this->getCore()->getApi()->existsAttr($player, Api::ATTRIBUTE_ARRESTED)) {
-            $this->getCore()->getMapper()->teleportPoint($player, Mapper::POINT_NAME_JAIL);
+            Providers::getMapProvider()->teleportPoint($player, MapConstants::POINT_NAME_JAIL);
         } else {
             $this->sendWelcomeText($player);
         }

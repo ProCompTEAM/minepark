@@ -3,13 +3,14 @@ namespace minepark\commands\map;
 
 use Exception;
 
-use minepark\Mapper;
+use minepark\Providers;
 use pocketmine\event\Event;
 use minepark\defaults\Sounds;
-use pocketmine\level\Position;
 
+use pocketmine\level\Position;
 use minepark\defaults\Permissions;
 use minepark\commands\base\Command;
+use minepark\defaults\MapConstants;
 use minepark\models\dtos\MapPointDto;
 use minepark\common\player\MineParkPlayer;
 
@@ -70,7 +71,7 @@ class GPSCommand extends Command
     {
         $point = $args[0];
 
-        $gps = $this->getCore()->getMapper()->getPointPosition($point);
+        $gps = Providers::getMapProvider()->getPointPosition($point);
 
         if ($gps === null) {
             return $player->sendLocalizedMessage("{CommandGPSNoPointPart1} $point {CommandGPSNoPointPart2");
@@ -106,18 +107,18 @@ class GPSCommand extends Command
         $form .= "§4(§7gps§4) §7В некоторых местах острова навигатор может работать неправильно из за плохого подключения к спутникам\n";
         $form .= "§4(§7gps§4) §9Ваша позиция§7(X : Z)§9: §6$x : $z\n";
 
-        $form .= "\n§7> §6Общественные места: §a" . implode(', ', $this->getCore()->getMapper()->getPointsByGroup(Mapper::POINT_GROUP_GENERIC));
-        $form .= "\n§7> §6Торговые площадки: §a" . implode(', ', $this->getCore()->getMapper()->getPointsByGroup(Mapper::POINT_GROUP_MARKETPLACE));
-        $form .= "\n§7> §6Арендная недвижимость: §a" . implode(', ', $this->getCore()->getMapper()->getPointsByGroup(Mapper::POINT_GROUP_REALTY));
+        $form .= "\n§7> §6Общественные места: §a" . implode(', ', Providers::getMapProvider()->getPointsByGroup(MapConstants::POINT_GROUP_GENERIC));
+        $form .= "\n§7> §6Торговые площадки: §a" . implode(', ', Providers::getMapProvider()->getPointsByGroup(MapConstants::POINT_GROUP_MARKETPLACE));
+        $form .= "\n§7> §6Арендная недвижимость: §a" . implode(', ', Providers::getMapProvider()->getPointsByGroup(MapConstants::POINT_GROUP_REALTY));
 
         $player->sendWindowMessage($form, "§9|============#НАВИГАТОР#============|");
     }
 
     private function showLights(MineParkPlayer $player)
     {
-        $genericPoints = $this->getCore()->getMapper()->getPointsByGroup(Mapper::POINT_GROUP_GENERIC, false);
-        $marketPoints = $this->getCore()->getMapper()->getPointsByGroup(Mapper::POINT_GROUP_MARKETPLACE, false);
-        $realtyPoints = $this->getCore()->getMapper()->getPointsByGroup(Mapper::POINT_GROUP_REALTY, false);
+        $genericPoints = Providers::getMapProvider()->getPointsByGroup(MapConstants::POINT_GROUP_GENERIC, false);
+        $marketPoints = Providers::getMapProvider()->getPointsByGroup(MapConstants::POINT_GROUP_MARKETPLACE, false);
+        $realtyPoints = Providers::getMapProvider()->getPointsByGroup(MapConstants::POINT_GROUP_REALTY, false);
 
         $this->showLightsForPoints($player, $genericPoints, "§b§a❒ ");
         $this->showLightsForPoints($player, $marketPoints, "§b§e＄ ");

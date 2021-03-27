@@ -2,7 +2,6 @@
 namespace minepark;
 
 use minepark\Api;
-use minepark\Mapper;
 use minepark\Profiler;
 use minepark\Providers;
 use minepark\common\MDC;
@@ -49,7 +48,6 @@ class Core extends PluginBase implements Listener
     private $organisations;
     private $service;
     private $profiler;
-    private $mapper;
     private $chatter;
     private $initializer;
     private $damager;
@@ -116,7 +114,6 @@ class Core extends PluginBase implements Listener
         $this->organisations = new Organisations;
         $this->service = new Service;
         $this->profiler = new Profiler;
-        $this->mapper = new Mapper;
         $this->chatter = new GameChat;
         $this->initializer = new Initializer;
         $this->damager = new Damager;
@@ -184,11 +181,6 @@ class Core extends PluginBase implements Listener
     public function getProfiler() : Profiler
     {
         return $this->profiler;
-    }
-
-    public function getMapper() : Mapper
-    {
-        return $this->mapper;
     }
     
     public function getChatter() : GameChat

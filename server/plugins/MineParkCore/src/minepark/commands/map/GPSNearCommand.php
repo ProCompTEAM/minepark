@@ -1,13 +1,14 @@
 <?php
 namespace minepark\commands\map;
 
-use minepark\defaults\Sounds;
-
-use minepark\common\player\MineParkPlayer;
-use minepark\defaults\Permissions;
+use minepark\Providers;
 
 use pocketmine\event\Event;
+use minepark\defaults\Sounds;
+
+use minepark\defaults\Permissions;
 use minepark\commands\base\Command;
+use minepark\common\player\MineParkPlayer;
 
 class GPSNearCommand extends Command
 {
@@ -31,7 +32,7 @@ class GPSNearCommand extends Command
 
     public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
-        $nearPoints = $this->getCore()->getMapper()->getNearPoints($player->getPosition(), self::DISTANCE);
+        $nearPoints = Providers::getMapProvider()->getNearPoints($player->getPosition(), self::DISTANCE);
         $list = " §7(отсутствуют)  ";
         
         if(count($nearPoints) > 0) { 
