@@ -9,7 +9,7 @@ class UsersDataProvider extends DataProvider
 {
     public const ROUTE = "users";
 
-    public function getName() : string
+    public function getRoute() : string
     {
         return self::ROUTE;
     }
