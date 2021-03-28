@@ -2,14 +2,14 @@
 namespace minepark\commands\organisations;
 
 use minepark\Api;
-use minepark\commands\base\Command;
+use minepark\commands\base\OrganisationsCommand;
 use minepark\Providers;
 
 use pocketmine\event\Event;
 use minepark\defaults\Permissions;
 use minepark\common\player\MineParkPlayer;
 
-class AddCommand extends Command
+class AddCommand extends OrganisationsCommand
 {
     public const CURRENT_COMMAND = "add";
     public const CURRENT_COMMAND_ALIAS = "join";

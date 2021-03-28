@@ -1,13 +1,13 @@
 <?php
 namespace minepark\commands\organisations;
 
-use minepark\commands\base\Command;
+use minepark\commands\base\OrganisationsCommand;
 use pocketmine\event\Event;
 use minepark\defaults\Permissions;
 
 use minepark\common\player\MineParkPlayer;
 
-class RadioCommand extends Command
+class RadioCommand extends OrganisationsCommand
 {
     public const CURRENT_COMMAND = "r";
 

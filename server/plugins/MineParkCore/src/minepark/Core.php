@@ -10,7 +10,6 @@ use minepark\EventsHandler;
 use minepark\components\Phone;
 use minepark\defaults\Files;
 use minepark\components\PayDay;
-use minepark\CommandsHandler;
 use minepark\external\WebApi;
 use minepark\components\Damager;
 use minepark\components\Tracker;
@@ -43,7 +42,7 @@ class Core extends PluginBase implements Listener
     private $mdc;
 
     private $sapi;
-    private $scmd;
+    private $commands;
     private $organisations;
     private $service;
     private $chatter;
@@ -108,7 +107,7 @@ class Core extends PluginBase implements Listener
     public function initialize()
     {
         $this->sapi = new Api;
-        $this->scmd = new CommandsHandler;
+        $this->commands = new Commands;
         $this->organisations = new Organisations;
         $this->service = new Service;
         $this->chatter = new GameChat;
@@ -165,9 +164,9 @@ class Core extends PluginBase implements Listener
         return $this->reporter;
     }
     
-    public function getCommandsHandler() : CommandsHandler
+    public function getCommands() : Commands
     {
-        return $this->scmd;
+        return $this->commands;
     }
 
     public function getOrganisationsModule() : Organisations

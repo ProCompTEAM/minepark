@@ -1,7 +1,7 @@
 <?php
 namespace minepark\commands\organisations;
 
-use minepark\commands\base\Command;
+use minepark\commands\base\OrganisationsCommand;
 use minepark\Providers;
 use pocketmine\item\Item;
 
@@ -11,7 +11,7 @@ use minepark\common\player\MineParkPlayer;
 use minepark\components\organisations\Organisations;
 use minepark\defaults\MapConstants;
 
-class SellCommand extends Command
+class SellCommand extends OrganisationsCommand
 {
     public const CURRENT_COMMAND = "sell";
 

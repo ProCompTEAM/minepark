@@ -1,14 +1,14 @@
 <?php
 namespace minepark\commands\organisations;
 
-use minepark\commands\base\Command;
+use minepark\commands\base\OrganisationsCommand;
 use pocketmine\event\Event;
 use minepark\defaults\Permissions;
 
 use minepark\common\player\MineParkPlayer;
 use minepark\components\organisations\Organisations;
 
-class NoFireCommand extends Command
+class NoFireCommand extends OrganisationsCommand
 {
     public const CURRENT_COMMAND = "nofire";
 
