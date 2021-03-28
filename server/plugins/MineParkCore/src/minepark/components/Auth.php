@@ -8,7 +8,9 @@ use minepark\defaults\MapConstants;
 use minepark\models\dtos\PasswordDto;
 use minepark\components\base\Component;
 use minepark\common\player\MineParkPlayer;
+use minepark\defaults\TimeConstants;
 use minepark\providers\data\UsersDataProvider;
+use minepark\Tasks;
 
 class Auth extends Component
 {
@@ -149,8 +151,8 @@ class Auth extends Component
 
         $this->setMovement($player, true);
 
-        $this->getCore()->getScheduler()->scheduleDelayedTask(
-            new CallbackTask(array($this, "sendWelcomeText"), array($player)), 20 * self::WELCOME_MESSAGE_TIMEOUT);
+        $timeoutTicks = TimeConstants::ONE_SECOND_TICKS * self::WELCOME_MESSAGE_TIMEOUT;
+        Tasks::registerDelayedAction($timeoutTicks, [$this, "sendWelcomeText"], [$player]);
     }
 
     private function getDataProvider() : UsersDataProvider

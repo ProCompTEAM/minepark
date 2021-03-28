@@ -7,7 +7,7 @@ use minepark\Providers;
 use minepark\common\MDC;
 use minepark\components\GPS;
 use minepark\components\Auth;
-use minepark\EventsHandler;
+use minepark\Events;
 use minepark\components\Phone;
 use minepark\defaults\Files;
 use minepark\components\PayDay;
@@ -25,7 +25,7 @@ use minepark\components\Broadcaster;
 use minepark\defaults\Defaults;
 use minepark\components\StatusBar;
 use pocketmine\command\Command;
-use minepark\components\Initializer;
+use minepark\components\PlayerInitialization;
 use pocketmine\plugin\PluginBase;
 use minepark\components\NotifyPlayers;
 use minepark\components\WorldProtector;
@@ -34,6 +34,7 @@ use minepark\external\service\Service;
 use pocketmine\command\ConsoleCommandSender;
 use minepark\components\organisations\Organisations;
 use minepark\components\VehicleManager;
+use pocketmine\event\Event;
 
 class Core extends PluginBase implements Listener
 {
@@ -81,7 +82,7 @@ class Core extends PluginBase implements Listener
 
         $this->initializeMDC();
 
-        $this->initializeEventsHandler();
+        $this->initializeEvents();
 
         $this->initialize();
 
@@ -103,9 +104,10 @@ class Core extends PluginBase implements Listener
         $this->getMDC()->initializeAll();
     }
 
-    public function initializeEventsHandler()
+    public function initializeEvents()
     {
-        $this->eventsHandler = new EventsHandler;
+        Events::initializeAll();
+        $this->eventsHandler = new Events;
         $this->getServer()->getPluginManager()->registerEvents($this->eventsHandler, $this);
     }
 
@@ -117,7 +119,7 @@ class Core extends PluginBase implements Listener
         $this->service = new Service;
         $this->profiler = new Profiler;
         $this->chatter = new GameChat;
-        $this->initializer = new Initializer;
+        $this->initializer = new PlayerInitialization;
         $this->damager = new Damager;
         $this->protector = new WorldProtector;
         $this->phone = new Phone;
@@ -145,7 +147,7 @@ class Core extends PluginBase implements Listener
         return $this->mdc;
     }
 
-    public function getEventsHandler() : EventsHandler
+    public function getEvents() : Events
     {
         return $this->eventsHandler;
     }
@@ -190,7 +192,7 @@ class Core extends PluginBase implements Listener
         return $this->chatter;
     }
 
-    public function getInitializer() : Initializer
+    public function getPlayerInitialization() : PlayerInitialization
     {
         return $this->initializer;
     }

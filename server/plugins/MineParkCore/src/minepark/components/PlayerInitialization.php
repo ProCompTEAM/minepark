@@ -11,14 +11,21 @@ use minepark\models\player\StatesMap;
 use minepark\components\base\Component;
 use minepark\common\player\MineParkPlayer;
 use minepark\components\organisations\Organisations;
+use minepark\defaults\EventList;
+use minepark\defaults\PlayerConstants;
+use minepark\Events;
+use pocketmine\event\player\PlayerCreationEvent;
+use pocketmine\event\player\PlayerJoinEvent;
+use pocketmine\event\player\PlayerPreLoginEvent;
 
-class Initializer extends Component
+class PlayerInitialization extends Component
 {
-    public const DEFAULT_MONEY_PRESENT = 1000;
-
-    public const DONATER_STATUS_BONUS_COUNT = 100;
-
-    public const MINIMAL_SKILL_MINUTES_PLAYED = 60;
+    public function __construct()
+    {
+        Events::registerEvent(EventList::PLAYER_CREATION_EVENT, [$this, "setDefaultPlayerClass"]);
+        Events::registerEvent(EventList::PLAYER_PRE_LOGIN_EVENT, [$this, "initialize"]);
+        Events::registerEvent(EventList::PLAYER_JOIN_EVENT, [$this, "join"]);
+    }
 
     public function getAttributes() : array
     {
@@ -30,9 +37,16 @@ class Initializer extends Component
     {
         return Core::getActive()->getProfiler();
     }
-    
-    public function initialize(MineParkPlayer $player)
+
+    public function setDefaultPlayerClass(PlayerCreationEvent $event)
     {
+        $event->setPlayerClass(MineParkPlayer::class);
+    }
+    
+    public function initialize(PlayerPreLoginEvent $event)
+    {
+        $player = MineParkPlayer::cast($event->getPlayer());
+
         $this->setDefaults($player);
 
         $this->updateNewPlayerStatus($player);
@@ -46,8 +60,10 @@ class Initializer extends Component
         $this->showLang($player);
     }
 
-    public function join(MineParkPlayer $player)
+    public function join(PlayerJoinEvent $event)
     {
+        $player = MineParkPlayer::cast($event->getPlayer());
+
         $player->removeAllEffects();
         $player->setNameTag("");
 
@@ -153,7 +169,7 @@ class Initializer extends Component
     private function updateBegginerStatus(MineParkPlayer $player) 
     {
         $status = $player->getStatesMap()->isNew or 
-            $player->getProfile()->minutesPlayed < self::MINIMAL_SKILL_MINUTES_PLAYED;
+            $player->getProfile()->minutesPlayed < PlayerConstants::MINIMAL_SKILL_MINUTES_PLAYED;
         $player->getStatesMap()->isBeginner = $status;
     }
     
@@ -165,7 +181,7 @@ class Initializer extends Component
 
     private function handleNewPlayer(MineParkPlayer $player)
     {
-        Providers::getBankingProvider()->givePlayerMoney($player, self::DEFAULT_MONEY_PRESENT);
+        Providers::getBankingProvider()->givePlayerMoney($player, PlayerConstants::DEFAULT_MONEY_PRESENT);
         $this->getCore()->getTrackerModule()->enableTrack($player);
         $this->presentNewPlayer($player);
     }
@@ -220,7 +236,7 @@ class Initializer extends Component
             return "§e§0-=§9V.I.P§0=-§e";
         }
 
-        if($profile->bonus > self::DONATER_STATUS_BONUS_COUNT) {
+        if($profile->bonus > PlayerConstants::DONATER_STATUS_BONUS_COUNT) {
             return "§7~§6§e-=ДоНаТеР=-§6§7~";
         }
     }
