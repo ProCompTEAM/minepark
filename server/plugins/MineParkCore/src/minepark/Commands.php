@@ -81,7 +81,7 @@ class Commands
         return $this->organisationsCommands;
     }
     
-    public function execute(MineParkPlayer $player, string $rawCommand, ?Event $event = null)
+    public function executeInputData(MineParkPlayer $player, string $rawCommand, ?Event $event = null)
     {
         if ($rawCommand[0] !== self::COMMAND_PREFIX) {
             return;
@@ -92,7 +92,7 @@ class Commands
         $arguments = explode(Command::ARGUMENTS_SEPERATOR, $rawCommand);
 
         if ($arguments[0] === self::ORGANISATIONS_COMMANDS_PREFIX) {
-            return $this->executeOrganisations($player, array_slice($arguments, 1), $event);
+            return $this->executeOrganisationsCommand($player, array_slice($arguments, 1), $event);
         }
 
         $command = $this->getCommand($arguments[0]);
@@ -170,7 +170,7 @@ class Commands
         ];
     }
 
-    private function executeOrganisations(MineParkPlayer $player, array $arguments, ?Event $event = null)
+    private function executeOrganisationsCommand(MineParkPlayer $player, array $arguments, ?Event $event = null)
     {
         if (!isset($commands[0])) {
             return;
