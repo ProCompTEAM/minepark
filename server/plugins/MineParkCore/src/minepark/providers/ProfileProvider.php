@@ -17,13 +17,13 @@ class ProfileProvider extends Provider
 
     public function isNewPlayer(MineParkPlayer $player)
     {
-        return !$this->getUsersDataProvider()->isUserExist($player->getName());
+        return !$this->usersDataProvider->isUserExist($player->getName());
     }
 
     public function initializeProfile(MineParkPlayer $player)
     {
         if($player->getStatesMap()->isNew) {
-            $createdUserProfile = $this->getUsersDataProvider()->createUserInternal($player->getName());
+            $createdUserProfile = $this->usersDataProvider->createUserInternal($player->getName());
             $player->setProfile($createdUserProfile);
         } else {
             $this->loadProfile($player);
@@ -32,18 +32,13 @@ class ProfileProvider extends Provider
     
     public function loadProfile(MineParkPlayer $player)
     {
-        $profile = $this->getUsersDataProvider()->getUser($player->getName());
+        $profile = $this->usersDataProvider->getUser($player->getName());
         $player->setProfile($profile);
     }
     
     public function saveProfile(MineParkPlayer $player)
     {
-        $this->getUsersDataProvider()->updateUserData($player->getProfile());
-    }
-
-    private function getUsersDataProvider()
-    {
-        return $this->usersDataProvider;
+        $this->usersDataProvider->updateUserData($player->getProfile());
     }
 }
 ?>
