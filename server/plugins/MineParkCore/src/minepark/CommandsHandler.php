@@ -2,56 +2,60 @@
 namespace minepark;
 
 use pocketmine\event\Event;
-use minepark\defaults\Permissions;
-use minepark\common\player\MineParkPlayer;
-
-use minepark\commands\base\Command;
+use minepark\defaults\EventList;
 use minepark\commands\DayCommand;
+
 use minepark\commands\PayCommand;
 use minepark\commands\BankCommand;
+use minepark\defaults\Permissions;
+use minepark\commands\base\Command;
 use minepark\commands\LevelCommand;
 use minepark\commands\MoneyCommand;
 use minepark\commands\NightCommand;
 use minepark\commands\CasinoCommand;
 use minepark\commands\DonateCommand;
 use minepark\commands\OnlineCommand;
-use minepark\commands\GetOrganisationCommand;
-use minepark\commands\ResetPasswordCommand;
+use minepark\commands\map\GPSCommand;
 use minepark\commands\JailExitCommand;
 use minepark\commands\PassportCommand;
 use minepark\commands\AnimationCommand;
 use minepark\commands\GetSellerCommand;
+use minepark\commands\phone\SmsCommand;
 use minepark\commands\TransportCommand;
 use minepark\commands\phone\CallCommand;
-use minepark\commands\phone\SmsCommand;
 use minepark\commands\admin\AdminCommand;
-use minepark\commands\map\AddPointCommand;
 use minepark\commands\map\GPSNearCommand;
 use minepark\commands\map\ToPointCommand;
-use minepark\commands\map\GPSCommand;
-use minepark\commands\map\RemovePointCommand;
-use minepark\commands\map\ToNearPointCommand;
-use minepark\commands\report\CloseCommand;
-use minepark\commands\report\ReplyCommand;
-use minepark\commands\report\ReportCommand;
-use minepark\commands\roleplay\ShoutCommand;
-use minepark\commands\roleplay\WhisperCommand;
 use minepark\commands\roleplay\DoCommand;
 use minepark\commands\roleplay\MeCommand;
+use minepark\commands\map\AddPointCommand;
+use minepark\commands\report\CloseCommand;
+use minepark\commands\report\ReplyCommand;
 use minepark\commands\roleplay\TryCommand;
+use minepark\common\player\MineParkPlayer;
+use minepark\commands\report\ReportCommand;
+use minepark\commands\ResetPasswordCommand;
+use minepark\commands\roleplay\ShoutCommand;
 use minepark\commands\workers\PutBoxCommand;
+use minepark\commands\GetOrganisationCommand;
+use minepark\commands\map\RemovePointCommand;
+use minepark\commands\map\ToNearPointCommand;
 use minepark\commands\workers\GetFarmCommand;
 use minepark\commands\workers\PutFarmCommand;
 use minepark\commands\workers\TakeBoxCommand;
+use minepark\commands\roleplay\WhisperCommand;
+use pocketmine\event\player\PlayerCommandPreprocessEvent;
 
 class CommandsHandler
 {
     private const COMMAND_PREFIX = "/";
 
-    private $commands;
+    private array $commands;
     
     public function __construct()
     {
+        Events::registerEvent(EventList::PLAYER_COMMAND_PREPROCESS_EVENT, [$this, "executeInputData"]);
+
         $this->commands = [
             new AdminCommand,
             new AddPointCommand,
@@ -98,13 +102,14 @@ class CommandsHandler
         return $this->commands;
     }
     
-    public function execute(MineParkPlayer $player, string $rawCommand, Event $event = null)
+    public function executeInputData(PlayerCommandPreprocessEvent $event)
     {
-        if ($rawCommand[0] !== self::COMMAND_PREFIX) {
+        if ($event->getMessage()[0] !== self::COMMAND_PREFIX) {
             return;
         }
 
-        $rawCommand = substr($rawCommand, 1);
+        $player = MineParkPlayer::cast($event->getPlayer());
+        $rawCommand = substr($event->getMessage(), 1);
 
         $arguments = explode(Command::ARGUMENTS_SEPERATOR, $rawCommand);
         $command = $this->getCommand($arguments[0]);

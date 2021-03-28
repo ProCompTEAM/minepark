@@ -2,9 +2,13 @@
 namespace minepark\components;
 
 use minepark\Core;
+use minepark\Events;
 use pocketmine\utils\Config;
 use pocketmine\level\Position;
+use minepark\defaults\EventList;
 use minepark\components\base\Component;
+use pocketmine\event\block\BlockBreakEvent;
+use pocketmine\event\block\BlockPlaceEvent;
 
 class WorldProtector extends Component
 {
@@ -20,6 +24,9 @@ class WorldProtector extends Component
 
     public function __construct()
     {
+        Events::registerEvent(EventList::BLOCK_BREAK_EVENT, [$this, "applyBlockUpdateSettings"]);
+        Events::registerEvent(EventList::BLOCK_PLACE_EVENT, [$this, "applyBlockUpdateSettings"]);
+
         $this->loadConfiguration();
     }
 
@@ -27,6 +34,13 @@ class WorldProtector extends Component
     {
         return [
         ];
+    }
+
+    public function applyBlockUpdateSettings(BlockBreakEvent | BlockPlaceEvent $event)
+    {
+        if (!$this->isInRange($event->getBlock())) {
+            $event->setCancelled(false);
+        }
     }
 
     public function isInRange(Position $position) : bool

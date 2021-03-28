@@ -1,9 +1,11 @@
 <?php
 namespace minepark\components;
 
-use minepark\common\player\MineParkPlayer;
-use minepark\components\base\Component;
+use minepark\Events;
+use minepark\defaults\EventList;
 use minepark\defaults\ChatConstants;
+use minepark\components\base\Component;
+use minepark\common\player\MineParkPlayer;
 use pocketmine\event\player\PlayerChatEvent;
 
 class GameChat extends Component
@@ -14,13 +16,18 @@ class GameChat extends Component
 
     private const SELF_CHAT_PREFIX = "{ChatIAm}";
 
+    public function __construct()
+    {
+        Events::registerEvent(EventList::PLAYER_CHAT_EVENT, [$this, "executeInputData"]);
+    }
+
     public function getAttributes(): array
     {
         return [
         ];
     }
 
-    public function handleMessageEvent(PlayerChatEvent $event)
+    public function executeInputData(PlayerChatEvent $event)
     {
         $event->setCancelled();
 
@@ -37,15 +44,17 @@ class GameChat extends Component
             return $this->handleInCallMessage($player, $message);
         }
 
-        $prefix = $message[0];
+        $signature = $message[0];
 
-        if ($prefix === ChatConstants::GLOBAL_CHAT_SIGNATURE) {
+        if ($signature === ChatConstants::GLOBAL_CHAT_SIGNATURE) {
             $this->sendGlobalMessage($player, substr($message, 1));
-        } else if ($prefix === ChatConstants::ADMINISTRATION_CHAT_SIGNATURE) {
+        } else if ($signature === ChatConstants::ADMINISTRATION_CHAT_SIGNATURE) {
             $this->sendAdminMessage($player, substr($message, 1));
         } else {
             $this->sendLocalMessage($player, $message, self::CHAT_MESSAGE_PREFIX, ChatConstants::LOCAL_CHAT_HEAR_RADIUS, true);
         }
+
+        $this->getCore()->sendToMessagesLog($player->getName(), $message);
     }
 
     public function sendLocalMessage(MineParkPlayer $player, string $message, string $prefix = self::CHAT_MESSAGE_PREFIX, int $radius = ChatConstants::LOCAL_CHAT_HEAR_RADIUS, bool $checkForEmotions = false)
