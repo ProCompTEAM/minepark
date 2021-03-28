@@ -3,10 +3,11 @@ namespace minepark\components;
 
 use minepark\Providers;
 use pocketmine\item\Item;
+use pocketmine\event\Event;
+use minepark\defaults\MapConstants;
 use minepark\components\base\Component;
 use minepark\common\player\MineParkPlayer;
 use minepark\defaults\ComponentAttributes;
-use minepark\defaults\MapConstants;
 
 class FastFood extends Component
 {
@@ -75,7 +76,7 @@ class FastFood extends Component
         $player->getInventory()->addItem($item);
     }
     
-    public function sign($event)
+    public function sign(Event $event)
     {
         $p = $event->getPlayer();
         $lns = $event->getLines();

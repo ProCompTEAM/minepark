@@ -1,15 +1,16 @@
 <?php
 namespace minepark\components\organisations;
 
-use minepark\common\player\MineParkPlayer;
-use minepark\components\base\Component;
+use minepark\Tasks;
 use minepark\Providers;
-
 use pocketmine\block\Block;
+
 use pocketmine\level\Position;
-use minepark\utils\CallbackTask;
-use minepark\components\organisations\Organisations;
+use minepark\defaults\TimeConstants;
+use minepark\components\base\Component;
+use minepark\common\player\MineParkPlayer;
 use minepark\defaults\ComponentAttributes;
+use minepark\components\organisations\Organisations;
 
 class NoFire extends Component
 {
@@ -17,7 +18,7 @@ class NoFire extends Component
     
     public function __construct()
     {
-        $this->getCore()->getScheduler()->scheduleRepeatingTask(new CallbackTask([$this, "timeToFire"]), 20 * 60 * 3);
+        Tasks::registerRepeatingAction(TimeConstants::NOFIRE_UPDATE_INTERVAL, [$this, "timeToFire"]);
         $this->oldpoint = null;
     }
 

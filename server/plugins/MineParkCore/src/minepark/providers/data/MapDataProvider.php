@@ -9,7 +9,7 @@ class MapDataProvider extends DataProvider
 {
     public const ROUTE = "map";
 
-    public function getName() : string
+    public function getRoute() : string
     {
         return self::ROUTE;
     }

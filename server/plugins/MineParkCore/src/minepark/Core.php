@@ -35,7 +35,7 @@ use minepark\components\VehicleManager;
 
 class Core extends PluginBase implements Listener
 {
-    private static $_core;
+    private static Core $_instance;
 
     private $eventsHandler;
 
@@ -65,12 +65,14 @@ class Core extends PluginBase implements Listener
 
     public static function getActive() : Core
     {
-        return self::$_core;
+        return self::$_instance;
     }
-    
+
     public function onEnable()
     {
-        Core::$_core = $this;
+        Core::$_instance = $this;
+
+        Tasks::initializeAll();
 
         Providers::initializeAll();
 
