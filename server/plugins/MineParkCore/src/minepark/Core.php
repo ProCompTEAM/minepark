@@ -2,7 +2,6 @@
 namespace minepark;
 
 use minepark\Api;
-use minepark\Profiler;
 use minepark\Providers;
 use minepark\common\MDC;
 use minepark\components\GPS;
@@ -11,7 +10,6 @@ use minepark\Events;
 use minepark\components\Phone;
 use minepark\defaults\Files;
 use minepark\components\PayDay;
-use minepark\CommandsHandler;
 use minepark\external\WebApi;
 use minepark\components\Damager;
 use minepark\components\Tracker;
@@ -44,10 +42,9 @@ class Core extends PluginBase implements Listener
     private $mdc;
 
     private $sapi;
-    private $scmd;
+    private $commands;
     private $organisations;
     private $service;
-    private $profiler;
     private $chatter;
     private $initializer;
     private $damager;
@@ -113,9 +110,8 @@ class Core extends PluginBase implements Listener
     public function initializeComponents()
     {
         $this->sapi = new Api;
-        $this->scmd = new CommandsHandler;
+        $this->scmd = new Commands;
         $this->service = new Service;
-        $this->profiler = new Profiler;
         $this->webapi = new WebApi;
 
         Components::initializeAll();
@@ -156,19 +152,14 @@ class Core extends PluginBase implements Listener
         return $this->reporter;
     }
     
-    public function getCommandsHandler() : CommandsHandler
+    public function getCommands() : Commands
     {
-        return $this->scmd;
+        return $this->commands;
     }
 
     public function getOrganisationsModule() : Organisations
     {
         return $this->organisations;
-    }
-
-    public function getProfiler() : Profiler
-    {
-        return $this->profiler;
     }
     
     public function getChatter() : GameChat

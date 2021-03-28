@@ -1,9 +1,7 @@
 <?php
 namespace minepark\components\settings;
 
-use minepark\Core;
 use minepark\Events;
-use minepark\Profiler;
 use minepark\Providers;
 use pocketmine\item\Item;
 use pocketmine\block\Block;
@@ -23,6 +21,7 @@ use pocketmine\event\player\PlayerCreationEvent;
 use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\event\player\PlayerPreLoginEvent;
 use minepark\components\organisations\Organisations;
+use minepark\providers\ProfileProvider;
 
 class PlayerSettings extends Component
 {
@@ -43,9 +42,9 @@ class PlayerSettings extends Component
         ];
     }
 
-    public function getProfiler() : Profiler
+    public function getProfileProvider() : ProfileProvider
     {
-        return Core::getActive()->getProfiler();
+        return Providers::getProfileProvider();
     }
 
     public function setDefaultPlayerClass(PlayerCreationEvent $event)
@@ -61,7 +60,7 @@ class PlayerSettings extends Component
 
         $this->updateNewPlayerStatus($player);
 
-        $this->getProfiler()->initializeProfile($player);
+        $this->getProfileProvider()->initializeProfile($player);
 
         $this->updateBegginerStatus($player);
 
@@ -219,7 +218,7 @@ class PlayerSettings extends Component
 
     private function updateNewPlayerStatus(MineParkPlayer $player) 
     {
-        $status = $this->getProfiler()->isNewPlayer($player);
+        $status = $this->getProfileProvider()->isNewPlayer($player);
         $player->getStatesMap()->isNew = $status;
     }
 

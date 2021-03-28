@@ -1,11 +1,12 @@
 <?php
 namespace minepark\commands\admin;
 
+use minepark\Providers;
+
 use pocketmine\event\Event;
-
 use minepark\defaults\Sounds;
-use minepark\defaults\Defaults;
 
+use minepark\defaults\Defaults;
 use minepark\defaults\Permissions;
 use minepark\commands\base\Command;
 use minepark\common\player\MineParkPlayer;
@@ -114,7 +115,7 @@ class AdminCommand extends Command
         }
 
         $targetPlayer->getProfile()->organisation = $oid; 
-        $this->getCore()->getProfiler()->saveProfile($targetPlayer);
+        Providers::getProfileProvider()->saveProfile($targetPlayer);
 
         $player->sendMessage("AdminCmdSetOrg1");
         $targetPlayer->sendLocalizedMessage("{GroupYou}". $this->getCore()->getOrganisationsModule()->getName($oid));

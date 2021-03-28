@@ -81,7 +81,7 @@ class Api
             $player->getProfile()->attributes .= strtoupper($key);
         }
 
-        $this->getCore()->getProfiler()->saveProfile($player);
+        Providers::getProfileProvider()->saveProfile($player);
     }
     
     public function arest(MineParkPlayer $player)

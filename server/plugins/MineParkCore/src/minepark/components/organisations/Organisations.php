@@ -15,7 +15,6 @@ class Organisations extends Component
     public $workers;
     public $farm;
     public $noFire;
-    public $cmdHandler;
 
     const NO_WORK = 0;
     const TAXI_WORK = 1;
@@ -32,7 +31,6 @@ class Organisations extends Component
         $this->workers = new Workers;
         $this->farm = new Farm;
         $this->noFire = new NoFire;
-        $this->cmdHandler = new OrganisationsCommandHandler;
     }
 
     public function getAttributes() : array
@@ -68,10 +66,5 @@ class Organisations extends Component
     public function getNoFire() : NoFire
     {
         return $this->noFire;
-    }
-
-    public function getCommandHandler() : OrganisationsCommandHandler
-    {
-        return $this->cmdHandler;
     }
 }
