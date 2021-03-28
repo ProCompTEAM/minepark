@@ -2,7 +2,6 @@
 namespace minepark\components;
 
 use minepark\Core;
-use minepark\Profiler;
 use minepark\Providers;
 use pocketmine\item\Item;
 use minepark\defaults\Permissions;
@@ -11,6 +10,7 @@ use minepark\models\player\StatesMap;
 use minepark\components\base\Component;
 use minepark\common\player\MineParkPlayer;
 use minepark\components\organisations\Organisations;
+use minepark\providers\ProfileProvider;
 
 class Initializer extends Component
 {
@@ -26,9 +26,9 @@ class Initializer extends Component
         ];
     }
 
-    public function getProfiler() : Profiler
+    public function getProfileProvider() : ProfileProvider
     {
-        return Core::getActive()->getProfiler();
+        return Providers::getProfileProvider();
     }
     
     public function initialize(MineParkPlayer $player)
@@ -37,7 +37,7 @@ class Initializer extends Component
 
         $this->updateNewPlayerStatus($player);
 
-        $this->getProfiler()->initializeProfile($player);
+        $this->getProfileProvider()->initializeProfile($player);
 
         $this->updateBegginerStatus($player);
 
@@ -146,7 +146,7 @@ class Initializer extends Component
 
     private function updateNewPlayerStatus(MineParkPlayer $player) 
     {
-        $status = $this->getProfiler()->isNewPlayer($player);
+        $status = $this->getProfileProvider()->isNewPlayer($player);
         $player->getStatesMap()->isNew = $status;
     }
 

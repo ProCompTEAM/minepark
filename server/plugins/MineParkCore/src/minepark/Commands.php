@@ -25,12 +25,24 @@ use minepark\commands\TransportCommand;
 use minepark\commands\phone\CallCommand;
 use minepark\commands\phone\SmsCommand;
 use minepark\commands\admin\AdminCommand;
+use minepark\commands\base\OrganisationsCommand;
 use minepark\commands\map\AddPointCommand;
 use minepark\commands\map\GPSNearCommand;
 use minepark\commands\map\ToPointCommand;
 use minepark\commands\map\GPSCommand;
 use minepark\commands\map\RemovePointCommand;
 use minepark\commands\map\ToNearPointCommand;
+use minepark\commands\organisations\AddCommand;
+use minepark\commands\organisations\ArestCommand;
+use minepark\commands\organisations\ChangeNameCommand;
+use minepark\commands\organisations\GiveLicCommand;
+use minepark\commands\organisations\HealCommand;
+use minepark\commands\organisations\InfoCommand;
+use minepark\commands\organisations\NoFireCommand;
+use minepark\commands\organisations\RadioCommand;
+use minepark\commands\organisations\RemoveCommand;
+use minepark\commands\organisations\SellCommand;
+use minepark\commands\organisations\ShowCommand;
 use minepark\commands\report\CloseCommand;
 use minepark\commands\report\ReplyCommand;
 use minepark\commands\report\ReportCommand;
@@ -44,13 +56,78 @@ use minepark\commands\workers\GetFarmCommand;
 use minepark\commands\workers\PutFarmCommand;
 use minepark\commands\workers\TakeBoxCommand;
 
-class CommandsHandler
+class Commands
 {
     private const COMMAND_PREFIX = "/";
+    private const ORGANISATIONS_COMMANDS_PREFIX = "o";
 
     private $commands;
-    
+    private $organisationsCommands;
+
     public function __construct()
+    {
+        $this->initializeCommands();
+
+        $this->initializeOrganisationsCommands();
+    }
+
+    public function getCommands() : array
+    {
+        return $this->commands;
+    }
+
+    public function getOrganisationsCommands() : array
+    {
+        return $this->organisationsCommands;
+    }
+    
+    public function executeInputData(MineParkPlayer $player, string $rawCommand, ?Event $event = null)
+    {
+        if ($rawCommand[0] !== self::COMMAND_PREFIX) {
+            return;
+        }
+
+        $rawCommand = substr($rawCommand, 1);
+
+        $arguments = explode(Command::ARGUMENTS_SEPERATOR, $rawCommand);
+
+        if ($arguments[0] === self::ORGANISATIONS_COMMANDS_PREFIX) {
+            return $this->executeOrganisationsCommand($player, array_slice($arguments, 1), $event);
+        }
+
+        $command = $this->getCommand($arguments[0]);
+
+        if ($command === null) {
+            return;
+        }
+
+        $arguments = array_slice($arguments, 1);
+
+        if (!$this->checkPermissions($player, $command, $event)) {
+            return;
+        }
+
+        $command->execute($player, $arguments, $event);
+    }
+
+    private function initializeOrganisationsCommands()
+    {
+        $this->organisationsCommands = [
+            new AddCommand,
+            new ArestCommand,
+            new ChangeNameCommand,
+            new GiveLicCommand,
+            new HealCommand,
+            new InfoCommand,
+            new NoFireCommand,
+            new RadioCommand,
+            new RemoveCommand,
+            new SellCommand,
+            new ShowCommand
+        ];
+    }
+
+    private function initializeCommands()
     {
         $this->commands = [
             new AdminCommand,
@@ -93,36 +170,21 @@ class CommandsHandler
         ];
     }
 
-    public function getCommands() : array
+    private function executeOrganisationsCommand(MineParkPlayer $player, array $arguments, ?Event $event = null)
     {
-        return $this->commands;
-    }
-    
-    public function execute(MineParkPlayer $player, string $rawCommand, Event $event = null)
-    {
-        if ($rawCommand[0] !== self::COMMAND_PREFIX) {
+        if (!isset($commands[0])) {
             return;
         }
 
-        $rawCommand = substr($rawCommand, 1);
+        $command = $this->getOrganisationsCommand($arguments[0]);
 
-        $arguments = explode(Command::ARGUMENTS_SEPERATOR, $rawCommand);
-        $command = $this->getCommand($arguments[0]);
-
-        if ($command === null) {
+        if (!isset($command)) {
             return;
         }
 
         $arguments = array_slice($arguments, 1);
 
-        if (!$this->hasPermissions($player, $command)) {
-            $player->sendMessage("§cУ вас нет прав на эту команду :(");
-            $player->sendMessage("§6Возможно она станет доступна после покупки: /donate");
-
-            if($event !== null) {
-                $event->setCancelled();
-            }
-
+        if (!$this->checkPermissions($player, $command, $event)) {
             return;
         }
 
@@ -138,6 +200,33 @@ class CommandsHandler
         }
 
         return null;
+    }
+
+    private function getOrganisationsCommand(string $commandName) : ?OrganisationsCommand
+    {
+        foreach ($this->organisationsCommands as $command) {
+            if (in_array($commandName, $command->getCommand())) {
+                return $command;
+            }
+        }
+
+        return null;
+    }
+
+    private function checkPermissions(MineParkPlayer $player, Command $command, ?Event $event = null) : bool
+    {
+        if ($this->hasPermissions($player, $command)) {
+            return true;
+        }
+
+        $player->sendMessage("§cУ вас нет прав на эту команду :(");
+        $player->sendMessage("§6Возможно она станет доступна после покупки: /donate");
+
+        if (isset($event)) {
+            $event->setCancelled();
+        }
+
+        return false;
     }
 
     private function hasPermissions(MineParkPlayer $player, Command $command) : bool

@@ -2,8 +2,9 @@
 namespace minepark\commands;
 
 use minepark\Api;
-use pocketmine\event\Event;
+use minepark\Providers;
 
+use pocketmine\event\Event;
 use minepark\defaults\Sounds;
 use minepark\defaults\Permissions;
 use minepark\commands\base\Command;
@@ -69,7 +70,7 @@ class PassportCommand extends Command
                 
             if(strpos($p->getProfile()->people, strtolower($player->getName())) === false and $p !== $player) {
                 $p->getProfile()->people .= strtolower($player->getName());
-                $this->getCore()->getProfiler()->saveProfile($p);
+                Providers::getProfileProvider()->saveProfile($p);
             }
         }
     }

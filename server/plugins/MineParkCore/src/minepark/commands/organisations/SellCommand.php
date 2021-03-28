@@ -1,6 +1,7 @@
 <?php
 namespace minepark\commands\organisations;
 
+use minepark\commands\base\OrganisationsCommand;
 use minepark\Providers;
 use pocketmine\item\Item;
 
@@ -8,7 +9,6 @@ use pocketmine\event\Event;
 use minepark\defaults\Permissions;
 use minepark\common\player\MineParkPlayer;
 use minepark\components\organisations\Organisations;
-use minepark\commands\organisations\base\OrganisationsCommand;
 use minepark\defaults\MapConstants;
 
 class SellCommand extends OrganisationsCommand

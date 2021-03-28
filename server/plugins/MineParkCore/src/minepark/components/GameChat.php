@@ -1,9 +1,10 @@
 <?php
 namespace minepark\components;
 
-use minepark\common\player\MineParkPlayer;
-use minepark\components\base\Component;
+use minepark\Providers;
 use minepark\defaults\ChatConstants;
+use minepark\components\base\Component;
+use minepark\common\player\MineParkPlayer;
 use pocketmine\event\player\PlayerChatEvent;
 
 class GameChat extends Component
@@ -127,7 +128,7 @@ class GameChat extends Component
 
             $targetPlayer->getProfile()->people .= $senderName;
 
-            $this->getCore()->getProfiler()->saveProfile($targetPlayer);
+            Providers::getProfileProvider()->saveProfile($targetPlayer);
         }
 
         $targetPlayer->sendLocalizedMessage($userPrefix . $chatPrefix . " $message");

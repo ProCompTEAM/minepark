@@ -2,11 +2,11 @@
 namespace minepark\commands\organisations;
 
 use minepark\Api;
+use minepark\commands\base\OrganisationsCommand;
 use pocketmine\event\Event;
 
 use minepark\defaults\Permissions;
 use minepark\common\player\MineParkPlayer;
-use minepark\commands\organisations\base\OrganisationsCommand;
 
 class RemoveCommand extends OrganisationsCommand
 {

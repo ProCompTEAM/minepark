@@ -55,8 +55,7 @@ class EventsHandler implements Listener
         }
 
         $this->getCore()->getApi()->sendToMessagesLog($playerName, $message);
-        $this->getCore()->getCommandsHandler()->execute($player, $message, $event);
-        $this->getCore()->getOrganisationsModule()->getCommandHandler()->execute($player, $message, $event);
+        $this->getCore()->getCommands()->executeInputData($player, $message, $event);
     }
     
     public function joinEvent(PlayerJoinEvent $event)
