@@ -2,59 +2,61 @@
 namespace minepark;
 
 use pocketmine\event\Event;
-use minepark\defaults\Permissions;
-use minepark\common\player\MineParkPlayer;
-
-use minepark\commands\base\Command;
+use minepark\defaults\EventList;
 use minepark\commands\DayCommand;
+
 use minepark\commands\PayCommand;
 use minepark\commands\BankCommand;
+use minepark\defaults\Permissions;
+use minepark\commands\base\Command;
 use minepark\commands\LevelCommand;
 use minepark\commands\MoneyCommand;
 use minepark\commands\NightCommand;
 use minepark\commands\CasinoCommand;
 use minepark\commands\DonateCommand;
 use minepark\commands\OnlineCommand;
-use minepark\commands\GetOrganisationCommand;
-use minepark\commands\ResetPasswordCommand;
+use minepark\commands\map\GPSCommand;
 use minepark\commands\JailExitCommand;
 use minepark\commands\PassportCommand;
 use minepark\commands\AnimationCommand;
 use minepark\commands\GetSellerCommand;
+use minepark\commands\phone\SmsCommand;
 use minepark\commands\TransportCommand;
 use minepark\commands\phone\CallCommand;
-use minepark\commands\phone\SmsCommand;
 use minepark\commands\admin\AdminCommand;
-use minepark\commands\base\OrganisationsCommand;
-use minepark\commands\map\AddPointCommand;
 use minepark\commands\map\GPSNearCommand;
 use minepark\commands\map\ToPointCommand;
-use minepark\commands\map\GPSCommand;
-use minepark\commands\map\RemovePointCommand;
-use minepark\commands\map\ToNearPointCommand;
-use minepark\commands\organisations\AddCommand;
-use minepark\commands\organisations\ArestCommand;
-use minepark\commands\organisations\ChangeNameCommand;
-use minepark\commands\organisations\GiveLicCommand;
-use minepark\commands\organisations\HealCommand;
-use minepark\commands\organisations\InfoCommand;
-use minepark\commands\organisations\NoFireCommand;
-use minepark\commands\organisations\RadioCommand;
-use minepark\commands\organisations\RemoveCommand;
-use minepark\commands\organisations\SellCommand;
-use minepark\commands\organisations\ShowCommand;
-use minepark\commands\report\CloseCommand;
-use minepark\commands\report\ReplyCommand;
-use minepark\commands\report\ReportCommand;
-use minepark\commands\roleplay\ShoutCommand;
-use minepark\commands\roleplay\WhisperCommand;
 use minepark\commands\roleplay\DoCommand;
 use minepark\commands\roleplay\MeCommand;
+use minepark\commands\map\AddPointCommand;
+use minepark\commands\report\CloseCommand;
+use minepark\commands\report\ReplyCommand;
 use minepark\commands\roleplay\TryCommand;
+use minepark\common\player\MineParkPlayer;
+use minepark\commands\report\ReportCommand;
+use minepark\commands\ResetPasswordCommand;
+use minepark\commands\roleplay\ShoutCommand;
 use minepark\commands\workers\PutBoxCommand;
+use minepark\commands\GetOrganisationCommand;
+use minepark\commands\map\RemovePointCommand;
+use minepark\commands\map\ToNearPointCommand;
 use minepark\commands\workers\GetFarmCommand;
 use minepark\commands\workers\PutFarmCommand;
 use minepark\commands\workers\TakeBoxCommand;
+use minepark\commands\roleplay\WhisperCommand;
+use minepark\commands\organisations\AddCommand;
+use minepark\commands\base\OrganisationsCommand;
+use minepark\commands\organisations\HealCommand;
+use minepark\commands\organisations\InfoCommand;
+use minepark\commands\organisations\SellCommand;
+use minepark\commands\organisations\ShowCommand;
+use minepark\commands\organisations\ArestCommand;
+use minepark\commands\organisations\RadioCommand;
+use minepark\commands\organisations\NoFireCommand;
+use minepark\commands\organisations\RemoveCommand;
+use minepark\commands\organisations\GiveLicCommand;
+use minepark\commands\organisations\ChangeNameCommand;
+use pocketmine\event\player\PlayerCommandPreprocessEvent;
 
 class Commands
 {
@@ -67,8 +69,9 @@ class Commands
     public function __construct()
     {
         $this->initializeCommands();
-
         $this->initializeOrganisationsCommands();
+
+        Events::registerEvent(EventList::PLAYER_COMMAND_PREPROCESS_EVENT, [$this, "executeInputData"]);
     }
 
     public function getCommands() : array
@@ -79,35 +82,6 @@ class Commands
     public function getOrganisationsCommands() : array
     {
         return $this->organisationsCommands;
-    }
-    
-    public function executeInputData(MineParkPlayer $player, string $rawCommand, ?Event $event = null)
-    {
-        if ($rawCommand[0] !== self::COMMAND_PREFIX) {
-            return;
-        }
-
-        $rawCommand = substr($rawCommand, 1);
-
-        $arguments = explode(Command::ARGUMENTS_SEPERATOR, $rawCommand);
-
-        if ($arguments[0] === self::ORGANISATIONS_COMMANDS_PREFIX) {
-            return $this->executeOrganisationsCommand($player, array_slice($arguments, 1), $event);
-        }
-
-        $command = $this->getCommand($arguments[0]);
-
-        if ($command === null) {
-            return;
-        }
-
-        $arguments = array_slice($arguments, 1);
-
-        if (!$this->checkPermissions($player, $command, $event)) {
-            return;
-        }
-
-        $command->execute($player, $arguments, $event);
     }
 
     private function initializeOrganisationsCommands()
@@ -168,6 +142,35 @@ class Commands
             new NightCommand,
             new TransportCommand
         ];
+    }
+
+    public function executeInputData(PlayerCommandPreprocessEvent $event)
+    {
+        if ($event->getMessage()[0] !== self::COMMAND_PREFIX) {
+            return;
+        }
+
+        $rawCommand = substr($event->getMessage(), 1);
+        $player = MineParkPlayer::cast($event->getPlayer());
+        $arguments = explode(Command::ARGUMENTS_SEPERATOR, $rawCommand);
+
+        if ($arguments[0] === self::ORGANISATIONS_COMMANDS_PREFIX) {
+            return $this->executeOrganisationsCommand($player, array_slice($arguments, 1), $event);
+        }
+
+        $command = $this->getCommand($arguments[0]);
+
+        if ($command === null) {
+            return;
+        }
+
+        $arguments = array_slice($arguments, 1);
+
+        if (!$this->checkPermissions($player, $command, $event)) {
+            return;
+        }
+
+        $command->execute($player, $arguments, $event);
     }
 
     private function executeOrganisationsCommand(MineParkPlayer $player, array $arguments, ?Event $event = null)

@@ -1,24 +1,40 @@
 <?php
-namespace minepark\components;
+namespace minepark\components\settings;
 
-use minepark\Core;
+use minepark\Events;
 use minepark\Providers;
 use pocketmine\item\Item;
+use pocketmine\block\Block;
+use minepark\defaults\EventList;
 use minepark\defaults\Permissions;
+use minepark\defaults\ItemConstants;
 use minepark\defaults\PaymentMethods;
 use minepark\models\player\StatesMap;
+use minepark\defaults\PlayerConstants;
 use minepark\components\base\Component;
 use minepark\common\player\MineParkPlayer;
+use pocketmine\event\block\BlockBreakEvent;
+use pocketmine\event\block\BlockPlaceEvent;
+use pocketmine\event\player\PlayerJoinEvent;
+use pocketmine\event\player\PlayerQuitEvent;
+use pocketmine\event\player\PlayerCreationEvent;
+use pocketmine\event\player\PlayerInteractEvent;
+use pocketmine\event\player\PlayerPreLoginEvent;
 use minepark\components\organisations\Organisations;
 use minepark\providers\ProfileProvider;
 
-class Initializer extends Component
+class PlayerSettings extends Component
 {
-    public const DEFAULT_MONEY_PRESENT = 1000;
-
-    public const DONATER_STATUS_BONUS_COUNT = 100;
-
-    public const MINIMAL_SKILL_MINUTES_PLAYED = 60;
+    public function __construct()
+    {
+        Events::registerEvent(EventList::PLAYER_CREATION_EVENT, [$this, "setDefaultPlayerClass"]);
+        Events::registerEvent(EventList::PLAYER_PRE_LOGIN_EVENT, [$this, "initializePlayer"]);
+        Events::registerEvent(EventList::PLAYER_JOIN_EVENT, [$this, "applyJoinSettings"]);
+        Events::registerEvent(EventList::PLAYER_QUIT_EVENT, [$this, "applyQuitSettings"]);
+        Events::registerEvent(EventList::PLAYER_INTERACT_EVENT, [$this, "applyInteractSettings"]);
+        Events::registerEvent(EventList::BLOCK_BREAK_EVENT, [$this, "applyBlockUpdateSettings"]);
+        Events::registerEvent(EventList::BLOCK_PLACE_EVENT, [$this, "applyBlockUpdateSettings"]);
+    }
 
     public function getAttributes() : array
     {
@@ -30,10 +46,17 @@ class Initializer extends Component
     {
         return Providers::getProfileProvider();
     }
-    
-    public function initialize(MineParkPlayer $player)
+
+    public function setDefaultPlayerClass(PlayerCreationEvent $event)
     {
-        $this->setDefaults($player);
+        $event->setPlayerClass(MineParkPlayer::class);
+    }
+    
+    public function initializePlayer(PlayerPreLoginEvent $event)
+    {
+        $player = MineParkPlayer::cast($event->getPlayer());
+
+        $this->setupDefaults($player);
 
         $this->updateNewPlayerStatus($player);
 
@@ -46,8 +69,12 @@ class Initializer extends Component
         $this->showLang($player);
     }
 
-    public function join(MineParkPlayer $player)
+    public function applyJoinSettings(PlayerJoinEvent $event)
     {
+        $player = MineParkPlayer::cast($event->getPlayer());
+
+        $event->setJoinMessage(null);
+
         $player->removeAllEffects();
         $player->setNameTag("");
 
@@ -60,13 +87,57 @@ class Initializer extends Component
         $this->showDonaterStatus($player);
         
         $this->addInventoryItems($player);
+
+        Providers::getUsersDataProvider()->updateUserJoinStatus($player->getName());
+
+        $this->getCore()->sendToMessagesLog($player->getName(), "Вход осуществлен ***");
+    }
+
+    public function applyQuitSettings(PlayerQuitEvent $event)
+    {
+        $player = MineParkPlayer::cast($event->getPlayer());
+
+        $event->setQuitMessage(null);
+
+        Providers::getUsersDataProvider()->updateUserQuitStatus($player->getName());
+
+        $this->getCore()->sendToMessagesLog($player->getName(), "*** Выход из игры");
+    }
+
+    public function applyInteractSettings(PlayerInteractEvent $event)
+    {
+        if (!$this->isCanActivate($event->getPlayer())) {
+            return;
+        }
+
+        $this->filterItemsAndBlocks($event);
+
+        $this->checkInventoryItems($event->getPlayer());
+    }
+
+    public function applyBlockUpdateSettings(BlockBreakEvent | BlockPlaceEvent $event)
+    {
+        $player = $event->getPlayer();
+        $block = $event->getBlock();
+
+        if ($player->isOp()) {
+            $event->setCancelled(false);
+        }
+
+        if ($player->getProfile()->builder) {
+            $event->setCancelled(false);
+        }
+
+        if (!$player->getProfile()->builder and in_array($block->getId(), ItemConstants::getRestrictedBlocksNonBuilder())) {
+            return $event->setCancelled();
+        }
     }
 
     public function checkInventoryItems(MineParkPlayer $player)
     {
         $itemId = $player->getInventory()->getItemInHand()->getId();
 
-        //CHECK ITEMS DEFAULT KIT
+        //CHECK ITEMS > DEFAULT KIT
         if($itemId == 336) { //336 - phone
             $player->sendCommand("/c");
         }
@@ -82,7 +153,7 @@ class Initializer extends Component
 
     private function addInventoryItems(MineParkPlayer $player)
     {
-        //GIVING ITEMS DEFAULT KIT
+        //GIVING ITEMS > DEFAULT KIT
         $phone = Item::get(336, 0, 1);
         $phone->setCustomName("Телефон");
         
@@ -110,11 +181,12 @@ class Initializer extends Component
         }
     }
 
-    private function setDefaults(MineParkPlayer $player)
+    private function setupDefaults(MineParkPlayer $player)
     {
         $statesMap = new StatesMap();
 
         $statesMap->auth = false;
+
         $statesMap->isNew = false;
         $statesMap->isBeginner = false;
 
@@ -153,7 +225,7 @@ class Initializer extends Component
     private function updateBegginerStatus(MineParkPlayer $player) 
     {
         $status = $player->getStatesMap()->isNew or 
-            $player->getProfile()->minutesPlayed < self::MINIMAL_SKILL_MINUTES_PLAYED;
+            $player->getProfile()->minutesPlayed < PlayerConstants::MINIMAL_SKILL_MINUTES_PLAYED;
         $player->getStatesMap()->isBeginner = $status;
     }
     
@@ -165,7 +237,7 @@ class Initializer extends Component
 
     private function handleNewPlayer(MineParkPlayer $player)
     {
-        Providers::getBankingProvider()->givePlayerMoney($player, self::DEFAULT_MONEY_PRESENT);
+        Providers::getBankingProvider()->givePlayerMoney($player, PlayerConstants::DEFAULT_MONEY_PRESENT);
         $this->getCore()->getTrackerModule()->enableTrack($player);
         $this->presentNewPlayer($player);
     }
@@ -176,11 +248,40 @@ class Initializer extends Component
             $player->sendTitle("§6" . $newPlayer->getName(), "§aВ парке новый посетитель!", 5);
         }
     }
+
+    private function isCanActivate(MineParkPlayer $player) : bool
+    {
+        $currentTime = time();
+
+        if ($currentTime - $player->getStatesMap()->lastTap > 2) {
+            $player->getStatesMap()->lastTap = $currentTime;
+
+            return true;
+        }
+        
+        return false;
+    }
+
+    private function filterItemsAndBlocks(PlayerInteractEvent $event)
+    {
+        $itemId = $event->getPlayer()->getInventory()->getItemInHand()->getId();
+
+        if (!$event->getPlayer()->builder and in_array($itemId, ItemConstants::getRestrictedItemsNonBuilder())) {
+            return $event->setCancelled();
+        }
+
+        if ($event->getBlock()->getId() !== Block::GRASS) {
+            return;
+        }
+
+        if (in_array($itemId, ItemConstants::getGunItemIds())) {
+            $event->setCancelled();
+        }
+    }
     
     private function setPermissions(MineParkPlayer $player)
     {
         $player->addAttachment($this->getCore(), Permissions::ANYBODY, true);
-
         $this->addCustomPermissions($player);
     }
     
@@ -220,7 +321,7 @@ class Initializer extends Component
             return "§e§0-=§9V.I.P§0=-§e";
         }
 
-        if($profile->bonus > self::DONATER_STATUS_BONUS_COUNT) {
+        if($profile->bonus > PlayerConstants::DONATER_STATUS_BONUS_COUNT) {
             return "§7~§6§e-=ДоНаТеР=-§6§7~";
         }
     }
@@ -274,34 +375,29 @@ class Initializer extends Component
     private function addAdministratorPermissions(MineParkPlayer $player)
     {
         $permissions = Permissions::getCustomAdministratorPermissions();
-
-        foreach($permissions as $permission) {
-            $player->addAttachment($this->getCore(), $permission, true);
-        }
+        $this->applyPermissions($player, $permissions);
     }
 
     private function addBuilderPermissions(MineParkPlayer $player)
     {
         $permissions = Permissions::getCustomBuilderPermissions();
-
-        foreach($permissions as $permission) {
-            $player->addAttachment($this->getCore(), $permission, true);
-        }
+        $this->applyPermissions($player, $permissions);
     }
 
     private function addRealtorPermissions(MineParkPlayer $player)
     {
         $permissions = Permissions::getCustomRealtorPermissions();
-
-        foreach($permissions as $permission) {
-            $player->addAttachment($this->getCore(), $permission, true);
-        }
+        $this->applyPermissions($player, $permissions);
     }
 
     private function addVipPermissions(MineParkPlayer $player)
     {
         $permissions = Permissions::getCustomVipPermissions();
+        $this->applyPermissions($player, $permissions);
+    }
 
+    private function applyPermissions(MineParkPlayer $player, array $permissions)
+    {
         foreach($permissions as $permission) {
             $player->addAttachment($this->getCore(), $permission, true);
         }

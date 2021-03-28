@@ -1,24 +1,37 @@
 <?php
 namespace minepark\components;
 
-use pocketmine\entity\Attribute;
+use minepark\Events;
 use pocketmine\entity\Entity;
+use minepark\defaults\EventList;
+use pocketmine\entity\Attribute;
 use minepark\components\base\Component;
 use minepark\common\player\MineParkPlayer;
 use minepark\models\player\BossBarSession;
+use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\network\mcpe\protocol\AddActorPacket;
 use pocketmine\network\mcpe\protocol\BossEventPacket;
 use pocketmine\network\mcpe\protocol\UpdateAttributesPacket;
 
 class BossBar extends Component
 {
-    private const DEFAULT_TITLE = "NOTITLE";
+    private const DEFAULT_TITLE = "MinePark";
     private const DEFAULT_PERCENTS = 100;
+
+    public function __construct()
+    {
+        Events::registerEvent(EventList::PLAYER_JOIN_EVENT, [$this, "joinControl"]);
+    }
 
     public function getAttributes(): array
     {
         return [
         ];
+    }
+
+    public function joinControl(PlayerJoinEvent $event)
+    {
+        $this->initializePlayerSession($event->getPlayer());
     }
 
     public function initializePlayerSession(MineParkPlayer $player) : bool

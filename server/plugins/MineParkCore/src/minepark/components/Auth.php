@@ -2,46 +2,50 @@
 namespace minepark\components;
 
 use minepark\Api;
+use minepark\Tasks;
+use minepark\Events;
 use minepark\Providers;
-use minepark\utils\CallbackTask;
+use minepark\defaults\EventList;
 use minepark\defaults\MapConstants;
+use minepark\defaults\TimeConstants;
 use minepark\models\dtos\PasswordDto;
+use pocketmine\event\block\BlockEvent;
 use minepark\components\base\Component;
 use minepark\common\player\MineParkPlayer;
+use pocketmine\event\block\BlockBreakEvent;
+use pocketmine\event\block\BlockPlaceEvent;
+use pocketmine\event\player\PlayerJoinEvent;
 use minepark\providers\data\UsersDataProvider;
+use pocketmine\event\player\PlayerInteractEvent;
+use pocketmine\event\player\PlayerCommandPreprocessEvent;
 
 class Auth extends Component
 {
-    public const STATE_REGISTER = 0;
-    public const STATE_NEED_AUTH = 1;
-    public const STATE_AUTO = 2;
-
-    public const WELCOME_MESSAGE_TIMEOUT = 2;
+    private const STATE_REGISTER = 0;
+    private const STATE_NEED_AUTH = 1;
+    private const STATE_AUTO = 2;
 
     private $ips = [];
+
+    public function __construct()
+    {
+        Events::registerEvent(EventList::PLAYER_JOIN_EVENT, [$this, "afterJoin"]);
+        Events::registerEvent(EventList::PLAYER_INTERACT_EVENT, [$this, "handleInteract"]);
+        Events::registerEvent(EventList::BLOCK_BREAK_EVENT, [$this, "handleBlockBreak"]);
+        Events::registerEvent(EventList::BLOCK_PLACE_EVENT, [$this, "handleBlockPlace"]);
+        Events::registerEvent(EventList::PLAYER_COMMAND_PREPROCESS_EVENT, [$this, "executeInputData"]);
+    }
 
     public function getAttributes() : array
     {
         return [
         ];
     }
-    
-    public function checkState(MineParkPlayer $player) : int
+
+    public function afterJoin(PlayerJoinEvent $event)
     {
-        if(!$this->getDataProvider()->isUserPasswordExist($player->getName())) {
-            return self::STATE_REGISTER;
-        } else {
-            if(isset($this->ips[$player->getName()]) and $this->ips[$player->getName()] == $player->getAddress()) {
-                return self::STATE_AUTO;
-            }
-            else {
-                return self::STATE_NEED_AUTH;
-            }
-        }
-    }
-    
-    public function preLogin(MineParkPlayer $player)
-    {
+        $player = MineParkPlayer::cast($event->getPlayer());
+
         $state = $this->checkState($player);
 
         $this->setMovement($player, false);
@@ -59,6 +63,56 @@ class Auth extends Component
             default:
                 $player->getStatesMap()->bar = "AuthError"; 
             break;
+        }
+    }
+
+    public function handleInteract(PlayerInteractEvent $event)
+    {
+        $player = MineParkPlayer::cast($event->getPlayer());
+
+        if (!$player->getStatesMap()->auth) {
+            return $event->setCancelled();
+        }
+    }
+
+    public function handleBlockBreak(BlockBreakEvent $event)
+    {
+        if (!$event->getPlayer()->getStatesMap()->auth) {
+            $event->setCancelled();
+            return;
+        }
+    }
+
+    public function handleBlockPlace(BlockPlaceEvent $event)
+    {
+        if (!$event->getPlayer()->getStatesMap()->auth) {
+            $event->setCancelled();
+            return;
+        }
+    }
+
+    public function executeInputData(PlayerCommandPreprocessEvent $event)
+    {
+        $player = MineParkPlayer::cast($event->getPlayer());
+
+        if(!$player->getStatesMap()->auth) {
+            $this->login($player, $event->getMessage());
+            $event->setCancelled();
+            return;
+        }
+    }
+    
+    public function checkState(MineParkPlayer $player) : int
+    {
+        if(!$this->getDataProvider()->isUserPasswordExist($player->getName())) {
+            return self::STATE_REGISTER;
+        } else {
+            if(isset($this->ips[$player->getName()]) and $this->ips[$player->getName()] == $player->getAddress()) {
+                return self::STATE_AUTO;
+            }
+            else {
+                return self::STATE_NEED_AUTH;
+            }
         }
     }
     
@@ -149,8 +203,8 @@ class Auth extends Component
 
         $this->setMovement($player, true);
 
-        $this->getCore()->getScheduler()->scheduleDelayedTask(
-            new CallbackTask(array($this, "sendWelcomeText"), array($player)), 20 * self::WELCOME_MESSAGE_TIMEOUT);
+        $timeoutTicks = TimeConstants::ONE_SECOND_TICKS * TimeConstants::WELCOME_MESSAGE_TIMEOUT;
+        Tasks::registerDelayedAction($timeoutTicks, [$this, "sendWelcomeText"], [$player]);
     }
 
     private function getDataProvider() : UsersDataProvider

@@ -56,7 +56,7 @@ class RemoveCommand extends OrganisationsCommand
         }
 
         $player->getProfile()->organisation = 0;
-        $this->core->getInitializer()->updatePlayerSaves($player);
+        $this->core->getPlayerSettings()->updatePlayerSaves($player);
 
         $boss->sendLocalizedMessage("{CommandRemoveDo1}" . $player->getProfile()->fullName);
         $player->sendLocalizedMessage("{CommandRemoveDo2}". $boss->getProfile()->fullName ."!");

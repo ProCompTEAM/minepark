@@ -9,6 +9,8 @@ class TimeConstants
         Intervals/Timeouts in seconds
     */
 
+    public const WELCOME_MESSAGE_TIMEOUT = 2;
+
     public const NAVIGATION_ROUTES_UPDATE_INTERVAL = 2;
 
     public const PHONE_TAKE_FEE_INTERVAL = 60;

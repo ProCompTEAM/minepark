@@ -112,11 +112,6 @@ class Api
 
         return $list;
     }
-    
-    public function sendToMessagesLog(string $prefix, string $message)
-    {
-        file_put_contents(Files::MESSAGES_LOG_FILE, (PHP_EOL . "(" . $prefix . ") - " . $message), FILE_APPEND);
-    }
 
     public function removeDefaultServerCommand($commandName)
     {

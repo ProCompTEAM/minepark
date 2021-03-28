@@ -6,7 +6,7 @@ use minepark\Providers;
 use minepark\common\MDC;
 use minepark\components\GPS;
 use minepark\components\Auth;
-use minepark\EventsHandler;
+use minepark\Events;
 use minepark\components\Phone;
 use minepark\defaults\Files;
 use minepark\components\PayDay;
@@ -23,7 +23,7 @@ use minepark\components\Broadcaster;
 use minepark\defaults\Defaults;
 use minepark\components\StatusBar;
 use pocketmine\command\Command;
-use minepark\components\Initializer;
+use minepark\components\settings\PlayerSettings;
 use pocketmine\plugin\PluginBase;
 use minepark\components\NotifyPlayers;
 use minepark\components\WorldProtector;
@@ -72,15 +72,15 @@ class Core extends PluginBase implements Listener
     {
         Core::$_instance = $this;
 
+        $this->initializeEvents();
+
         Tasks::initializeAll();
 
         Providers::initializeAll();
 
         $this->initializeMDC();
 
-        $this->initializeEventsHandler();
-
-        $this->initialize();
+        $this->initializeComponents();
 
         $this->initializeDefaultDirectories();
 
@@ -100,35 +100,21 @@ class Core extends PluginBase implements Listener
         $this->getMDC()->initializeAll();
     }
 
-    public function initializeEventsHandler()
+    public function initializeEvents()
     {
-        $this->eventsHandler = new EventsHandler;
+        Events::initializeAll();
+        $this->eventsHandler = new Events;
         $this->getServer()->getPluginManager()->registerEvents($this->eventsHandler, $this);
     }
 
-    public function initialize()
+    public function initializeComponents()
     {
         $this->sapi = new Api;
-        $this->commands = new Commands;
-        $this->organisations = new Organisations;
+        $this->scmd = new Commands;
         $this->service = new Service;
-        $this->chatter = new GameChat;
-        $this->initializer = new Initializer;
-        $this->damager = new Damager;
-        $this->protector = new WorldProtector;
-        $this->phone = new Phone;
-        $this->statusbar = new StatusBar;
-        $this->auth = new Auth;
-        $this->payday = new PayDay;
-        $this->notifier = new NotifyPlayers;
-        $this->gpsmod = new GPS;
-        $this->fastfood = new FastFood;
-        $this->reporter = new Reporter;
         $this->webapi = new WebApi;
-        $this->tracker = new Tracker;
-        $this->broadcaster = new Broadcaster;
-        $this->vehicleManager = new VehicleManager;
-        $this->bossBar = new BossBar;
+
+        Components::initializeAll();
     }
 
     public function getTargetDirectory(bool $strings = false) : string
@@ -141,7 +127,7 @@ class Core extends PluginBase implements Listener
         return $this->mdc;
     }
 
-    public function getEventsHandler() : EventsHandler
+    public function getEvents() : Events
     {
         return $this->eventsHandler;
     }
@@ -181,7 +167,7 @@ class Core extends PluginBase implements Listener
         return $this->chatter;
     }
 
-    public function getInitializer() : Initializer
+    public function getPlayerSettings() : PlayerSettings
     {
         return $this->initializer;
     }
@@ -264,6 +250,11 @@ class Core extends PluginBase implements Listener
         }
 
         return false;
+    }
+
+    public function sendToMessagesLog(string $prefix, string $message)
+    {
+        file_put_contents(Files::MESSAGES_LOG_FILE, (PHP_EOL . "(" . $prefix . ") - " . $message), FILE_APPEND);
     }
 
     private function initializeDefaultDirectories()
