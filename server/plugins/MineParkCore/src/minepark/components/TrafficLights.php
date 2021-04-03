@@ -16,7 +16,7 @@ class TrafficLights extends Component
     private const RED_SIGNAL_TEXT =   "§l§c●\n§l§8●";
     private const GREEN_SIGNAL_TEXT = "§l§8●\n§l§a●";
 
-    private const TRAFFIC_LIGHTS_TAG = "TRAFFIC_LIGHTS";
+    private const TRAFFIC_LIGHTS_TAG = "TRAFFIC_LIGHT";
 
     private MapProvider $mapProvider;
 
@@ -30,6 +30,9 @@ class TrafficLights extends Component
         Tasks::registerRepeatingAction(TimeConstants::TRAFFIC_LIGHTS_UPDATE_INTERVAL, [$this, "updateLights"]);
 
         $this->mapProvider = Providers::getMapProvider();
+
+        $this->loadVariation1LightsPoints();
+        $this->loadVariation2LightsPoints();
     }
 
     public function getAttributes() : array
@@ -41,9 +44,6 @@ class TrafficLights extends Component
     
     public function updateLights()
     {
-        $this->loadVariation1LightsPoints();
-        $this->loadVariation2LightsPoints();
-        $this->removeAllTrafficLights();
         $this->showTrafficLights();
         $this->switchVariation();
     }
@@ -68,36 +68,32 @@ class TrafficLights extends Component
         }
     }
 
-    private function switchVariation()
-    {
-        $this->isVariationSwitched = !$this->isVariationSwitched;
-    }
-
-    private function removeAllTrafficLights()
-    {
-        foreach($this->getCore()->getServer()->getOnlinePlayers() as $player) {
-            $player = MineParkPlayer::cast($player);
-            foreach($player->getFloatingTextsByTag(self::TRAFFIC_LIGHTS_TAG) as $floatingText) {
-                $player->unsetFloatingText($floatingText);
-            }
-        }
-    }
-
     private function showTrafficLights()
     {
         $signalText1 = $this->isVariationSwitched ? self::GREEN_SIGNAL_TEXT : self::RED_SIGNAL_TEXT;
         $signalText2 = $this->isVariationSwitched ? self::RED_SIGNAL_TEXT : self::GREEN_SIGNAL_TEXT;
 
         foreach($this->getCore()->getServer()->getOnlinePlayers() as $player) {
-            $this->createFloatingTexts($player, $this->lightPositionsVariation1, $signalText1);
-            $this->createFloatingTexts($player, $this->lightPositionsVariation2, $signalText2);
+            $this->updateFloatingTexts($player, $this->lightPositionsVariation1, $signalText1);
+            $this->updateFloatingTexts($player, $this->lightPositionsVariation2, $signalText2);
         }
     }
 
-    private function createFloatingTexts(MineParkPlayer $player, array $positions, string $signalText)
+    private function switchVariation()
+    {
+        $this->isVariationSwitched = !$this->isVariationSwitched;
+    }
+
+    private function updateFloatingTexts(MineParkPlayer $player, array $positions, string $signalText)
     {
         foreach($positions as $position) {
-            $player->setFloatingText($position, $signalText, self::TRAFFIC_LIGHTS_TAG);
+            $floatingText = $player->getFloatingText($position);
+            if(!isset($floatingText)) {
+                $player->setFloatingText($position, $signalText, self::TRAFFIC_LIGHTS_TAG);
+            } else {
+                $floatingText->text = $signalText;
+                $player->updateFloatingText($floatingText);
+            }
         }
         $player->showFloatingTexts();
     }

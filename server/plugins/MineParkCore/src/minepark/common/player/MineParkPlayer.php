@@ -254,6 +254,13 @@ class MineParkPlayer extends Player
         }
     }
 
+    public function updateFloatingText(FloatingText $floatingText)
+    {
+        $level = $floatingText->position->getLevel();
+        $floatingText->particle->setText($floatingText->text);
+        $level->addParticle($floatingText->particle, [$this]);
+    }
+
     public function showFloatingTexts()
     {
         foreach($this->floatingTexts as $floatingText) {
