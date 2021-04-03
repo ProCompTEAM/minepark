@@ -4,64 +4,28 @@ namespace minepark;
 use minepark\Api;
 use minepark\Providers;
 use minepark\common\MDC;
-use minepark\components\GPS;
-use minepark\components\Auth;
 use minepark\Events;
-use minepark\components\Phone;
 use minepark\defaults\Files;
-use minepark\components\PayDay;
 use minepark\external\WebApi;
-use minepark\components\Damager;
-use minepark\components\Tracker;
-use minepark\components\FastFood;
-use minepark\components\GameChat;
-use minepark\components\Reporter;
 use pocketmine\event\Listener;
 use jojoe77777\FormAPI\FormAPI;
-use minepark\components\BossBar;
-use minepark\components\Broadcaster;
 use minepark\defaults\Defaults;
-use minepark\components\StatusBar;
 use pocketmine\command\Command;
-use minepark\components\settings\PlayerSettings;
 use pocketmine\plugin\PluginBase;
-use minepark\components\NotifyPlayers;
-use minepark\components\WorldProtector;
 use pocketmine\command\CommandSender;
 use minepark\external\service\Service;
 use pocketmine\command\ConsoleCommandSender;
-use minepark\components\organisations\Organisations;
-use minepark\components\VehicleManager;
 
 class Core extends PluginBase implements Listener
 {
     private static Core $_instance;
 
-    private $eventsHandler;
-
-    private $mdc;
-
-    private $sapi;
-    private $commands;
-    private $organisations;
-    private $service;
-    private $chatter;
-    private $initializer;
-    private $damager;
-    private $reporter;
-    private $protector;
-    private $phone;
-    private $statusbar;
-    private $auth;
-    private $notifier;
-    private $gpsmod;
-    private $fastfood;
-    private $tracker;
-    private $broadcaster;
-    private $vehicleManager;
-    private $bossBar;
-
-    public $webapi;
+    private Events $events;
+    private MDC $mdc;
+    private Api $sapi;
+    private Commands $commands;
+    private Service $service;
+    private WebApi  $webapi;
 
     public static function getActive() : Core
     {
@@ -72,26 +36,38 @@ class Core extends PluginBase implements Listener
     {
         Core::$_instance = $this;
 
-        $this->initializeEvents();
-
-        Tasks::initializeAll();
-
-        Providers::initializeAll();
-
-        $this->initializeMDC();
-
-        $this->initializeComponents();
+        $this->applyCommonSettings();
+        $this->applyServerSettings();
 
         $this->initializeDefaultDirectories();
 
-        $this->applyServerSettings();
+        $this->initializeEvents();
+        $this->initializeTasks();
+        $this->initializeProviders();
+        $this->initializeMDC();
+        $this->initializeCommonModules();
     }
-    
+
     public function onDisable()
     {
-        foreach($this->getServer()->getOnlinePlayers() as $player) {
-            $player->transfer(Defaults::SERVER_LOBBY_ADDRESS, Defaults::SERVER_LOBBY_PORT);
-        }
+        $this->transferPlayersToLobby();
+    }
+
+    public function initializeEvents()
+    {
+        Events::initializeAll();
+        $this->events = new Events;
+        $this->getServer()->getPluginManager()->registerEvents($this->events, $this);
+    }
+
+    public function initializeTasks()
+    {
+        Tasks::initializeAll();
+    }
+
+    public function initializeProviders()
+    {
+        Providers::initializeAll();
     }
 
     public function initializeMDC()
@@ -100,14 +76,7 @@ class Core extends PluginBase implements Listener
         $this->getMDC()->initializeAll();
     }
 
-    public function initializeEvents()
-    {
-        Events::initializeAll();
-        $this->eventsHandler = new Events;
-        $this->getServer()->getPluginManager()->registerEvents($this->eventsHandler, $this);
-    }
-
-    public function initializeComponents()
+    public function initializeCommonModules()
     {
         $this->sapi = new Api;
         $this->scmd = new Commands;
@@ -129,7 +98,7 @@ class Core extends PluginBase implements Listener
 
     public function getEvents() : Events
     {
-        return $this->eventsHandler;
+        return $this->events;
     }
     
     public function getApi() : Api
@@ -147,94 +116,9 @@ class Core extends PluginBase implements Listener
         return $this->service;
     }
     
-    public function getReporter() : Reporter
-    {
-        return $this->reporter;
-    }
-    
     public function getCommands() : Commands
     {
         return $this->commands;
-    }
-
-    public function getOrganisationsModule() : Organisations
-    {
-        return $this->organisations;
-    }
-    
-    public function getChatter() : GameChat
-    {
-        return $this->chatter;
-    }
-
-    public function getPlayerSettings() : PlayerSettings
-    {
-        return $this->initializer;
-    }
-
-    public function getDamager() : Damager
-    {
-        return $this->damager;
-    }
-
-    public function getWorldProtector() : WorldProtector
-    {
-        return $this->protector;
-    }
-
-    public function getPhone() : Phone
-    {
-        return $this->phone;
-    }
-
-    public function getNavigator() : GPS
-    {
-        return $this->gpsmod;
-    }
-    
-    public function getStatusBar() : StatusBar
-    {
-        return $this->statusbar;
-    }
-
-    public function getAuthModule() : Auth
-    {
-        return $this->auth;
-    }
-
-    public function getFoodModule() : FastFood
-    {
-        return $this->fastfood;
-    }
-
-    public function getPayDayModule() : PayDay
-    {
-        return $this->payday;
-    }
-
-    public function getTrackerModule() : Tracker
-    {
-        return $this->tracker;
-    }
-
-    public function getBroadcasterModule() : Broadcaster
-    {
-        return $this->broadcaster;
-    }
-
-    public function getNotifierModule() : NotifyPlayers
-    {
-        return $this->notifier;
-    }
-
-    public function getVehicleManager() : VehicleManager
-    {
-        return $this->vehicleManager;
-    }
-
-    public function getBossBarModule() : BossBar
-    {
-        return $this->bossBar;
     }
 
     public function getFormApi() : FormAPI
@@ -268,14 +152,34 @@ class Core extends PluginBase implements Listener
         }
     }
 
+    private function applyCommonSettings()
+    {
+        ini_set("date.timezone", "Europe/Kiev");
+    }
+
     private function applyServerSettings()
     {
-        $this->getApi()->removeDefaultServerCommand("say");
-        $this->getApi()->removeDefaultServerCommand("defaultgamemode");
-        $this->getApi()->removeDefaultServerCommand("version");
-        $this->getApi()->removeDefaultServerCommand("difficulty");
-        $this->getApi()->removeDefaultServerCommand("tell");
-        $this->getApi()->removeDefaultServerCommand("kill");
+        $this->removeDefaultServerCommand("say");
+        $this->removeDefaultServerCommand("defaultgamemode");
+        $this->removeDefaultServerCommand("version");
+        $this->removeDefaultServerCommand("difficulty");
+        $this->removeDefaultServerCommand("tell");
+        $this->removeDefaultServerCommand("kill");
+    }
+
+    private function removeDefaultServerCommand(string $commandName)
+    {
+        $commandMap = $this->getServer()->getCommandMap();
+        $command = $commandMap->getCommand($commandName);
+        $command->unregister($commandMap);
+        $commandMap->unregister($command);
+    }
+
+    private function transferPlayersToLobby()
+    {
+        foreach($this->getServer()->getOnlinePlayers() as $player) {
+            $player->transfer(Defaults::SERVER_LOBBY_ADDRESS, Defaults::SERVER_LOBBY_PORT);
+        }
     }
 }
 ?>

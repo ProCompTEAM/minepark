@@ -17,6 +17,7 @@ use minepark\components\Reporter;
 use minepark\components\settings\WorldSettings;
 use minepark\components\StatusBar;
 use minepark\components\Tracker;
+use minepark\components\TrafficLights;
 use minepark\components\VehicleManager;
 use minepark\components\WorldProtector;
 
@@ -43,6 +44,7 @@ class Components
             new Reporter,
             new StatusBar,
             new Tracker,
+            new TrafficLights,
             new VehicleManager,
             new WorldProtector
         ];
