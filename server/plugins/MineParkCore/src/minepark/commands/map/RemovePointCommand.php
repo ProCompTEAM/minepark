@@ -8,10 +8,18 @@ use minepark\defaults\Permissions;
 
 use minepark\commands\base\Command;
 use minepark\common\player\MineParkPlayer;
+use minepark\providers\MapProvider;
 
 class RemovePointCommand extends Command
 {
     public const CURRENT_COMMAND = "rempoint";
+
+    private MapProvider $mapProvider;
+
+    public function __construct()
+    {
+        $this->mapProvider = Providers::getMapProvider();
+    }
 
     public function getCommand() : array
     {
@@ -35,7 +43,7 @@ class RemovePointCommand extends Command
             return;
         }
 
-        $status = Providers::getMapProvider()->removePoint($args[0]);
+        $status = $this->mapProvider->removePoint($args[0]);
         
         $player->sendMessage($status ? "CommandRemovePointSuccess" : "CommandRemovePointUnsuccess");
     }

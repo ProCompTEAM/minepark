@@ -13,6 +13,13 @@ class ResetPasswordCommand extends Command
 {
     public const CURRENT_COMMAND = "resetpassword";
 
+    private UsersDataProvider $usersDataProvider;
+
+    public function __construct()
+    {
+        $this->usersDataProvider = Providers::getUsersDataProvider();
+    }
+
     public function getCommand() : array
     {
         return [
@@ -37,26 +44,21 @@ class ResetPasswordCommand extends Command
         
         $targetPlayerName = $args[0];
 
-        if(!$this->getDataProvider()->isUserExist($targetPlayerName)){
+        if(!$this->usersDataProvider->isUserExist($targetPlayerName)){
             $player->sendMessage("Указанного игрока не существует.");
             return;
         }
         
         $this->resetPassword($player, $targetPlayerName);
     }
-    
-    private function getDataProvider() : UsersDataProvider
-    {
-        return Providers::getUsersDataProvider();
-    }
 
     private function resetPassword(MineParkPlayer $sender, string $targetPlayerName)
     {
-        $this->getDataProvider()->resetUserPassword($targetPlayerName);
+        $this->usersDataProvider->resetUserPassword($targetPlayerName);
         $sender->sendMessage("Сброс пароля игрока $targetPlayerName прошёл успешно.");
         $targetPlayer = $this->getCore()->getServer()->getPlayer($targetPlayerName);
 
-        if($targetPlayer != null) { 
+        if (isset($targetPlayer)) { 
             $targetPlayer->kick("§cАдминистратор сбросил вам пароль.");
         }
     }

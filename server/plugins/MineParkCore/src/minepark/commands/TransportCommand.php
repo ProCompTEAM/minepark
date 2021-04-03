@@ -5,10 +5,19 @@ use pocketmine\event\Event;
 use minepark\defaults\Permissions;
 use minepark\commands\base\Command;
 use minepark\common\player\MineParkPlayer;
+use minepark\Components;
+use minepark\components\Vehicles;
 
 class TransportCommand extends Command
 {
     public const CURRENT_COMMAND = "t";
+
+    private Vehicles $vehicles;
+
+    public function __construct()
+    {
+        $this->vehicles = Components::getComponent(Vehicles::class);
+    }
 
     public function getCommand() : array
     {
@@ -46,7 +55,7 @@ class TransportCommand extends Command
 
     private function spawnCar(MineParkPlayer $player, string $model) : bool
     {
-        return $this->getCore()->getVehicleManager()->createVehicle($model, $player->getLevel(), $player->asVector3(), $player->getYaw());
+        return $this->vehicles->createVehicle($model, $player->getLevel(), $player->asVector3(), $player->getYaw());
     }
 }
 ?>

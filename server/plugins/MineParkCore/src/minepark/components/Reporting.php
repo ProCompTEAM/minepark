@@ -1,7 +1,6 @@
 <?php
 namespace minepark\components;
 
-use minepark\Core;
 use pocketmine\Server;
 
 use minepark\defaults\Permissions;
@@ -9,7 +8,7 @@ use minepark\components\base\Component;
 use minepark\common\player\MineParkPlayer;
 use minepark\defaults\ComponentAttributes;
 
-class Reporter extends Component
+class Reporting extends Component
 {
     public $playerReports;
 
@@ -25,7 +24,8 @@ class Reporter extends Component
     public function getAttributes() : array
     {
         return [
-            ComponentAttributes::STANDALONE
+            ComponentAttributes::STANDALONE,
+            ComponentAttributes::SHARED
         ];
     }
     

@@ -8,11 +8,19 @@ use minepark\Providers;
 use pocketmine\event\Event;
 use minepark\defaults\Permissions;
 use minepark\common\player\MineParkPlayer;
+use minepark\providers\ProfileProvider;
 
 class AddCommand extends OrganisationsCommand
 {
     public const CURRENT_COMMAND = "add";
     public const CURRENT_COMMAND_ALIAS = "join";
+
+    private ProfileProvider $profileProvider;
+
+    public function __construct()
+    {
+        $this->profileProvider = Providers::getProfileProvider();
+    }
 
     public function getCommand() : array
     {
@@ -53,15 +61,10 @@ class AddCommand extends OrganisationsCommand
     private function tryChangeOrganisation(MineParkPlayer $player, MineParkPlayer $boss)
     {
         $player->getProfile()->organisation = $boss->getProfile()->organisation;
-        Providers::getProfileProvider()->saveProfile($player);
+        $this->profileProvider->saveProfile($player);
 
         $boss->sendLocalizedMessage("{CommandAdd}" . $player->getProfile()->fullName);
         $player->sendLocalizedMessage("{GroupYou}".$this->core->getOrganisationsModule()->getName($player->getProfile()->organisation));
-    }
-
-    private function isBoss(MineParkPlayer $player) : bool
-    {
-        return $this->getCore()->getApi()->existsAttr($player, Api::ATTRIBUTE_BOSS);
     }
 
     private function getPlayersNear(MineParkPlayer $player) : array

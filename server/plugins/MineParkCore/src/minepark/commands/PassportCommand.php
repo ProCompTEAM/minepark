@@ -9,12 +9,31 @@ use minepark\defaults\Sounds;
 use minepark\defaults\Permissions;
 use minepark\commands\base\Command;
 use minepark\common\player\MineParkPlayer;
+use minepark\Components;
+use minepark\components\GameChat;
+use minepark\components\organisations\Organisations;
+use minepark\providers\ProfileProvider;
 
 class PassportCommand extends Command
 {
     public const CURRENT_COMMAND = "doc";
     public const CURRENT_COMMAND_ALIAS1 = "showpass";
     public const CURRENT_COMMAND_ALIAS2 = "pass";
+
+    private ProfileProvider $profileProvider;
+
+    private GameChat $gameChat;
+
+    private Organisations $organisations;
+
+    public function __construct()
+    {
+        $this->profileProvider = Providers::getProfileProvider();
+
+        $this->gameChat = Components::getComponent(GameChat::class);
+
+        $this->organisations = Components::getComponent(Organisations::class);
+    }
 
     public function getCommand() : array
     {
@@ -40,12 +59,12 @@ class PassportCommand extends Command
         
         $this->showPassportForm($player, $form);
         
-        $this->getCore()->getChatter()->sendLocalMessage($player, "{CommandPassportTake}", "§d", 10);
+        $this->gameChat->sendLocalMessage($player, "{CommandPassportTake}", "§d", 10);
     }
 
     private function getPassportForm(MineParkPlayer $player) : string
     {
-        $outputOrg = $this->getCore()->getOrganisationsModule()->getName($player->getProfile()->organisation);
+        $outputOrg = $this->organisations->getName($player->getProfile()->organisation);
         $outputRank = (($this->getCore()->getApi()->existsAttr($player, Api::ATTRIBUTE_BOSS)) ? " §7[§bНачальник§7]" : "");
         $outputPhone = $player->getProfile()->phoneNumber;
         
@@ -70,7 +89,7 @@ class PassportCommand extends Command
                 
             if(strpos($p->getProfile()->people, strtolower($player->getName())) === false and $p !== $player) {
                 $p->getProfile()->people .= strtolower($player->getName());
-                Providers::getProfileProvider()->saveProfile($p);
+                $this->profileProvider->saveProfile($p);
             }
         }
     }

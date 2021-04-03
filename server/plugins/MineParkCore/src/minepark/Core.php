@@ -42,24 +42,7 @@ class Core extends PluginBase implements Listener
     private $mdc;
 
     private $sapi;
-    private $commands;
-    private $organisations;
     private $service;
-    private $chatter;
-    private $initializer;
-    private $damager;
-    private $reporter;
-    private $protector;
-    private $phone;
-    private $statusbar;
-    private $auth;
-    private $notifier;
-    private $gpsmod;
-    private $fastfood;
-    private $tracker;
-    private $broadcaster;
-    private $vehicleManager;
-    private $bossBar;
 
     public $webapi;
 
@@ -145,96 +128,6 @@ class Core extends PluginBase implements Listener
     public function getService() : Service
     {
         return $this->service;
-    }
-    
-    public function getReporter() : Reporter
-    {
-        return $this->reporter;
-    }
-    
-    public function getCommands() : Commands
-    {
-        return $this->commands;
-    }
-
-    public function getOrganisationsModule() : Organisations
-    {
-        return $this->organisations;
-    }
-    
-    public function getChatter() : GameChat
-    {
-        return $this->chatter;
-    }
-
-    public function getPlayerSettings() : PlayerSettings
-    {
-        return $this->initializer;
-    }
-
-    public function getDamager() : Damager
-    {
-        return $this->damager;
-    }
-
-    public function getWorldProtector() : WorldProtector
-    {
-        return $this->protector;
-    }
-
-    public function getPhone() : Phone
-    {
-        return $this->phone;
-    }
-
-    public function getNavigator() : GPS
-    {
-        return $this->gpsmod;
-    }
-    
-    public function getStatusBar() : StatusBar
-    {
-        return $this->statusbar;
-    }
-
-    public function getAuthModule() : Auth
-    {
-        return $this->auth;
-    }
-
-    public function getFoodModule() : FastFood
-    {
-        return $this->fastfood;
-    }
-
-    public function getPayDayModule() : PayDay
-    {
-        return $this->payday;
-    }
-
-    public function getTrackerModule() : Tracker
-    {
-        return $this->tracker;
-    }
-
-    public function getBroadcasterModule() : Broadcaster
-    {
-        return $this->broadcaster;
-    }
-
-    public function getNotifierModule() : NotifyPlayers
-    {
-        return $this->notifier;
-    }
-
-    public function getVehicleManager() : VehicleManager
-    {
-        return $this->vehicleManager;
-    }
-
-    public function getBossBarModule() : BossBar
-    {
-        return $this->bossBar;
     }
 
     public function getFormApi() : FormAPI

@@ -7,11 +7,19 @@ use pocketmine\event\Event;
 use minepark\defaults\Permissions;
 use minepark\commands\base\Command;
 use minepark\common\player\MineParkPlayer;
+use minepark\providers\BankingProvider;
 
 class MoneyCommand extends Command
 {
     public const CURRENT_COMMAND = "money";
     public const CURRENT_COMMAND_ALIAS = "balance";
+
+    private BankingProvider $bankingProvider;
+
+    public function __construct()
+    {
+        $this->bankingProvider = Providers::getBankingProvider();
+    }
 
     public function getCommand() : array
     {
@@ -30,9 +38,9 @@ class MoneyCommand extends Command
 
     public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
-        $cash = Providers::getBankingProvider()->getCash($player);
-        $debit = Providers::getBankingProvider()->getDebit($player);
-        $credit = Providers::getBankingProvider()->getCredit($player);
+        $cash = $this->bankingProvider->getCash($player);
+        $debit = $this->bankingProvider->getDebit($player);
+        $credit = $this->bankingProvider->getCredit($player);
 
         $player->sendMessage("§2→ Наличные§e $cash §3рублей.");
         $player->sendMessage("§3→ На карте§e $debit §3рублей.");

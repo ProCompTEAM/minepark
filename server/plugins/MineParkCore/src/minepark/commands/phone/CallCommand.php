@@ -8,10 +8,19 @@ use minepark\defaults\Permissions;
 
 use pocketmine\event\Event;
 use minepark\commands\base\Command;
+use minepark\Components;
+use minepark\components\Phone;
 
 class CallCommand extends Command
 {
     public const CURRENT_COMMAND = "c";
+
+    private Phone $phone;
+
+    public function __construct()
+    {
+        $this->phone = Components::getComponent(Phone::class);
+    }
 
     public function getCommand() : array
     {
@@ -31,7 +40,7 @@ class CallCommand extends Command
     {
         array_unshift($args, self::CURRENT_COMMAND);
 
-        $this->getCore()->getPhone()->cmd($player, $args);
+        $this->phone->cmd($player, $args);
 
         $player->sendSound(Sounds::ENABLE_PHONE);
     }

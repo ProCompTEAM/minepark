@@ -4,14 +4,23 @@ namespace minepark\commands\map;
 use minepark\common\player\MineParkPlayer;
 
 use minepark\commands\base\Command;
+use minepark\defaults\MapConstants;
 use pocketmine\event\Event;
 
 use minepark\defaults\Permissions;
 use minepark\Providers;
+use minepark\providers\MapProvider;
 
 class AddPointCommand extends Command
 {
     public const CURRENT_COMMAND = "addpoint";
+
+    private MapProvider $mapProvider;
+
+    public function __construct()
+    {
+        $this->mapProvider = Providers::getMapProvider();
+    }
 
     public function getCommand() : array
     {
@@ -30,20 +39,20 @@ class AddPointCommand extends Command
 
     public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
-        if(self::argumentsNo($args)) {
+        if (self::argumentsNo($args)) {
             $player->sendMessage("AddPointNoArg");
             return;
         }
 
-        $param1 = $args[0];
-        $param2 = self::argumentsCount(2, $args) ? $args[1] : 0;
+        $pointName = $args[0];
+        $pointType = self::argumentsCount(2, $args) ? $args[1] : MapConstants::POINT_GROUP_GENERIC;
 
-        if(!is_numeric($param2)) {
+        if (!is_numeric($pointType)) {
             $player->sendMessage("AddPointNoGroup");
             return;
         }
 
-        Providers::getMapProvider()->addPoint($player->getPosition(), $param1, $param2);
+        $this->mapProvider->addPoint($player->getPosition(), $pointName, $pointType);
         
         $player->sendMessage("AddPoint");
     }

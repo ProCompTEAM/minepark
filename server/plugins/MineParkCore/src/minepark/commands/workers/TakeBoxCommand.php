@@ -1,17 +1,26 @@
 <?php
 namespace minepark\commands\workers;
 
-use minepark\common\player\MineParkPlayer;
+use minepark\Components;
 
-use minepark\commands\base\Command;
 use pocketmine\event\Event;
+use minepark\defaults\Sounds;
 
 use minepark\defaults\Permissions;
-use minepark\defaults\Sounds;
+use minepark\commands\base\Command;
+use minepark\common\player\MineParkPlayer;
+use minepark\components\organisations\Organisations;
 
 class TakeBoxCommand extends Command
 {
     public const CURRENT_COMMAND = "takebox";
+
+    private Organisations $organisations;
+
+    public function __construct()
+    {
+        $this->organisations = Components::getComponent(Organisations::class);
+    }
 
     public function getCommand() : array
     {
@@ -29,7 +38,7 @@ class TakeBoxCommand extends Command
 
     public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
-        $this->getCore()->getOrganisationsModule()->workers->takebox($player);
+        $this->organisations->workers->takebox($player);
         
         $player->sendSound(Sounds::ROLEPLAY);
     }

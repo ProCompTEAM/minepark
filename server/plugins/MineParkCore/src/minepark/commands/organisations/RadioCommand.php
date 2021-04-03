@@ -6,6 +6,7 @@ use pocketmine\event\Event;
 use minepark\defaults\Permissions;
 
 use minepark\common\player\MineParkPlayer;
+use minepark\components\organisations\Organisations;
 
 class RadioCommand extends OrganisationsCommand
 {
@@ -31,20 +32,23 @@ class RadioCommand extends OrganisationsCommand
             return $player->sendMessage("§eПравильное использование этой команды: /o r [ТЕКСТ]");
         }
 
-        $oid = $player->getProfile()->organisation;
+        $organisationId = $player->getProfile()->organisation;
 
-        $message = implode(" ", $args);
-
-        if($oid >= 1) {
-            foreach($this->core->getServer()->getOnlinePlayers() as $p) {
-                if($p->getProfile()->organisation == $oid) {
-                    $p->sendMessage("§d[РАЦИЯ] §7".$player->getProfile()->fullName." §4> §7".$message);
-                }
-            }
+        if ($organisationId === Organisations::NO_WORK) {
+            $player->sendMessage("§6У вас нет рации!");
             return;
         }
 
-        $player->sendMessage("§6У вас нет рации!");
+        $implodedMessage = implode(self::ARGUMENTS_SEPERATOR, $args);
+
+        $generatedRadioMessage = "§d[РАЦИЯ] §7" . $player->getProfile()->fullName . " §4> §7" . $implodedMessage;
+
+        foreach($this->getCore()->getServer()->getOnlinePlayers() as $onlinePlayer) {
+            $onlinePlayer = MineParkPlayer::cast($onlinePlayer);
+            if ($onlinePlayer->getProfile()->organisation === $organisationId) {
+                $onlinePlayer->sendMessage($generatedRadioMessage);
+            }
+        }
     }
 }
 ?>

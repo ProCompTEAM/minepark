@@ -1,19 +1,33 @@
 <?php
 namespace minepark\commands\roleplay;
 
-use minepark\common\player\MineParkPlayer;
+use minepark\Components;
 
-use minepark\commands\base\Command;
 use pocketmine\event\Event;
-
-use minepark\defaults\Permissions;
 use minepark\defaults\Sounds;
+
+use minepark\components\GameChat;
+use minepark\components\Tracking;
+use minepark\defaults\Permissions;
+use minepark\commands\base\Command;
+use minepark\common\player\MineParkPlayer;
 
 class TryCommand extends Command
 {
     public const CURRENT_COMMAND = "try";
 
     public const DISTANCE = 10;
+
+    private Tracking $tracking;
+
+    private GameChat $gameChat;
+
+    public function __construct()
+    {
+        $this->tracking = Components::getComponent(Tracking::class);
+
+        $this->gameChat = Components::getComponent(GameChat::class);
+    }
 
     public function getCommand() : array
     {
@@ -40,10 +54,10 @@ class TryCommand extends Command
         
         $actResult = mt_rand(1, 2) === 1 ? "{CommandRolePlayTrySucces}" : "{CommandRolePlayTryUnsucces}";
         
-        $this->getCore()->getChatter()->sendLocalMessage($player, $message . " " . $actResult, "§d", self::DISTANCE);
+        $this->gameChat->sendLocalMessage($player, $message . " " . $actResult, "§d", self::DISTANCE);
         $player->sendSound(Sounds::ROLEPLAY);
 
-        $this->getCore()->getTrackerModule()->actionRP($player, $message . " " . $actResult, self::DISTANCE, "[TRY]");
+        $this->tracking->actionRP($player, $message . " " . $actResult, self::DISTANCE, "[TRY]");
     }
 }
 ?>

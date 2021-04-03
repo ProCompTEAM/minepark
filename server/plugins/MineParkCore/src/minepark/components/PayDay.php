@@ -10,12 +10,17 @@ use minepark\components\base\Component;
 use minepark\common\player\MineParkPlayer;
 use minepark\defaults\ComponentAttributes;
 use minepark\components\organisations\Organisations;
+use minepark\providers\BankingProvider;
 
 class PayDay extends Component
 {
+    private BankingProvider $bankingProvider;
+
     public function __construct()
     {
         Tasks::registerRepeatingAction(TimeConstants::PAYDAY_INTERVAL, [$this, "calculateAndShow"]);
+
+        $this->bankingProvider = Providers::getBankingProvider();
     }
 
     public function getAttributes() : array
@@ -48,11 +53,11 @@ class PayDay extends Component
             $summ = ($salary + $special);
 
             if($summ > 0) {
-                Providers::getBankingProvider()->giveDebit($player, $summ);
+                $this->bankingProvider->giveDebit($player, $summ);
             }
 
             if($summ < 0) {
-                Providers::getBankingProvider()->reduceDebit($player, $summ);
+               $this->bankingProvider->reduceDebit($player, $summ);
             }
 
             $this->sendForm($player, $salary, $special, $summ);

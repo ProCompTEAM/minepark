@@ -6,11 +6,24 @@ use pocketmine\event\Event;
 use minepark\defaults\Permissions;
 
 use minepark\common\player\MineParkPlayer;
+use minepark\Components;
+use minepark\components\GameChat;
 use minepark\components\organisations\Organisations;
 
 class ShowCommand extends OrganisationsCommand
 {
     public const CURRENT_COMMAND = "show";
+
+    private Organisations $organisations;
+    
+    private GameChat $gameChat;
+
+    public function __construct()
+    {
+        $this->organisations = Components::getComponent(Organisations::class);
+
+        $this->gameChat = Components::getComponent(GameChat::class);
+    }
 
     public function getCommand() : array
     {
@@ -28,16 +41,16 @@ class ShowCommand extends OrganisationsCommand
 
     public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
-        $organModule = $this->getCore()->getOrganisationsModule();
+        $organisationId = $player->getProfile()->organisation;
 
-        $oid = $player->getProfile()->organisation;
-
-        if($oid == Organisations::NO_WORK) {
+        if ($organisationId === Organisations::NO_WORK) {
             $player->sendMessage("CommandShowNoWork");
             return;
         }
 
-        $this->getCore()->getChatter()->sendLocalMessage($player, "{CommandShowHandLic}".$organModule->getName($oid, false)."*§8)", "§d : ", 10);
+        $organisationName = $this->organisations->getName($organisationId, false);
+
+        $this->gameChat->sendLocalMessage($player, "{CommandShowHandLic}" . $organisationName . "*§8)", "§d : ", 10);
     }
 }
 ?>

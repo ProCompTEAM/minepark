@@ -2,8 +2,9 @@
 namespace minepark;
 
 use minepark\components\Auth;
+use minepark\components\base\Component;
 use minepark\components\BossBar;
-use minepark\components\Broadcaster;
+use minepark\components\Broadcasting;
 use minepark\components\Damager;
 use minepark\components\FastFood;
 use minepark\components\GameChat;
@@ -13,11 +14,11 @@ use minepark\components\organisations\Organisations;
 use minepark\components\PayDay;
 use minepark\components\Phone;
 use minepark\components\settings\PlayerSettings;
-use minepark\components\Reporter;
+use minepark\components\Reporting;
 use minepark\components\settings\WorldSettings;
 use minepark\components\StatusBar;
-use minepark\components\Tracker;
-use minepark\components\VehicleManager;
+use minepark\components\Tracking;
+use minepark\components\Vehicles;
 use minepark\components\WorldProtector;
 
 class Components
@@ -30,7 +31,7 @@ class Components
             new Organisations,
             new Auth,
             new BossBar,
-            new Broadcaster,
+            new Broadcasting,
             new Damager,
             new FastFood,
             new GameChat,
@@ -40,12 +41,23 @@ class Components
             new Phone,
             new PlayerSettings,
             new WorldSettings,
-            new Reporter,
+            new Reporting,
             new StatusBar,
-            new Tracker,
-            new VehicleManager,
+            new Tracking,
+            new Vehicles,
             new WorldProtector
         ];
+    }
+
+    public static function getComponent(string $componentName) : ?Component
+    {
+        foreach (self::$components as $component) {
+            if ($componentName === $component::class) {
+                return $component;
+            }
+        }
+
+        return null;
     }
 }
 ?>

@@ -7,6 +7,8 @@ use minepark\Providers;
 use minepark\defaults\ChatConstants;
 use minepark\components\base\Component;
 use minepark\common\player\MineParkPlayer;
+use minepark\Components;
+use minepark\defaults\ComponentAttributes;
 use pocketmine\event\player\PlayerChatEvent;
 
 class GameChat extends Component
@@ -17,14 +19,21 @@ class GameChat extends Component
 
     private const SELF_CHAT_PREFIX = "{ChatIAm}";
 
+    private Phone $phone;
+    private Tracking $tracking;
+
     public function __construct()
     {
         Events::registerEvent(EventList::PLAYER_CHAT_EVENT, [$this, "executeInputData"]);
+
+        $this->phone = Components::getComponent(Phone::class);
+        $this->tracking = Components::getComponent(Tracking::class);
     }
 
     public function getAttributes(): array
     {
         return [
+            ComponentAttributes::SHARED
         ];
     }
 
@@ -87,7 +96,7 @@ class GameChat extends Component
             return $player->sendMessage("ChatRestrictBeginner");
         }
 
-        if (!$this->getCore()->getPhone()->hasStream($player)) {
+        if (!$this->phone->hasStream($player)) {
             return $player->sendMessage("ChatNoStream");
         }
 
@@ -96,7 +105,7 @@ class GameChat extends Component
         foreach ($this->getCore()->getServer()->getOnlinePlayers() as $onlinePlayer) {
             $onlinePlayer = MineParkPlayer::cast($onlinePlayer);
 
-            if ($this->getCore()->getPhone()->hasStream($onlinePlayer)) {
+            if ($this->phone->hasStream($onlinePlayer)) {
                 $onlinePlayer->sendLocalizedMessage($generatedMessage);
             }
         }
@@ -121,9 +130,9 @@ class GameChat extends Component
 
     private function handleInCallMessage(MineParkPlayer $player, string $message)
     {
-        $this->getCore()->getPhone()->handleInCall($player, $message);
-        $this->getCore()->getChatter()->sendLocalMessage($player, $message, "{ChatSpeakPhone}");
-        $this->getCore()->getTrackerModule()->message($player, $message, 7, "[PHONE]");
+        $this->phone->handleInCall($player, $message);
+        $this->sendLocalMessage($player, $message, "{ChatSpeakPhone}");
+        $this->tracking->message($player, $message, 7, "[PHONE]");
     }
 
     private function sendMessage(MineParkPlayer $targetPlayer, string $message, string $senderName, string $senderFullName, bool $haveToBeFriends, string $userPrefix, string $chatPrefix)

@@ -10,13 +10,16 @@ use minepark\defaults\Permissions;
 use pocketmine\entity\EffectInstance;
 use minepark\components\base\Component;
 use minepark\common\player\MineParkPlayer;
+use minepark\components\organisations\Organisations;
 use minepark\defaults\MapConstants;
 
 class Damager extends Component
 {
+    private Config $config;
 
-    private $config;
-    private $reasons;
+    private array $reasons;
+
+    private GameChat $gameChat;
 
     public function __construct()
     {
@@ -37,9 +40,9 @@ class Damager extends Component
 
     public function kick(MineParkPlayer $player, MineParkPlayer $damager) : bool
     {
-        if($damager->getProfile()->organisation == 4 and $damager->getInventory()->getItemInHand()->getName() == "Stick") {
-            $this->getCore()->getChatter()->sendLocalMessage($damager, "§8(§dв руках дубинка-электрошокер§8)", "§d : ", 10);
-            $this->getCore()->getChatter()->sendLocalMessage($player, "§8(§dлежит на полу | ослеплен§8)", "§d : ", 12);
+        if($damager->getProfile()->organisation === Organisations::SECURITY_WORK and $damager->getInventory()->getItemInHand()->getName() === "Stick") {
+            $this->gameChat->sendLocalMessage($damager, "§8(§dв руках дубинка-электрошокер§8)", "§d : ", 10);
+            $this->gameChat->sendLocalMessage($player, "§8(§dлежит на полу | ослеплен§8)", "§d : ", 12);
             
             $this->getCore()->getApi()->changeAttr($player, Api::ATTRIBUTE_WANTED);
 

@@ -3,8 +3,9 @@ namespace minepark\components;
 
 use minepark\common\player\MineParkPlayer;
 use minepark\components\base\Component;
+use minepark\defaults\ComponentAttributes;
 
-class Tracker extends Component
+class Tracking extends Component
 {
     public const CHAT_PREFIX = "§b[Track]";
 
@@ -18,6 +19,7 @@ class Tracker extends Component
     public function getAttributes() : array
     {
         return [
+            ComponentAttributes::SHARED
         ];
     }
     

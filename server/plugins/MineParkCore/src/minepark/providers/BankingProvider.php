@@ -14,6 +14,13 @@ use minepark\providers\data\BankingDataProvider;
 class BankingProvider extends Provider
 {
     private const PREFIX = "[BANK] ";
+
+    private BankingDataProvider $bankingDataProvider;
+
+    public function __construct()
+    {
+        $this->bankingDataProvider = Providers::getBankingDataProvider();
+    }
     
     public function getPlayerMoney(MineParkPlayer $player) : float
     {
@@ -80,70 +87,70 @@ class BankingProvider extends Provider
 
     public function getCash(MineParkPlayer $player) : float
     {
-        return $this->getDataProvider()->getCash($player->getName());
+        return $this->bankingDataProvider->getCash($player->getName());
     }
 
     public function getDebit(MineParkPlayer $player) : float
     {
-        return $this->getDataProvider()->getDebit($player->getName());
+        return $this->bankingDataProvider->getDebit($player->getName());
     }
 
     public function getCredit(MineParkPlayer $player) : float
     {
-        return $this->getDataProvider()->getCredit($player->getName());
+        return $this->bankingDataProvider->getCredit($player->getName());
     }
 
     public function getAllMoney(MineParkPlayer $player) : float
     {
-        return $this->getDataProvider()->getAllMoney($player->getName());
+        return $this->bankingDataProvider->getAllMoney($player->getName());
     }
 
     public function giveCash(MineParkPlayer $player, float $amount) : bool
     {
         $dto = $this->getBankTransactionDto($player->getName(), $amount);
-        return $this->getDataProvider()->giveCash($dto);
+        return $this->bankingDataProvider->giveCash($dto);
     }
 
     public function giveDebit(MineParkPlayer $player, float $amount) : bool
     {
         $dto = $this->getBankTransactionDto($player->getName(), $amount);
-        return $this->getDataProvider()->giveDebit($dto);
+        return $this->bankingDataProvider->giveDebit($dto);
     }
 
     public function giveCredit(MineParkPlayer $player, float $amount) : bool
     {
         $dto = $this->getBankTransactionDto($player->getName(), $amount);
-        return $this->getDataProvider()->giveCredit($dto);
+        return $this->bankingDataProvider->giveCredit($dto);
     }
 
     public function reduceCash(MineParkPlayer $player, float $amount) : bool
     {
         $dto = $this->getBankTransactionDto($player->getName(), $amount);
-        return $this->getDataProvider()->reduceCash($dto);
+        return $this->bankingDataProvider->reduceCash($dto);
     }
 
     public function reduceDebit(MineParkPlayer $player, float $amount) : bool
     {
         $dto = $this->getBankTransactionDto($player->getName(), $amount);
-        return $this->getDataProvider()->reduceDebit($dto);
+        return $this->bankingDataProvider->reduceDebit($dto);
     }
 
     public function reduceCredit(MineParkPlayer $player, float $amount) : bool
     {
         $dto = $this->getBankTransactionDto($player->getName(), $amount);
-        return $this->getDataProvider()->reduceCredit($dto);
+        return $this->bankingDataProvider->reduceCredit($dto);
     }
 
     public function getPaymentMethod(MineParkPlayer $player) : int
     {
-        return $this->getDataProvider()->getPaymentMethod($player->getName());
+        return $this->bankingDataProvider->getPaymentMethod($player->getName());
     }
 
     public function switchPaymentMethod(MineParkPlayer $player, int $method) : bool
     {
         $dto = $this->getPaymentMethodDto($player->getName(), $method);
 
-        $status = $this->getDataProvider()->switchPaymentMethod($dto);
+        $status = $this->bankingDataProvider->switchPaymentMethod($dto);
 
         if ($status) {
             $player->getStatesMap()->paymentMethod = $method;
@@ -154,7 +161,7 @@ class BankingProvider extends Provider
 
     public function initializePlayerPaymentMethod(MineParkPlayer $player)
     {
-        $player->getStatesMap()->paymentMethod = $this->getDataProvider()->getPaymentMethod($player->getName());
+        $player->getStatesMap()->paymentMethod = $this->bankingDataProvider->getPaymentMethod($player->getName());
     }
 
     private function getPaymentMethodDto(string $userName, int $method) : PaymentMethodDto
@@ -171,11 +178,6 @@ class BankingProvider extends Provider
         $dto->name = $userName;
         $dto->amount = $amount;
         return $dto;
-    }
-
-    private function getDataProvider() : BankingDataProvider
-    {
-        return Providers::getBankingDataProvider();
     }
 }
 ?>

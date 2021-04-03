@@ -7,11 +7,19 @@ use pocketmine\event\Event;
 use minepark\defaults\Permissions;
 
 use minepark\commands\base\Command;
+use minepark\providers\MapProvider;
 use minepark\common\player\MineParkPlayer;
 
 class ToNearPointCommand extends Command
 {
     public const CURRENT_COMMAND = "tonearpoint";
+
+    private MapProvider $mapProvider;
+
+    public function __construct()
+    {
+        $this->mapProvider = Providers::getMapProvider();
+    }
 
     public function getCommand() : array
     {
@@ -30,10 +38,10 @@ class ToNearPointCommand extends Command
 
     public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
-        $nearPoints = Providers::getMapProvider()->getNearPoints($player->getPosition(), 15);
+        $nearPoints = $this->mapProvider->getNearPoints($player->getPosition(), 15);
 
-        if(count($nearPoints) > 0)  {
-            Providers::getMapProvider()->teleportPoint($player, $nearPoints[0]);
+        if (isset($nearPoints[0]))  {
+            $this->mapProvider->teleportPoint($player, $nearPoints[0]);
         } else {
             $player->sendMessage("CommandNoToNearPoint");
         }

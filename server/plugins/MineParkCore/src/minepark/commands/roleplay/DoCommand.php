@@ -4,6 +4,9 @@ namespace minepark\commands\roleplay;
 use minepark\common\player\MineParkPlayer;
 
 use minepark\commands\base\Command;
+use minepark\Components;
+use minepark\components\GameChat;
+use minepark\components\Tracking;
 use pocketmine\event\Event;
 
 use minepark\defaults\Permissions;
@@ -14,6 +17,17 @@ class DoCommand extends Command
     public const CURRENT_COMMAND = "do";
 
     public const DISTANCE = 10;
+
+    private Tracking $tracking;
+
+    private GameChat $gameChat;
+
+    public function __construct()
+    {
+        $this->tracking = Components::getComponent(Tracking::class);
+
+        $this->gameChat = Components::getComponent(GameChat::class);
+    }
 
     public function getCommand() : array
     {
@@ -37,11 +51,11 @@ class DoCommand extends Command
         }
 
         $message = implode(self::ARGUMENTS_SEPERATOR, $args);
-        
-        $this->getCore()->getChatter()->sendLocalMessage($player, $message, "§d : ", self::DISTANCE);
+
+        $this->gameChat->sendLocalMessage($player, $message, "§d : ", self::DISTANCE);
         $player->sendSound(Sounds::ROLEPLAY);
 
-        $this->getCore()->getTrackerModule()->actionRP($player, $message, self::DISTANCE, "[DO]");
+        $this->tracking->actionRP($player, $message, self::DISTANCE, "[DO]");
     }
 }
 ?>

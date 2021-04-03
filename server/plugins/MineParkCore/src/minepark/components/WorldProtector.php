@@ -1,7 +1,6 @@
 <?php
 namespace minepark\components;
 
-use minepark\Core;
 use minepark\Events;
 use pocketmine\utils\Config;
 use pocketmine\level\Position;

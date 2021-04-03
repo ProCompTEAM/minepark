@@ -5,7 +5,7 @@ use minepark\Tasks;
 use minepark\defaults\TimeConstants;
 use minepark\components\base\Component;
 
-class Broadcaster extends Component
+class Broadcasting extends Component
 {
     private array $localizationKeys;
 

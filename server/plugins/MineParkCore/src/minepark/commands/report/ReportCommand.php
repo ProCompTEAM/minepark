@@ -1,17 +1,26 @@
 <?php
 namespace minepark\commands\report;
 
-use minepark\common\player\MineParkPlayer;
+use minepark\Components;
 use pocketmine\event\Event;
 
-use minepark\commands\base\Command;
-use minepark\defaults\Permissions;
-
 use minepark\utils\CallbackTask;
+use minepark\components\Reporting;
+
+use minepark\defaults\Permissions;
+use minepark\commands\base\Command;
+use minepark\common\player\MineParkPlayer;
 
 class ReportCommand extends Command
 {
     public const CURRENT_COMMAND = "report";
+
+    private Reporting $reporting;
+
+    public function __construct()
+    {
+        $this->reporting = Components::getComponent(Reporting::class);
+    }
 
     public function getCommand() : array
     {
@@ -36,7 +45,7 @@ class ReportCommand extends Command
 
         $reportMessage = implode(" ", $args);
         
-        $this->getCore()->getReporter()->playerReport($player, $reportMessage);
+        $this->reporting->playerReport($player, $reportMessage);
     }
 }
 ?>

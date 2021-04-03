@@ -21,26 +21,21 @@ class MapProvider extends Provider
         $this->dataProvider = Providers::getMapDataProvider();
     }
 
-    private function getDataProvider()
-    {
-        return $this->dataProvider;
-    }
-
     public function addPoint(Position $position, string $pointName, int $group = MapConstants::POINT_GROUP_GENERIC)
     {
         $pointDto = $this->getMapPointDto($pointName, $group, $position);
 
-        $this->getDataProvider()->setPoint($pointDto);
+        $this->dataProvider->setPoint($pointDto);
     }
 
     public function removePoint(string $pointName) : bool
     {
-        return $this->getDataProvider()->deletePoint($pointName);
+        return $this->dataProvider->deletePoint($pointName);
     }
 
     public function getPointPosition(string $pointName) : ?Position
     {
-        $pointData = $this->getDataProvider()->getPoint($pointName);
+        $pointData = $this->dataProvider->getPoint($pointName);
 
         if (!isset($pointData)) {
             return null;
@@ -53,12 +48,12 @@ class MapProvider extends Provider
 
     public function getPointGroup(string $pointName) : ?int
     {
-        return $this->getDataProvider()->getPointGroup($pointName);
+        return $this->dataProvider->getPointGroup($pointName);
     }
 
     public function getPointsByGroup(int $group, bool $namesOnly = true) : array
     {
-        $points = $this->getDataProvider()->getPointsByGroup($group);
+        $points = $this->dataProvider->getPointsByGroup($group);
 
         return $namesOnly ? $this->getPointsNames($points) : $points;
     }
@@ -67,7 +62,7 @@ class MapProvider extends Provider
     {
         $localMapPointDto = $this->getLocalMapPointDto($position, $distance);
 
-        $points = $this->getDataProvider()->getNearPoints($localMapPointDto);
+        $points = $this->dataProvider->getNearPoints($localMapPointDto);
 
         return $namesOnly ? $this->getPointsNames($points) : $points;
     }
