@@ -21,7 +21,7 @@ class Damager extends Component
 
     private GameChat $gameChat;
 
-    public function __construct()
+    public function initialize()
     {
         $this->config = new Config($this->getCore()->getTargetDirectory() . "greenZones.json", Config::JSON);
         $this->reasons = array("сотрясения мозга", "потери сознания", "ряда переломов");

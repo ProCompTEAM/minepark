@@ -19,7 +19,7 @@ class Vehicles extends Component
 {
     private array $vehicles;
 
-    public function __construct()
+    public function initialize()
     {
         $this->loadVehicles();
     }

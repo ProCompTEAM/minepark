@@ -27,7 +27,7 @@ class Workers extends Component
 
     private GameChat $gameChat;
     
-    public function __construct()
+    public function initialize()
     {
         $this->words = [
             "Сельдь *Московская*","Картофель *Беларус*","Боярышник","*Contex Classic*",

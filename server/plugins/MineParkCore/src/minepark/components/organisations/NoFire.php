@@ -22,7 +22,7 @@ class NoFire extends Component
 
     private BankingProvider $bankingProvider;
     
-    public function __construct()
+    public function initialize()
     {
         Tasks::registerRepeatingAction(TimeConstants::NOFIRE_UPDATE_INTERVAL, [$this, "timeToFire"]);
 

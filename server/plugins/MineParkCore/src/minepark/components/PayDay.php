@@ -16,7 +16,7 @@ class PayDay extends Component
 {
     private BankingProvider $bankingProvider;
 
-    public function __construct()
+    public function initialize()
     {
         Tasks::registerRepeatingAction(TimeConstants::PAYDAY_INTERVAL, [$this, "calculateAndShow"]);
 

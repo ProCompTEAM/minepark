@@ -21,7 +21,7 @@ class FastFood extends Component
 
     private GameChat $gameChat;
 
-    public function __construct()
+    public function initialize()
     {
         $this->bankingProvider = Providers::getBankingProvider();
 

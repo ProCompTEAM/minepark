@@ -12,7 +12,7 @@ class NotifyPlayers extends Component
 {
     private MapProvider $mapProvider;
 
-    public function __construct()
+    public function initialize()
     {
         Tasks::registerRepeatingAction(TimeConstants::SHOW_PLAYERS_LIST_INTERVAL, [$this, "broadcast"]);
 

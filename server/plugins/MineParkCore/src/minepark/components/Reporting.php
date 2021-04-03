@@ -16,7 +16,7 @@ class Reporting extends Component
     
     const CHARACTERS_LIMIT = 300;
 
-    public function __construct()
+    public function initialize()
     {
         $this->playerReports = [];
     }

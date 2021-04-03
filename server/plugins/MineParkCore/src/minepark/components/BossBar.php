@@ -18,7 +18,7 @@ class BossBar extends Component
     private const DEFAULT_TITLE = "MinePark";
     private const DEFAULT_PERCENTS = 100;
 
-    public function __construct()
+    public function initialize()
     {
         Events::registerEvent(EventList::PLAYER_JOIN_EVENT, [$this, "joinControl"]);
     }

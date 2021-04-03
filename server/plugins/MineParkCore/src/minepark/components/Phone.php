@@ -32,7 +32,7 @@ class Phone extends Component
 
     private GameChat $gameChat;
 
-    public function __construct()
+    public function initialize()
     {
         Tasks::registerRepeatingAction(TimeConstants::PHONE_TAKE_FEE_INTERVAL, [$this, "takeFee"]);
 

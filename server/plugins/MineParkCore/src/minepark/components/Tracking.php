@@ -11,7 +11,7 @@ class Tracking extends Component
 
     public $tracked;
 
-    public function __construct()
+    public function initialize()
     {
         $this->tracked = [];
     }

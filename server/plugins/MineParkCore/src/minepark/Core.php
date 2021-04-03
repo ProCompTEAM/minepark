@@ -78,12 +78,12 @@ class Core extends PluginBase implements Listener
 
     public function initializeCommonModules()
     {
+        Components::initializeAll();
+
         $this->sapi = new Api;
         $this->scmd = new Commands;
         $this->service = new Service;
         $this->webapi = new WebApi;
-
-        Components::initializeAll();
     }
 
     public function getTargetDirectory(bool $strings = false) : string

@@ -19,7 +19,9 @@ use minepark\components\settings\WorldSettings;
 use minepark\components\StatusBar;
 use minepark\components\Tracking;
 use minepark\components\Vehicles;
+use minepark\components\Tracker;
 use minepark\components\TrafficLights;
+use minepark\components\VehicleManager;
 use minepark\components\WorldProtector;
 
 class Components
@@ -49,6 +51,10 @@ class Components
             new TrafficLights,
             new WorldProtector
         ];
+
+        foreach(self::$components as $component) {
+            $component->initialize();
+        }
     }
 
     public static function getComponent(string $componentName) : ?Component

@@ -29,7 +29,7 @@ class Auth extends Component
 
     private UsersDataProvider $usersDataProvider;
 
-    public function __construct()
+    public function initialize()
     {
         Events::registerEvent(EventList::PLAYER_JOIN_EVENT, [$this, "afterJoin"]);
         Events::registerEvent(EventList::PLAYER_INTERACT_EVENT, [$this, "handleInteract"]);

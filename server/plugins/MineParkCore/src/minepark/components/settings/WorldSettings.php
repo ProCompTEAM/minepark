@@ -9,7 +9,7 @@ use pocketmine\event\level\ChunkLoadEvent;
 
 class WorldSettings extends Component
 {
-    public function __construct()
+    public function initialize()
     {
         Events::registerEvent(EventList::BLOCK_BURN_EVENT, [$this, "applyBlockBurnSettings"]);
         Events::registerEvent(EventList::CHUNK_LOAD_EVENT, [$this, "chunkLoadSettings"]);

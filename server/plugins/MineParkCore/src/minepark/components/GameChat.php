@@ -22,7 +22,7 @@ class GameChat extends Component
     private Phone $phone;
     private Tracking $tracking;
 
-    public function __construct()
+    public function initialize()
     {
         Events::registerEvent(EventList::PLAYER_CHAT_EVENT, [$this, "executeInputData"]);
 

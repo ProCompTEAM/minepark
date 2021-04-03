@@ -29,7 +29,7 @@ class PlayerSettings extends Component
 {
     private Tracking $tracking;
 
-    public function __construct()
+    public function initialize()
     {
         Events::registerEvent(EventList::PLAYER_CREATION_EVENT, [$this, "setDefaultPlayerClass"]);
         Events::registerEvent(EventList::PLAYER_PRE_LOGIN_EVENT, [$this, "initializePlayer"]);

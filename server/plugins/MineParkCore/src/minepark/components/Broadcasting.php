@@ -13,7 +13,7 @@ class Broadcasting extends Component
 
     private int $localizationKeysCurrentIndex;
 
-    public function __construct()
+    public function initialize()
     {
         $this->localizationKeys = $this->getMessagesLocalizationKeys();
         $this->localizationKeysMaxIndex = count($this->localizationKeys) - 1;

@@ -12,7 +12,7 @@ class GPS extends Component
 {
     public $level;
     
-    public function __construct()
+    public function initialize()
     {
         Tasks::registerRepeatingAction(TimeConstants::NAVIGATION_ROUTES_UPDATE_INTERVAL, [$this, "updateRoutes"]);
         $this->level = $this->getCore()->getServer()->getDefaultLevel();
