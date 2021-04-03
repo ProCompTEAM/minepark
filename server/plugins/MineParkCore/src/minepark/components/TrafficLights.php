@@ -27,7 +27,7 @@ class TrafficLights extends Component
 
     public function __construct()
     {
-        Tasks::registerRepeatingAction(TimeConstants::TRAFFIC_LIGHTS_INTERVAL, [$this, "updateLights"]);
+        Tasks::registerRepeatingAction(TimeConstants::TRAFFIC_LIGHTS_UPDATE_INTERVAL, [$this, "updateLights"]);
 
         $this->mapProvider = Providers::getMapProvider();
     }

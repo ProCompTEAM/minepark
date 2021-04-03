@@ -170,9 +170,9 @@ class Core extends PluginBase implements Listener
     private function removeDefaultServerCommand(string $commandName)
     {
         $commandMap = $this->getServer()->getCommandMap();
-        $cmd = $commandMap->getCommand($commandName);
-        $cmd->unregister($commandMap);
-        $commandMap->unregister($cmd);
+        $command = $commandMap->getCommand($commandName);
+        $command->unregister($commandMap);
+        $commandMap->unregister($command);
     }
 
     private function transferPlayersToLobby()
