@@ -9,6 +9,9 @@ use pocketmine\level\Position;
 use minepark\defaults\Permissions;
 use minepark\commands\base\Command;
 use minepark\common\player\MineParkPlayer;
+use minepark\providers\BankingProvider;
+use minepark\providers\MapProvider;
+use minepark\providers\ProfileProvider;
 
 class GetOrganisationCommand extends Command
 {
@@ -17,6 +20,21 @@ class GetOrganisationCommand extends Command
     public const DEFAULT_POINT_NAME = "Мэрия";
 
     public const DEFAULT_POINT_DISTANCE = 20;
+
+    private MapProvider $mapProvider;
+
+    private BankingProvider $bankingProvider;
+
+    private ProfileProvider $profileProvider;
+
+    public function __construct()
+    {
+        $this->mapProvider = Providers::getMapProvider();
+
+        $this->bankingProvider = Providers::getBankingProvider();
+
+        $this->profileProvider = Providers::getProfileProvider();
+    }
 
     public function getCommand() : array
     {
@@ -50,7 +68,7 @@ class GetOrganisationCommand extends Command
 
     private function getDefaultPoint(Position $position) : ?string
     {
-        $plist = Providers::getMapProvider()->getNearPoints($position, self::DEFAULT_POINT_DISTANCE); 
+        $plist = $this->mapProvider->getNearPoints($position, self::DEFAULT_POINT_DISTANCE); 
         
         foreach($plist as $point)
         {
@@ -76,7 +94,7 @@ class GetOrganisationCommand extends Command
 
     private function switchOrg(MineParkPlayer $player, string $orgId)
     {
-        if (Providers::getBankingProvider()->takePlayerMoney($player, 1000)) {
+        if ($this->bankingProvider->takePlayerMoney($player, 1000)) {
             switch($orgId)
             {
                 case 1: $orgId = 5; break;
@@ -94,7 +112,7 @@ class GetOrganisationCommand extends Command
     private function setOrg(MineParkPlayer $player, string $orgId)
     {
         $player->getProfile()->organisation = $orgId; 
-        Providers::getProfileProvider()->saveProfile($player);
+        $this->profileProvider->saveProfile($player);
 
         $player->sendMessage("CommandGetOrgGet");
     }

@@ -7,13 +7,27 @@ use pocketmine\event\Event;
 
 use minepark\defaults\Permissions;
 use minepark\common\player\MineParkPlayer;
+use minepark\Components;
+use minepark\components\GameChat;
 use minepark\components\organisations\Organisations;
+use minepark\providers\MapProvider;
 
 class GiveLicCommand extends OrganisationsCommand
 {
     public const CURRENT_COMMAND = "givelic";
 
     public const POINT_NAME = "Мэрия";
+
+    private MapProvider $mapProvider;
+
+    private GameChat $gameChat;
+
+    public function __construct()
+    {
+        $this->mapProvider = Providers::getMapProvider();
+
+        $this->gameChat = Components::getComponent(GameChat::class);
+    }
 
     public function getCommand() : array
     {
@@ -58,7 +72,7 @@ class GiveLicCommand extends OrganisationsCommand
 
     private function tryGiveLicense(MineParkPlayer $toPlayer, MineParkPlayer $government)
     {
-        $this->getCore()->getChatter()->sendLocalMessage($government, "{CommandGiveLicKeys}", "§d : ", 10);
+        $this->gameChat->sendLocalMessage($government, "{CommandGiveLicKeys}", "§d : ", 10);
 
         $government->sendMessage("CommandGiveLicNoLic1");
         $toPlayer->sendMessage("CommandGiveLicNoLic2");
@@ -66,7 +80,7 @@ class GiveLicCommand extends OrganisationsCommand
 
     private function moveThemOut(array $plrs, MineParkPlayer $government)
     {
-        $this->getCore()->getChatter()->sendLocalMessage($government, "{CommandGiveLicManyPlayers1}");
+        $this->gameChat->sendLocalMessage($government, "{CommandGiveLicManyPlayers1}");
 
         foreach($plrs as $id => $p) {
             if($id > 1) {
@@ -79,12 +93,12 @@ class GiveLicCommand extends OrganisationsCommand
 
     private function canGiveDocuments(MineParkPlayer $player) : bool
     {
-        return $player->getProfile()->organisation == Organisations::GOVERNMENT_WORK or $player->getProfile()->organisation == Organisations::LAWYER_WORK;
+        return $player->getProfile()->organisation === Organisations::GOVERNMENT_WORK or $player->getProfile()->organisation === Organisations::LAWYER_WORK;
     }
 
     private function isNearPoint(MineParkPlayer $player) : bool
     {
-        $plist = Providers::getMapProvider()->getNearPoints($player->getPosition(), 32);
+        $plist = $this->mapProvider->getNearPoints($player->getPosition(), 32);
         return in_array(self::POINT_NAME, $plist);
     }
 

@@ -7,11 +7,20 @@ use pocketmine\event\Event;
 use minepark\defaults\Permissions;
 
 use minepark\common\player\MineParkPlayer;
+use minepark\Components;
+use minepark\components\GameChat;
 use minepark\components\organisations\Organisations;
 
 class InfoCommand extends OrganisationsCommand
 {
     public const CURRENT_COMMAND = "info";
+
+    private GameChat $gameChat;
+
+    public function __construct()
+    {
+        $this->gameChat = Components::getComponent(GameChat::class);
+    }
 
     public function getCommand() : array
     {
@@ -34,7 +43,7 @@ class InfoCommand extends OrganisationsCommand
             return;
         }
 
-        $this->getCore()->getChatter()->sendLocalMessage($player, "{CommandInfoPrint}", "§d : ", 10);
+        $this->gameChat->sendLocalMessage($player, "{CommandInfoPrint}", "§d : ", 10);
 
         $plrs = $this->getPlayersNear($player);
 

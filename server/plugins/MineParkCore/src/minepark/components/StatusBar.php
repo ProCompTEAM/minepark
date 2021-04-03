@@ -7,7 +7,7 @@ use minepark\defaults\TimeConstants;
 
 class StatusBar extends Component
 {
-    public function __construct()
+    public function initialize()
     {
         Tasks::executeActionWithTicksInterval(TimeConstants::ONE_SECOND_TICKS, [$this, "updateAll"]);
     }

@@ -25,7 +25,7 @@ class Organisations extends Component
     const GOVERNMENT_WORK = 6;
     const EMERGENCY_WORK = 7;
 
-    public function __construct()
+    public function initialize()
     {
         $this->shop = new Shop;
         $this->workers = new Workers;

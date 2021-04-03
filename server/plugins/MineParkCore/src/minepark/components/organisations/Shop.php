@@ -19,7 +19,7 @@ class Shop extends Component
     const MINIMAL_PRICE = 0;
     const MAXIMAL_PRICE = 20000;
 
-    public function __construct()
+    public function initialize()
     {
         $this->c = new Config($this->getCore()->getTargetDirectory()."shops.json", Config::JSON);
     }

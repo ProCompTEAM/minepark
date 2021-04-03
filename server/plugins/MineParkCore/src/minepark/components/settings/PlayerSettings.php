@@ -13,6 +13,7 @@ use minepark\models\player\StatesMap;
 use minepark\defaults\PlayerConstants;
 use minepark\components\base\Component;
 use minepark\common\player\MineParkPlayer;
+use minepark\Components;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\player\PlayerJoinEvent;
@@ -21,11 +22,14 @@ use pocketmine\event\player\PlayerCreationEvent;
 use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\event\player\PlayerPreLoginEvent;
 use minepark\components\organisations\Organisations;
+use minepark\components\Tracking;
 use minepark\providers\ProfileProvider;
 
 class PlayerSettings extends Component
 {
-    public function __construct()
+    private Tracking $tracking;
+
+    public function initialize()
     {
         Events::registerEvent(EventList::PLAYER_CREATION_EVENT, [$this, "setDefaultPlayerClass"]);
         Events::registerEvent(EventList::PLAYER_PRE_LOGIN_EVENT, [$this, "initializePlayer"]);
@@ -34,6 +38,8 @@ class PlayerSettings extends Component
         Events::registerEvent(EventList::PLAYER_INTERACT_EVENT, [$this, "applyInteractSettings"]);
         Events::registerEvent(EventList::BLOCK_BREAK_EVENT, [$this, "applyBlockUpdateSettings"]);
         Events::registerEvent(EventList::BLOCK_PLACE_EVENT, [$this, "applyBlockUpdateSettings"]);
+
+        $this->tracking = Components::getComponent(Tracking::class);
     }
 
     public function getAttributes() : array
@@ -238,7 +244,7 @@ class PlayerSettings extends Component
     private function handleNewPlayer(MineParkPlayer $player)
     {
         Providers::getBankingProvider()->givePlayerMoney($player, PlayerConstants::DEFAULT_MONEY_PRESENT);
-        $this->getCore()->getTrackerModule()->enableTrack($player);
+        $this->tracking->enableTrack($player);
         $this->presentNewPlayer($player);
     }
 

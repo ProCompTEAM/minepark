@@ -1,16 +1,25 @@
 <?php
 namespace minepark\commands\report;
 
-use minepark\common\player\MineParkPlayer;
+use minepark\Components;
 use pocketmine\event\Event;
 
-use minepark\defaults\Permissions;
+use minepark\components\Reporting;
 
+use minepark\defaults\Permissions;
 use minepark\commands\base\Command;
+use minepark\common\player\MineParkPlayer;
 
 class ReplyCommand extends Command
 {
     public const CURRENT_COMMAND = "reply";
+
+    private Reporting $reporting;
+
+    public function __construct()
+    {
+        $this->reporting = Components::getComponent(Reporting::class);
+    }
 
     public function getCommand() : array
     {
@@ -37,9 +46,9 @@ class ReplyCommand extends Command
         $ticketID = intval($args[0]);
 
         $messageArray = array_slice($args, 1);
-        $messageToSend = implode(" ", $messageArray);
+        $messageToSend = implode(self::ARGUMENTS_SEPERATOR, $messageArray);
 
-        $this->getCore()->getReporter()->replyReport($player, $ticketID, $messageToSend);
+        $this->reporting->replyReport($player, $ticketID, $messageToSend);
     }
 }
 ?>

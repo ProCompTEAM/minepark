@@ -10,9 +10,12 @@ use minepark\defaults\MapConstants;
 use minepark\defaults\TimeConstants;
 use minepark\components\base\Component;
 use minepark\common\player\MineParkPlayer;
+use minepark\Components;
 use minepark\defaults\ComponentAttributes;
 use minepark\providers\data\PhonesDataProvider;
 use minepark\components\organisations\Organisations;
+use minepark\providers\BankingProvider;
+use minepark\providers\MapProvider;
 
 class Phone extends Component
 {
@@ -21,29 +24,43 @@ class Phone extends Component
     public const EMERGENCY_NUMBER1 = "02";
     public const EMERGENCY_NUMBER2 = "03";
 
-    private $dataProvider;
+    private PhonesDataProvider $phonesDataProvider;
 
-    public function __construct()
+    private MapProvider $mapProvider;
+
+    private BankingProvider $bankingProvider;
+
+    private GameChat $gameChat;
+
+    public function initialize()
     {
         Tasks::registerRepeatingAction(TimeConstants::PHONE_TAKE_FEE_INTERVAL, [$this, "takeFee"]);
-        $this->dataProvider = Providers::getPhonesDataProvider();
+
+        $this->phonesDataProvider = Providers::getPhonesDataProvider();
+
+        $this->mapProvider = Providers::getMapProvider();
+
+        $this->bankingProvider = Providers::getBankingProvider();
+
+        $this->gameChat = Components::getComponent(GameChat::class);
     }
 
     public function getAttributes() : array
     {
         return [
-            ComponentAttributes::STANDALONE
+            ComponentAttributes::STANDALONE,
+            ComponentAttributes::SHARED
         ];
     }
     
     public function getNumber(MineParkPlayer $player) : int
     {
-        return $this->getDataProvider()->getNumberForUser($player->getName());
+        return $this->phonesDataProvider->getNumberForUser($player->getName());
     }
     
     public function getPlayer(int $number, bool $nameOnly = false) : ?MineParkPlayer
     {
-        $name = $this->getDataProvider()->getUserNameByNumber($number);
+        $name = $this->phonesDataProvider->getUserNameByNumber($number);
 
         if(strlen($name) > 0) {
             return $nameOnly ? $name : $this->getCore()->getServer()->getPlayer($name);
@@ -54,7 +71,7 @@ class Phone extends Component
     
     public function hasStream(Vector3 $pos) : bool
     {
-        return Providers::getMapProvider()->hasNearPointWithType($pos, self::MAX_STREAM_DISTANCE, MapConstants::POINT_GROUP_STREAM);
+        return $this->mapProvider->hasNearPointWithType($pos, self::MAX_STREAM_DISTANCE, MapConstants::POINT_GROUP_STREAM);
     }
 
     public function handleInCall(MineParkPlayer $player, string $message) 
@@ -86,7 +103,7 @@ class Phone extends Component
     
     public function cmd(MineParkPlayer $player, array $commandArgs)
     {
-        $this->getCore()->getChatter()->sendLocalMessage($player, "§8(§dв руках телефон§8)", "§d : ", 10);
+        $this->gameChat->sendLocalMessage($player, "§8(§dв руках телефон§8)", "§d : ", 10);
 
         if(!isset($commandArgs[1])) {
             $this->sendDisplayMessages($player);
@@ -135,7 +152,7 @@ class Phone extends Component
             $player = MineParkPlayer::cast($player);
             if($player->getStatesMap()->phoneRcv != null) {
                 if($this->hasStream($player->getStatesMap()->phoneRcv->getPosition())) {
-                    if(!Providers::getBankingProvider()->takePlayerMoney($player, 20)) {
+                    if(!$this->bankingProvider->takePlayerMoney($player, 20)) {
                         $player->sendMessage("PhoneSmsContinueNoMoney");
                         $player->sendMessage("PhoneSmsErrorNet");
 
@@ -156,11 +173,6 @@ class Phone extends Component
                 }
             }
         }
-    }
-
-    private function getDataProvider() : PhonesDataProvider
-    {
-        return $this->dataProvider;
     }
 
     private function sendDisplayMessages(MineParkPlayer $player)
@@ -201,7 +213,7 @@ class Phone extends Component
 
     private function emergencyCall(MineParkPlayer $player, int $organisationId)
     {
-        $streams = Providers::getMapProvider()->getNearPoints($player->getPosition(), 15);
+        $streams = $this->mapProvider->getNearPoints($player->getPosition(), 15);
 
         foreach($this->getCore()->getServer()->getOnlinePlayers() as $onlinePlayer) {
             $onlinePlayer = MineParkPlayer::cast($onlinePlayer);
@@ -240,7 +252,7 @@ class Phone extends Component
             if($number == $myNumber) {
                 $player->sendMessage("PhoneCheckNum");
             } elseif($targetPlayer->getStatesMap()->phoneRcv == null) {
-                $this->getCore()->getChatter()->sendLocalMessage($targetPlayer, "{PhoneCallingBeep}", "§d : ", 10);
+                $this->gameChat->sendLocalMessage($targetPlayer, "{PhoneCallingBeep}", "§d : ", 10);
 
                 $targetPlayer->sendLocalizedMessage("{PhoneCalling1}".$myNumber.".");
                 $targetPlayer->sendMessage("PhoneCalling2");
@@ -250,8 +262,8 @@ class Phone extends Component
                 $player->sendMessage("PhoneCalling3");
             }
         } else {
-            if(Providers::getBankingProvider()->takePlayerMoney($player, 20)) {
-                $this->getCore()->getChatter()->sendLocalMessage($targetPlayer, "{PhoneSmsBeep}", "§d : ", 10);
+            if($this->bankingProvider->takePlayerMoney($player, 20)) {
+                $this->gameChat->sendLocalMessage($targetPlayer, "{PhoneSmsBeep}", "§d : ", 10);
 
                 $sms = $this->sendMessage($number, $this->getCore()->getApi()->getFromArray($commandArgs, 2), $myNumber);
 

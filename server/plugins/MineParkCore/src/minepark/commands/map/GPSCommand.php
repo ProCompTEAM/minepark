@@ -13,12 +13,20 @@ use minepark\commands\base\Command;
 use minepark\defaults\MapConstants;
 use minepark\models\dtos\MapPointDto;
 use minepark\common\player\MineParkPlayer;
+use minepark\providers\MapProvider;
 
 class GPSCommand extends Command
 {
     public const CURRENT_COMMAND = "gps";
 
     private const FLOATING_TEXT_TAG = "GPS";
+
+    private MapProvider $mapProvider;
+
+    public function __construct()
+    {
+        $this->mapProvider = Providers::getMapProvider();
+    }
 
     public function getCommand() : array
     {
@@ -36,9 +44,9 @@ class GPSCommand extends Command
 
     public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
-        if(self::argumentsCount(2, $args)) {
+        if (self::argumentsCount(2, $args)) {
             return $this->initializeCoordinatesGps($player, $args);
-        } elseif(self::argumentsCount(1, $args)) {
+        } else if (self::argumentsCount(1, $args)) {
             if($args[0] === "lights") {
                 return $this->updateLights($player);
             } else {
@@ -71,10 +79,10 @@ class GPSCommand extends Command
     {
         $point = $args[0];
 
-        $gps = Providers::getMapProvider()->getPointPosition($point);
+        $gps = $this->mapProvider->getPointPosition($point);
 
-        if ($gps === null) {
-            return $player->sendLocalizedMessage("{CommandGPSNoPointPart1} $point {CommandGPSNoPointPart2");
+        if (!isset($gps)) {
+            return $player->sendLocalizedMessage("{CommandGPSNoPointPart1} $point {CommandGPSNoPointPart2}");
         }
 
         $player->getStatesMap()->gps = $gps;
@@ -107,18 +115,18 @@ class GPSCommand extends Command
         $form .= "§4(§7gps§4) §7В некоторых местах острова навигатор может работать неправильно из за плохого подключения к спутникам\n";
         $form .= "§4(§7gps§4) §9Ваша позиция§7(X : Z)§9: §6$x : $z\n";
 
-        $form .= "\n§7> §6Общественные места: §a" . implode(', ', Providers::getMapProvider()->getPointsByGroup(MapConstants::POINT_GROUP_GENERIC));
-        $form .= "\n§7> §6Торговые площадки: §a" . implode(', ', Providers::getMapProvider()->getPointsByGroup(MapConstants::POINT_GROUP_MARKETPLACE));
-        $form .= "\n§7> §6Арендная недвижимость: §a" . implode(', ', Providers::getMapProvider()->getPointsByGroup(MapConstants::POINT_GROUP_REALTY));
+        $form .= "\n§7> §6Общественные места: §a" . implode(', ', $this->mapProvider->getPointsByGroup(MapConstants::POINT_GROUP_GENERIC));
+        $form .= "\n§7> §6Торговые площадки: §a" . implode(', ', $this->mapProvider->getPointsByGroup(MapConstants::POINT_GROUP_MARKETPLACE));
+        $form .= "\n§7> §6Арендная недвижимость: §a" . implode(', ', $this->mapProvider->getPointsByGroup(MapConstants::POINT_GROUP_REALTY));
 
         $player->sendWindowMessage($form, "§9|============#НАВИГАТОР#============|");
     }
 
     private function showLights(MineParkPlayer $player)
     {
-        $genericPoints = Providers::getMapProvider()->getPointsByGroup(MapConstants::POINT_GROUP_GENERIC, false);
-        $marketPoints = Providers::getMapProvider()->getPointsByGroup(MapConstants::POINT_GROUP_MARKETPLACE, false);
-        $realtyPoints = Providers::getMapProvider()->getPointsByGroup(MapConstants::POINT_GROUP_REALTY, false);
+        $genericPoints = $this->mapProvider->getPointsByGroup(MapConstants::POINT_GROUP_GENERIC, false);
+        $marketPoints = $this->mapProvider->getPointsByGroup(MapConstants::POINT_GROUP_MARKETPLACE, false);
+        $realtyPoints = $this->mapProvider->getPointsByGroup(MapConstants::POINT_GROUP_REALTY, false);
 
         $this->showLightsForPoints($player, $genericPoints, "§b§a❒ ");
         $this->showLightsForPoints($player, $marketPoints, "§b§e＄ ");

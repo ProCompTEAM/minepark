@@ -10,12 +10,20 @@ use minepark\commands\base\Command;
 use minepark\common\player\MineParkPlayer;
 use minepark\components\organisations\Organisations;
 use minepark\Providers;
+use minepark\providers\MapProvider;
 
 class GetSellerCommand extends Command
 {
     public const CURRENT_COMMAND = "getseller";
 
     public const DISTANCE = 10;
+
+    private MapProvider $mapProvider;
+
+    public function __construct()
+    {
+        $this->mapProvider = Providers::getMapProvider();
+    }
 
     public function getCommand() : array
     {
@@ -55,10 +63,10 @@ class GetSellerCommand extends Command
 
     private function getShop(Position $position) : ?string
     {
-        $shops = Providers::getMapProvider()->getNearPoints($position, self::DISTANCE);
+        $shops = $this->mapProvider->getNearPoints($position, self::DISTANCE);
         
         foreach($shops as $point) {
-            if(Providers::getMapProvider()->getPointGroup($point) == 2) {
+            if($this->mapProvider->getPointGroup($point) == 2) {
                 return $point;
             }
         }

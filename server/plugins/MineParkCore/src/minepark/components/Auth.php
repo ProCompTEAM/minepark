@@ -27,13 +27,17 @@ class Auth extends Component
 
     private $ips = [];
 
-    public function __construct()
+    private UsersDataProvider $usersDataProvider;
+
+    public function initialize()
     {
         Events::registerEvent(EventList::PLAYER_JOIN_EVENT, [$this, "afterJoin"]);
         Events::registerEvent(EventList::PLAYER_INTERACT_EVENT, [$this, "handleInteract"]);
         Events::registerEvent(EventList::BLOCK_BREAK_EVENT, [$this, "handleBlockBreak"]);
         Events::registerEvent(EventList::BLOCK_PLACE_EVENT, [$this, "handleBlockPlace"]);
         Events::registerEvent(EventList::PLAYER_COMMAND_PREPROCESS_EVENT, [$this, "executeInputData"]);
+
+        $this->usersDataProvider = Providers::getUsersDataProvider();
     }
 
     public function getAttributes() : array
@@ -104,7 +108,7 @@ class Auth extends Component
     
     public function checkState(MineParkPlayer $player) : int
     {
-        if(!$this->getDataProvider()->isUserPasswordExist($player->getName())) {
+        if(!$this->usersDataProvider->isUserPasswordExist($player->getName())) {
             return self::STATE_REGISTER;
         } else {
             if(isset($this->ips[$player->getName()]) and $this->ips[$player->getName()] == $player->getAddress()) {
@@ -129,7 +133,7 @@ class Auth extends Component
         } elseif($state == self::STATE_NEED_AUTH) {
             if(strlen($password) < 6) {
                 $player->kick("AuthLen");
-            } elseif(md5($password) == $this->getDataProvider()->getUserPassword($player->getName())) {
+            } elseif(md5($password) == $this->usersDataProvider->getUserPassword($player->getName())) {
                 $this->logInUser($player);
             } else {
                 $player->kick("AuthInvalid");
@@ -193,7 +197,7 @@ class Auth extends Component
         $passwordDto->name = $player->getName();
         $passwordDto->password = md5($password);
 
-        $this->getDataProvider()->setUserPassword($passwordDto);
+        $this->usersDataProvider->setUserPassword($passwordDto);
     }
 
     private function autoLogInUser(MineParkPlayer $player)
@@ -205,11 +209,6 @@ class Auth extends Component
 
         $timeoutTicks = TimeConstants::ONE_SECOND_TICKS * TimeConstants::WELCOME_MESSAGE_TIMEOUT;
         Tasks::registerDelayedAction($timeoutTicks, [$this, "sendWelcomeText"], [$player]);
-    }
-
-    private function getDataProvider() : UsersDataProvider
-    {
-        return Providers::getUsersDataProvider();
     }
 }
 ?>

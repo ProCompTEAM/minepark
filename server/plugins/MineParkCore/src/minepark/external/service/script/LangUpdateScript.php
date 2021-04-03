@@ -3,9 +3,17 @@ namespace minepark\external\service\script;
 
 use minepark\Providers;
 use minepark\defaults\Defaults;
+use minepark\providers\LocalizationProvider;
 
 class LangUpdateScript extends Script
 {
+    private LocalizationProvider $localizationProvider;
+
+    public function __construct()
+    {
+        $this->localizationProvider = Providers::getLocalizationProvider();
+    }
+
     public function getName(): string
     {
         return "lang-update";
@@ -15,7 +23,7 @@ class LangUpdateScript extends Script
     {
         $this->info("Updating languages files...");
 
-        $data = Providers::getLocalizationProvider()->getLangData();
+        $data = $this->localizationProvider->getLangData();
         $mainLang = $data[Defaults::DEFAULT_LANGUAGE_KEY];
 
         foreach(array_keys($data) as $langKey) {
@@ -31,7 +39,7 @@ class LangUpdateScript extends Script
 
             $json = json_encode($data[$langKey], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
             $json = $this->clearJSON($json);
-            file_put_contents(Providers::getLocalizationProvider()->getFileSource($langKey), $json);
+            file_put_contents($this->localizationProvider->getFileSource($langKey), $json);
         }
 
         $this->info("OK.");

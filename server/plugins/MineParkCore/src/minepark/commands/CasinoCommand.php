@@ -11,15 +11,16 @@ use minepark\common\player\MineParkPlayer;
 
 class CasinoCommand extends Command
 {
-    public const CURRENT_COMMAND = "casino";
+    private const CURRENT_COMMAND = "casino";
 
-    public const CASINO_POINT_NAME = "Казино";
+    private const CASINO_POINT_NAME = "Казино";
 
-    public const CASINO_DISTANCE = 10;
+    private const CASINO_DISTANCE = 10;
 
-    public const CASINO_MIN_SUM = 2000;
-    public const CASINO_MAX_SUM = 500000;
-    public const CASINO_CHANCE = 3;
+    private const CASINO_MIN_SUM = 2000;
+    private const CASINO_MAX_SUM = 500000;
+    private const CASINO_CHANCE = 3;
+    private const PRIZE_MULTIPLIER = 1;
 
     public function getCommand() : array
     {
@@ -37,20 +38,19 @@ class CasinoCommand extends Command
 
     public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
-        if(!$this->checkState($player, $args)) {
+        if (!$this->checkState($player, $args)) {
             return;
         }
 
-        if(Providers::getBankingProvider()->takePlayerMoney($player, $args[0], false))
-        {
-            if(mt_rand(1, self::CASINO_CHANCE) == 1) {
-                Providers::getBankingProvider()->givePlayerMoney($player, $args[0] * 2);
+        if (Providers::getBankingProvider()->takePlayerMoney($player, $args[0], false)) {
+            if (mt_rand(1, self::CASINO_CHANCE) == 1) {
+                Providers::getBankingProvider()->givePlayerMoney($player, $args[0] * self::PRIZE_MULTIPLIER);
                 $player->sendMessage("CommandCasinoWin");
             } else { 
                 $player->sendMessage("CommandCasinoLose");
             }
         } else {
-          $player->sendMessage("CommandCasinoNoMoney");  
+            $player->sendMessage("CommandCasinoNoMoney");  
         } 
 
         $event->setCancelled();
@@ -58,11 +58,10 @@ class CasinoCommand extends Command
 
     private function getCasinoPoint(Position $position) : ?string
     {
-        $plist = Providers::getMapProvider()->getNearPoints($position, self::CASINO_DISTANCE); 
-        
-        foreach($plist as $point)
-        {
-            if($point == self::CASINO_POINT_NAME) {
+        $pointList = Providers::getMapProvider()->getNearPoints($position, self::CASINO_DISTANCE); 
+
+        foreach($pointList as $point) {
+            if ($point === self::CASINO_POINT_NAME) {
                 return $point;
             }
         }
@@ -77,7 +76,7 @@ class CasinoCommand extends Command
             return false;
         }
 
-        if($this->getCasinoPoint($player->getPosition()) == null) {
+        if($this->getCasinoPoint($player->getPosition()) === null) {
             $player->sendMessage("CommandCasinoNear");
             return false;
         }

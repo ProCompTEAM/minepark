@@ -7,11 +7,19 @@ use pocketmine\event\Event;
 use minepark\defaults\Permissions;
 
 use minepark\commands\base\Command;
+use minepark\providers\MapProvider;
 use minepark\common\player\MineParkPlayer;
 
 class ToPointCommand extends Command
 {
     public const CURRENT_COMMAND = "topoint";
+
+    private MapProvider $mapProvider;
+
+    public function __construct()
+    {
+        $this->mapProvider = Providers::getMapProvider();
+    }
 
     public function getCommand() : array
     {
@@ -35,7 +43,7 @@ class ToPointCommand extends Command
             return;
         }
 
-        Providers::getMapProvider()->teleportPoint($player, $args[0]);
+        $this->mapProvider->teleportPoint($player, $args[0]);
     }
 }
 ?>

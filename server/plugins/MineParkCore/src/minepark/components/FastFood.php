@@ -7,10 +7,29 @@ use pocketmine\event\Event;
 use minepark\defaults\MapConstants;
 use minepark\components\base\Component;
 use minepark\common\player\MineParkPlayer;
+use minepark\Components;
 use minepark\defaults\ComponentAttributes;
+use minepark\providers\BankingProvider;
+use minepark\providers\MapProvider;
+use pocketmine\event\block\SignChangeEvent;
 
 class FastFood extends Component
 {
+    private BankingProvider $bankingProvider;
+
+    private MapProvider $mapProvider;
+
+    private GameChat $gameChat;
+
+    public function initialize()
+    {
+        $this->bankingProvider = Providers::getBankingProvider();
+
+        $this->mapProvider = Providers::getMapProvider();
+
+        $this->gameChat = Components::getComponent(GameChat::class);
+    }
+
     public function getAttributes() : array
     {
         return [
@@ -22,8 +41,8 @@ class FastFood extends Component
     {
         $core = $this->getCore();
 
-        if(Providers::getMapProvider()->hasNearPointWithType($player, 5, MapConstants::POINT_GROUP_FASTFOOD)) {
-            $core->getChatter()->sendLocalMessage($player, "{FastFoodNear}", "§d : ", 10);
+        if($this->mapProvider->hasNearPointWithType($player, 5, MapConstants::POINT_GROUP_FASTFOOD)) {
+            $this->gameChat->sendLocalMessage($player, "{FastFoodNear}", "§d : ", 10);
 
             if(Providers::getBankingProvider()->getPlayerMoney($player) >= 50) {
                 $core->uiWindows->sendFastfoodWindow($player);
@@ -52,7 +71,7 @@ class FastFood extends Component
     
     public function giveItem($player, $goodId)
     {
-        $this->getCore()->getChatter()->sendLocalMessage($player, "§8(§dслышен звук торгового автомата§8)", "§d : ", 18);
+        $this->gameChat->sendLocalMessage($player, "§8(§dслышен звук торгового автомата§8)", "§d : ", 18);
         
         $item = Item::get(0, 0, 1); //Item::get(<id>,<meta>,<count>)
 
@@ -71,12 +90,12 @@ class FastFood extends Component
         }
 
         $label = $this->getAllGoods()[$goodId];
-        $this->getCore()->getChatter()->sendLocalMessage($player, "§8(§dв руке товар с надписью ".$label." §8)", "§d : ", 10);
+        $this->gameChat->sendLocalMessage($player, "§8(§dв руке товар с надписью ".$label." §8)", "§d : ", 10);
 
         $player->getInventory()->addItem($item);
     }
     
-    public function sign(Event $event)
+    public function sign(SignChangeEvent $event)
     {
         $p = $event->getPlayer();
         $lns = $event->getLines();

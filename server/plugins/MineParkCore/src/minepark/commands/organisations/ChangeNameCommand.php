@@ -7,13 +7,37 @@ use pocketmine\event\Event;
 
 use minepark\defaults\Permissions;
 use minepark\common\player\MineParkPlayer;
+use minepark\Components;
+use minepark\components\GameChat;
 use minepark\components\organisations\Organisations;
+use minepark\providers\BankingProvider;
+use minepark\providers\MapProvider;
+use minepark\providers\ProfileProvider;
 
 class ChangeNameCommand extends OrganisationsCommand
 {
     public const CURRENT_COMMAND = "changename";
 
     public const POINT_NAME = "Мэрия";
+
+    private BankingProvider $bankingProvider;
+
+    private ProfileProvider $profileProvider;
+
+    private MapProvider $mapProvider;
+
+    private GameChat $gameChat;
+
+    public function __construct()
+    {
+        $this->bankingProvider = Providers::getBankingProvider();
+
+        $this->profileProvider = Providers::getProfileProvider();
+
+        $this->mapProvider = Providers::getMapProvider();
+
+        $this->gameChat = Components::getComponent(GameChat::class);
+    }
 
     public function getCommand() : array
     {
@@ -67,16 +91,16 @@ class ChangeNameCommand extends OrganisationsCommand
         $oldname = $toPlayer->getProfile()->fullName;
         $toPlayer->getProfile()->fullName = $name . ' ' . $surname;
 
-        Providers::getProfileProvider()->saveProfile($toPlayer);
+        $this->profileProvider->saveProfile($toPlayer);
         $toPlayer->sendTip("§aпоздравляем!","§9$oldname §7>>> §e".$toPlayer->getProfile()->fullName, 5);
 
-        Providers::getBankingProvider()->givePlayerMoney($government, 10);
+        $this->bankingProvider->givePlayerMoney($government, 10);
         $government->sendLocalizedMessage("{CommandChangeName}".$toPlayer->getProfile()->fullName);
     }
 
     private function moveThemOut(array $plrs, MineParkPlayer $government)
     {
-        $this->getCore()->getChatter()->sendLocalMessage($government, "{CommandChangeNameManyPlayers1}");
+        $this->gameChat->sendLocalMessage($government, "{CommandChangeNameManyPlayers1}");
         foreach($plrs as $id => $player) {
             if($id > 1) {
                 $player->sendMessage("CommandChangeNameManyPlayers2");
@@ -87,12 +111,12 @@ class ChangeNameCommand extends OrganisationsCommand
 
     private function canGiveDocuments(MineParkPlayer $player) : bool
     {
-        return $player->getProfile()->organisation == Organisations::GOVERNMENT_WORK or $player->getProfile()->organisation == Organisations::LAWYER_WORK;
+        return $player->getProfile()->organisation === Organisations::GOVERNMENT_WORK or $player->getProfile()->organisation === Organisations::LAWYER_WORK;
     }
 
     private function isNearPoint(MineParkPlayer $player) : bool
     {
-        $plist = Providers::getMapProvider()->getNearPoints($player->getPosition(), 32);
+        $plist = $this->mapProvider->getNearPoints($player->getPosition(), 32);
         return in_array(self::POINT_NAME, $plist);
     }
 

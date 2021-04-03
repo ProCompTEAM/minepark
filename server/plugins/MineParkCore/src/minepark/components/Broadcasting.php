@@ -5,7 +5,7 @@ use minepark\Tasks;
 use minepark\defaults\TimeConstants;
 use minepark\components\base\Component;
 
-class Broadcaster extends Component
+class Broadcasting extends Component
 {
     private array $localizationKeys;
 
@@ -13,7 +13,7 @@ class Broadcaster extends Component
 
     private int $localizationKeysCurrentIndex;
 
-    public function __construct()
+    public function initialize()
     {
         $this->localizationKeys = $this->getMessagesLocalizationKeys();
         $this->localizationKeysMaxIndex = count($this->localizationKeys) - 1;

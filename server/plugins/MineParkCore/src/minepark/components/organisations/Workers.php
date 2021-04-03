@@ -8,15 +8,26 @@ use pocketmine\entity\Effect;
 use pocketmine\level\Position;
 use pocketmine\entity\EffectInstance;
 use minepark\common\player\MineParkPlayer;
+use minepark\Components;
 use minepark\components\base\Component;
+use minepark\components\GameChat;
 use minepark\defaults\ComponentAttributes;
 use minepark\defaults\MapConstants;
+use minepark\providers\BankingProvider;
+use minepark\providers\MapProvider;
+use pocketmine\event\block\SignChangeEvent;
 
 class Workers extends Component
 {
     public array $words;
+
+    private MapProvider $mapProvider;
+
+    private BankingProvider $bankingProvider;
+
+    private GameChat $gameChat;
     
-    public function __construct()
+    public function initialize()
     {
         $this->words = [
             "Сельдь *Московская*","Картофель *Беларус*","Боярышник","*Contex Classic*",
@@ -34,6 +45,12 @@ class Workers extends Component
             "Вазоны","Шаверма","Журнал *Мирный Мир*","Маршрутизаторы","Флешкарты","Спец. корм для Травоядных",
             "Комплектующие для ноутбука","*Play Station 5*","Топовый ПК","Микроскоп","Книжная полка","Рачки"
         ];//90
+
+        $this->mapProvider = Providers::getMapProvider();
+
+        $this->bankingProvider = Providers::getBankingProvider();
+
+        $this->gameChat = Components::getComponent(GameChat::class);
     }
 
     public function getAttributes() : array
@@ -43,7 +60,7 @@ class Workers extends Component
         ];
     }
 
-    public function sign(Event $event)
+    public function sign(SignChangeEvent $event)
     {
         $player = $event->getPlayer();
         $lns = $event->getLines();
@@ -55,7 +72,7 @@ class Workers extends Component
         }
     }
     
-    private function handleWorker1(Event $event)
+    private function handleWorker1(SignChangeEvent $event)
     {
         $event->setLine(0, "§eЗдесь можно"); 
         $event->setLine(1, "§eподзаработать");
@@ -63,7 +80,7 @@ class Workers extends Component
         $event->setLine(3, "§b/takebox");
     }
     
-    private function handleWorker2(Event $event)
+    private function handleWorker2(SignChangeEvent $event)
     {
         $event->setLine(0, "§aЗдесь находится"); 
         $event->setLine(1, "§aточка разгрузки");
@@ -73,10 +90,10 @@ class Workers extends Component
 
     public function ifPointIsNearPlayer(Position $pos, int $group)
     {
-        $points = Providers::getMapProvider()->getNearPoints($pos, 6);
+        $points = $this->mapProvider->getNearPoints($pos, 6);
 
         foreach($points as $point) {
-            if(Providers::getMapProvider()->getPointGroup($point) == $group) {
+            if($this->mapProvider->getPointGroup($point) == $group) {
                 return true;
             }
         }
@@ -110,7 +127,7 @@ class Workers extends Component
         
         $player->sendMessage("§7Найдите точку разгрузки и положите ящик!");
         
-        $this->getCore()->getChatter()->sendLocalMessage($player, "§8(§dв руках ящик с надписью | $box |§8)", "§d : ", 12);
+        $this->gameChat->sendLocalMessage($player, "§8(§dв руках ящик с надписью | $box |§8)", "§d : ", 12);
     
         $player->getStatesMap()->bar = "§aВ руках ящик около " . $player->getStatesMap()->loadWeight . " кг";
     }
@@ -136,8 +153,8 @@ class Workers extends Component
     {
         $player->removeAllEffects();
 
-        $this->getCore()->getChatter()->sendLocalMessage($player, "§8(§dЯщик расположился на складе§8)", "§d : ", 12);
-        Providers::getBankingProvider()->givePlayerMoney($player, 20 * $player->getStatesMap()->loadWeight);
+        $this->gameChat->sendLocalMessage($player, "§8(§dЯщик расположился на складе§8)", "§d : ", 12);
+        $this->bankingProvider->givePlayerMoney($player, 20 * $player->getStatesMap()->loadWeight);
 
         $player->getStatesMap()->loadWeight = null; 
         $player->getStatesMap()->bar = null;

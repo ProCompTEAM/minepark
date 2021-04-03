@@ -10,10 +10,31 @@ use minepark\defaults\Defaults;
 use minepark\defaults\Permissions;
 use minepark\commands\base\Command;
 use minepark\common\player\MineParkPlayer;
+use minepark\Components;
+use minepark\components\organisations\Organisations;
+use minepark\components\Phone;
+use minepark\components\Tracking;
+use minepark\providers\ProfileProvider;
 
 class AdminCommand extends Command
 {
     public const CURRENT_COMMAND = "a";
+
+    private Phone $phone;
+
+    private Organisations $organisations;
+
+    private Tracking $tracking;
+
+    private ProfileProvider $profileProvider;
+
+    public function __construct()
+    {
+        $this->phone = Components::getComponent(Phone::class);
+        $this->organisations = Components::getComponent(Organisations::class);
+        $this->tracking = Components::getComponent(Tracking::class);
+        $this->profileProvider = Providers::getProfileProvider();
+    }
 
     public function getCommand() : array
     {
@@ -95,9 +116,9 @@ class AdminCommand extends Command
     {
         $text = $this->getCore()->getApi()->getFromArray($args, 1);
 
-        foreach($this->getCore()->getServer()->getOnlinePlayers() as $p) {
-            $num = $this->getCore()->getPhone()->getNumber($p);
-            $this->getCore()->getPhone()->sendMessage($num, $text, Defaults::CONTEXT_NAME);
+        foreach ($this->getCore()->getServer()->getOnlinePlayers() as $p) {
+            $num = $this->phone->getNumber($p);
+            $this->phone->sendMessage($num, $text, Defaults::CONTEXT_NAME);
         }
     }
 
@@ -115,10 +136,10 @@ class AdminCommand extends Command
         }
 
         $targetPlayer->getProfile()->organisation = $oid; 
-        Providers::getProfileProvider()->saveProfile($targetPlayer);
+        $this->profileProvider->saveProfile($targetPlayer);
 
         $player->sendMessage("AdminCmdSetOrg1");
-        $targetPlayer->sendLocalizedMessage("{GroupYou}". $this->getCore()->getOrganisationsModule()->getName($oid));
+        $targetPlayer->sendLocalizedMessage("{GroupYou}". $this->organisations->getName($oid));
     }
 
     public function commandNear(MineParkPlayer $player)
@@ -231,12 +252,12 @@ class AdminCommand extends Command
             return;
         }
 
-        if ($this->getCore()->getTrackerModule()->isTracked($target)) {
+        if ($this->tracking->isTracked($target)) {
             $player->sendMessage("TrackerAlreadyTracked");
             return;
         }
 
-        $this->getCore()->getTrackerModule()->enableTrack($target, $player);
+        $this->tracking->enableTrack($target, $player);
     }
 
     public function commandUnTrack(MineParkPlayer $player, array $args)
@@ -252,12 +273,12 @@ class AdminCommand extends Command
             return;
         }
 
-        if (!$this->getCore()->getTrackerModule()->isTracked($target)) {
+        if (!$this->tracking->isTracked($target)) {
             $player->sendMessage("TrackerAlreadyUnTracked");
             return;
         }
 
-        $this->getCore()->getTrackerModule()->disableTrack($target, $player);
+        $this->tracking->disableTrack($target, $player);
     }
 
     public function commandSiren()

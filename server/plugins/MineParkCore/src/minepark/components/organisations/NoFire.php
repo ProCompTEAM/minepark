@@ -11,15 +11,26 @@ use minepark\components\base\Component;
 use minepark\common\player\MineParkPlayer;
 use minepark\defaults\ComponentAttributes;
 use minepark\components\organisations\Organisations;
+use minepark\providers\BankingProvider;
+use minepark\providers\MapProvider;
 
 class NoFire extends Component
 {
     public ?Position $oldpoint;
+
+    private MapProvider $mapProvider;
+
+    private BankingProvider $bankingProvider;
     
-    public function __construct()
+    public function initialize()
     {
         Tasks::registerRepeatingAction(TimeConstants::NOFIRE_UPDATE_INTERVAL, [$this, "timeToFire"]);
+
         $this->oldpoint = null;
+
+        $this->mapProvider = Providers::getMapProvider();
+
+        $this->bankingProvider = Providers::getBankingProvider();
     }
 
     public function getAttributes() : array
@@ -51,7 +62,7 @@ class NoFire extends Component
             $this->core->getChatter()->sendLocalMessage($player, "§8(§dв руках огнетушитель§8)", "§d : ", 10);
             
             if($this->clearPlace($player->getPosition(), 5)) {
-                Providers::getBankingProvider()->givePlayerMoney($player, 2000);
+                $this->bankingProvider->givePlayerMoney($player, 2000);
                 $player->sendMessage("§c[§e➪§c] §aОчаг потушен! (+2000)");
             }
         }
@@ -96,12 +107,12 @@ class NoFire extends Component
             return null;
         }
 
-        $points = Providers::getMapProvider()->getNearPoints($noFires[0], 5000);
+        $points = $this->mapProvider->getNearPoints($noFires[0], 5000);
 
         if((count($points) > 0)) {
             $point = $points[mt_rand(0, count($points) - 1)];
 
-            if(Providers::getMapProvider()->getPointGroup($point) < 3) {
+            if($this->mapProvider->getPointGroup($point) < 3) {
                 return $this->makeRandomFire($point);
             }
         }
@@ -115,7 +126,7 @@ class NoFire extends Component
             $offsetX = mt_rand(0, 5);
             $offsetZ = mt_rand(0, 5);
 
-            $cpos = Providers::getMapProvider()->getPointPosition($point);
+            $cpos = $this->mapProvider->getPointPosition($point);
 
             $pos = new Position($cpos->getX() + $offsetX, $cpos->getY(), $cpos->getZ() + $offsetZ, $cpos->getLevel());
             
@@ -149,7 +160,7 @@ class NoFire extends Component
             $this->clearPlace($this->oldpoint, 20);
         }
 
-        $this->oldpoint = Providers::getMapProvider()->getPointPosition($fire_created);
+        $this->oldpoint = $this->mapProvider->getPointPosition($fire_created);
     }
 
     private function tryToClearPlace(Position $pos, float $x, float $y, float $z) : bool

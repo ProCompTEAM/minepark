@@ -15,11 +15,11 @@ use pocketmine\math\Vector3;
 use pocketmine\network\mcpe\protocol\InteractPacket;
 use pocketmine\network\mcpe\protocol\PlayerInputPacket;
 
-class VehicleManager extends Component
+class Vehicles extends Component
 {
     private array $vehicles;
 
-    public function __construct()
+    public function initialize()
     {
         $this->loadVehicles();
     }

@@ -25,7 +25,7 @@ class TrafficLights extends Component
 
     private bool $isVariationSwitched = false;
 
-    public function __construct()
+    public function initialize()
     {
         Tasks::registerRepeatingAction(TimeConstants::TRAFFIC_LIGHTS_UPDATE_INTERVAL, [$this, "updateLights"]);
 

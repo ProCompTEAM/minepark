@@ -6,6 +6,7 @@ use pocketmine\event\Event;
 use minepark\defaults\Permissions;
 
 use minepark\common\player\MineParkPlayer;
+use minepark\Components;
 use minepark\components\organisations\Organisations;
 
 class NoFireCommand extends OrganisationsCommand
@@ -14,6 +15,13 @@ class NoFireCommand extends OrganisationsCommand
 
     public const CURRENT_COMMAND_ALIAS1 = "clean";
     public const CURRENT_COMMAND_ALIAS2 = "clear";
+
+    private Organisations $organisations;
+
+    public function __construct()
+    {
+        $this->organisations = Components::getComponent(Organisations::class);
+    }
 
     public function getCommand() : array
     {
@@ -33,16 +41,14 @@ class NoFireCommand extends OrganisationsCommand
 
     public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
-        $organModule = $this->getCore()->getOrganisationsModule();
-
         $oid = $player->getProfile()->organisation;
 
-        if($oid != Organisations::EMERGENCY_WORK) {
+        if ($player->getProfile()->organisation !== Organisations::EMERGENCY_WORK) {
             $player->sendMessage("§cВы не являетесь работником службы спасения!");
             return;
         }
 
-        $organModule->getNoFire()->clean($player);
+        $this->organisations->getNoFire()->clean($player);
     }
 }
 ?>

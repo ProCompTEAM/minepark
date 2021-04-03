@@ -8,12 +8,26 @@ use minepark\defaults\Sounds;
 use minepark\defaults\Permissions;
 use minepark\commands\base\Command;
 use minepark\common\player\MineParkPlayer;
+use minepark\Components;
+use minepark\components\GameChat;
+use minepark\providers\BankingProvider;
 
 class PayCommand extends Command
 {
     public const CURRENT_COMMAND = "pay";
 
     public const DISTANCE = 6;
+
+    private BankingProvider $bankingProvider;
+
+    private GameChat $gameChat;
+
+    public function __construct()
+    {
+        $this->bankingProvider = Providers::getBankingProvider();
+
+        $this->gameChat = Components::getComponent(GameChat::class);
+    }
 
     public function getCommand() : array
     {
@@ -45,21 +59,21 @@ class PayCommand extends Command
             return;
         }
 
-        $this->getCore()->getChatter()->sendLocalMessage($player, "{CommandPayTake}", "§d : ", self::DISTANCE);
+        $this->gameChat->sendLocalMessage($player, "{CommandPayTake}", "§d : ", self::DISTANCE);
         foreach($players as $p) {
             if($p === $player) {
                 continue;
             } else {
-                if(Providers::getBankingProvider()->reduceCash($player, $args[0])) {
-                    $this->getCore()->getChatter()->sendLocalMessage($player, "{CommandPayPay}", "§d", self::DISTANCE);
-                    Providers::getBankingProvider()->giveCash($p, $args[0]);
+                if($this->bankingProvider->reduceCash($player, $args[0])) {
+                    $this->gameChat->sendLocalMessage($player, "{CommandPayPay}", "§d", self::DISTANCE);
+                    $this->bankingProvider->giveCash($p, $args[0]);
                 } else {
                     $player->sendMessage("CommandPayNoMoney");
                 }
             }
         }
         
-        $this->getCore()->getChatter()->sendLocalMessage($player, "{CommandPayPut}", "§d", self::DISTANCE);
+        $this->gameChat->sendLocalMessage($player, "{CommandPayPut}", "§d", self::DISTANCE);
         
         $event->setCancelled();
     }

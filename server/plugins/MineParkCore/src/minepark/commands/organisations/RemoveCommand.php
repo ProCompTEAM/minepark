@@ -1,17 +1,25 @@
 <?php
 namespace minepark\commands\organisations;
 
-use minepark\Api;
 use minepark\commands\base\OrganisationsCommand;
 use pocketmine\event\Event;
 
 use minepark\defaults\Permissions;
 use minepark\common\player\MineParkPlayer;
+use minepark\Providers;
+use minepark\providers\ProfileProvider;
 
 class RemoveCommand extends OrganisationsCommand
 {
     public const CURRENT_COMMAND = "remove";
     public const CURRENT_COMMAND_ALIAS = "reject";
+
+    private ProfileProvider $profileProvider;
+
+    public function __construct()
+    {
+        $this->playerSettings = Providers::getProfileProvider();
+    }
 
     public function getCommand() : array
     {
@@ -35,36 +43,29 @@ class RemoveCommand extends OrganisationsCommand
             return;
         }
 
-        $plrs = $this->getPlayersNear($player);
+        $players = $this->getPlayersNear($player);
 
-        if (self::argumentsNo($plrs)) {
-            $player->sendMessage("CommandRemoveNoPlayers");
-            return;
-        }
-
-        if (self::argumentsMin(2, $plrs)) {
+        if (isset($players[0])) {
+            $this->tryRejectGuy($players[0], $player);
+        } else if (isset($players[1])) {
             $player->sendMessage("CommandRemoveManyPlayers");
+        } else {
+            $player->sendMessage("CommandRemoveNoPlayers");
         }
-
-        $this->tryRejectGuy($plrs[0], $player);
     }
 
     private function tryRejectGuy(MineParkPlayer $player, MineParkPlayer $boss)
     {
-        if ($player->getProfile()->organisation != $boss->getProfile()->organisation) {
+        if ($player->getProfile()->organisation !== $boss->getProfile()->organisation) {
             $boss->sendMessage("CommandRemoveNoOrg");
+            return;
         }
 
         $player->getProfile()->organisation = 0;
-        $this->core->getPlayerSettings()->updatePlayerSaves($player);
+        $this->profileProvider->saveProfile($player);
 
         $boss->sendLocalizedMessage("{CommandRemoveDo1}" . $player->getProfile()->fullName);
         $player->sendLocalizedMessage("{CommandRemoveDo2}". $boss->getProfile()->fullName ."!");
-    }
-
-    private function isBoss(MineParkPlayer $player) : bool
-    {
-        return $this->getCore()->getApi()->existsAttr($player, Api::ATTRIBUTE_BOSS);
     }
 
     private function getPlayersNear(MineParkPlayer $player) : array
@@ -73,7 +74,7 @@ class RemoveCommand extends OrganisationsCommand
 
         $players = array();
         foreach ($allplayers as $currp) {
-            if ($currp->getName() != $player->getName()) {
+            if ($currp->getName() !== $player->getName()) {
                 $players[] = $currp;
             }
         }

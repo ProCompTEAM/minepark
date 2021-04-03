@@ -1,7 +1,6 @@
 <?php
 namespace minepark\components;
 
-use minepark\Core;
 use minepark\Events;
 use pocketmine\utils\Config;
 use pocketmine\level\Position;
@@ -22,7 +21,7 @@ class WorldProtector extends Component
 
     private string $level;
 
-    public function __construct()
+    public function initialize()
     {
         Events::registerEvent(EventList::BLOCK_BREAK_EVENT, [$this, "applyBlockUpdateSettings"]);
         Events::registerEvent(EventList::BLOCK_PLACE_EVENT, [$this, "applyBlockUpdateSettings"]);

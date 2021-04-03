@@ -7,13 +7,32 @@ use pocketmine\event\Event;
 
 use minepark\defaults\Permissions;
 use minepark\common\player\MineParkPlayer;
+use minepark\Components;
+use minepark\components\GameChat;
 use minepark\components\organisations\Organisations;
+use minepark\providers\BankingProvider;
+use minepark\providers\MapProvider;
 
 class HealCommand extends OrganisationsCommand
 {
     public const CURRENT_COMMAND = "heal";
 
     public const POINT_NAME = "Больница";
+
+    private MapProvider $mapProvider;
+
+    private BankingProvider $bankingProvider;
+
+    private GameChat $gameChat;
+
+    public function __construct()
+    {
+        $this->mapProvider = Providers::getMapProvider();
+
+        $this->bankingProvider = Providers::getBankingProvider();
+
+        $this->gameChat = Components::getComponent(GameChat::class);
+    }
 
     public function getCommand() : array
     {
@@ -54,19 +73,19 @@ class HealCommand extends OrganisationsCommand
 
     private function isHealer(MineParkPlayer $plr)
     {
-        return $plr->getProfile()->organisation == Organisations::DOCTOR_WORK;
+        return $plr->getProfile()->organisation === Organisations::DOCTOR_WORK;
     }
 
     private function isNearPoint(MineParkPlayer $player) : bool
     {
-        $plist = Providers::getMapProvider()->getNearPoints($player->getPosition(), 32);
+        $plist = $this->mapProvider->getNearPoints($player->getPosition(), 32);
 
         return in_array(self::POINT_NAME, $plist);
     }
 
     private function moveThemOut(array $plrs, MineParkPlayer $healer)
     {
-        $this->getCore()->getChatter()->sendLocalMessage($healer, "{CommandHealManyPlayers1}");
+        $this->gameChat->sendLocalMessage($healer, "{CommandHealManyPlayers1}");
 
         foreach($plrs as $id => $p) {
             if($id > 1) {
@@ -97,8 +116,8 @@ class HealCommand extends OrganisationsCommand
         $playerToHeal->removeAllEffects();
         $playerToHeal->setHealth($playerToHeal->getMaxHealth());
 
-        $this->getCore()->getChatter()->sendLocalMessage($healer, "{CommandHealDo}");
-        Providers::getBankingProvider()->givePlayerMoney($healer, 500);
+        $this->g->sendLocalMessage($healer, "{CommandHealDo}");
+        $this->bankingProvider->givePlayerMoney($healer, 500);
     }
 }
 ?>
