@@ -113,14 +113,6 @@ class Api
         return $list;
     }
 
-    public function removeDefaultServerCommand($commandName)
-    {
-        $commandMap = $this->getCore()->getServer()->getCommandMap();
-        $cmd = $commandMap->getCommand($commandName);
-        $cmd->unregister($commandMap);
-        $commandMap->unregister($cmd);
-    }
-
     private function getCore() : Core
     {
         return Core::getActive();

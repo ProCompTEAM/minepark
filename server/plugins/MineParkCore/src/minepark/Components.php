@@ -19,6 +19,7 @@ use minepark\components\settings\WorldSettings;
 use minepark\components\StatusBar;
 use minepark\components\Tracking;
 use minepark\components\Vehicles;
+use minepark\components\TrafficLights;
 use minepark\components\WorldProtector;
 
 class Components
@@ -45,6 +46,7 @@ class Components
             new StatusBar,
             new Tracking,
             new Vehicles,
+            new TrafficLights,
             new WorldProtector
         ];
     }
