@@ -1,7 +1,6 @@
 <?php
 namespace minepark\commands\organisations;
 
-use minepark\Api;
 use minepark\commands\base\OrganisationsCommand;
 use pocketmine\event\Event;
 use minepark\defaults\Permissions;
@@ -64,7 +63,7 @@ class ArestCommand extends OrganisationsCommand
 
     private function getPlayersNear(MineParkPlayer $player) : array
     {
-        $allplayers = $this->getCore()->getApi()->getRegionPlayers($player, 5);
+        $allplayers = $this->getCore()->getRegionPlayers($player, 5);
 
         $players = array();
 
@@ -79,13 +78,8 @@ class ArestCommand extends OrganisationsCommand
 
     private function arrestPlayer(MineParkPlayer $playerToArrest, MineParkPlayer $arrester)
     {
-        if(!$this->getCore()->getApi()->existsAttr($playerToArrest, Api::ATTRIBUTE_WANTED)) {
-            $arrester->sendLocalizedMessage("{CommandArestDoStun1}".$playerToArrest->getProfile()->fullName);
-            $arrester->sendMessage("CommandArestDoStun2");
-            return;
-        }
-
-        $this->getCore()->getApi()->arest($playerToArrest);
+        $playerToArrest->arest();
+        $playerToArrest->setImmobile(false);
 
         $playerToArrest->sendLocalizedMessage("{CommandArestPrisoner}".$arrester->getProfile()->fullName);
         $arrester->sendLocalizedMessage("{CommandArestPolice}".$playerToArrest->getProfile()->fullName);

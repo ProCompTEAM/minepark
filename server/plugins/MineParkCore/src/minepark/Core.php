@@ -1,16 +1,17 @@
 <?php
 namespace minepark;
 
-use minepark\Api;
+use minepark\Events;
 use minepark\Providers;
 use minepark\common\MDC;
-use minepark\Events;
 use minepark\defaults\Files;
 use pocketmine\event\Listener;
+use pocketmine\level\Position;
 use jojoe77777\FormAPI\FormAPI;
 use minepark\defaults\Defaults;
 use pocketmine\command\Command;
 use pocketmine\plugin\PluginBase;
+use minepark\defaults\Permissions;
 use pocketmine\command\CommandSender;
 use minepark\external\service\Service;
 use pocketmine\command\ConsoleCommandSender;
@@ -21,7 +22,6 @@ class Core extends PluginBase implements Listener
 
     private Events $events;
     private MDC $mdc;
-    private Api $sapi;
     private Commands $commands;
     private Service $service;
 
@@ -43,7 +43,9 @@ class Core extends PluginBase implements Listener
         $this->initializeTasks();
         $this->initializeProviders();
         $this->initializeMDC();
-        $this->initializeCommonModules();
+        $this->initializeComponents();
+        $this->initializeCommands();
+        $this->initializeServiceModule();
     }
 
     public function onDisable()
@@ -74,12 +76,18 @@ class Core extends PluginBase implements Listener
         $this->getMDC()->initializeAll();
     }
 
-    public function initializeCommonModules()
+    public function initializeComponents()
     {
         Components::initializeAll();
+    }
 
-        $this->sapi = new Api;
+    public function initializeCommands()
+    {
         $this->scmd = new Commands;
+    }
+
+    public function initializeServiceModule()
+    {
         $this->service = new Service;
     }
 
@@ -96,11 +104,6 @@ class Core extends PluginBase implements Listener
     public function getEvents() : Events
     {
         return $this->events;
-    }
-    
-    public function getApi() : Api
-    {
-        return $this->sapi;
     }
 
     public function getService() : Service
@@ -130,7 +133,35 @@ class Core extends PluginBase implements Listener
 
     public function sendToMessagesLog(string $prefix, string $message)
     {
+        //TODO: replace to MDC Audit
         file_put_contents(Files::MESSAGES_LOG_FILE, (PHP_EOL . "(" . $prefix . ") - " . $message), FILE_APPEND);
+    }
+
+    public function getAdministration(bool $namesOnly = false) : array
+    {
+        $list = [];
+
+        foreach($this->getServer()->getOnlinePlayers() as $player) {
+            if ($player->hasPermission(Permissions::ADMINISTRATOR) or $player->isOp()) {
+                $namesOnly ? array_push($list, $player->getName()) : array_push($list, $player);
+            }
+        }
+
+        return $list;
+    }
+
+    public function getRegionPlayers(Position $position, int $distance) : array
+    {
+        //TODO: Replace to eye-vector logic
+        $players = array();
+
+        foreach($this->getServer()->getOnlinePlayers() as $onlinePlayer) {
+            if($onlinePlayer->distance($position) < $distance) {
+                array_push($players, $onlinePlayer);
+            }
+        }
+
+        return $players;
     }
 
     private function initializeDefaultDirectories()

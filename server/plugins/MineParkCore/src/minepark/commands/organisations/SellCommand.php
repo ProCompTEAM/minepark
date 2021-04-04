@@ -76,7 +76,7 @@ class SellCommand extends OrganisationsCommand
 
     private function getBuyersNear(MineParkPlayer $player)
     {
-        $players = $this->getCore()->getApi()->getRegionPlayers($player, 7);
+        $players = $this->getCore()->getRegionPlayers($player, 7);
         $buyers = [];
 
         foreach($players as $currentPlayer) {

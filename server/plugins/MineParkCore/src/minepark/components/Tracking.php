@@ -107,7 +107,7 @@ class Tracking extends Component
 
     private function broadcastAdmins(array $messages=[], MineParkPlayer $sender = null, $rad = 7)
     {
-        $admins = $this->getCore()->getApi()->getAdministration();
+        $admins = $this->getCore()->getAdministration();
 
         if(is_null($sender)) {
             foreach($admins as $admin) {

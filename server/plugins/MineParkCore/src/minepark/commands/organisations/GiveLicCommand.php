@@ -104,7 +104,7 @@ class GiveLicCommand extends OrganisationsCommand
 
     private function getPlayersNear(MineParkPlayer $player) : array
     {
-        $allplayers = $this->getCore()->getApi()->getRegionPlayers($player, 5);
+        $allplayers = $this->getCore()->getRegionPlayers($player, 5);
 
         $players = array();
         foreach ($allplayers as $currp) {

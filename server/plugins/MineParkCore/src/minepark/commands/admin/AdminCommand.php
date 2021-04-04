@@ -3,18 +3,19 @@ namespace minepark\commands\admin;
 
 use minepark\Providers;
 
+use minepark\Components;
 use pocketmine\event\Event;
-use minepark\defaults\Sounds;
 
+use minepark\defaults\Sounds;
+use minepark\components\Phone;
 use minepark\defaults\Defaults;
+use minepark\components\Tracking;
+use minepark\utils\ArraysUtility;
 use minepark\defaults\Permissions;
 use minepark\commands\base\Command;
-use minepark\common\player\MineParkPlayer;
-use minepark\Components;
-use minepark\components\organisations\Organisations;
-use minepark\components\Phone;
-use minepark\components\Tracking;
 use minepark\providers\ProfileProvider;
+use minepark\common\player\MineParkPlayer;
+use minepark\components\organisations\Organisations;
 
 class AdminCommand extends Command
 {
@@ -114,7 +115,7 @@ class AdminCommand extends Command
 
     public function commandMessage(array $args)
     {
-        $text = $this->getCore()->getApi()->getFromArray($args, 1);
+        $text = ArraysUtility::getStringFromArray($args, 1);
 
         foreach ($this->getServer()->getOnlinePlayers() as $p) {
             $num = $this->phone->getNumber($p);
@@ -146,7 +147,7 @@ class AdminCommand extends Command
     {
         $rad = 7;
         
-        $list = $this->getCore()->getApi()->getRegionPlayers($player, $rad);
+        $list = $this->getCore()->getRegionPlayers($player, $rad);
 
         $f = "AdminCmdPlayerNear";
         foreach($list as $p) {
@@ -167,7 +168,7 @@ class AdminCommand extends Command
             return;
         }
 
-        $this->getCore()->getApi()->arest($targetPlayer);
+        $targetPlayer->arest();
         
         $this->getServer()->broadcastMessage("{AdminCmdArestPart1}" . $player->getProfile()->fullName . "{AdminCmdArestPart2}" . $targetPlayer->getProfile()->fullName);
     }
@@ -194,12 +195,13 @@ class AdminCommand extends Command
         }
 
         $targetPlayer = $this->getServer()->getPlayer($args[1]);
+        $targetPlayer = MineParkPlayer::cast($targetPlayer);
 
         if($targetPlayer === null or !isset($args[2])) {
             return;
         }
 
-        $this->getCore()->getApi()->changeAttr($targetPlayer, strtoupper($args[2]));
+        $targetPlayer->changeAttribute(strtoupper($args[2]));
 
         $player->sendMessage("AdminCmdSetTag");
     }
@@ -211,12 +213,13 @@ class AdminCommand extends Command
         }
 
         $targetPlayer = $this->getServer()->getPlayer($args[1]);
+        $targetPlayer = MineParkPlayer::cast($targetPlayer);
         
         if($targetPlayer === null or !isset($args[2])) {
             return;
         }
 
-        $this->getCore()->getApi()->changeAttr($targetPlayer, strtoupper($args[2]), false);
+        $targetPlayer->changeAttribute(strtoupper($args[2]), false);
 
         $player->sendMessage("AdminCmdRemoveTag");
     }

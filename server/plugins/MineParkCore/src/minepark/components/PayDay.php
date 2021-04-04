@@ -1,15 +1,14 @@
 <?php
 namespace minepark\components;
 
-use minepark\Api;
 use minepark\Tasks;
 use minepark\Providers;
-use minepark\utils\CallbackTask;
 use minepark\defaults\TimeConstants;
 use minepark\components\base\Component;
 use minepark\common\player\MineParkPlayer;
 use minepark\defaults\ComponentAttributes;
 use minepark\components\organisations\Organisations;
+use minepark\defaults\PlayerAttributes;
 use minepark\providers\BankingProvider;
 
 class PayDay extends Component
@@ -46,7 +45,7 @@ class PayDay extends Component
                 $special += 100;
             }
 
-            if($this->getCore()->getApi()->existsAttr($player, Api::ATTRIBUTE_BOSS)) {
+            if($player->existsAttribute(PlayerAttributes::BOSS)) {
                 $salary *= 2;
             }
 

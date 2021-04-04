@@ -52,7 +52,7 @@ class PayCommand extends Command
             return;
         }
 
-        $players = $this->getCore()->getApi()->getRegionPlayers($player, self::DISTANCE);
+        $players = $this->getCore()->getRegionPlayers($player, self::DISTANCE);
 
         if(count($players) > 2) {
             $player->sendMessage("CommandPayCountPlayer");
