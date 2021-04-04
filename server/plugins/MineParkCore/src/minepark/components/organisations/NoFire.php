@@ -91,7 +91,7 @@ class NoFire extends Component
     {
         $list = [];
 
-        foreach ($this->getCore()->getServer()->getOnlinePlayers() as $player) {
+        foreach ($this->getServer()->getOnlinePlayers() as $player) {
             $player = MineParkPlayer::cast($player);
             if ($player->getProfile()->organisation == Organisations::EMERGENCY_WORK) {
                 $list[] = $player;
@@ -150,7 +150,7 @@ class NoFire extends Component
             $p->sendMessage("§c[§e➪§c] §6!!! §eНЕМЕДЛЕННО ВЫЕЗЖАЙТЕ: §7/gps §b $fire_created");
         }
             
-        foreach($this->getCore()->getServer()->getOnlinePlayers() as $p) {
+        foreach($this->getServer()->getOnlinePlayers() as $p) {
             if($p->isOp()) {
                 $p->sendMessage("§7[§6!§7] Fire : На территории $fire_created начался пожар!");
             }

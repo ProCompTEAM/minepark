@@ -77,7 +77,7 @@ class Phone extends Component
         $name = $this->phonesDataProvider->getUserNameByNumber($number);
 
         if(strlen($name) > 0) {
-            return $nameOnly ? $name : $this->getCore()->getServer()->getPlayer($name);
+            return $nameOnly ? $name : $this->getServer()->getPlayer($name);
         }
         
         return null;
@@ -162,7 +162,7 @@ class Phone extends Component
     
     public function takeFee()
     {
-        foreach($this->getCore()->getServer()->getOnlinePlayers() as $player) {
+        foreach($this->getServer()->getOnlinePlayers() as $player) {
             $player = MineParkPlayer::cast($player);
             if($player->getStatesMap()->phoneRcv != null) {
                 if($this->hasStream($player->getStatesMap()->phoneRcv->getPosition())) {
@@ -229,7 +229,7 @@ class Phone extends Component
     {
         $streams = $this->mapProvider->getNearPoints($player->getPosition(), 15);
 
-        foreach($this->getCore()->getServer()->getOnlinePlayers() as $onlinePlayer) {
+        foreach($this->getServer()->getOnlinePlayers() as $onlinePlayer) {
             $onlinePlayer = MineParkPlayer::cast($onlinePlayer);
             if($onlinePlayer->getProfile()->organisation == $organisationId) {
                 if(count($streams) == 0) {

@@ -1,6 +1,7 @@
 <?php
 namespace minepark;
 
+use Exception;
 use minepark\components\Auth;
 use minepark\components\base\Component;
 use minepark\components\BossBar;
@@ -19,9 +20,7 @@ use minepark\components\settings\WorldSettings;
 use minepark\components\StatusBar;
 use minepark\components\Tracking;
 use minepark\components\Vehicles;
-use minepark\components\Tracker;
 use minepark\components\TrafficLights;
-use minepark\components\VehicleManager;
 use minepark\components\WorldProtector;
 use minepark\defaults\ComponentAttributes;
 
@@ -61,8 +60,12 @@ class Components
     public static function getComponent(string $componentName) : ?Component
     {
         foreach (self::$components as $component) {
-            if ($componentName === $component::class) {
-                return in_array(ComponentAttributes::SHARED, $component->getAttributes()) ? $component : null;
+            if($componentName === $component::class) {
+                if(!$component->hasAttribute(ComponentAttributes::SHARED)) {
+                    throw new Exception("Component is not shareable");
+                }
+
+                return $component;
             }
         }
 

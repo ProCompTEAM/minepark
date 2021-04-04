@@ -56,7 +56,7 @@ class ResetPasswordCommand extends Command
     {
         $this->usersDataProvider->resetUserPassword($targetPlayerName);
         $sender->sendMessage("Сброс пароля игрока $targetPlayerName прошёл успешно.");
-        $targetPlayer = $this->getCore()->getServer()->getPlayer($targetPlayerName);
+        $targetPlayer = $this->getServer()->getPlayer($targetPlayerName);
 
         if (isset($targetPlayer)) { 
             $targetPlayer->kick("§cАдминистратор сбросил вам пароль.");

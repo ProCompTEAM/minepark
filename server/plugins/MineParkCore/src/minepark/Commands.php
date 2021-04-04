@@ -84,23 +84,6 @@ class Commands
         return $this->organisationsCommands;
     }
 
-    private function initializeOrganisationsCommands()
-    {
-        $this->organisationsCommands = [
-            new AddCommand,
-            new ArestCommand,
-            new ChangeNameCommand,
-            new GiveLicCommand,
-            new HealCommand,
-            new InfoCommand,
-            new NoFireCommand,
-            new RadioCommand,
-            new RemoveCommand,
-            new SellCommand,
-            new ShowCommand
-        ];
-    }
-
     private function initializeCommands()
     {
         $this->commands = [
@@ -141,6 +124,23 @@ class Commands
             new DayCommand,
             new NightCommand,
             new TransportCommand
+        ];
+    }
+
+    private function initializeOrganisationsCommands()
+    {
+        $this->organisationsCommands = [
+            new AddCommand,
+            new ArestCommand,
+            new ChangeNameCommand,
+            new GiveLicCommand,
+            new HealCommand,
+            new InfoCommand,
+            new NoFireCommand,
+            new RadioCommand,
+            new RemoveCommand,
+            new SellCommand,
+            new ShowCommand
         ];
     }
 

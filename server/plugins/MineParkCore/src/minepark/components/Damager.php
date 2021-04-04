@@ -127,7 +127,7 @@ class Damager extends Component
             $message = "§7[§6!§7] Kill : §c"." игрок  " . $victim->getName()." умер..";
         }
 
-        foreach($this->getCore()->getServer()->getOnlinePlayers() as $onlinePlayer) {
+        foreach($this->getServer()->getOnlinePlayers() as $onlinePlayer) {
             $onlinePlayer = MineParkPlayer::cast($onlinePlayer);
 
             if ($onlinePlayer->isAdministrator()) {

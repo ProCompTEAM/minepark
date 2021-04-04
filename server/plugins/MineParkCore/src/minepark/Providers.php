@@ -33,8 +33,14 @@ class Providers
 
     public static function initializeAll()
     {
-        self::initializeDataProviders();
+        //Data Providers
+        self::$bankingDataProvider = new BankingDataProvider;
+        self::$mapDataProvider = new MapDataProvider;
+        self::$phonesDataProvider = new PhonesDataProvider;
+        self::$settingsDataProvider = new SettingsDataProvider;
+        self::$usersDataProvider = new UsersDataProvider;
 
+        //Generic Providers
         self::$bankingProvider = new BankingProvider;
         self::$localizationProvider = new LocalizationProvider;
         self::$mapProvider = new MapProvider;
@@ -84,15 +90,6 @@ class Providers
     public static function getUsersDataProvider()
     {
         return self::$usersDataProvider;
-    }
-
-    private static function initializeDataProviders()
-    {
-        self::$bankingDataProvider = new BankingDataProvider;
-        self::$mapDataProvider = new MapDataProvider;
-        self::$phonesDataProvider = new PhonesDataProvider;
-        self::$settingsDataProvider = new SettingsDataProvider;
-        self::$usersDataProvider = new UsersDataProvider;
     }
 }
 ?>

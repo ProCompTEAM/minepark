@@ -15,7 +15,7 @@ class GPS extends Component
     public function initialize()
     {
         Tasks::registerRepeatingAction(TimeConstants::NAVIGATION_ROUTES_UPDATE_INTERVAL, [$this, "updateRoutes"]);
-        $this->level = $this->getCore()->getServer()->getDefaultLevel();
+        $this->level = $this->getServer()->getDefaultLevel();
     }
 
     public function getAttributes() : array
@@ -27,7 +27,7 @@ class GPS extends Component
 
     public function updateRoutes()
     {
-        foreach($this->getCore()->getServer()->getOnlinePlayers() as $player) {
+        foreach($this->getServer()->getOnlinePlayers() as $player) {
             if($player->getStatesMap()->gps != null) {
                 $x = round($player->getStatesMap()->gps->getX() - $player->getX());
                 $y = round($player->getStatesMap()->gps->getZ() - $player->getZ());
@@ -44,7 +44,6 @@ class GPS extends Component
                 }
                 
                 //head direction
-                
                 $yaw = $player->getYaw();
                 
                 if(($yaw <= 45 and $yaw >= 0) or ($yaw >= 315 and $yaw <= 359)) {
@@ -110,7 +109,7 @@ class GPS extends Component
     
     public function getL($fromX, $fromY, $toX, $toY)
     {
-        return round( sqrt( pow($toX - $fromX, 2) + pow($toY - $fromY, 2) ) );
+        return round(sqrt(pow($toX - $fromX, 2) + pow($toY - $fromY, 2)));
     }
 }
 ?>

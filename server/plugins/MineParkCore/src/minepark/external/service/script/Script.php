@@ -2,6 +2,7 @@
 namespace minepark\external\service\script;
 
 use minepark\Core;
+use pocketmine\Server;
 use minepark\database\model\Model;
 
 abstract class Script
@@ -15,10 +16,15 @@ abstract class Script
         return Core::getActive();
     }
 
+    protected function getServer()
+    {
+        return Server::getInstance();
+    }
+
     protected function info(string $message) 
     {
         $prefix = "[script: " . $this->getName() . "]";
-        $this->getCore()->getServer()->getLogger()->info("$prefix $message");
+        $this->getServer()->getLogger()->info("$prefix $message");
     }
 }
 ?>

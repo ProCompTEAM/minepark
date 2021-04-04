@@ -20,7 +20,7 @@ class StatusBar extends Component
 
     public function updateAll()
     {
-        foreach($this->getCore()->getServer()->getOnlinePlayers() as $player) {
+        foreach($this->getServer()->getOnlinePlayers() as $player) {
             if($player->getStatesMap()->bar != null) {
                 $player->sendTip($player->getStatesMap()->bar);
             }

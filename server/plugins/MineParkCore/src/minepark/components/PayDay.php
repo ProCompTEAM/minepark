@@ -32,7 +32,7 @@ class PayDay extends Component
     
     public function calculateAndShow()
     {
-        foreach($this->getCore()->getServer()->getOnlinePlayers() as $player) {
+        foreach($this->getServer()->getOnlinePlayers() as $player) {
             $player = MineParkPlayer::cast($player);
 
             $salary = $this->getSalaryValue($player); 
