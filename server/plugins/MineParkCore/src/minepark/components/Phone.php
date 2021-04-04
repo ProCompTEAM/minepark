@@ -14,8 +14,11 @@ use minepark\Components;
 use minepark\defaults\ComponentAttributes;
 use minepark\providers\data\PhonesDataProvider;
 use minepark\components\organisations\Organisations;
+use minepark\defaults\EventList;
+use minepark\Events;
 use minepark\providers\BankingProvider;
 use minepark\providers\MapProvider;
+use pocketmine\event\player\PlayerQuitEvent;
 
 class Phone extends Component
 {
@@ -34,6 +37,8 @@ class Phone extends Component
 
     public function initialize()
     {
+        Events::registerEvent(EventList::PLAYER_QUIT_EVENT, [$this, "processPlayerQuitEvent"]);
+
         Tasks::registerRepeatingAction(TimeConstants::PHONE_TAKE_FEE_INTERVAL, [$this, "takeFee"]);
 
         $this->phonesDataProvider = Providers::getPhonesDataProvider();
@@ -51,6 +56,15 @@ class Phone extends Component
             ComponentAttributes::STANDALONE,
             ComponentAttributes::SHARED
         ];
+    }
+
+    public function processPlayerQuitEvent(PlayerQuitEvent $event)
+    {
+        $player = MineParkPlayer::cast($event->getPlayer());
+
+        if (isset($player->getStatesMap()->phoneRcv)) {
+            $this->breakCall($player);
+        }
     }
     
     public function getNumber(MineParkPlayer $player) : int

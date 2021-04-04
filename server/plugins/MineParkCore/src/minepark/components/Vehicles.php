@@ -1,7 +1,11 @@
 <?php
 namespace minepark\components;
 
+use minepark\common\player\MineParkPlayer;
 use minepark\components\base\Component;
+use minepark\defaults\ComponentAttributes;
+use minepark\defaults\EventList;
+use minepark\Events;
 use minepark\models\vehicles\base\BaseCar;
 use minepark\models\vehicles\BaseVehicle;
 use minepark\models\vehicles\Car1;
@@ -9,6 +13,7 @@ use minepark\models\vehicles\Car2;
 use minepark\models\vehicles\Car3;
 use minepark\models\vehicles\Car4;
 use minepark\models\vehicles\TaxiCar;
+use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\event\server\DataPacketReceiveEvent;
 use pocketmine\level\Level;
 use pocketmine\math\Vector3;
@@ -21,13 +26,30 @@ class Vehicles extends Component
 
     public function initialize()
     {
+        Events::registerEvent(EventList::DATA_PACKET_RECEIVE_EVENT, [$this, "handleDataPacketReceive"]);
+        Events::registerEvent(EventList::PLAYER_QUIT_EVENT, [$this, "processPlayerQuitEvent"]);
+
         $this->loadVehicles();
     }
 
     public function getAttributes(): array
     {
         return [
+            ComponentAttributes::SHARED
         ];
+    }
+
+    public function processPlayerQuitEvent(PlayerQuitEvent $event)
+    {
+        $player = MineParkPlayer::cast($event->getPlayer());
+
+        if (isset($player->getStatesMap()->ridingVehicle)) {
+            $player->getStatesMap()->ridingVehicle->tryToRemovePlayer($player);
+        }
+
+        if (isset($player->getStatesMap()->rentedVehicle)) {
+            $player->getStatesMap()->rentedVehicle->removeRentedStatus();
+        }
     }
 
     public function createVehicle(string $vehicleName, Level $level, Vector3 $pos, float $yaw) : bool

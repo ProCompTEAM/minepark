@@ -4,6 +4,9 @@ namespace minepark\components;
 use minepark\common\player\MineParkPlayer;
 use minepark\components\base\Component;
 use minepark\defaults\ComponentAttributes;
+use minepark\defaults\EventList;
+use minepark\Events;
+use pocketmine\event\player\PlayerQuitEvent;
 
 class Tracking extends Component
 {
@@ -13,6 +16,8 @@ class Tracking extends Component
 
     public function initialize()
     {
+        Events::registerEvent(EventList::PLAYER_QUIT_EVENT, [$this, "processPlayerQuitEvent"]);
+
         $this->tracked = [];
     }
 
@@ -21,6 +26,13 @@ class Tracking extends Component
         return [
             ComponentAttributes::SHARED
         ];
+    }
+
+    public function processPlayerQuitEvent(PlayerQuitEvent $event)
+    {
+        if ($this->isTracked($event->getPlayer())) {
+            $this->disableTrack($event->getPlayer());
+        }
     }
     
     public function isTracked(MineParkPlayer $player) : bool

@@ -37,8 +37,8 @@ class WorldProtector extends Component
 
     public function applyBlockUpdateSettings(BlockBreakEvent | BlockPlaceEvent $event)
     {
-        if (!$this->isInRange($event->getBlock())) {
-            $event->setCancelled(false);
+        if ($this->isInRange($event->getBlock())) {
+            $event->setCancelled();
         }
     }
 

@@ -1,18 +1,20 @@
 <?php
 namespace minepark\components\organisations;
 
-use minepark\common\player\MineParkPlayer;
-use minepark\components\base\Component;
-use minepark\defaults\ComponentAttributes;
+use minepark\Events;
 use pocketmine\item\Item;
 use pocketmine\tile\Sign;
 use pocketmine\utils\Config;
 use pocketmine\block\SignPost;
 use pocketmine\block\WallSign;
+use minepark\defaults\EventList;
 use pocketmine\event\block\BlockEvent;
+use minepark\components\base\Component;
 
-use pocketmine\event\player\PlayerInteractEvent;
+use minepark\common\player\MineParkPlayer;
+use minepark\defaults\ComponentAttributes;
 use pocketmine\event\block\SignChangeEvent;
+use pocketmine\event\player\PlayerInteractEvent;
 
 class Shop extends Component
 {
@@ -21,6 +23,9 @@ class Shop extends Component
 
     public function initialize()
     {
+        Events::registerEvent(EventList::SIGN_CHANGE_EVENT, [$this, "sign"]);
+        Events::registerEvent(EventList::PLAYER_INTERACT_EVENT, [$this, "tap"]);
+
         $this->c = new Config($this->getCore()->getTargetDirectory()."shops.json", Config::JSON);
     }
 

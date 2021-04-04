@@ -6,7 +6,6 @@ use minepark\Providers;
 use minepark\common\MDC;
 use minepark\Events;
 use minepark\defaults\Files;
-use minepark\external\WebApi;
 use pocketmine\event\Listener;
 use jojoe77777\FormAPI\FormAPI;
 use minepark\defaults\Defaults;
@@ -25,7 +24,6 @@ class Core extends PluginBase implements Listener
     private Api $sapi;
     private Commands $commands;
     private Service $service;
-    private WebApi  $webapi;
 
     public static function getActive() : Core
     {
@@ -83,7 +81,6 @@ class Core extends PluginBase implements Listener
         $this->sapi = new Api;
         $this->scmd = new Commands;
         $this->service = new Service;
-        $this->webapi = new WebApi;
     }
 
     public function getTargetDirectory(bool $strings = false) : string
@@ -104,11 +101,6 @@ class Core extends PluginBase implements Listener
     public function getApi() : Api
     {
         return $this->sapi;
-    }
-
-    public function getWebApi() : WebApi
-    {
-        return $this->webapi;
     }
 
     public function getService() : Service

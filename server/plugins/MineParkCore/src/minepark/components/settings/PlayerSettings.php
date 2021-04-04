@@ -112,30 +112,34 @@ class PlayerSettings extends Component
 
     public function applyInteractSettings(PlayerInteractEvent $event)
     {
-        if (!$this->isCanActivate($event->getPlayer())) {
+        $this->filterItemsAndBlocks($event);
+
+        if ($event->isCancelled()) {
             return;
         }
 
-        $this->filterItemsAndBlocks($event);
+        if (!$this->isCanActivate($event->getPlayer())) {
+            return;
+        }
 
         $this->checkInventoryItems($event->getPlayer());
     }
 
     public function applyBlockUpdateSettings(BlockBreakEvent | BlockPlaceEvent $event)
     {
-        $player = $event->getPlayer();
+        $player = MineParkPlayer::cast($event->getPlayer());
         $block = $event->getBlock();
 
         if ($player->isOp()) {
             $event->setCancelled(false);
         }
 
-        if ($player->getProfile()->builder) {
+        if ($player->isBuilder()) {
             $event->setCancelled(false);
         }
 
-        if (!$player->getProfile()->builder and in_array($block->getId(), ItemConstants::getRestrictedBlocksNonBuilder())) {
-            return $event->setCancelled();
+        if (!$player->isBuilder() and in_array($block->getId(), ItemConstants::getRestrictedBlocksNonBuilder())) {
+            $event->setCancelled();
         }
     }
 

@@ -23,6 +23,7 @@ use minepark\components\Tracker;
 use minepark\components\TrafficLights;
 use minepark\components\VehicleManager;
 use minepark\components\WorldProtector;
+use minepark\defaults\ComponentAttributes;
 
 class Components
 {
@@ -61,7 +62,7 @@ class Components
     {
         foreach (self::$components as $component) {
             if ($componentName === $component::class) {
-                return $component;
+                return in_array(ComponentAttributes::SHARED, $component->getAttributes()) ? $component : null;
             }
         }
 
