@@ -1,26 +1,26 @@
 <?php
-namespace minepark\components;
+namespace minepark\components\settings;
 
-use minepark\Api;
+use minepark\Events;
 use minepark\Providers;
+use minepark\Components;
+use pocketmine\item\Item;
 use pocketmine\utils\Config;
 use pocketmine\entity\Effect;
 use pocketmine\entity\Entity;
-use minepark\defaults\Permissions;
+use minepark\utils\MathUtility;
+use minepark\defaults\EventList;
+use minepark\components\GameChat;
+use minepark\defaults\MapConstants;
 use pocketmine\entity\EffectInstance;
 use minepark\components\base\Component;
+use minepark\defaults\PlayerAttributes;
 use minepark\common\player\MineParkPlayer;
-use minepark\Components;
-use minepark\components\organisations\Organisations;
-use minepark\defaults\EventList;
-use minepark\defaults\MapConstants;
-use minepark\Events;
-use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
-use pocketmine\item\Item;
-use pocketmine\network\mcpe\protocol\types\GameMode;
+use minepark\components\organisations\Organisations;
+use pocketmine\event\entity\EntityDamageByEntityEvent;
 
-class Damager extends Component
+class EntitySettings extends Component
 {
     private Config $config;
 
@@ -34,7 +34,7 @@ class Damager extends Component
 
         Events::registerEvent(EventList::ENTITY_DAMAGE_EVENT, [$this, "processEntityDamageEvent"]);
 
-        $this->config = new Config($this->getCore()->getTargetDirectory() . "greenZones.json", Config::JSON);
+        $this->config = new Config($this->getCore()->getTargetDirectory() . "greenZones.json", Config::JSON); //TODO: INTO MDC
         $this->reasons = array("сотрясения мозга", "потери сознания", "ряда переломов");
     }
 
@@ -42,11 +42,6 @@ class Damager extends Component
     {
         return [
         ];
-    }
-    
-    public function getConfig() : Config
-    {
-        return $this->config;
     }
 
     public function processEntityDamageEvent(EntityDamageEvent $event)
@@ -113,7 +108,7 @@ class Damager extends Component
         $this->gameChat->sendLocalMessage($policeMan, "§8(§dв руках дубинка-электрошокер§8)", "§d : ", 10);
         $this->gameChat->sendLocalMessage($victim, "§8(§dлежит на полу | ослеплен§8)", "§d : ", 12);
         
-        $this->getCore()->getApi()->changeAttr($victim, Api::ATTRIBUTE_WANTED);
+        $victim->changeAttribute(PlayerAttributes::WANTED);
 
         $victim->setImmobile(true);
         $victim->getStatesMap()->bar = "§6ВЫ ОГЛУШЕНЫ!";
@@ -143,22 +138,22 @@ class Damager extends Component
             return true;
         }
         
-        foreach($this->getConfig()->getAll() as $name) {
-            $x1 = $this->getConfig()->getNested("$name.pos1.x");
-            $y1 = $this->getConfig()->getNested("$name.pos1.y");
-            $z1 = $this->getConfig()->getNested("$name.pos1.z");
-            $x2 = $this->getConfig()->getNested("$name.pos2.x");
-            $y2 = $this->getConfig()->getNested("$name.pos2.y");
-            $z2 = $this->getConfig()->getNested("$name.pos2.z");
+        foreach($this->config->getAll() as $name) {
+            $x1 = $this->config->getNested("$name.pos1.x");
+            $y1 = $this->config->getNested("$name.pos1.y");
+            $z1 = $this->config->getNested("$name.pos1.z");
+            $x2 = $this->config->getNested("$name.pos2.x");
+            $y2 = $this->config->getNested("$name.pos2.y");
+            $z2 = $this->config->getNested("$name.pos2.z");
 
             $x = floor($player->getX());
             $y = floor($player->getY());
             $z = floor($player->getZ());
 
-            if($this->getCore()->getApi()->interval($x ,$x1, $x2) 
-                and $this->getCore()->getApi()->interval($y, $y1, $y2) 
-                    and $this->getCore()->getApi()->interval($z, $z1 , $z2)) {
-                $damager->sendMessage("§aВы находитесь в зеленой зоне! Здесь нельзя бить игроков!");
+            if(MathUtility::interval($x ,$x1, $x2) 
+                and MathUtility::interval($y, $y1, $y2) 
+                    and MathUtility::interval($z, $z1 , $z2)) {
+                $damager->sendMessage("§aВы находитесь в зеленой зоне! Здесь запрещено драться!");
                 return true;
             }
         }

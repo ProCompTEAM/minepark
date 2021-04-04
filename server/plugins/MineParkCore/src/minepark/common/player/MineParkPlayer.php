@@ -2,21 +2,20 @@
 namespace minepark\common\player;
 
 use Exception;
-use minepark\components\BossBar;
-use minepark\Core;
 use pocketmine\Player;
 use minepark\Providers;
 use pocketmine\math\Vector3;
 use pocketmine\level\Position;
 use minepark\models\dtos\UserDto;
+use minepark\defaults\MapConstants;
 use minepark\models\player\StatesMap;
+use minepark\defaults\PlayerAttributes;
 use pocketmine\network\SourceInterface;
 use minepark\models\player\FloatingText;
 use pocketmine\level\particle\FloatingTextParticle;
 use pocketmine\network\mcpe\protocol\PlaySoundPacket;
 use pocketmine\event\player\PlayerCommandPreprocessEvent;
 use pocketmine\network\mcpe\protocol\ModalFormRequestPacket;
-use pocketmine\network\mcpe\protocol\SetHealthPacket;
 
 class MineParkPlayer extends Player
 {	
@@ -156,9 +155,44 @@ class MineParkPlayer extends Player
         $ev->call();
     }
 
-    public function getCore() : Core
+    /*
+        Attributes
+    */
+
+    public function existsAttribute(string $key) : bool
     {
-        return Core::getActive();
+        return preg_match('/'.strtoupper($key).'/', $this->getProfile()->attributes);
+    }
+
+    public function changeAttribute(string $key, bool $status = true)
+    {
+        if(!$status) {
+            $this->getProfile()->attributes = str_replace(strtoupper($key), '', $this->getProfile()->attributes);
+        } elseif(!$this->existsAttribute(strtoupper($key))) {
+            $this->getProfile()->attributes .= strtoupper($key);
+        }
+
+        Providers::getProfileProvider()->saveProfile($this);
+    }
+
+    /*
+        Arest/Release API
+    */
+
+    public function arest()
+    {
+        Providers::getMapProvider()->teleportPoint($this, MapConstants::POINT_NAME_JAIL);
+        $this->changeAttribute(PlayerAttributes::ARRESTED);
+        $this->changeAttribute(PlayerAttributes::WANTED, false);
+        $this->getStatesMap()->bar = "§6ВЫ АРЕСТОВАНЫ!";
+    }
+
+    public function release()
+    {
+        Providers::getMapProvider()->teleportPoint($this, MapConstants::POINT_NAME_ADIMINISTRATION);
+        $this->changeAttribute(PlayerAttributes::ARRESTED, false);
+        $this->changeAttribute(PlayerAttributes::WANTED, false);
+        $this->getStatesMap()->bar = null;
     }
 
     /*

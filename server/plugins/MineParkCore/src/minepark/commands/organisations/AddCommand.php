@@ -1,7 +1,6 @@
 <?php
 namespace minepark\commands\organisations;
 
-use minepark\Api;
 use minepark\commands\base\OrganisationsCommand;
 use minepark\Providers;
 
@@ -69,7 +68,7 @@ class AddCommand extends OrganisationsCommand
 
     private function getPlayersNear(MineParkPlayer $player) : array
     {
-        $allplayers = $this->getCore()->getApi()->getRegionPlayers($player, 5);
+        $allplayers = $this->getCore()->getRegionPlayers($player, 5);
 
         $players = array();
 

@@ -3,7 +3,6 @@ namespace minepark\external\service\script;
 
 use minepark\Core;
 use pocketmine\Server;
-use minepark\database\model\Model;
 
 abstract class Script
 {

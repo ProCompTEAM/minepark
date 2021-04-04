@@ -27,7 +27,7 @@ class OnlineCommand extends Command
 
     public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
-        $admins = $this->getCore()->getApi()->getAdministration(true);
+        $admins = $this->getCore()->getAdministration(true);
 
         if(count($admins) < 1) {
             $player->sendMessage("CommandOnlineNoAdmins");

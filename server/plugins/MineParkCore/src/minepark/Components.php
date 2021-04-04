@@ -2,27 +2,27 @@
 namespace minepark;
 
 use Exception;
+use minepark\components\GPS;
 use minepark\components\Auth;
-use minepark\components\base\Component;
+use minepark\components\Phone;
+use minepark\components\PayDay;
 use minepark\components\BossBar;
-use minepark\components\Broadcasting;
-use minepark\components\Damager;
 use minepark\components\FastFood;
 use minepark\components\GameChat;
-use minepark\components\GPS;
-use minepark\components\NotifyPlayers;
-use minepark\components\organisations\Organisations;
-use minepark\components\PayDay;
-use minepark\components\Phone;
-use minepark\components\settings\PlayerSettings;
-use minepark\components\Reporting;
-use minepark\components\settings\WorldSettings;
-use minepark\components\StatusBar;
 use minepark\components\Tracking;
 use minepark\components\Vehicles;
+use minepark\components\Reporting;
+use minepark\components\StatusBar;
+use minepark\components\Broadcasting;
+use minepark\components\NotifyPlayers;
 use minepark\components\TrafficLights;
+use minepark\components\base\Component;
 use minepark\components\WorldProtector;
 use minepark\defaults\ComponentAttributes;
+use minepark\components\settings\WorldSettings;
+use minepark\components\settings\EntitySettings;
+use minepark\components\settings\PlayerSettings;
+use minepark\components\organisations\Organisations;
 
 class Components
 {
@@ -35,13 +35,13 @@ class Components
             new Auth,
             new BossBar,
             new Broadcasting,
-            new Damager,
             new FastFood,
             new GameChat,
             new GPS,
             new NotifyPlayers,
             new PayDay,
             new Phone,
+            new EntitySettings,
             new PlayerSettings,
             new WorldSettings,
             new Reporting,

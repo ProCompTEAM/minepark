@@ -3,22 +3,23 @@ namespace minepark\components;
 
 use minepark\Tasks;
 
-use minepark\Providers;
+use minepark\Events;
 
+use minepark\Providers;
+use minepark\Components;
 use pocketmine\math\Vector3;
+use minepark\defaults\EventList;
+use minepark\utils\ArraysUtility;
 use minepark\defaults\MapConstants;
+use minepark\providers\MapProvider;
 use minepark\defaults\TimeConstants;
 use minepark\components\base\Component;
+use minepark\providers\BankingProvider;
 use minepark\common\player\MineParkPlayer;
-use minepark\Components;
 use minepark\defaults\ComponentAttributes;
+use pocketmine\event\player\PlayerQuitEvent;
 use minepark\providers\data\PhonesDataProvider;
 use minepark\components\organisations\Organisations;
-use minepark\defaults\EventList;
-use minepark\Events;
-use minepark\providers\BankingProvider;
-use minepark\providers\MapProvider;
-use pocketmine\event\player\PlayerQuitEvent;
 
 class Phone extends Component
 {
@@ -279,7 +280,7 @@ class Phone extends Component
             if($this->bankingProvider->takePlayerMoney($player, 20)) {
                 $this->gameChat->sendLocalMessage($targetPlayer, "{PhoneSmsBeep}", "§d : ", 10);
 
-                $sms = $this->sendMessage($number, $this->getCore()->getApi()->getFromArray($commandArgs, 2), $myNumber);
+                $sms = $this->sendMessage($number, ArraysUtility::getStringFromArray($commandArgs, 2), $myNumber);
 
                 if(!$sms) {
                     $player->sendMessage("PhoneSmsError");

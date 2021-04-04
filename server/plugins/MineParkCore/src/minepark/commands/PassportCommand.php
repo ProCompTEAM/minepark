@@ -1,7 +1,6 @@
 <?php
 namespace minepark\commands;
 
-use minepark\Api;
 use minepark\Providers;
 
 use pocketmine\event\Event;
@@ -12,6 +11,7 @@ use minepark\common\player\MineParkPlayer;
 use minepark\Components;
 use minepark\components\GameChat;
 use minepark\components\organisations\Organisations;
+use minepark\defaults\PlayerAttributes;
 use minepark\providers\ProfileProvider;
 
 class PassportCommand extends Command
@@ -65,7 +65,7 @@ class PassportCommand extends Command
     private function getPassportForm(MineParkPlayer $player) : string
     {
         $outputOrg = $this->organisations->getName($player->getProfile()->organisation);
-        $outputRank = (($this->getCore()->getApi()->existsAttr($player, Api::ATTRIBUTE_BOSS)) ? " §7[§bНачальник§7]" : "");
+        $outputRank = $player->existsAttribute(PlayerAttributes::BOSS) ? " §7[§bНачальник§7]" : "";
         $outputPhone = $player->getProfile()->phoneNumber;
         
         $form = "§5Паспортные данные | Печать | WorldDoc";
@@ -84,7 +84,7 @@ class PassportCommand extends Command
 
     private function showPassportForm(MineParkPlayer $player, string $form)
     {
-        foreach($this->getCore()->getApi()->getRegionPlayers($player, 4) as $p) {
+        foreach($this->getCore()->getRegionPlayers($player, 4) as $p) {
             $p->sendWindowMessage($form, "Паспорт " . $player->getName());
                 
             if(strpos($p->getProfile()->people, strtolower($player->getName())) === false and $p !== $player) {

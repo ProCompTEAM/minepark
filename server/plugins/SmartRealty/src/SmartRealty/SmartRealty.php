@@ -104,7 +104,7 @@ class SmartRealty extends PluginBase implements Listener
     
     public function blockPlaceEvent(BlockPlaceEvent $e)
     {
-        if($e->getPlayer()->getProfile()->builder) {
+        if($e->getPlayer()->isBuilder()) {
             return;
         }
         
@@ -117,7 +117,7 @@ class SmartRealty extends PluginBase implements Listener
     
     public function blockBreakEvent(BlockBreakEvent $e)
     {
-        if($e->getPlayer()->getProfile()->builder) {
+        if($e->getPlayer()->isBuilder()) {
             return;
         }
 

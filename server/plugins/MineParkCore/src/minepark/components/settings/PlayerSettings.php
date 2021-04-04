@@ -36,8 +36,6 @@ class PlayerSettings extends Component
         Events::registerEvent(EventList::PLAYER_JOIN_EVENT, [$this, "applyJoinSettings"]);
         Events::registerEvent(EventList::PLAYER_QUIT_EVENT, [$this, "applyQuitSettings"]);
         Events::registerEvent(EventList::PLAYER_INTERACT_EVENT, [$this, "applyInteractSettings"]);
-        Events::registerEvent(EventList::BLOCK_BREAK_EVENT, [$this, "applyBlockUpdateSettings"]);
-        Events::registerEvent(EventList::BLOCK_PLACE_EVENT, [$this, "applyBlockUpdateSettings"]);
 
         $this->tracking = Components::getComponent(Tracking::class);
     }
@@ -112,34 +110,18 @@ class PlayerSettings extends Component
 
     public function applyInteractSettings(PlayerInteractEvent $event)
     {
-        $this->filterItemsAndBlocks($event);
+        $player = $event->getPlayer();
 
-        if ($event->isCancelled()) {
+        if (!$this->isCanActivate($player)) {
             return;
         }
 
-        if (!$this->isCanActivate($event->getPlayer())) {
-            return;
-        }
-
-        $this->checkInventoryItems($event->getPlayer());
-    }
-
-    public function applyBlockUpdateSettings(BlockBreakEvent | BlockPlaceEvent $event)
-    {
-        $player = MineParkPlayer::cast($event->getPlayer());
-        $block = $event->getBlock();
-
-        if ($player->isOp()) {
-            $event->setCancelled(false);
-        }
-
-        if ($player->isBuilder()) {
-            $event->setCancelled(false);
-        }
-
-        if (!$player->isBuilder() and in_array($block->getId(), ItemConstants::getRestrictedBlocksNonBuilder())) {
+        if($this->filterItemsAndBlocks($player)) {
             $event->setCancelled();
+        }
+
+        if (!$event->isCancelled()) {
+            $this->checkInventoryItems($player);
         }
     }
 
@@ -272,21 +254,19 @@ class PlayerSettings extends Component
         return false;
     }
 
-    private function filterItemsAndBlocks(PlayerInteractEvent $event)
+    private function filterItemsAndBlocks(MineParkPlayer $player) : bool
     {
-        $itemId = $event->getPlayer()->getInventory()->getItemInHand()->getId();
+        $itemId = $player->getInventory()->getItemInHand()->getId();
 
-        if (!$event->getPlayer()->builder and in_array($itemId, ItemConstants::getRestrictedItemsNonBuilder())) {
-            return $event->setCancelled();
-        }
-
-        if ($event->getBlock()->getId() !== Block::GRASS) {
-            return;
+        if (!$player->isBuilder() and in_array($itemId, ItemConstants::getRestrictedItemsNonBuilder())) {
+            return true;
         }
 
         if (in_array($itemId, ItemConstants::getGunItemIds())) {
-            $event->setCancelled();
+            return true;
         }
+
+        return false;
     }
     
     private function setPermissions(MineParkPlayer $player)

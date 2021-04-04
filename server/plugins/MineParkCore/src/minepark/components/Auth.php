@@ -1,15 +1,12 @@
 <?php
 namespace minepark\components;
 
-use minepark\Api;
 use minepark\Tasks;
 use minepark\Events;
 use minepark\Providers;
 use minepark\defaults\EventList;
-use minepark\defaults\MapConstants;
 use minepark\defaults\TimeConstants;
 use minepark\models\dtos\PasswordDto;
-use pocketmine\event\block\BlockEvent;
 use minepark\components\base\Component;
 use minepark\common\player\MineParkPlayer;
 use pocketmine\event\block\BlockBreakEvent;
@@ -83,7 +80,6 @@ class Auth extends Component
     {
         if (!$event->getPlayer()->getStatesMap()->auth) {
             $event->setCancelled();
-            return;
         }
     }
 
@@ -91,7 +87,6 @@ class Auth extends Component
     {
         if (!$event->getPlayer()->getStatesMap()->auth) {
             $event->setCancelled();
-            return;
         }
     }
 
@@ -168,11 +163,7 @@ class Auth extends Component
 
         $this->ips[$player->getName()] = $player->getAddress();
         
-        if($this->getCore()->getApi()->existsAttr($player, Api::ATTRIBUTE_ARRESTED)) {
-            Providers::getMapProvider()->teleportPoint($player, MapConstants::POINT_NAME_JAIL);
-        } else {
-            $this->sendWelcomeText($player);
-        }
+        $this->sendWelcomeText($player);
         
         $this->setMovement($player, true);
     }

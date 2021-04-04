@@ -2,8 +2,6 @@
 namespace minepark\components\organisations;
 
 use minepark\components\base\Component;
-
-use minepark\OrganisationsCommandHandler;
 use minepark\components\organisations\Farm;
 use minepark\components\organisations\Shop;
 use minepark\components\organisations\NoFire;
@@ -12,19 +10,19 @@ use minepark\defaults\ComponentAttributes;
 
 class Organisations extends Component
 {
-    public $shop;
-    public $workers;
-    public $farm;
-    public $noFire;
+    public const NO_WORK = 0;
+    public const TAXI_WORK = 1;
+    public const DOCTOR_WORK = 2;
+    public const LAWYER_WORK = 3;
+    public const SECURITY_WORK = 4;
+    public const SELLER_WORK = 5;
+    public const GOVERNMENT_WORK = 6;
+    public const EMERGENCY_WORK = 7;
 
-    const NO_WORK = 0;
-    const TAXI_WORK = 1;
-    const DOCTOR_WORK = 2;
-    const LAWYER_WORK = 3;
-    const SECURITY_WORK = 4;
-    const SELLER_WORK = 5;
-    const GOVERNMENT_WORK = 6;
-    const EMERGENCY_WORK = 7;
+    private Shop $shop;
+    private Workers $workers;
+    private Farm $farm;
+    private NoFire $noFire;
 
     public function initialize()
     {
@@ -46,13 +44,25 @@ class Organisations extends Component
         ];
     }
 
-    public function getName($id, $withColor = true)
+    public function getName(int $organizationId, bool $withColor = true)
     {
-        if($id == self::NO_WORK) {
-            return "Безработный";
+        $form = null;
+
+        switch($organizationId)
+        {
+            case self::NO_WORK:         $form = "§0Безработный" ; break;
+            case self::TAXI_WORK:       $form = "§cДоктор" ; break;
+            case self::DOCTOR_WORK:     $form = "§eТаксист" ; break;
+            case self::LAWYER_WORK:     $form = "§aГос.служащий" ; break;
+            case self::SECURITY_WORK:   $form = "§9Служба Охраны" ; break;
+            case self::SELLER_WORK:     $form = "§eПродавец" ; break;
+            case self::GOVERNMENT_WORK: $form = "§bПравительство" ; break;
+            case self::EMERGENCY_WORK:  $form = "§4Служба Спасения" ; break;
+
+            default:                    $form = "§f";
         }
 
-        return $this->getCore()->getApi()->getPrefix($id + 3, $withColor);
+        $withColor ? $form : substr($form, 2);
     }
 
     public function getShop() : Shop

@@ -2,6 +2,7 @@
 namespace minepark;
 
 use minepark\defaults\TimeConstants;
+use pocketmine\scheduler\TaskScheduler;
 use minepark\models\RepeatingActionStates;
 use minepark\common\scheduling\CallbackTask;
 
@@ -9,21 +10,24 @@ class Tasks
 {
     private static array $repeatingActions = [];
 
+    private static TaskScheduler $scheduler;
+
     public static function initializeAll()
     {
+        self::$scheduler = Core::getActive()->getScheduler();
         self::startRepeatingActionsCaller();
     }
 
     public static function registerDelayedAction(int $ticks, callable $target, array $arguments = [])
     {
         $task = new CallbackTask($target, $arguments);
-        Core::getActive()->getScheduler()->scheduleDelayedTask($task, $ticks);
+        self::$scheduler->scheduleDelayedTask($task, $ticks);
     }
 
     public static function executeActionWithTicksInterval(int $ticks, callable $target, array $arguments = [])
     {
         $task = new CallbackTask($target, $arguments);
-        Core::getActive()->getScheduler()->scheduleRepeatingTask($task, $ticks);
+        self::$scheduler->scheduleRepeatingTask($task, $ticks);
     }
 
     public static function registerRepeatingAction(int $secondsInterval, callable $target, array $arguments = [])
@@ -57,7 +61,7 @@ class Tasks
             }
         });
 
-        Core::getActive()->getScheduler()->scheduleRepeatingTask($task, TimeConstants::ONE_SECOND_TICKS);
+        self::$scheduler->scheduleRepeatingTask($task, TimeConstants::ONE_SECOND_TICKS);
     }
 }
 ?>
