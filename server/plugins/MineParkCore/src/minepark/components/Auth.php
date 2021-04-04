@@ -80,7 +80,6 @@ class Auth extends Component
     {
         if (!$event->getPlayer()->getStatesMap()->auth) {
             $event->setCancelled();
-            return;
         }
     }
 
@@ -88,7 +87,6 @@ class Auth extends Component
     {
         if (!$event->getPlayer()->getStatesMap()->auth) {
             $event->setCancelled();
-            return;
         }
     }
 

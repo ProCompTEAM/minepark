@@ -36,8 +36,6 @@ class PlayerSettings extends Component
         Events::registerEvent(EventList::PLAYER_JOIN_EVENT, [$this, "applyJoinSettings"]);
         Events::registerEvent(EventList::PLAYER_QUIT_EVENT, [$this, "applyQuitSettings"]);
         Events::registerEvent(EventList::PLAYER_INTERACT_EVENT, [$this, "applyInteractSettings"]);
-        Events::registerEvent(EventList::BLOCK_BREAK_EVENT, [$this, "applyBlockUpdateSettings"]);
-        Events::registerEvent(EventList::BLOCK_PLACE_EVENT, [$this, "applyBlockUpdateSettings"]);
 
         $this->tracking = Components::getComponent(Tracking::class);
     }
@@ -124,21 +122,6 @@ class PlayerSettings extends Component
 
         if (!$event->isCancelled()) {
             $this->checkInventoryItems($player);
-        }
-    }
-
-    public function applyBlockUpdateSettings(BlockBreakEvent | BlockPlaceEvent $event)
-    {
-        $player = MineParkPlayer::cast($event->getPlayer());
-        $block = $event->getBlock();
-
-        if ($player->isOp() or $player->isBuilder()) {
-            $event->setCancelled(false);
-            return;
-        }
-
-        if (in_array($block->getId(), ItemConstants::getRestrictedBlocksNonBuilder())) {
-            $event->setCancelled();
         }
     }
 

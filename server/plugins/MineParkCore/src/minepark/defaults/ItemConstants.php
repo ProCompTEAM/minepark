@@ -1,7 +1,6 @@
 <?php
 namespace minepark\defaults;
 
-use pocketmine\block\Block;
 use pocketmine\item\Item;
 
 class ItemConstants 
@@ -10,14 +9,8 @@ class ItemConstants
     {
         return [
             Item::ITEM_FRAME,
-            Item::FILLED_MAP
-        ];
-    }
-
-    public static function getRestrictedBlocksNonBuilder() : array
-    {
-        return [
-            Block::TNT
+            Item::FILLED_MAP,
+            Item::TNT
         ];
     }
 
