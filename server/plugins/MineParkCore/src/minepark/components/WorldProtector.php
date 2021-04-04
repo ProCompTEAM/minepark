@@ -55,8 +55,8 @@ class WorldProtector extends Component
 
     private function loadConfiguration()
     {
-        $file = $this->getCore()->getServer()->getDataPath() . "world-protector.yml";
-        $defaultLevelName = $this->getCore()->getServer()->getDefaultLevel()->getName();
+        $file = $this->getServer()->getDataPath() . "world-protector.yml";
+        $defaultLevelName = $this->getServer()->getDefaultLevel()->getName();
 
         $config = new Config($file, Config::YAML, [
             "Level" => $defaultLevelName,

@@ -37,7 +37,7 @@ class NotifyPlayers extends Component
             $pointName = $point;
             $pointsCount[$pointName] = 0;
             
-            foreach($this->getCore()->getServer()->getOnlinePlayers() as $plr) {
+            foreach($this->getServer()->getOnlinePlayers() as $plr) {
                 if (!empty($playerCounted[$plr->getName()])) {
                     continue;
                 }
@@ -59,14 +59,14 @@ class NotifyPlayers extends Component
             return;
         }
 
-        $this->getCore()->getServer()->broadcastMessage("NotifyLabel");
+        $this->getServer()->broadcastMessage("NotifyLabel");
         
         foreach($pointsCount as $place => $val) {
             if ($val == 0) {
                 continue;
             }
 
-            $this->getCore()->getServer()->broadcastMessage('§b - Возле места §e"'.$place.'"§b сейчас §e'.$val.'§b человек(a).');
+            $this->getServer()->broadcastMessage('§b - Возле места §e"'.$place.'"§b сейчас §e'.$val.'§b человек(a).');
         }
     }
 }

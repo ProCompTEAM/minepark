@@ -83,7 +83,7 @@ class GameChat extends Component
 
         $randomPrefix = "§7" . $this->getRandomUserPrefix();
 
-        foreach ($this->getCore()->getServer()->getOnlinePlayers() as $onlinePlayer) {
+        foreach ($this->getServer()->getOnlinePlayers() as $onlinePlayer) {
             if ($onlinePlayer->distance($player) <= $radius) {
                 $this->sendMessage($onlinePlayer, $message, $player->getLowerCaseName(), $senderFullName, $isFriendRequest, $randomPrefix, $prefix);
             }
@@ -102,7 +102,7 @@ class GameChat extends Component
 
         $generatedMessage = "{GlobalMessagePart1}" . $player->getProfile()->fullName . "{GlobalMessagePart2}$message";
 
-        foreach ($this->getCore()->getServer()->getOnlinePlayers() as $onlinePlayer) {
+        foreach ($this->getServer()->getOnlinePlayers() as $onlinePlayer) {
             $onlinePlayer = MineParkPlayer::cast($onlinePlayer);
 
             if ($this->phone->hasStream($onlinePlayer)) {
@@ -119,7 +119,7 @@ class GameChat extends Component
 
         $generatedMessage = "{AdminChatPart1} " . $player->getProfile()->fullName . "{AdminChatPart2}$message";
 
-        foreach ($this->getCore()->getServer()->getOnlinePlayers() as $onlinePlayer) {
+        foreach ($this->getServer()->getOnlinePlayers() as $onlinePlayer) {
             $onlinePlayer = MineParkPlayer::cast($onlinePlayer);
 
             if ($onlinePlayer->isAdministrator()) {

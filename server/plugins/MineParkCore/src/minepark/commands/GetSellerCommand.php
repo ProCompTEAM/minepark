@@ -50,7 +50,7 @@ class GetSellerCommand extends Command
             return;
         }
 
-        foreach($this->getCore()->getServer()->getOnlinePlayers() as $targetPlayer){
+        foreach($this->getServer()->getOnlinePlayers() as $targetPlayer){
             $targetPlayer = MineParkPlayer::cast($targetPlayer);
             if($targetPlayer->getProfile()->organisation == Organisations::SELLER_WORK) {
                 $targetPlayer->sendMessage("CommandGetSellerCall1");

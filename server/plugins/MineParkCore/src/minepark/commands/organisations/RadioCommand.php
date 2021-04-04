@@ -43,7 +43,7 @@ class RadioCommand extends OrganisationsCommand
 
         $generatedRadioMessage = "§d[РАЦИЯ] §7" . $player->getProfile()->fullName . " §4> §7" . $implodedMessage;
 
-        foreach($this->getCore()->getServer()->getOnlinePlayers() as $onlinePlayer) {
+        foreach($this->getServer()->getOnlinePlayers() as $onlinePlayer) {
             $onlinePlayer = MineParkPlayer::cast($onlinePlayer);
             if ($onlinePlayer->getProfile()->organisation === $organisationId) {
                 $onlinePlayer->sendMessage($generatedRadioMessage);

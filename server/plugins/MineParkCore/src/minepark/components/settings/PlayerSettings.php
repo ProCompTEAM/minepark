@@ -242,7 +242,7 @@ class PlayerSettings extends Component
     private function showLang(MineParkPlayer $player)
     {
         $message = "Selected locale: " . $player->locale;
-        $this->getCore()->getServer()->getLogger()->info($message);
+        $this->getServer()->getLogger()->info($message);
     }
 
     private function handleNewPlayer(MineParkPlayer $player)
@@ -254,7 +254,7 @@ class PlayerSettings extends Component
 
     private function presentNewPlayer(MineParkPlayer $newPlayer)
     {
-        foreach($this->getCore()->getServer()->getOnlinePlayers() as $player) {
+        foreach($this->getServer()->getOnlinePlayers() as $player) {
             $player->sendTitle("§6" . $newPlayer->getName(), "§aВ парке новый посетитель!", 5);
         }
     }
@@ -303,7 +303,7 @@ class PlayerSettings extends Component
         
         $label = $this->getDonaterLabel($donater);
 
-        foreach($this->getCore()->getServer()->getOnlinePlayers() as $player) {
+        foreach($this->getServer()->getOnlinePlayers() as $player) {
             $player = MineParkPlayer::cast($player);
             $player->addLocalizedTitle("§e" . $donater->getName(), $label . " " . $donater->getName() . " {UserOnline}", 5);
         }

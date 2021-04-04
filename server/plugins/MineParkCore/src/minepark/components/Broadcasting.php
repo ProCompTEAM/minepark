@@ -30,7 +30,7 @@ class Broadcasting extends Component
 
     public function broadcastMessage()
     {
-        foreach ($this->getCore()->getServer()->getOnlinePlayers() as $player) {
+        foreach ($this->getServer()->getOnlinePlayers() as $player) {
             $player->sendMessage($this->localizationKeys[$this->localizationKeysCurrentIndex]);
         }
 

@@ -53,7 +53,7 @@ class TrafficLights extends Component
         $lightPoints = $this->mapProvider->getPointsByGroup(MapConstants::POINT_GROUP_TRAFFIC_LIGHT1, false);
 
         foreach($lightPoints as $point) {
-            $level = $this->getCore()->getServer()->getLevelByName($point->level);
+            $level = $this->getServer()->getLevelByName($point->level);
             array_push($this->lightPositionsVariation1, new Position($point->x, $point->y, $point->z, $level));
         }
     }
@@ -63,7 +63,7 @@ class TrafficLights extends Component
         $lightPoints = $this->mapProvider->getPointsByGroup(MapConstants::POINT_GROUP_TRAFFIC_LIGHT2, false);
 
         foreach($lightPoints as $point) {
-            $level = $this->getCore()->getServer()->getLevelByName($point->level);
+            $level = $this->getServer()->getLevelByName($point->level);
             array_push($this->lightPositionsVariation2, new Position($point->x, $point->y, $point->z, $level));
         }
     }
@@ -73,7 +73,7 @@ class TrafficLights extends Component
         $signalText1 = $this->isVariationSwitched ? self::GREEN_SIGNAL_TEXT : self::RED_SIGNAL_TEXT;
         $signalText2 = $this->isVariationSwitched ? self::RED_SIGNAL_TEXT : self::GREEN_SIGNAL_TEXT;
 
-        foreach($this->getCore()->getServer()->getOnlinePlayers() as $player) {
+        foreach($this->getServer()->getOnlinePlayers() as $player) {
             $this->updateFloatingTexts($player, $this->lightPositionsVariation1, $signalText1);
             $this->updateFloatingTexts($player, $this->lightPositionsVariation2, $signalText2);
         }

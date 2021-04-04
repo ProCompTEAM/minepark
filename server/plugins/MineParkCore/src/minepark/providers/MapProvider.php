@@ -41,7 +41,7 @@ class MapProvider extends Provider
             return null;
         }
 
-        $level = $this->getCore()->getServer()->getLevelByName($pointData->level);
+        $level = $this->getServer()->getLevelByName($pointData->level);
 
         return new Position($pointData->x, $pointData->y, $pointData->z, $level);
     }

@@ -3,8 +3,9 @@ namespace minepark\commands\base;
 
 use minepark\Core;
 
-use minepark\common\player\MineParkPlayer;
+use pocketmine\Server;
 use pocketmine\event\Event;
+use minepark\common\player\MineParkPlayer;
 
 abstract class Command
 {
@@ -39,6 +40,11 @@ abstract class Command
     protected function getCore()
     {
         return Core::getActive();
+    }
+
+    protected function getServer()
+    {
+        return Server::getInstance();
     }
 }
 ?>

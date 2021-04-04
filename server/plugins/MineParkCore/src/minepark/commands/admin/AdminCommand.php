@@ -116,7 +116,7 @@ class AdminCommand extends Command
     {
         $text = $this->getCore()->getApi()->getFromArray($args, 1);
 
-        foreach ($this->getCore()->getServer()->getOnlinePlayers() as $p) {
+        foreach ($this->getServer()->getOnlinePlayers() as $p) {
             $num = $this->phone->getNumber($p);
             $this->phone->sendMessage($num, $text, Defaults::CONTEXT_NAME);
         }
@@ -129,7 +129,7 @@ class AdminCommand extends Command
         }
 
         $oid = $args[2];
-        $targetPlayer = MineParkPlayer::cast($this->getCore()->getServer()->getPlayer($args[1]));
+        $targetPlayer = MineParkPlayer::cast($this->getServer()->getPlayer($args[1]));
         
         if($targetPlayer === null) {
             return;
@@ -161,7 +161,7 @@ class AdminCommand extends Command
             return;
         }
 
-        $targetPlayer = MineParkPlayer::cast($this->getCore()->getServer()->getPlayer($args[1]));
+        $targetPlayer = MineParkPlayer::cast($this->getServer()->getPlayer($args[1]));
 
         if($targetPlayer === null) {
             return;
@@ -169,7 +169,7 @@ class AdminCommand extends Command
 
         $this->getCore()->getApi()->arest($targetPlayer);
         
-        $this->getCore()->getServer()->broadcastMessage("{AdminCmdArestPart1}" . $player->getProfile()->fullName . "{AdminCmdArestPart2}" . $targetPlayer->getProfile()->fullName);
+        $this->getServer()->broadcastMessage("{AdminCmdArestPart1}" . $player->getProfile()->fullName . "{AdminCmdArestPart2}" . $targetPlayer->getProfile()->fullName);
     }
 
     public function commandTags(MineParkPlayer $player, array $args)
@@ -178,7 +178,7 @@ class AdminCommand extends Command
             return;
         }
 
-        $targetPlayer = MineParkPlayer::cast($this->getCore()->getServer()->getPlayer($args[1]));
+        $targetPlayer = MineParkPlayer::cast($this->getServer()->getPlayer($args[1]));
 
         if($targetPlayer === null) {
             return;
@@ -193,7 +193,7 @@ class AdminCommand extends Command
             return;
         }
 
-        $targetPlayer = $this->getCore()->getServer()->getPlayer($args[1]);
+        $targetPlayer = $this->getServer()->getPlayer($args[1]);
 
         if($targetPlayer === null or !isset($args[2])) {
             return;
@@ -210,7 +210,7 @@ class AdminCommand extends Command
             return;
         }
 
-        $targetPlayer = $this->getCore()->getServer()->getPlayer($args[1]);
+        $targetPlayer = $this->getServer()->getPlayer($args[1]);
         
         if($targetPlayer === null or !isset($args[2])) {
             return;
@@ -223,7 +223,7 @@ class AdminCommand extends Command
 
     public function commandHide(MineParkPlayer $player)
     {
-        foreach($this->getCore()->getServer()->getOnlinePlayers() as $p) {
+        foreach($this->getServer()->getOnlinePlayers() as $p) {
             $p->hidePlayer($player);
         }
         
@@ -232,7 +232,7 @@ class AdminCommand extends Command
 
     public function commandShow(MineParkPlayer $player)
     {
-        foreach($this->getCore()->getServer()->getOnlinePlayers() as $p) {
+        foreach($this->getServer()->getOnlinePlayers() as $p) {
             $p->showPlayer($player);
         }
         
@@ -245,7 +245,7 @@ class AdminCommand extends Command
             return;
         }
 
-        $target = $this->getCore()->getServer()->getPlayer($args[1]);
+        $target = $this->getServer()->getPlayer($args[1]);
 
         if ($target === null) {
             $player->sendMessage("TrackerPlayerNotExists");
@@ -266,7 +266,7 @@ class AdminCommand extends Command
             return;
         }
 
-        $target = $this->getCore()->getServer()->getPlayer($args[1]);
+        $target = $this->getServer()->getPlayer($args[1]);
 
         if ($target === null) {
             $player->sendMessage("TrackerPlayerNotExists");
@@ -283,7 +283,7 @@ class AdminCommand extends Command
 
     public function commandSiren()
     {
-        foreach($this->getCore()->getServer()->getOnlinePlayers() as $player) {
+        foreach($this->getServer()->getOnlinePlayers() as $player) {
             $player = MineParkPlayer::cast($player);
             $player->sendSound(Sounds::SIREN_SOUND);
         }
