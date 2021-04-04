@@ -2,7 +2,7 @@
 namespace minepark\common\player;
 
 use Exception;
-
+use minepark\components\BossBar;
 use minepark\Core;
 use pocketmine\Player;
 use minepark\Providers;
@@ -16,6 +16,7 @@ use pocketmine\level\particle\FloatingTextParticle;
 use pocketmine\network\mcpe\protocol\PlaySoundPacket;
 use pocketmine\event\player\PlayerCommandPreprocessEvent;
 use pocketmine\network\mcpe\protocol\ModalFormRequestPacket;
+use pocketmine\network\mcpe\protocol\SetHealthPacket;
 
 class MineParkPlayer extends Player
 {	
@@ -158,30 +159,6 @@ class MineParkPlayer extends Player
     public function getCore() : Core
     {
         return Core::getActive();
-    }
-
-    /*
-        BossBar API
-    */
-
-    public function setBossBar(?string $title = null, ?int $percents = null)
-    {
-        $this->getCore()->getBossBarModule()->setBossBar($this, $title, $percents);
-    }
-
-    public function setBossBarTitle(string $title)
-    {
-        $this->getCore()->getBossBarModule()->setTitle($this, $this->getStatesMap()->bossBarSession->fakeEntityId, $title);
-    }
-
-    public function setBossBarPercentage(int $percents)
-    {
-        $this->getCore()->getBossBarModule()->setPercentage($this, $this->getStatesMap()->bossBarSession->fakeEntityId, $percents);
-    }
-
-    public function hideBossBar()
-    {
-        $this->getCore()->getBossBarModule()->hideBossBar($this);
     }
 
     /*

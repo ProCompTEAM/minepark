@@ -8,6 +8,7 @@ use minepark\components\organisations\Farm;
 use minepark\components\organisations\Shop;
 use minepark\components\organisations\NoFire;
 use minepark\components\organisations\Workers;
+use minepark\defaults\ComponentAttributes;
 
 class Organisations extends Component
 {
@@ -31,11 +32,17 @@ class Organisations extends Component
         $this->workers = new Workers;
         $this->farm = new Farm;
         $this->noFire = new NoFire;
+
+        $this->shop->initialize();
+        $this->workers->initialize();
+        $this->farm->initialize();
+        $this->noFire->initialize();
     }
 
     public function getAttributes() : array
     {
         return [
+            ComponentAttributes::SHARED
         ];
     }
 

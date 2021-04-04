@@ -12,7 +12,9 @@ use minepark\Components;
 use minepark\components\base\Component;
 use minepark\components\GameChat;
 use minepark\defaults\ComponentAttributes;
+use minepark\defaults\EventList;
 use minepark\defaults\MapConstants;
+use minepark\Events;
 use minepark\providers\BankingProvider;
 use minepark\providers\MapProvider;
 use pocketmine\event\block\SignChangeEvent;
@@ -29,6 +31,8 @@ class Workers extends Component
     
     public function initialize()
     {
+        Events::registerEvent(EventList::SIGN_CHANGE_EVENT, [$this, "sign"]);
+
         $this->words = [
             "Сельдь *Московская*","Картофель *Беларус*","Боярышник","*Contex Classic*",
             "*Contex с пупырышками*","Шоколад *Алёнка*","Трубы водопроводные","Пойманные морские обитатели",

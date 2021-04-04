@@ -10,8 +10,15 @@ use minepark\defaults\Permissions;
 use pocketmine\entity\EffectInstance;
 use minepark\components\base\Component;
 use minepark\common\player\MineParkPlayer;
+use minepark\Components;
 use minepark\components\organisations\Organisations;
+use minepark\defaults\EventList;
 use minepark\defaults\MapConstants;
+use minepark\Events;
+use pocketmine\event\entity\EntityDamageByEntityEvent;
+use pocketmine\event\entity\EntityDamageEvent;
+use pocketmine\item\Item;
+use pocketmine\network\mcpe\protocol\types\GameMode;
 
 class Damager extends Component
 {
@@ -23,6 +30,10 @@ class Damager extends Component
 
     public function initialize()
     {
+        $this->gameChat = Components::getComponent(GameChat::class);
+
+        Events::registerEvent(EventList::ENTITY_DAMAGE_EVENT, [$this, "processEntityDamageEvent"]);
+
         $this->config = new Config($this->getCore()->getTargetDirectory() . "greenZones.json", Config::JSON);
         $this->reasons = array("сотрясения мозга", "потери сознания", "ряда переломов");
     }
@@ -38,59 +49,101 @@ class Damager extends Component
         return $this->config;
     }
 
-    public function kick(MineParkPlayer $player, MineParkPlayer $damager) : bool
+    public function processEntityDamageEvent(EntityDamageEvent $event)
     {
-        if($damager->getProfile()->organisation === Organisations::SECURITY_WORK and $damager->getInventory()->getItemInHand()->getName() === "Stick") {
-            $this->gameChat->sendLocalMessage($damager, "§8(§dв руках дубинка-электрошокер§8)", "§d : ", 10);
-            $this->gameChat->sendLocalMessage($player, "§8(§dлежит на полу | ослеплен§8)", "§d : ", 12);
-            
-            $this->getCore()->getApi()->changeAttr($player, Api::ATTRIBUTE_WANTED);
-
-            $player->setImmobile(true);
-            $player->getStatesMap()->bar = "§6ВЫ ОГЛУШЕНЫ!";
-
-            return false;
+        if (!$event->getEntity() instanceof MineParkPlayer) {
+            return;
         }
-        
-        return $this->checkPvp($player, $damager);
+
+        $damager = null;
+
+        if ($event instanceof EntityDamageByEntityEvent) {
+            $damager = $event->getDamager();
+
+            $this->checkForStunning($event);
+        }
+
+        if ($event->isCancelled()) {
+            return;
+        }
+
+        $this->checkForPlayerKilling($event->getFinalDamage(), $event->getEntity(), $damager);
     }
 
-    public function kill(MineParkPlayer $player, ?Entity $damager) : bool
+    private function checkForStunning(EntityDamageByEntityEvent $event)
     {
-        Providers::getMapProvider()->teleportPoint($player, MapConstants::POINT_NAME_HOSPITAL);
+        if (!$event->getDamager() instanceof MineParkPlayer or !$event->getEntity() instanceof MineParkPlayer) {
+            return;
+        }
 
-        $player->addEffect(new EffectInstance(Effect::getEffect(2), 5000, 1));
-        $player->addEffect(new EffectInstance(Effect::getEffect(18), 5000, 1));
-        $player->addEffect(new EffectInstance(Effect::getEffect(19), 5000, 1));
-        $player->setHealth(4);
+        $damager = MineParkPlayer::cast($event->getDamager());
+        $player = MineParkPlayer::cast($event->getEntity());
 
-        $player->sendMessage("§6Вы очнулись после ". $this->getRandomReason() . ".");
-        $player->sendMessage("§6Срочно найдите доктора!");
-        $player->sendMessage("§dЕсли на Вас напали, вызовите полицию: /c 02");
-
-        $player->sleepOn($player->getPosition()->subtract(0, 1, 0));
+        if ($damager->getProfile()->organisation === Organisations::SECURITY_WORK and $damager->getInventory()->getItemInHand()->getId() === Item::STICK) {
+            $this->processStunAction($player, $damager);
+        }
         
+        $event->setCancelled($this->canPlayerHurt($player, $damager));
+    }
+
+    private function checkForPlayerKilling(int $finalDamage, MineParkPlayer $victim, ?Entity $damager)
+    {
+        if ($victim->getHealth() > $finalDamage) {
+            return;
+        }
+
+        Providers::getMapProvider()->teleportPoint($victim, MapConstants::POINT_NAME_HOSPITAL);
+
+        $victim->addEffect(new EffectInstance(Effect::getEffect(2), 5000, 1));
+        $victim->addEffect(new EffectInstance(Effect::getEffect(18), 5000, 1));
+        $victim->addEffect(new EffectInstance(Effect::getEffect(19), 5000, 1));
+        $victim->setHealth(4);
+
+        $victim->sendMessage("§6Вы очнулись после ". $this->getRandomDeathReason() . ".");
+        $victim->sendMessage("§6Срочно найдите доктора!");
+        $victim->sendMessage("§dЕсли на Вас напали, вызовите полицию: /c 02");
+
+        $victim->sleepOn($victim->getPosition()->subtract(0, 1, 0));
+
+        $this->broadcastPlayerDeath($victim, $damager);
+    }
+
+    private function processStunAction(MineParkPlayer $victim, MineParkPlayer $policeMan)
+    {
+        $this->gameChat->sendLocalMessage($policeMan, "§8(§dв руках дубинка-электрошокер§8)", "§d : ", 10);
+        $this->gameChat->sendLocalMessage($victim, "§8(§dлежит на полу | ослеплен§8)", "§d : ", 12);
+        
+        $this->getCore()->getApi()->changeAttr($victim, Api::ATTRIBUTE_WANTED);
+
+        $victim->setImmobile(true);
+        $victim->getStatesMap()->bar = "§6ВЫ ОГЛУШЕНЫ!";
+    }
+
+    private function broadcastPlayerDeath(MineParkPlayer $victim, ?Entity $damager)
+    {
+        if (isset($damager) and $damager instanceof MineParkPlayer) {
+            $message = "§7[§6!§7] PvP : §c" . $damager->getName() . " убил " . $victim->getName();
+        } else {
+            $message = "§7[§6!§7] Kill : §c"." игрок  " . $victim->getName()." умер..";
+        }
+
         foreach($this->getCore()->getServer()->getOnlinePlayers() as $onlinePlayer) {
-            if($onlinePlayer->hasPermission(Permissions::ADMINISTRATOR)) {
-                if($damager instanceof MineParkPlayer) {
-                    $onlinePlayer->sendMessage("§7[§6!§7] PvP : §c" . $damager->getName() . " убил " . $player->getName());
-                } else {
-                    $onlinePlayer->sendMessage("§7[§6!§7] Kill : §c"." игрок  " . $player->getName()." умер..");
-                }
+            $onlinePlayer = MineParkPlayer::cast($onlinePlayer);
+
+            if ($onlinePlayer->isAdministrator()) {
+                $onlinePlayer->sendMessage($message);
             }
         }
-
-        return true;
     }
 
-    private function checkPvp(MineParkPlayer $player, MineParkPlayer $damager) : bool
+    private function canPlayerHurt(MineParkPlayer $player, MineParkPlayer $damager) : bool
     {
-        if($damager->getStatesMap()->damageDisabled) {
+        if ($damager->getStatesMap()->damageDisabled) {
             $damager->sendMessage("§6PvP режим недоступен!");
             return true;
         }
         
-        foreach($this->getConfig()->getAll(true) as $name) {
+        foreach($this->getConfig()->getAll() as $name) {
             $x1 = $this->getConfig()->getNested("$name.pos1.x");
             $y1 = $this->getConfig()->getNested("$name.pos1.y");
             $z1 = $this->getConfig()->getNested("$name.pos1.z");
@@ -102,10 +155,10 @@ class Damager extends Component
             $y = floor($player->getY());
             $z = floor($player->getZ());
 
-            if($this->getCore()->getApi()->interval($x,$x1,$x2) 
-                and $this->getCore()->getApi()->interval($y,$y1,$y2) 
-                    and $this->getCore()->getApi()->interval($z,$z1,$z2)) {
-                $damager->sendMessage("§aВы находитесь в зеленой зоне! Здесь безопасно!");
+            if($this->getCore()->getApi()->interval($x ,$x1, $x2) 
+                and $this->getCore()->getApi()->interval($y, $y1, $y2) 
+                    and $this->getCore()->getApi()->interval($z, $z1 , $z2)) {
+                $damager->sendMessage("§aВы находитесь в зеленой зоне! Здесь нельзя бить игроков!");
                 return true;
             }
         }
@@ -113,7 +166,7 @@ class Damager extends Component
         return false;
     }
 
-    private function getRandomReason() : string
+    private function getRandomDeathReason() : string
     {
         return $this->reasons[mt_rand(0, count($this->reasons) - 1)];
     }
