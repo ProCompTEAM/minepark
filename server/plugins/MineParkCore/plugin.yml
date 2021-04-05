@@ -132,6 +132,9 @@ commands:
  t:
   default: op
   permissions: minepark.all
+ emulate:
+  default: true
+  permissions: minepark.all
 
 permissions:
   minepark.service:

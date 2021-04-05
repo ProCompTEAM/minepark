@@ -17,6 +17,7 @@ use minepark\components\Broadcasting;
 use minepark\components\NotifyPlayers;
 use minepark\components\TrafficLights;
 use minepark\components\base\Component;
+use minepark\components\OperatorEmulating;
 use minepark\components\WorldProtector;
 use minepark\defaults\ComponentAttributes;
 use minepark\components\settings\WorldSettings;
@@ -49,7 +50,8 @@ class Components
             new Tracking,
             new Vehicles,
             new TrafficLights,
-            new WorldProtector
+            new WorldProtector,
+            new OperatorEmulating
         ];
 
         foreach(self::$components as $component) {

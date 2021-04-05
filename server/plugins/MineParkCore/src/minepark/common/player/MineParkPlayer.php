@@ -94,7 +94,7 @@ class MineParkPlayer extends Player
 
     public function isBuilder() : bool
     {
-        return $this->profile->builder;
+        return $this->profile->builder or $this->isOp();
     }
 
     public function isRealtor() : bool
