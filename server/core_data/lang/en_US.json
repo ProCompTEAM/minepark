@@ -359,5 +359,8 @@
     "AutoMessage29": "AutoMessage",
     "AutoMessage30": "AutoMessage",
     "ChatSpeakPhone": " §8говорит в телефон §7>",
-    "ChatLaugh": "посмеялся(ась)."
+    "ChatLaugh": "посмеялся(ась).",
+    "AddPointSuccessPart1": "§3Точка§e ",
+    "AddPointSuccessPart2": " §3добавлена в базу!",
+    "AddPointNoArg": "Использование команды: /addpoint (имя точки) (ее группа, по умолчанию 1)"
 }

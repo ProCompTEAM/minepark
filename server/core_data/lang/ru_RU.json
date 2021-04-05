@@ -58,7 +58,9 @@
 
 
     "AddPointNoGroup": "Группа указана неверно",
-    "AddPoint": "§3Точка§e $param1 §3добавлена в базу!",
+    "AddPointSuccessPart1": "§3Точка§e ",
+    "AddPointSuccessPart2": " §3добавлена в базу!",
+    "AddPointNoArg": "Использование команды: /addpoint (имя точки) (ее группа, по умолчанию 1)",
 
     "CommangGPSnoXZ": "§cУказана неверная позиция X Z",
     "CommandGPSPath1": "§aМаршрут к указанной точке проложен;",
