@@ -1,12 +1,12 @@
 <?php
-namespace minepark\models\vehicles;
+namespace minepark\components\vehicles\models;
 
-use minepark\models\vehicles\base\BaseCar;
 use pocketmine\level\Level;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
+use minepark\components\vehicles\models\base\BaseCar;
 
-class Car2 extends BaseCar
+class GuestCar2 extends BaseCar
 {
     public const NETWORK_ID = self::VILLAGER;
 

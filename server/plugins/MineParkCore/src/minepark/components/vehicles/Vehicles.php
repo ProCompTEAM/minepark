@@ -1,23 +1,22 @@
 <?php
-namespace minepark\components;
+namespace minepark\components\vehicles;
 
-use minepark\common\player\MineParkPlayer;
-use minepark\components\base\Component;
-use minepark\defaults\ComponentAttributes;
-use minepark\defaults\EventList;
 use minepark\Events;
-use minepark\models\vehicles\base\BaseCar;
-use minepark\models\vehicles\BaseVehicle;
-use minepark\models\vehicles\Car1;
-use minepark\models\vehicles\Car2;
-use minepark\models\vehicles\Car3;
-use minepark\models\vehicles\Car4;
-use minepark\models\vehicles\TaxiCar;
-use pocketmine\event\player\PlayerQuitEvent;
-use pocketmine\event\server\DataPacketReceiveEvent;
 use pocketmine\level\Level;
 use pocketmine\math\Vector3;
+use minepark\defaults\EventList;
+use minepark\components\base\Component;
+use minepark\common\player\MineParkPlayer;
+use minepark\defaults\ComponentAttributes;
+use pocketmine\event\player\PlayerQuitEvent;
+use pocketmine\event\server\DataPacketReceiveEvent;
 use pocketmine\network\mcpe\protocol\InteractPacket;
+use minepark\components\vehicles\models\base\BaseCar;
+use minepark\components\vehicles\models\GuestCar1;
+use minepark\components\vehicles\models\GuestCar2;
+use minepark\components\vehicles\models\GuestCar3;
+use minepark\components\vehicles\models\GuestCar4;
+use minepark\components\vehicles\models\TaxiCar;
 use pocketmine\network\mcpe\protocol\PlayerInputPacket;
 
 class Vehicles extends Component
@@ -115,10 +114,10 @@ class Vehicles extends Component
     private function loadVehicles()
     {
         $this->vehicles = [
-            "car1" => Car1::class,
-            "car2" => Car2::class,
-            "car3" => Car3::class,
-            "car4" => Car4::class,
+            "car1" => GuestCar1::class,
+            "car2" => GuestCar2::class,
+            "car3" => GuestCar3::class,
+            "car4" => GuestCar4::class,
             "taxi" => TaxiCar::class
         ];
 

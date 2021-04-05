@@ -1,9 +1,9 @@
 <?php
 namespace minepark\models\player;
 
-use minepark\common\player\MineParkPlayer;
-use minepark\models\vehicles\base\BaseCar;
 use pocketmine\level\Position;
+use minepark\common\player\MineParkPlayer;
+use minepark\components\vehicles\models\base\BaseCar;
 
 class StatesMap
 {
