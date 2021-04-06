@@ -54,7 +54,7 @@ class AddPointCommand extends Command
 
         $this->mapProvider->addPoint($player->getPosition(), $pointName, $pointType);
         
-        $player->sendMessage("AddPoint");
+        $player->sendLocalizedMessage("{AddPointSuccessPart1}$pointName{AddPointSuccessPart2}");
     }
 }
 ?>
