@@ -6,11 +6,7 @@ scorehud-version: 1
 # Changing titles of the scoreboard.
 # Can be of any number.
 server-names:
-- "§l§a-=MC§ePE=-"
-- "§l§1MINEPARK.RU"
-- "§l§6-=MC§dPE=-"
-- "§l§3vk.com/mcperp"
-- "§l§6MINEPARK.RU"
+- ""
 
 # Note: You can find links to the required/supported plugins via the README.md.
 # IMPORTANT NOTE: You can only set a maximum of 15 lines and no more.
