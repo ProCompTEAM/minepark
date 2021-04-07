@@ -1,14 +1,12 @@
 <?php
-namespace minepark\components;
+namespace minepark\components\map;
 
-use minepark\Core;
 use minepark\Tasks;
-use minepark\utils\CallbackTask;
 use minepark\defaults\TimeConstants;
 use minepark\components\base\Component;
 use minepark\defaults\ComponentAttributes;
 
-class GPS extends Component
+class Navigation extends Component
 {
     public $level;
     

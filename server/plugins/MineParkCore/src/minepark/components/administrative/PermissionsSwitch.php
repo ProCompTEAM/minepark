@@ -1,5 +1,5 @@
 <?php
-namespace minepark\components;
+namespace minepark\components\administrative;
 
 use minepark\Providers;
 use minepark\components\base\Component;
@@ -9,7 +9,7 @@ use minepark\defaults\ComponentAttributes;
 use pocketmine\form\Form;
 use jojoe77777\FormAPI\CustomForm;
 
-class OperatorEmulating extends Component
+class PermissionsSwitch extends Component
 {
     private const FORM_TOGGLE_OP = 0;
 
@@ -66,7 +66,7 @@ class OperatorEmulating extends Component
 
         $profile = $player->getProfile();
 
-        $form->setTitle("§eНастройка Эмуляции");
+        $form->setTitle("§eНастройка разрешений");
         $form->addToggle("§eOP", $player->isOp());
         $form->addToggle("§eАдминистратор", $profile->administrator);
         $form->addToggle("§eСтроитель", $profile->builder);

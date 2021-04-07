@@ -1,5 +1,5 @@
 <?php
-namespace minepark\components;
+namespace minepark\components\administrative;
 
 use minepark\common\player\MineParkPlayer;
 use minepark\components\base\Component;

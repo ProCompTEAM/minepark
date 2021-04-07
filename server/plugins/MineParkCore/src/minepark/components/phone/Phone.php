@@ -1,5 +1,5 @@
 <?php
-namespace minepark\components;
+namespace minepark\components\phone;
 
 use minepark\Tasks;
 
@@ -7,12 +7,14 @@ use minepark\Events;
 
 use minepark\Providers;
 use minepark\Components;
+
 use pocketmine\math\Vector3;
 use minepark\defaults\EventList;
 use minepark\utils\ArraysUtility;
 use minepark\defaults\MapConstants;
 use minepark\providers\MapProvider;
 use minepark\defaults\TimeConstants;
+use minepark\components\chat\GameChat;
 use minepark\components\base\Component;
 use minepark\providers\BankingProvider;
 use minepark\common\player\MineParkPlayer;

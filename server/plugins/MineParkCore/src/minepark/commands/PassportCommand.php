@@ -9,7 +9,7 @@ use minepark\defaults\Permissions;
 use minepark\commands\base\Command;
 use minepark\common\player\MineParkPlayer;
 use minepark\Components;
-use minepark\components\GameChat;
+use minepark\components\chat\GameChat;
 use minepark\components\organisations\Organisations;
 use minepark\defaults\PlayerAttributes;
 use minepark\providers\ProfileProvider;

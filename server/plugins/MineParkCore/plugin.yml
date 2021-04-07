@@ -132,7 +132,10 @@ commands:
  t:
   default: op
   permissions: minepark.all
- emulate:
+ switch:
+  default: true
+  permissions: minepark.all
+ q:
   default: true
   permissions: minepark.all
 

@@ -9,7 +9,7 @@ use minepark\defaults\Permissions;
 use pocketmine\event\Event;
 use minepark\commands\base\Command;
 use minepark\Components;
-use minepark\components\Phone;
+use minepark\components\phone\Phone;
 
 class SmsCommand extends Command
 {

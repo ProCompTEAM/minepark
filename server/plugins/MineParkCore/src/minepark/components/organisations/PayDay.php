@@ -1,5 +1,5 @@
 <?php
-namespace minepark\components;
+namespace minepark\components\organisations;
 
 use minepark\Tasks;
 use minepark\Providers;

@@ -7,17 +7,17 @@ use pocketmine\event\Event;
 use minepark\defaults\Permissions;
 use minepark\commands\base\Command;
 use minepark\Components;
-use minepark\components\Reporting;
+use minepark\components\administrative\Reports;
 
 class CloseCommand extends Command
 {
     public const CURRENT_COMMAND = "close";
 
-    private Reporting $reporting;
+    private Reports $reports;
 
     public function __construct()
     {
-        $this->reporting = Components::getComponent(Reporting::class);
+        $this->reports = Components::getComponent(Reports::class);
     }
 
     public function getCommand() : array
@@ -42,7 +42,7 @@ class CloseCommand extends Command
             return;
         }
             
-        $response = $this->reporting->closeReport(intval($args[0]));
+        $response = $this->reports->closeReport(intval($args[0]));
 
         if (!$response) {
             $player->sendMessage("ReportCloseNoID");

@@ -22,7 +22,7 @@ use pocketmine\event\player\PlayerCreationEvent;
 use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\event\player\PlayerPreLoginEvent;
 use minepark\components\organisations\Organisations;
-use minepark\components\Tracking;
+use minepark\components\administrative\Tracking;
 use minepark\providers\ProfileProvider;
 
 class PlayerSettings extends Component

@@ -17,7 +17,6 @@ use minepark\commands\NightCommand;
 use minepark\commands\CasinoCommand;
 use minepark\commands\DonateCommand;
 use minepark\commands\OnlineCommand;
-use minepark\commands\EmulateCommand;
 use minepark\commands\JailExitCommand;
 use minepark\commands\PassportCommand;
 use minepark\commands\AnimationCommand;
@@ -58,6 +57,7 @@ use minepark\commands\organisations\NoFireCommand;
 use minepark\commands\organisations\RemoveCommand;
 use minepark\commands\organisations\GiveLicCommand;
 use minepark\commands\organisations\ChangeNameCommand;
+use minepark\commands\permissions\SwitchCommand;
 
 class Commands
 {
@@ -125,7 +125,7 @@ class Commands
             new DayCommand,
             new NightCommand,
             new TransportCommand,
-            new EmulateCommand
+            new SwitchCommand
         ];
     }
 

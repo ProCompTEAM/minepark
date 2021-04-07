@@ -1,28 +1,31 @@
 <?php
-namespace minepark\commands;
+namespace minepark\commands\permissions;
 
 use minepark\commands\base\Command;
 use minepark\common\player\MineParkPlayer;
 use minepark\Components;
-use minepark\components\OperatorEmulating;
+use minepark\components\administrative\PermissionsSwitch;
 use minepark\defaults\Permissions;
 use pocketmine\event\Event;
 
-class EmulateCommand extends Command
+class SwitchCommand extends Command
 {
-    private const COMMAND_NAME = "emulate";
+    private const COMMAND_NAME = "switch";
 
-    private OperatorEmulating $operatorEmulating;
+    private const COMMAND_ALIAS = "q";
+
+    private PermissionsSwitch $permissionsSwitch;
 
     public function __construct()
     {
-        $this->operatorEmulating = Components::getComponent(OperatorEmulating::class);
+        $this->permissionsSwitch = Components::getComponent(PermissionsSwitch::class);
     }
 
     public function getCommand(): array
     {
         return [
-            self::COMMAND_NAME
+            self::COMMAND_NAME,
+            self::COMMAND_ALIAS
         ];
     }
 
@@ -35,17 +38,17 @@ class EmulateCommand extends Command
 
     public function execute(MineParkPlayer $player, array $args = array(), ?Event $event = null)
     {
-        if(!$this->canEmulate($player)) {
+        if(!$this->canSwitch($player)) {
             $player->sendMessage("§eВы не имеете доступа к данной команде");
             return;
         }
 
-        $player->sendForm($this->operatorEmulating->generateForm($player));
+        $player->sendForm($this->permissionsSwitch->generateForm($player));
     }
 
-    private function canEmulate(MineParkPlayer $player)
+    private function canSwitch(MineParkPlayer $player)
     {
-        return $player->isOp() or $this->operatorEmulating->isOperator($player->getName());
+        return $player->isOp() or $this->permissionsSwitch->isOperator($player->getName());
     }
 }
 ?>
