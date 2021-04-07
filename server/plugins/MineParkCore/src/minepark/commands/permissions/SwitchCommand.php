@@ -10,9 +10,7 @@ use pocketmine\event\Event;
 
 class SwitchCommand extends Command
 {
-    private const COMMAND_NAME = "switch";
-
-    private const COMMAND_ALIAS = "q";
+    private const COMMAND_NAME = "q";
 
     private PermissionsSwitch $permissionsSwitch;
 
@@ -24,8 +22,7 @@ class SwitchCommand extends Command
     public function getCommand(): array
     {
         return [
-            self::COMMAND_NAME,
-            self::COMMAND_ALIAS
+            self::COMMAND_NAME
         ];
     }
 

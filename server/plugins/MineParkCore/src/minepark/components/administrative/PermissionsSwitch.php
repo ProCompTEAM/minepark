@@ -33,8 +33,7 @@ class PermissionsSwitch extends Component
     public function getAttributes(): array
     {
         return [
-            ComponentAttributes::SHARED,
-            ComponentAttributes::STANDALONE
+            ComponentAttributes::SHARED
         ];
     }
 
@@ -45,12 +44,12 @@ class PermissionsSwitch extends Component
 
     public function isOperator(string $subjectName) : bool
     {
-        return isset($this->getOperators()[$subjectName]);
+        return in_array($subjectName, $this->getOperators());
     }
 
     public function addOperator(string $subjectName)
     {
-        $this->operators[$subjectName] = true;
+        $this->operators[] = $subjectName;
     }
 
     public function removeOperator(string $subjectName)
@@ -99,7 +98,7 @@ class PermissionsSwitch extends Component
 
         $this->profileProvider->saveProfile($player);
 
-        $player->kick("§eПерезайдите на сервер, что бы изменения применились.");
+        $player->kick("§eПерезайдите на сервер");
     }
 }
 ?>
