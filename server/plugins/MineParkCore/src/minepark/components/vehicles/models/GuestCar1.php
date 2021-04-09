@@ -1,12 +1,12 @@
 <?php
-namespace minepark\models\vehicles;
+namespace minepark\components\vehicles\models;
 
-use minepark\models\vehicles\base\BaseCar;
 use pocketmine\level\Level;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
+use minepark\components\vehicles\models\base\BaseCar;
 
-class Car4 extends BaseCar
+class GuestCar1 extends BaseCar
 {
     public const NETWORK_ID = self::VILLAGER;
 
@@ -16,7 +16,7 @@ class Car4 extends BaseCar
     {
         parent::__construct($level, $nbt);
 
-        $this->setVillagerProfession(4);
+        $this->setVillagerProfession(1);
     }
 
     public function getLeftSpeed() : float
@@ -51,7 +51,7 @@ class Car4 extends BaseCar
 
     public function getMaxSpeed() : float
     {
-        return 0.8;
+        return 0.65;
     }
 
     public function getReduceMaxSpeed(): float
@@ -61,7 +61,7 @@ class Car4 extends BaseCar
 
     public function getCost(): float
     {
-        return 40.0;
+        return 10.0;
     }
 
     public function getDriverSeatPosition() : Vector3

@@ -1,5 +1,5 @@
 <?php
-namespace minepark\components;
+namespace minepark\components\administrative;
 
 use pocketmine\Server;
 
@@ -8,7 +8,7 @@ use minepark\components\base\Component;
 use minepark\common\player\MineParkPlayer;
 use minepark\defaults\ComponentAttributes;
 
-class Reporting extends Component
+class Reports extends Component
 {
     public $playerReports;
 

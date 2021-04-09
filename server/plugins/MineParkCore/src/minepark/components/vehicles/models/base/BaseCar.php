@@ -1,5 +1,5 @@
 <?php
-namespace minepark\models\vehicles\base;
+namespace minepark\components\vehicles\models\base;
 
 use minepark\Providers;
 use pocketmine\block\Block;
@@ -25,6 +25,8 @@ abstract class BaseCar extends Vehicle
     public $height = 1.0;
 
     public $baseOffset = 0.0;
+
+    public $stepHeight = 1;
 
     protected ?MineParkPlayer $driver;
     protected ?MineParkPlayer $passenger;
@@ -146,8 +148,10 @@ abstract class BaseCar extends Vehicle
     {
         // check if this entity is being attacked by player
         if ($event instanceof EntityDamageByEntityEvent) {
-            $this->handleInteract($event->getDamager());
-            return;
+            if ($event->getDamager() instanceof MineParkPlayer) {
+                $this->handleInteract($event->getDamager());
+                return;
+            }
         }
 
         parent::attack($event);
@@ -298,24 +302,6 @@ abstract class BaseCar extends Vehicle
         }
     }
 
-    public function getBlockForward(Vector3 $directionVector) : ?Block
-    {
-        $vector3 = $this->asVector3()->add($directionVector->getX(), $directionVector->getY(), $directionVector->getZ());
-
-        $block1 = $this->getLevel()->getBlock($vector3, false, false);
-        $block2 = $this->getLevel()->getBlock($vector3->add(0, 1, 0), false, false);
-
-        if ($block1->getId() === Block::TALL_GRASS) {
-            return null;
-        }
-        
-        if ($block2->getId() !== Block::TALL_GRASS and !$block2->canPassThrough()) {
-            return null;
-        }
-
-        return !$block1->canPassThrough() ? $block1 : null;
-    }
-
     // more lightweight function for pmmp
     public function getBlocksAround() : array
     {
@@ -455,12 +441,6 @@ abstract class BaseCar extends Vehicle
         $motionX = $motion->getX() * $this->speed;
         $motionY = $motion->getY();
         $motionZ = $motion->getZ() * $this->speed;
-
-        $block = $this->getBlockForward($motion);
-
-        if (isset($block)) {
-            $motionY += 2.5;
-        }
 
         $this->motion = new Vector3($motionX, $motionY, $motionZ);
     }

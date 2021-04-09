@@ -1,5 +1,5 @@
 <?php
-namespace minepark\components;
+namespace minepark\components\map;
 
 use minepark\Tasks;
 use minepark\Providers;
@@ -8,7 +8,7 @@ use minepark\defaults\TimeConstants;
 use minepark\components\base\Component;
 use minepark\providers\MapProvider;
 
-class NotifyPlayers extends Component
+class PlayersLocation extends Component
 {
     private MapProvider $mapProvider;
 

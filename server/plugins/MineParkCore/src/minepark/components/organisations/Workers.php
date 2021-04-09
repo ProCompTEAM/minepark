@@ -10,7 +10,7 @@ use pocketmine\entity\EffectInstance;
 use minepark\common\player\MineParkPlayer;
 use minepark\Components;
 use minepark\components\base\Component;
-use minepark\components\GameChat;
+use minepark\components\chat\GameChat;
 use minepark\defaults\ComponentAttributes;
 use minepark\defaults\EventList;
 use minepark\defaults\MapConstants;

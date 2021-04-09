@@ -5,7 +5,7 @@ use minepark\Providers;
 use minepark\Components;
 use pocketmine\event\Event;
 use pocketmine\level\Position;
-use minepark\components\GameChat;
+use minepark\components\chat\GameChat;
 use minepark\defaults\Permissions;
 use minepark\commands\base\Command;
 use minepark\defaults\MapConstants;

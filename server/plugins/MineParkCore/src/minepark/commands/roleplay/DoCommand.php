@@ -5,8 +5,8 @@ use minepark\common\player\MineParkPlayer;
 
 use minepark\commands\base\Command;
 use minepark\Components;
-use minepark\components\GameChat;
-use minepark\components\Tracking;
+use minepark\components\chat\GameChat;
+use minepark\components\administrative\Tracking;
 use pocketmine\event\Event;
 
 use minepark\defaults\Permissions;

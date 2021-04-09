@@ -7,9 +7,9 @@ use minepark\Components;
 use pocketmine\event\Event;
 
 use minepark\defaults\Sounds;
-use minepark\components\Phone;
+use minepark\components\phone\Phone;
 use minepark\defaults\Defaults;
-use minepark\components\Tracking;
+use minepark\components\administrative\Tracking;
 use minepark\utils\ArraysUtility;
 use minepark\defaults\Permissions;
 use minepark\commands\base\Command;

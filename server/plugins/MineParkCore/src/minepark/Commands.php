@@ -2,50 +2,51 @@
 namespace minepark;
 
 use pocketmine\event\Event;
+use pocketmine\event\player\PlayerCommandPreprocessEvent;
 use minepark\defaults\EventList;
-use minepark\commands\DayCommand;
+use minepark\defaults\Permissions;
+use minepark\common\player\MineParkPlayer;
 
+use minepark\commands\base\Command;
+use minepark\commands\DayCommand;
 use minepark\commands\PayCommand;
 use minepark\commands\BankCommand;
-use minepark\defaults\Permissions;
-use minepark\commands\base\Command;
 use minepark\commands\LevelCommand;
 use minepark\commands\MoneyCommand;
 use minepark\commands\NightCommand;
 use minepark\commands\CasinoCommand;
 use minepark\commands\DonateCommand;
 use minepark\commands\OnlineCommand;
-use minepark\commands\map\GPSCommand;
 use minepark\commands\JailExitCommand;
 use minepark\commands\PassportCommand;
 use minepark\commands\AnimationCommand;
 use minepark\commands\GetSellerCommand;
-use minepark\commands\phone\SmsCommand;
 use minepark\commands\TransportCommand;
+use minepark\commands\GetOrganisationCommand;
+use minepark\commands\ResetPasswordCommand;
+use minepark\commands\phone\SmsCommand;
 use minepark\commands\phone\CallCommand;
 use minepark\commands\admin\AdminCommand;
 use minepark\commands\map\GPSNearCommand;
 use minepark\commands\map\ToPointCommand;
+use minepark\commands\map\GPSCommand;
+use minepark\commands\map\AddPointCommand;
 use minepark\commands\roleplay\DoCommand;
 use minepark\commands\roleplay\MeCommand;
-use minepark\commands\map\AddPointCommand;
+use minepark\commands\roleplay\TryCommand;
+use minepark\commands\roleplay\WhisperCommand;
+use minepark\commands\roleplay\ShoutCommand;
 use minepark\commands\report\CloseCommand;
 use minepark\commands\report\ReplyCommand;
-use minepark\commands\roleplay\TryCommand;
-use minepark\common\player\MineParkPlayer;
 use minepark\commands\report\ReportCommand;
-use minepark\commands\ResetPasswordCommand;
-use minepark\commands\roleplay\ShoutCommand;
-use minepark\commands\workers\PutBoxCommand;
-use minepark\commands\GetOrganisationCommand;
 use minepark\commands\map\RemovePointCommand;
 use minepark\commands\map\ToNearPointCommand;
+use minepark\commands\workers\PutBoxCommand;
 use minepark\commands\workers\GetFarmCommand;
 use minepark\commands\workers\PutFarmCommand;
 use minepark\commands\workers\TakeBoxCommand;
-use minepark\commands\roleplay\WhisperCommand;
-use minepark\commands\organisations\AddCommand;
 use minepark\commands\base\OrganisationsCommand;
+use minepark\commands\organisations\AddCommand;
 use minepark\commands\organisations\HealCommand;
 use minepark\commands\organisations\InfoCommand;
 use minepark\commands\organisations\SellCommand;
@@ -56,7 +57,7 @@ use minepark\commands\organisations\NoFireCommand;
 use minepark\commands\organisations\RemoveCommand;
 use minepark\commands\organisations\GiveLicCommand;
 use minepark\commands\organisations\ChangeNameCommand;
-use pocketmine\event\player\PlayerCommandPreprocessEvent;
+use minepark\commands\permissions\SwitchCommand;
 
 class Commands
 {
@@ -123,7 +124,8 @@ class Commands
             new BankCommand,
             new DayCommand,
             new NightCommand,
-            new TransportCommand
+            new TransportCommand,
+            new SwitchCommand
         ];
     }
 

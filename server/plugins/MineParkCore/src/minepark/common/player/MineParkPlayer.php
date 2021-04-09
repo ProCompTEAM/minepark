@@ -102,6 +102,11 @@ class MineParkPlayer extends Player
         return $this->profile->realtor;
     }
 
+    public function canBuild() : bool
+    {
+        return $this->isBuilder() or $this->isOp();
+    }
+
     /*
         Common Player Functions
     */

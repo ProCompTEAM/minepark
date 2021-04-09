@@ -9,7 +9,7 @@ use pocketmine\event\Event;
 use minepark\defaults\Permissions;
 use minepark\common\player\MineParkPlayer;
 use minepark\Components;
-use minepark\components\GameChat;
+use minepark\components\chat\GameChat;
 use minepark\components\organisations\Organisations;
 use minepark\defaults\MapConstants;
 

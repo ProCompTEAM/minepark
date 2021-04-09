@@ -2,15 +2,16 @@
 namespace minepark\components;
 
 use minepark\Providers;
+use minepark\Components;
 use pocketmine\item\Item;
 use pocketmine\event\Event;
 use minepark\defaults\MapConstants;
-use minepark\components\base\Component;
-use minepark\common\player\MineParkPlayer;
-use minepark\Components;
-use minepark\defaults\ComponentAttributes;
-use minepark\providers\BankingProvider;
 use minepark\providers\MapProvider;
+use minepark\components\chat\GameChat;
+use minepark\components\base\Component;
+use minepark\providers\BankingProvider;
+use minepark\common\player\MineParkPlayer;
+use minepark\defaults\ComponentAttributes;
 use pocketmine\event\block\SignChangeEvent;
 
 class FastFood extends Component

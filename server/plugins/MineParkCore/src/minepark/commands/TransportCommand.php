@@ -6,7 +6,7 @@ use minepark\defaults\Permissions;
 use minepark\commands\base\Command;
 use minepark\common\player\MineParkPlayer;
 use minepark\Components;
-use minepark\components\Vehicles;
+use minepark\components\vehicles\Vehicles;
 
 class TransportCommand extends Command
 {

@@ -22,7 +22,7 @@ use pocketmine\event\player\PlayerCreationEvent;
 use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\event\player\PlayerPreLoginEvent;
 use minepark\components\organisations\Organisations;
-use minepark\components\Tracking;
+use minepark\components\administrative\Tracking;
 use minepark\providers\ProfileProvider;
 
 class PlayerSettings extends Component
@@ -112,12 +112,12 @@ class PlayerSettings extends Component
     {
         $player = $event->getPlayer();
 
-        if (!$this->isCanActivate($player)) {
-            return;
-        }
-
         if($this->filterItemsAndBlocks($player)) {
             $event->setCancelled();
+        }
+
+        if (!$this->isCanActivate($player)) {
+            return;
         }
 
         if (!$event->isCancelled()) {
@@ -130,15 +130,11 @@ class PlayerSettings extends Component
         $itemId = $player->getInventory()->getItemInHand()->getId();
 
         //CHECK ITEMS > DEFAULT KIT
-        if($itemId == 336) { //336 - phone
+        if($itemId === 336) { //336 - phone
             $player->sendCommand("/c");
-        }
-
-        if($itemId == 340) { //340 - passport
+        } else if($itemId === 340) { //340 - passport
             $player->sendCommand("/doc");
-        }
-
-        if($itemId == 405) { //405 - gps
+        } else if($itemId === 405) { //405 - gps
             $player->sendCommand("/gps");
         }
     }
@@ -258,11 +254,11 @@ class PlayerSettings extends Component
     {
         $itemId = $player->getInventory()->getItemInHand()->getId();
 
-        if (!$player->isBuilder() and in_array($itemId, ItemConstants::getRestrictedItemsNonBuilder())) {
+        if(!$player->canBuild() and in_array($itemId, ItemConstants::getRestrictedItemsNonBuilder())) {
             return true;
         }
 
-        if (in_array($itemId, ItemConstants::getGunItemIds())) {
+        if(in_array($itemId, ItemConstants::getGunItemIds())) {
             return true;
         }
 

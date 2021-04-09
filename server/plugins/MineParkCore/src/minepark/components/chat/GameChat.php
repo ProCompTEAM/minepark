@@ -1,13 +1,15 @@
 <?php
-namespace minepark\components;
+namespace minepark\components\chat;
 
 use minepark\Events;
-use minepark\defaults\EventList;
 use minepark\Providers;
+use minepark\Components;
+use minepark\components\phone\Phone;
+use minepark\defaults\EventList;
+use minepark\components\administrative\Tracking;
 use minepark\defaults\ChatConstants;
 use minepark\components\base\Component;
 use minepark\common\player\MineParkPlayer;
-use minepark\Components;
 use minepark\defaults\ComponentAttributes;
 use pocketmine\event\player\PlayerChatEvent;
 

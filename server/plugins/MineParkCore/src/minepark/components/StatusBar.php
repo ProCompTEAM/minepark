@@ -21,7 +21,7 @@ class StatusBar extends Component
     public function updateAll()
     {
         foreach($this->getServer()->getOnlinePlayers() as $player) {
-            if($player->getStatesMap()->bar != null) {
+            if(isset($player->getStatesMap()->bar)) {
                 $player->sendTip($player->getStatesMap()->bar);
             }
         }

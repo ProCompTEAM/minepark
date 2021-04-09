@@ -132,6 +132,12 @@ commands:
  t:
   default: op
   permissions: minepark.all
+ switch:
+  default: true
+  permissions: minepark.all
+ q:
+  default: true
+  permissions: minepark.all
 
 permissions:
   minepark.service:
