@@ -162,10 +162,6 @@ namespace MDC.Infrastructure.Services
             {
                 Name = userName,
                 FullName = CreateFullName(userName),
-                Level = string.Empty,
-                X = 0,
-                Y = 0,
-                Z = 0,
                 Organisation = 0,
                 Bonus = 3,
                 MinutesPlayed = 0,
