@@ -33,18 +33,6 @@ namespace MDC.Data.Models
         [Unicode(Defaults.DefaultLongStringLength)]
         public string Tag { get; set; }
 
-        [Required, Unicode(Defaults.DefaultStringLength)]
-        public string Level { get; set; }
-
-        [Required]
-        public double X { get; set; }
-
-        [Required]
-        public double Y { get; set; }
-
-        [Required]
-        public double Z { get; set; }
-
         [Required]
         public int Organisation { get; set; }
 

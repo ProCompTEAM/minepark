@@ -19,14 +19,6 @@ class UserDto extends BaseDto
 
     public ?string $tag;
 
-    public string $level;
-
-    public float $x;
-
-    public float $y;
-
-    public float $z;
-
     public int $organisation;
 
     public int $bonus;
