@@ -1,9 +1,0 @@
-name: GunsPlugin
-main: Lolya\MainClass
-version: 1.0
-api: 3.1.16
-author: MCRPG Team
-
-commands:
-    guns:
-        default: true

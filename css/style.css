@@ -1,0 +1,29 @@
+body {
+	margin: 0; /*внешний отступ 0*/
+	padding: 0; /*внутриние отступы на 0*/
+	font-family: sans-serif; /*одключение шрифта*/
+	background: #9CCABABB;  /*фоновый цвет body*/
+
+}
+
+.button {
+	background: #2ecc10; /*зеленоватый фон*/
+	display: block; /*расположение блочное*/
+	margin: 20px auto; /*выравнивание блока по центру*/
+	text-align: center; /*расположение текста по центру*/
+	border: 2px solid #2ecc71; /*радиус на 2px сплошной линией и цвета светло-зелёного*/
+	padding: 14px 40px; /*внутриние отступы с лева на 14px, с верху 40px */
+	width: 200px; /*ширина кнопки 200px*/
+	outline: none; /*контур на none*/
+	color: white; /*цвет текста белый*/
+	border-radius: 24px; /*радиус 24 px*/
+	transition: 0.50s; /*задержка на 5 секунд*/
+	cursor: pointer; /*курсор мишы на нажимающий*/
+	position: absolute; /*лбсолютное положение*/
+	top: 50% ; /*с верху 50%*/
+	left: 50%; /*с лева 50%*/
+}
+
+.button:hover {
+	background: #2ecc71; /*при нажатии зеленоватый цвет*/
+}

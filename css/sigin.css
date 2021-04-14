@@ -1,0 +1,88 @@
+body {
+	margin: 0; /*отступы снаружи 0*/
+	padding: 0; /*отступы в нутри 0*/
+	font-family: sans-serif; /*подключение шрифта*/
+	background: #9CCABABB; /*фоновый цвет сероватый*/
+
+}
+
+.box {
+	width: 300px; /*ширина 300px*/
+	padding: 40px; /*отступ с нутри (со всех сторон) 40px*/
+	position: absolute; /*обсолютная позиция*/
+	top: 50%; /*отступ с верху 50%*/
+	left: 50%; /*отступ с лева 50%*/
+	transform: translate(-50%, -50%);
+	background: #191911; /*фон блока черноватый*/
+	text-align: center; /*текст по центру*/
+	border-radius: 10px; /*радиус закругления 10px*/
+}
+
+.box:hover {
+	width: 300px; /*ширина при нажатии 300px*/
+	padding: 40px; /*отступы 40px*/
+	position: absolute; /*обсалютная позиция*/
+	top: 50%; /*с верху 50%*/
+	left: 50%; /*с лева 50%*/
+	transform: translate(-50%, -50%); 
+	text-align: center; /*текст по центру*/
+	box-shadow: 2px 2px 20px 2px black; 
+	transition: 0.50s; /*задержка 5 секунд*/
+}
+
+.box h1{
+	color: #CBC1C191; /*цвет текста в блоке сероватый*/
+	font-weight: 500px; /*толщина шрифта 500px*/
+	text-transform: uppercase; /*текст перевести в заглавные буквы*/
+}
+
+.but {
+	border: 0; /**/
+	background: none; /*фоновый цвет отсуствует*/
+	display: block; /*блок - блочный*/
+	margin: 20px auto; /*выравнивание по центру*/
+	text-align: center; /*расположение текста по центру*/
+	border: 2px solid #33DB79B4; /*закругления 2px, сплошная линия и цвет светло-зелёный*/
+	padding: 14px 10px; /*внутриние отступы с лева 14px и с верху 10px */
+	width: 200px; /*ширина блока 200px*/
+	outline: none; /*контур отсуствует*/
+	color: white; /*цвет текста белый*/
+	border-radius: 24px; /*радиус закругления 24px*/
+	transition: 0.50s; /*задержка на 5 секунд*/
+}
+
+
+.but:focus { 
+	width: 260px; /*ширина при фокусе (при нажатии) 260px*/ 
+	border-color: #33DB79B4; /*цвет обводки зеленоватый*/
+}
+
+.button{
+	background: none; /*цвет фона отключить*/
+	margin: 20px auto; /*выравнивание по центру*/
+	text-align: center; /*текст по центру*/
+	border: 2px solid #33DB79B4; /*закругление на 2px сплошной на зелёный цвет*/
+	padding: 14px 40px; /*внутрение отступы с лева 14px, с верху 40px*/
+	width: 200px; /*ширина 200px*/
+	outline: none; /*контур отсуствует*/
+	color: #fff; /*цвет текста белый*/
+	transition: 0.5s; /*задержка на 5 секунд*/
+	cursor: pointer; /*курсор изменить на нажатый*/
+	border-radius: 10px; /*закругление на 10px*/
+}
+
+.button:hover{
+	background-color: #0FEF5FC2; /*при нажатии изменить цвет фона на зеленоватый*/
+	transition: 0.50s; /*задержка на 5 секунд*/
+	border-radius: 30px; /*закругление на 30px*/
+
+}
+
+a{
+	text-decoration: none; /*отключение декарация*/
+}
+
+a:hover{
+	color: red; /*при наведении менять цвет на крастный*/
+
+}
