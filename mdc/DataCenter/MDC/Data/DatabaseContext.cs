@@ -20,6 +20,8 @@ namespace MDC.Data
 
         public DbSet<MoneyTransactionAuditRecord> MoneyTransactionAuditRecords { get; set; }
 
+        public DbSet<FloatingText> FloatingTexts { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if(!MDCDatabase.IsInitialized)
