@@ -1,0 +1,78 @@
+name: SmartCommands
+main: Kirill_Poroh\SmartCommands
+version: 1.0
+api: 3.1.16
+author: Kirill_Poroh
+
+
+commands:
+ coffee:
+  default: op
+  permissions: sc.command.ef
+ pos:
+  default: op
+  permissions: sc.command.pos
+ v:
+  default: op
+  permissions: sc.command.v
+ cc:
+  default: op
+  permissions: sc.command.cc
+ free:
+  default: op
+  permissions: sc.command.free
+ freeze:
+  default: op
+  permissions: sc.command.freeze
+ unfreeze:
+  default: op
+  permissions: sc.command.freeze
+ burn:
+  default: op
+  permissions: sc.command.burn
+ invsee:
+  default: op
+  permissions: sc.command.invsee
+ timeban:
+  default: op
+  permissions: sc.command.timeban
+ see:
+  default: op
+  permissions: sc.command.see
+ getpos:
+  default: op
+  permissions: sc.command.getpos
+ mute:
+  default: op
+  permissions: sc.command.mute
+ unmute:
+  default: op
+  permissions: sc.command.mute
+  
+permissions:
+ sc.command.freeze:
+  default: op
+ sc.command.burn:
+  default: op
+ sc.command.invsee:
+  default: op
+ sc.command.free:
+  default: op
+ sc.command.timeban:
+  default: op
+ sc.command.see:
+  default: op
+ sc.command.cc:
+  default: op
+ sc.command.v:
+  default: op
+ sc.command.feed:
+  default: op
+ sc.command.coffee:
+  default: op
+ sc.command.pos:
+  default: op
+ sc.command.getpos:
+  default: op
+ sc.command.mute:
+  default: op

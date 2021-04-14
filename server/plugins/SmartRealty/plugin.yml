@@ -1,0 +1,20 @@
+﻿name: SmartRealty
+main: SmartRealty\SmartRealty
+version: 1.0
+author: Kirill_Poroh
+api: [3.0.0, 3.0.0-ALPHA1, 3.0.0-ALPHA2, 3.0.0-ALPHA3, 3.0.0-ALPHA4, 3.0.0-ALPHA5, 3.0.0-ALPHA6, 3.0.0-ALPHA12]
+load: POSTWORLD
+website: vk.com/tnull2
+
+commands: 
+ realt:
+  permission: realt.user
+  description: "Команда недвижимости"
+  default: true
+permissions:
+ realt.user: 
+  default: true
+  description: "Право использовать недвижимость"
+ realt.creator: 
+  default: op
+  description: "Право регистрировать недвижимость"

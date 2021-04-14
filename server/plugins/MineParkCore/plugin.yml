@@ -1,0 +1,146 @@
+name: MineParkCore
+main: minepark\Core
+version: 1.0
+api: [3.0.0, 3.0.0-ALPHA13]
+load: POSTWORLD
+website: http://vk.com/tnull2
+
+commands:
+ service:
+  default: op
+  permissions: minepark.service
+ addpoint:
+  default: true
+  permissions: minepark.all
+ rempoint:
+  default: true
+  permissions: minepark.all
+ topoint:
+  default: true
+  permissions: minepark.all
+ tonearpoint:
+  default: true
+  permissions: minepark.all
+ a:
+  default: true
+  permissions: minepark.all
+ lvl:
+  default: true
+  permissions: minepark.all
+ report:
+  default: true
+  permissions: minepark.all
+ reply:
+  default: true
+  permissions: minepark.all
+ close:
+  default: true
+  permissions: minepark.all
+ gpsnear:
+  default: true
+  permissions: minepark.all
+ gps:
+  default: true
+  permissions: minepark.all
+ o:
+  default: true
+  permissions: minepark.all
+ p:
+  default: true
+  permissions: minepark.all
+ pay:
+  default: true
+  permissions: minepark.all
+ money:
+  default: true
+  permissions: minepark.all
+ doc:
+  default: true
+  permissions: minepark.all
+ pass:
+  default: true
+  permissions: minepark.all
+ showpass:
+  default: true
+  permissions: minepark.all
+ balance:
+  default: true
+  permissions: minepark.all
+ c:
+  default: true
+  permissions: minepark.all
+ sms:
+  default: true
+  permissions: minepark.all
+ anim:
+  default: true
+  permissions: minepark.all
+ jexit:
+  default: true
+  permissions: minepark.all
+ takebox:
+  default: true
+  permissions: minepark.all
+ putbox:
+  default: true
+  permissions: minepark.all
+ getseller:
+  default: true
+  permissions: minepark.all
+ getf:
+  default: true
+  permissions: minepark.all
+ putf:
+  default: true
+  permissions: minepark.all
+ casino:
+  default: true
+  permissions: minepark.all
+ donate:
+  default: true
+  permissions: minepark.all
+ getorg:
+  default: true
+  permissions: minepark.all
+ online:
+  default: true
+  permissions: minepark.all
+ do:
+  default: true
+  permissions: minepark.all
+ me:
+  default: true
+  permissions: minepark.all
+ try:
+  default: true
+  permissions: minepark.all
+ s:
+  default: true
+  permissions: minepark.all
+ resetpassword:
+  default: true
+  permissions: minepark.all
+ bank:
+  default: true
+  permissions: minepark.all
+ day:
+  default: op
+  permissions: minepark.all
+ night:
+  default: op
+  permissions: minepark.all
+ t:
+  default: op
+  permissions: minepark.all
+ switch:
+  default: true
+  permissions: minepark.all
+ q:
+  default: true
+  permissions: minepark.all
+
+permissions:
+  minepark.service:
+   default: op
+  minepark.all:
+   default: true
