@@ -1,17 +1,9 @@
 <?php
 namespace minepark\models\dtos;
 
-class MapPointDto extends BaseDto
+class MapPointDto extends PositionDto
 {
     public string $name;
-
-    public string $level;
-
-    public float $x;
-
-    public float $y;
-
-    public float $z;
 
     public int $groupId;
 

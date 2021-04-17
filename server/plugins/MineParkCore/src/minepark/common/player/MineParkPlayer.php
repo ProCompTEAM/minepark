@@ -221,7 +221,7 @@ class MineParkPlayer extends Player
     public function getFloatingText(Position $position) : ?FloatingText
     {
         foreach($this->floatingTexts as $floatingText) {
-            if($floatingText->position === $position) {
+            if($floatingText->position == $position) {
                 return $floatingText;
             }
         }

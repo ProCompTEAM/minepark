@@ -9,7 +9,7 @@ namespace MDC.Infrastructure.Services.Interfaces
     {
         List<FloatingTextDto> GetAll(string unitId);
 
-        Task Save(string unitId, string text, string level, double x, double y, double z);
+        Task<FloatingTextDto> Save(string unitId, string text, string level, double x, double y, double z);
 
         Task<bool> Remove(string unitId, string level, double x, double y, double z); 
     }

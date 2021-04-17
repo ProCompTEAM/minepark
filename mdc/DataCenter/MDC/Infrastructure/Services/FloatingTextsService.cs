@@ -31,17 +31,21 @@ namespace MDC.Infrastructure.Services
             return mapper.Map<List<FloatingTextDto>>(floatingTexts);
         }
 
-        public async Task Save(string unitId, string text, string level, double x, double y, double z)
+        public async Task<FloatingTextDto> Save(string unitId, string text, string level, double x, double y, double z)
         {
             FloatingText floatingText = await GetFloatingText(unitId, level, x, y, z);
 
             if (floatingText == null)
             {
-                Create(unitId, text, level, x, y, z);
-                return;
+                floatingText = await Create(unitId, text, level, x, y, z);
+                return mapper.Map<FloatingTextDto>(floatingText);
             }
 
-            Update(floatingText, text);
+            floatingText.Text = text;
+
+            await Update(floatingText, text);
+
+            return mapper.Map<FloatingTextDto>(floatingText);
         }
 
         public async Task<bool> Remove(string unitId, string level, double x, double y, double z)
@@ -86,20 +90,20 @@ namespace MDC.Infrastructure.Services
                     && t.UnitId == unitId);
         }
 
-        private async void Update(FloatingText floatingText, string text)
+        private async Task Update(FloatingText floatingText, string text)
         {
-            floatingText.Text = text;
-
             databaseProvider.Update(floatingText);
             await databaseProvider.CommitAsync();
         }
 
-        private async void Create(string unitId, string text, string level, double x, double y, double z)
+        private async Task<FloatingText> Create(string unitId, string text, string level, double x, double y, double z)
         {
             FloatingText floatingText = GetFloatingTextTemplate(unitId, text, level, x, y, z);
 
             await databaseProvider.CreateAsync(floatingText);
             await databaseProvider.CommitAsync();
+
+            return floatingText;
         }
     }
 }

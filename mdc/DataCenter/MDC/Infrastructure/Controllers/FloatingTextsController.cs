@@ -30,10 +30,10 @@ namespace MDC.Infrastructure.Controllers
             return floatingTextsService.GetAll(unitId);
         }
 
-        public async Task Save(LocalFloatingTextDto floatingTextData, RequestContext context)
+        public async Task<FloatingTextDto> Save(LocalFloatingTextDto floatingTextData, RequestContext context)
         {
             string unitId = unitProvider.GetCurrentUnitId(context.AccessToken);
-            await floatingTextsService.Save(unitId, 
+            return await floatingTextsService.Save(unitId, 
                 floatingTextData.Text,
                 floatingTextData.Level,
                 floatingTextData.X,

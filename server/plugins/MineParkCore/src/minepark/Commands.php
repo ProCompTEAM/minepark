@@ -46,6 +46,7 @@ use minepark\commands\workers\GetFarmCommand;
 use minepark\commands\workers\PutFarmCommand;
 use minepark\commands\workers\TakeBoxCommand;
 use minepark\commands\base\OrganisationsCommand;
+use minepark\commands\map\FloatingTextsCommand;
 use minepark\commands\organisations\AddCommand;
 use minepark\commands\organisations\HealCommand;
 use minepark\commands\organisations\InfoCommand;
@@ -125,7 +126,8 @@ class Commands
             new DayCommand,
             new NightCommand,
             new TransportCommand,
-            new SwitchCommand
+            new SwitchCommand,
+            new FloatingTextsCommand
         ];
     }
 
