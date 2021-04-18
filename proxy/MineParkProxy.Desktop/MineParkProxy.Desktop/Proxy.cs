@@ -48,7 +48,6 @@ namespace MineParkProxy.Desktop
             {
                 Logger.Write("Starting proxy as Server-Listener...");
 
-                Threads.Start(listener.ListenDgramsOnActivePort);
                 listener.WaitBridgeConnection();
             }
         }

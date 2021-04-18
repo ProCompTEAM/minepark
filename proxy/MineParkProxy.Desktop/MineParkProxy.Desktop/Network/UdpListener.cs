@@ -17,6 +17,8 @@ namespace MineParkProxy.Desktop.Network
 
         private UdpClient activePortUdpListener;
 
+        private UdpClient activeUdpClient;
+
         public UdpListener()
         {
             listenerAddress = Proxy.ConfigurationManager.Configuration.ListenerAddress;
@@ -30,28 +32,60 @@ namespace MineParkProxy.Desktop.Network
             bridgeTcpListener = new TcpListener(IPAddress.Parse(listenerAddress), listenerPort);
             bridgeTcpListener.Start();
 
-            while(true)
+            Threads.Start(ListenDataFromBridge);
+
+            while (true)
             {
                 bridgeTcpClient = bridgeTcpListener.AcceptTcpClient();
                 Logger.Write($"Bridge created with {bridgeTcpClient.Client.RemoteEndPoint}");
+
+                if(activePortUdpListener == null || !activePortUdpListener.Client.Connected)
+                {
+                    Threads.Start(ListenDgramsOnActivePort);
+                }
             }
         }
 
-        public void ListenDgramsOnActivePort()
+        private void ListenDataFromBridge()
         {
-            IPEndPoint remoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
-            activePortUdpListener = new UdpClient(activePort);
-
             while(true)
             {
-                if(activePortUdpListener.Available > 0 && bridgeTcpClient != null && bridgeTcpClient.Connected)
+                if (bridgeTcpClient != null && bridgeTcpClient.Connected && bridgeTcpClient.Available > 0 && activeUdpClient != null)
                 {
-                    byte[] data = activePortUdpListener.Receive(ref remoteIpEndPoint);
-                    bridgeTcpClient.Client.Send(data);
-
-                    Analytics.ReceivedBytesCounter += data.Length;
+                    byte[] receivedData = new byte[bridgeTcpClient.Available];
+                    bridgeTcpClient.Client.Receive(receivedData);
+                    activeUdpClient.Send(receivedData, receivedData.Length);
                 }
             }
+        }
+
+        private void ListenDgramsOnActivePort()
+        {
+            IPEndPoint remoteIpEndPoint = null;
+
+            activePortUdpListener = new UdpClient(activePort);
+
+            Logger.Write($"Listen data on {activePortUdpListener.Client.LocalEndPoint} > udp dgrams");
+
+            while (true)
+            {
+                byte[] data = activePortUdpListener.Receive(ref remoteIpEndPoint);
+
+                if (bridgeTcpClient != null && bridgeTcpClient.Connected)
+                {
+                    bridgeTcpClient.Client.Send(data);
+
+                    InitializeNewUdpClient(remoteIpEndPoint.Address, remoteIpEndPoint.Port);
+
+                    Analytics.AddReceivedBytesCount(data.Length);
+                }
+            }
+        }
+
+        private void InitializeNewUdpClient(IPAddress address, int port)
+        {
+            activeUdpClient = new UdpClient();
+            activeUdpClient.Connect(address, port);
         }
     }
 }

@@ -1,24 +1,13 @@
-﻿using System.Threading;
-
-namespace MineParkProxy.Desktop
+﻿namespace MineParkProxy.Desktop
 {
     public static class Analytics
     {
-        public static long ReceivedBytesCounter { get; set; } = 0;
+        public static long ReceivedBytesCounter { get; private set; } = 0;
 
-        public static void StartAnalytics()
+        public static void AddReceivedBytesCount(long bytes)
         {
-            Threads.Start(UpdateTitleWithInterval);
-        }
-
-        private static void UpdateTitleWithInterval()
-        {
-            while (ReceivedBytesCounter > 0)
-            {
-                Proxy.SetTitle($"Received data {ReceivedBytesCounter} bytes");
-
-                Thread.Sleep(Defaults.AnalyticsUpdateIntervalMS);
-            }
+            ReceivedBytesCounter += bytes;
+            Proxy.SetTitle($"Received data {ReceivedBytesCounter} bytes");
         }
     }
 }

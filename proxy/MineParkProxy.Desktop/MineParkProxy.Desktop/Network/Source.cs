@@ -38,7 +38,7 @@ namespace MineParkProxy.Desktop.Network
 
                     CreateUdpRequest(data);
 
-                    Analytics.ReceivedBytesCounter += data.Length;
+                    Analytics.AddReceivedBytesCount(data.Length);
                 }
             }
         }
@@ -55,7 +55,7 @@ namespace MineParkProxy.Desktop.Network
             }
         }
 
-        public void ConnectTarget()
+        private void ConnectTarget()
         {
             IPEndPoint remoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
             targetUdpClient = new UdpClient(Defaults.Localhost, targetPort);
