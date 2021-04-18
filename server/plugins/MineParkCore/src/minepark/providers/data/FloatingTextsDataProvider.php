@@ -32,7 +32,14 @@ class FloatingTextsDataProvider extends DataProvider
         return (bool) $this->createRequest("remove", $dto);
     }
 
-    protected function createArrayDto(array $data)
+    protected function createDto(array $data) : FloatingTextDto
+    {
+        $dto = new FloatingTextDto;
+        $dto->set($data);
+        return $dto;
+    }
+
+    private function createArrayDto(array $data)
     {
         $dtos = [];
 
@@ -41,13 +48,6 @@ class FloatingTextsDataProvider extends DataProvider
         }
 
         return $dtos;
-    }
-
-    protected function createDto(array $data) : FloatingTextDto
-    {
-        $dto = new FloatingTextDto;
-        $dto->set($data);
-        return $dto;
     }
 }
 ?>

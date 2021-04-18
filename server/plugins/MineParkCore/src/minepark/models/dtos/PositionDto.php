@@ -5,10 +5,10 @@ class PositionDto extends BaseDto
 {
     public string $level;
 
-    public float $x;
+    public int $x;
 
-    public float $y;
+    public int $y;
 
-    public float $z;
+    public int $z;
 }
 ?>

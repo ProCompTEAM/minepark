@@ -57,7 +57,8 @@ namespace MDC.Infrastructure.Services
             {
                 Subject = subject,
                 SubjectType = subjectType,
-                Number = await CreateNewNumber()
+                Number = await CreateNewNumber(),
+                Balance = 0.00
             };
 
             await databaseProvider.CreateAsync(phone);

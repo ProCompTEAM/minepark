@@ -18,13 +18,13 @@ namespace MDC.Data.Models
         public string Level { get; set; }
 
         [Required]
-        public double X { get; set; }
+        public int X { get; set; }
 
         [Required]
-        public double Y { get; set; }
+        public int Y { get; set; }
 
         [Required]
-        public double Z { get; set; }
+        public int Z { get; set; }
 
         public DateTime CreatedDate { get; set; }
     }
