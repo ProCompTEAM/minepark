@@ -117,7 +117,7 @@ class FloatingTexts extends Component
             return;
         }
 
-        $block = $this->getBlockUnderPlayer($player);
+        $block = $this->getBlockUnderPosition($player->asPosition());
 
         if(!isset($block)) {
             $player->sendMessage("Извините, но Вы не стоите на блоке.");
@@ -131,7 +131,7 @@ class FloatingTexts extends Component
 
     private function tryRemove(MineParkPlayer $player)
     {
-        $block = $this->getBlockUnderPlayer($player);
+        $block = $this->getBlockUnderPosition($player->asPosition());
 
         if(!isset($block)) {
             $player->sendMessage("Извините, но Вы не стоите на блоке.");
@@ -187,17 +187,22 @@ class FloatingTexts extends Component
         return true;
     }
 
-    private function getBlockUnderPlayer(MineParkPlayer $player) : ?Block
+    private function getBlockUnderPosition(Position $position) : ?Block
     {
-        $blockVector = new Vector3(floor($player->getX()), $player->getY(), floor($player->getZ()));
+        $x = $position->getFloorX();
+        $y = $position->getY();
+        $z = $position->getFloorZ();
 
-        $block1 = $player->getLevel()->getBlock($blockVector->subtract(0, 1));
-        $block2 = $player->getLevel()->getBlock($blockVector->subtract(0, 0.5));
+        $block = null;
 
-        if($block1->getId() !== Block::AIR) {
-            return $block1;
-        } elseif($block2->getId() !== Block::AIR) {
-            return $block2;
+        if(is_int($y)) {
+            $block = $position->getLevel()->getBlockAt($x, $y - 1, $z, false, false);
+        } else {
+            $block = $position->getLevel()->getBlockAt($x, $y - 0.5, $z, false, false);
+        }
+
+        if($block->getId() !== Block::AIR) {
+            return $block;
         }
 
         return null;
@@ -262,12 +267,15 @@ class FloatingTexts extends Component
         $position = new Position($dto->x, $dto->y + 0.6, $dto->z, $level);
 
         foreach($this->getServer()->getOnlinePlayers() as $player) {
-            $player = MineParkPlayer::cast($player);
-
-            $player->unsetFloatingText($player->getFloatingText($position));
-
-            $player->showFloatingTexts();
+            $this->hideFloatingTextForPlayer($player, $position);
         }
+    }
+
+    private function hideFloatingTextForPlayer(MineParkPlayer $player, Position $position)
+    {
+        $player->unsetFloatingText($player->getFloatingText($position));
+
+        $player->showFloatingTexts();
     }
 
     private function addToMemory(FloatingTextDto $dto)
@@ -277,7 +285,7 @@ class FloatingTexts extends Component
         if(isset($index)) {
             $this->floatingTexts[$index] = $dto;
         } else {
-            $this->floatingTexts[] = $dto;
+            array_push($this->floatingTexts, $dto);
         }
     }
 

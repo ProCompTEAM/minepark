@@ -44,7 +44,7 @@ class FloatingTextsDataProvider extends DataProvider
         $dtos = [];
 
         foreach($data as $rawDto) {
-            $dtos[] = $this->createDto($rawDto);
+            array_push($dtos, $this->createDto($rawDto));
         }
 
         return $dtos;

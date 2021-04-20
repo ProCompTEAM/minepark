@@ -1,6 +1,6 @@
 ﻿namespace MDC.Data.Dtos
 {
-    public class LocalMapPointDto 
+    public class LocalMapPointDto
     {
         public string Level { get; set; }
 
