@@ -11,6 +11,6 @@ namespace MDC.Infrastructure.Services.Interfaces
 
         Task<FloatingTextDto> Save(string unitId, LocalFloatingTextDto dto);
 
-        Task<bool> Remove(string unitId, string level, int x, int y, int z); 
+        Task<bool> Remove(string unitId, string level, double x, double y, double z); 
     }
 }

@@ -23,9 +23,9 @@ namespace MDC.Data.Migrations
                     Text = table.Column<string>(type: "nvarchar(4096)", nullable: false),
                     UnitId = table.Column<string>(type: "nvarchar(128)", nullable: false),
                     Level = table.Column<string>(type: "nvarchar(128)", nullable: false),
-                    X = table.Column<int>(nullable: false),
-                    Y = table.Column<int>(nullable: false),
-                    Z = table.Column<int>(nullable: false),
+                    X = table.Column<double>(nullable: false),
+                    Y = table.Column<double>(nullable: false),
+                    Z = table.Column<double>(nullable: false),
                     CreatedDate = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>

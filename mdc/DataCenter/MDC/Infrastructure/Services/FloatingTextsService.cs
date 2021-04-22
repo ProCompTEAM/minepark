@@ -48,7 +48,7 @@ namespace MDC.Infrastructure.Services
             return mapper.Map<FloatingTextDto>(floatingText);
         }
 
-        public async Task<bool> Remove(string unitId, string level, int x, int y, int z)
+        public async Task<bool> Remove(string unitId, string level, double x, double y, double z)
         {
             FloatingText floatingText = await GetFloatingText(unitId, level, x, y, z);
 
@@ -63,7 +63,7 @@ namespace MDC.Infrastructure.Services
             return true;
         }
 
-        private FloatingText GetFloatingTextTemplate(string unitId, string text, string level, int x, int y, int z)
+        private FloatingText GetFloatingTextTemplate(string unitId, string text, string level, double x, double y, double z)
         {
             return new FloatingText
             {
@@ -76,14 +76,14 @@ namespace MDC.Infrastructure.Services
             };
         }
 
-        private async Task<FloatingText> GetFloatingText(string unitId, string level, int x, int y, int z)
+        private async Task<FloatingText> GetFloatingText(string unitId, string level, double x, double y, double z)
         {
             return await databaseProvider.SingleOrDefaultAsync<FloatingText>(text =>
                 text.X == x &&  text.Y == y && text.Z == z && text.Level == level 
                     && text.UnitId == unitId);
         }
 
-        private async Task<bool> Exists(string unitId, string level, int x, int y, int z)
+        private async Task<bool> Exists(string unitId, string level, double x, double y, double z)
         {
             return await databaseProvider.AnyAsync<FloatingText>(text => 
                 text.X == x &&  text.Y == y && text.Z == z && text.Level == level 
@@ -96,7 +96,7 @@ namespace MDC.Infrastructure.Services
             await databaseProvider.CommitAsync();
         }
 
-        private async Task<FloatingText> Create(string unitId, string text, string level, int x, int y, int z)
+        private async Task<FloatingText> Create(string unitId, string text, string level, double x, double y, double z)
         {
             FloatingText floatingText = GetFloatingTextTemplate(unitId, text, level, x, y, z);
 

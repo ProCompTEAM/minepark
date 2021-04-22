@@ -93,14 +93,14 @@ namespace MDC.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(128)");
 
-                    b.Property<int>("X")
-                        .HasColumnType("int");
+                    b.Property<double>("X")
+                        .HasColumnType("double");
 
-                    b.Property<int>("Y")
-                        .HasColumnType("int");
+                    b.Property<double>("Y")
+                        .HasColumnType("double");
 
-                    b.Property<int>("Z")
-                        .HasColumnType("int");
+                    b.Property<double>("Z")
+                        .HasColumnType("double");
 
                     b.HasKey("Id");
 

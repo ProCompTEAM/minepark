@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MDC.Data.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20210420140056_AddFloatingTexts")]
+    [Migration("20210422090137_AddFloatingTexts")]
     partial class AddFloatingTexts
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -95,14 +95,14 @@ namespace MDC.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(128)");
 
-                    b.Property<int>("X")
-                        .HasColumnType("int");
+                    b.Property<double>("X")
+                        .HasColumnType("double");
 
-                    b.Property<int>("Y")
-                        .HasColumnType("int");
+                    b.Property<double>("Y")
+                        .HasColumnType("double");
 
-                    b.Property<int>("Z")
-                        .HasColumnType("int");
+                    b.Property<double>("Z")
+                        .HasColumnType("double");
 
                     b.HasKey("Id");
 
