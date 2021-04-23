@@ -21,6 +21,7 @@ use minepark\components\settings\PlayerSettings;
 use minepark\components\chat\GameChat;
 use minepark\components\organisations\Organisations;
 use minepark\components\administrative\PermissionsSwitch;
+use minepark\components\map\ATM;
 use minepark\components\map\FloatingTexts;
 use minepark\components\map\PlayersLocation;
 use minepark\components\map\TrafficLights;
@@ -53,7 +54,8 @@ class Components
             new TrafficLights,
             new WorldProtector,
             new PermissionsSwitch,
-            new FloatingTexts
+            new FloatingTexts,
+            New ATM
         ];
 
         foreach(self::$components as $component) {
