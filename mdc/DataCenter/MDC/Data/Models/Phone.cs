@@ -18,6 +18,9 @@ namespace MDC.Data.Models
         [Required]
         public PhoneSubjectType SubjectType { get; set; }
 
+        [Required]
+        public double Balance { get; set; }
+
         public DateTime CreatedDate { get; set; }
 
         public DateTime UpdatedDate { get; set; }

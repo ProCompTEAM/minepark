@@ -138,6 +138,9 @@ commands:
  q:
   default: true
   permissions: minepark.all
+ floatingtexts:
+  default: true
+  permissions: minepark.all
 
 permissions:
   minepark.service:

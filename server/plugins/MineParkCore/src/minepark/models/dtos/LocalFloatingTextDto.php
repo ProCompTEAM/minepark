@@ -1,11 +1,9 @@
 <?php
 namespace minepark\models\dtos;
 
-class MapPointDto extends BaseDto
+class LocalFloatingTextDto extends BaseDto
 {
-    public string $name;
-
-    public int $groupId;
+    public string $text;
 
     public string $level;
 
@@ -14,7 +12,5 @@ class MapPointDto extends BaseDto
     public float $y;
 
     public float $z;
-
-    public string $createdDate;
 }
 ?>

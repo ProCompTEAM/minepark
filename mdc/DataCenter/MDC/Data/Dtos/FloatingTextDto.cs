@@ -1,12 +1,10 @@
-﻿using System;
+using System;
 
 namespace MDC.Data.Dtos
 {
-    public class MapPointDto
+    public class FloatingTextDto
     {
-        public string Name { get; set; }
-
-        public int GroupId { get; set; }
+        public string Text { get; set; }
 
         public string Level { get; set; }
 
