@@ -9,6 +9,7 @@ use minepark\defaults\Permissions;
 use pocketmine\event\Event;
 use minepark\commands\base\Command;
 use minepark\Components;
+use minepark\components\chat\GameChat;
 use minepark\components\phone\Phone;
 
 class CallCommand extends Command
@@ -17,9 +18,13 @@ class CallCommand extends Command
 
     private Phone $phone;
 
+    private GameChat $gameChat;
+
     public function __construct()
     {
         $this->phone = Components::getComponent(Phone::class);
+
+        $this->gameChat = Components::getComponent(GameChat::class);
     }
 
     public function getCommand() : array
@@ -38,11 +43,22 @@ class CallCommand extends Command
 
     public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
-        array_unshift($args, self::CURRENT_COMMAND);
+        $this->gameChat->sendLocalMessage($player, "§8(§dв руках телефон§8)", "§d : ", 10);
 
-        $this->phone->cmd($player, $args);
+        $player->sendSound(Sounds::ENABLE_PHONE, null, 20);
 
-        $player->sendSound(Sounds::ENABLE_PHONE);
+        if(self::argumentsNo($args)) {
+            $this->phone->sendDisplayMessages($player);
+            return;
+        }
+
+        if (!isset($args[0])) {
+            $player->sendMessage("PhoneCheckNum");
+        } elseif(is_numeric($args[0])) {
+            $this->phone->initializeCallRequest($player, $args[0]);
+        } else {
+            $this->phone->acceptOrEndCall($player, $args[0]);
+        }
     }
 }
 ?>

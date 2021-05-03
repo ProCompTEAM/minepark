@@ -13,5 +13,11 @@ namespace MDC.Infrastructure.Services.Interfaces
         Task<long?> GetNumberForOrganization(string organizationName);
 
         Task<string> GetUserNameByNumber(long number);
+
+        Task<double> GetBalance(string userName);
+
+        Task<bool> AddBalance(string userName, double amount);
+
+        Task<bool> ReduceBalance(string userName, double amount);
     }
 }

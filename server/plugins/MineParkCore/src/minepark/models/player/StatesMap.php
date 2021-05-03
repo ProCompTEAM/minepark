@@ -21,6 +21,8 @@ class StatesMap
 
     public ?MineParkPlayer $phoneReq;
 
+    public ?MineParkPlayer $phoneSnd;
+
     public array $goods;
 
     public ?int $loadWeight;

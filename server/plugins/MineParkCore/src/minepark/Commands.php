@@ -152,12 +152,17 @@ class Commands
 
     public function executeInputData(PlayerCommandPreprocessEvent $event)
     {
+        $player = MineParkPlayer::cast($event->getPlayer());
+
+        if(!$player->getStatesMap()->auth) {
+            return;
+        }
+
         if ($event->getMessage()[0] !== self::COMMAND_PREFIX) {
             return;
         }
 
         $rawCommand = substr($event->getMessage(), 1);
-        $player = MineParkPlayer::cast($event->getPlayer());
         $arguments = explode(Command::ARGUMENTS_SEPERATOR, $rawCommand);
 
         if ($arguments[0] === self::ORGANISATIONS_COMMANDS_PREFIX) {

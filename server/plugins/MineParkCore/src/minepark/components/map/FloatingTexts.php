@@ -56,12 +56,16 @@ class FloatingTexts extends Component
         return $this->floatingTexts;
     }
 
-    public function getFloatingText(string $level, int $x, int $y, int $z) : ?FloatingTextDto
+    public function getFloatingText(string $level, float $x, float $y, float $z) : ?FloatingTextDto
     {
+        $x = floor($x);
+        $y = floor($y);
+        $z = floor($z);
+
         foreach($this->getFloatingTexts() as $floatingText) {
-            $textX = intval($floatingText->x);
-            $textY = intval($floatingText->y);
-            $textZ = intval($floatingText->z);
+            $textX = floor($floatingText->x);
+            $textY = floor($floatingText->y);
+            $textZ = floor($floatingText->z);
 
             if($textX === $x and $textY === $y and $textZ === $z and $floatingText->level === $level) {
                 return $floatingText;

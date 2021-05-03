@@ -11,6 +11,7 @@ use minepark\components\phone\Phone;
 use minepark\defaults\ComponentAttributes;
 use minepark\Providers;
 use minepark\providers\BankingProvider;
+use minepark\providers\data\BankingDataProvider;
 
 class ATM extends Component
 {
@@ -24,12 +25,16 @@ class ATM extends Component
 
     private const CHOICE_PHONE_BALANCE = 4;
 
+    private BankingDataProvider $bankingDataProvider;
+
     private BankingProvider $bankingProvider;
 
     private Phone $phone;
 
     public function initialize()
     {
+        $this->bankingDataProvider = Providers::getBankingDataProvider();
+
         $this->bankingProvider = Providers::getBankingProvider();
 
         $this->phone = Components::getComponent(Phone::class);
@@ -76,6 +81,10 @@ class ATM extends Component
 
             case self::CHOICE_MOVE:
                 $this->initializeTransferDebitForm($player);
+            break;
+
+            case self::CHOICE_PHONE_BALANCE:
+                $this->initializePhoneBalanceForm($player);
             break;
 
             default:
@@ -171,13 +180,6 @@ class ATM extends Component
             return;
         }
 
-        $receiver = $this->getServer()->getPlayer($data[0]);
-
-        if(!isset($receiver)) {
-            $player->sendMessage("§eЭтого игрока нет на сервере");
-            return;
-        }
-
         $amount = $data[1];
 
         if(!is_numeric($amount)) {
@@ -185,18 +187,57 @@ class ATM extends Component
             return;
         }
 
-        if(!$this->bankingProvider->reduceDebit($player, $amount)) {
+        $target = strtolower($data[0]);
+
+        if($target === $player->getLowerCaseName()) {
+            $player->sendMessage("§eПереводить деньги самому себе запрещено");
+            return;
+        }
+
+        if(!$this->bankingProvider->transferDebit($player->getName(), $target, $amount)) {
+            $player->sendMessage("§eПеревод денег прошел неуспешно");
+            return;
+        }
+
+        $player->sendMessage("§bВы успешно перевели игроку §e" . $target . " $amount §bденег!");
+
+        $targetPlayer = $this->getServer()->getPlayer($target);
+
+        if(isset($targetPlayer) and $this->phone->hasStream($targetPlayer->asPosition())) {
+            $targetPlayer->sendMessage("§e[SMS] §bЧеловек §e" . $player->getName() . " §bперевёл вам §e$amount");
+        }
+    }
+
+    public function initializePhoneBalanceForm(MineParkPlayer $player)
+    {
+        $form = new CustomForm([$this, "answerPhoneBalanceForm"]);
+        $form->setTitle("§eПополнение баланса телефона");
+        $form->addInput("§eСумма, насколько Вы хотите пополнить");
+        $player->sendForm($form);
+    }
+
+    public function answerPhoneBalanceForm(MineParkPlayer $player, ?array $data = null)
+    {
+        if(!isset($data)) {
+            $this->initializeMenu($player);
+            return;
+        }
+
+        $input = $data[0];
+
+        if(!is_numeric($input)) {
+            $player->sendMessage("§eВы должны были ввести число, а не нечто иное");
+            return;
+        }
+
+        if(!$this->bankingProvider->reduceDebit($player, $input)) {
             $player->sendMessage("§eУ вас недостаточно денег");
             return;
         }
 
-        $this->bankingProvider->giveDebit($player, $amount);
+        $this->phone->addBalance($player, $input);
 
-        $player->sendMessage("§bВы успешно перевели игроку §e" . $receiver->getName() . " $amount §bденег!");
-
-        if($this->phone->hasStream($receiver->asVector3())) {
-            $receiver->sendMessage("§e[SMS] §bЧеловек §e" . $player->getName() . " §bперевёл вам §e$amount");
-        }
+        $player->sendMessage("§bВы успешно пополнили баланс на §e$input");
     }
 }
 ?>

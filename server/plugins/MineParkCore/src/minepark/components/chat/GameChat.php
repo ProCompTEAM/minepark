@@ -132,7 +132,7 @@ class GameChat extends Component
 
     private function handleInCallMessage(MineParkPlayer $player, string $message)
     {
-        $this->phone->handleInCall($player, $message);
+        $this->phone->handleMessage($player, $message);
         $this->sendLocalMessage($player, $message, "{ChatSpeakPhone}");
         $this->tracking->message($player, $message, 7, "[PHONE]");
     }
