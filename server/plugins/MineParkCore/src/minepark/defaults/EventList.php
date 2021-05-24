@@ -30,5 +30,7 @@ class EventList
     public const ENTITY_DAMAGE_EVENT = 13;
 
     public const CHUNK_LOAD_EVENT = 14;
+
+    public const INVENTORY_TRANSACTION_EVENT = 15;
 }
 ?>
