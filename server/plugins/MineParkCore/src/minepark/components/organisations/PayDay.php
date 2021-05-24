@@ -45,6 +45,10 @@ class PayDay extends Component
                 $special += 100;
             }
 
+            if($player->isAdministrator()) {
+                $special += 700;
+            }
+
             if($player->existsAttribute(PlayerAttributes::BOSS)) {
                 $salary *= 2;
             }
