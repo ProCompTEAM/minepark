@@ -1,6 +1,7 @@
 <?php
 namespace minepark\components\organisations;
 
+use minepark\defaults\PayConstants;
 use minepark\Tasks;
 use minepark\Providers;
 use minepark\defaults\TimeConstants;
@@ -38,15 +39,15 @@ class PayDay extends Component
             $special = 0;
 
             if(!$player->getStatesMap()->isNew) {
-                $special += 200;
+                $special += PayConstants::NEW_PLAYER;
             }
 
             if($player->getProfile()->organisation == Organisations::NO_WORK) {
-                $special += 100;
+                $special += PayConstants::WORKLESS;
             }
 
             if($player->isAdministrator()) {
-                $special += 700;
+                $special += PayConstants::ADMINISTRATOR;
             }
 
             if($player->existsAttribute(PlayerAttributes::BOSS)) {
