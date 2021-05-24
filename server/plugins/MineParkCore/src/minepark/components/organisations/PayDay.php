@@ -1,10 +1,10 @@
 <?php
 namespace minepark\components\organisations;
 
-use minepark\defaults\PayConstants;
 use minepark\Tasks;
 use minepark\Providers;
 use minepark\defaults\TimeConstants;
+use minepark\defaults\PayConstants;
 use minepark\components\base\Component;
 use minepark\common\player\MineParkPlayer;
 use minepark\defaults\ComponentAttributes;
