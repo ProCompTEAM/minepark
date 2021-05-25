@@ -3,6 +3,7 @@ namespace minepark;
 
 use Exception;
 use minepark\components\Auth;
+use minepark\components\map\ClearLagg;
 use minepark\components\organisations\PayDay;
 use minepark\components\BossBar;
 use minepark\components\FastFood;
@@ -53,7 +54,8 @@ class Components
             new TrafficLights,
             new WorldProtector,
             new PermissionsSwitch,
-            new FloatingTexts
+            new FloatingTexts,
+            new ClearLagg
         ];
 
         foreach(self::$components as $component) {
@@ -61,7 +63,7 @@ class Components
         }
     }
 
-    public static function getComponent(string $componentName) : ?Component
+    public static function getComponent(string $componentName) : Component
     {
         foreach (self::$components as $component) {
             if($componentName === $component::class) {
@@ -73,7 +75,7 @@ class Components
             }
         }
 
-        return null;
+        throw new Exception("Component does not exist");
     }
 }
 ?>
