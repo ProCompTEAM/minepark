@@ -1,6 +1,7 @@
 <?php
 namespace minepark\components\map;
 
+use minepark\common\player\MineParkPlayer;
 use minepark\Tasks;
 use minepark\components\base\Component;
 use minepark\defaults\TimeConstants;
@@ -10,7 +11,7 @@ class ClearLagg extends Component
 {
     public function initialize()
     {
-        Tasks::registerRepeatingAction(TimeConstants::CLEAR_LAGG_INTERVAL - TimeConstants::CLEAR_LAGG_WARN_ON_TIME_LEFT, [$this, "sendWarning"]);
+        Tasks::registerRepeatingAction(TimeConstants::CLEAR_LAGG_INTERVAL, [$this, "clearItems"]);
     }
 
     public function getAttributes() : array
@@ -19,24 +20,21 @@ class ClearLagg extends Component
         ];
     }
 
-    public function sendWarning()
-    {
-        $this->getServer()->broadcastMessage("Очистка лежащих предметов через ". TimeConstants::CLEAR_LAGG_WARN_ON_TIME_LEFT ." секунд!");
-        Tasks::registerDelayedAction(TimeConstants::ONE_SECOND_TICKS * TimeConstants::CLEAR_LAGG_WARN_ON_TIME_LEFT, [$this, "clearItems"]);
-    }
-
     public function clearItems()
     {
-        $itemsAmount = 0;
         foreach ($this->getServer()->getLevels() as $level) {
             foreach ($level->getEntities() as $entity) {
+
                 if ($entity instanceof ItemEntity) {
                     $entity->close();
-                    $itemsAmount += $entity->getItem()->getCount();
                 }
+
+                if ($entity instanceof MineParkPlayer) {
+                    $entity->sendTip("Коммунальные службы очистили город от мусора!");
+                }
+
             }
         }
-        $this->getServer()->broadcastMessage("Было удалено $itemsAmount предметов");
     }
 }
 ?>
