@@ -30,7 +30,7 @@ class ClearLagg extends Component
                 }
 
                 if ($entity instanceof MineParkPlayer) {
-                    $entity->sendTip("Коммунальные службы очистили город от мусора!");
+                    $entity->sendTip("§dКоммунальные службы очистили город от мусора!");
                 }
 
             }
