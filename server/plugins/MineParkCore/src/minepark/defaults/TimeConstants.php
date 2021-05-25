@@ -25,6 +25,6 @@ class TimeConstants
 
     public const TRAFFIC_LIGHTS_UPDATE_INTERVAL = 25;
 
-    public const CLEAR_LAGG_INTERVAL = 600;
+    public const CLEAR_LAGG_INTERVAL = 680;
 }
 ?>
