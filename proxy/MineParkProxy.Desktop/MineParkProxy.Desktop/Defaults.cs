@@ -10,7 +10,7 @@ namespace MineParkProxy.Desktop
 
         public static readonly string LogFile = "ProxyLog.txt";
 
-        public static readonly ProxyMode ProxyMode = ProxyMode.Source;
+        public static readonly ProxyMode ProxyMode = ProxyMode.Host;
 
         public static readonly string Localhost = "127.0.0.1";
 
@@ -20,6 +20,6 @@ namespace MineParkProxy.Desktop
 
         public static readonly int ListenOnPort = 19100;
 
-        public static readonly int TargetPort = 19132;
+        public static readonly int HostPort = 19132;
     }
 }

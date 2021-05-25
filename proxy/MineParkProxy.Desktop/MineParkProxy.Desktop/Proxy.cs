@@ -10,16 +10,14 @@ namespace MineParkProxy.Desktop
     {
         public static ConfigurationManager ConfigurationManager { get; private set; }
 
-        private static UdpListener listener;
-        private static Source source;
+        public static TrafficManager TrafficManager { get; private set; }
 
         public static void StartApp()
         {
             ConfigurationManager = new ConfigurationManager();
             ConfigurationManager.LoadConfiguration();
 
-            listener = new UdpListener();
-            source = new Source();
+            TrafficManager = new TrafficManager(ConfigurationManager.Configuration);
 
             SetTitle("MinePark Proxy App");
 
@@ -33,29 +31,39 @@ namespace MineParkProxy.Desktop
 
         private static void StartProxy()
         {
-            ProxyMode mode = ConfigurationManager.Configuration.Mode;
-            string address = GetListenerAddress();
-
-            if (mode == ProxyMode.Source)
+            if (TrafficManager.Configuration.Mode == ProxyMode.Host)
             {
-                Logger.Write("Starting proxy as Client-Source...");
+                Logger.Write("Starting proxy as Host...");
 
-                MakeQuestion($"Are you ready to connect at {address}?");
-
-                source.CreateBridge();
+                MakeQuestion($"Are you ready to connect at {GetListenerAddress()}?");
             }
             else
             {
-                Logger.Write("Starting proxy as Server-Listener...");
-
-                listener.WaitBridgeConnection();
+                Logger.Write("Starting proxy as Listener...");
             }
+
+            TrafficManager.CreateBridge();
+
+            WaitForInterrupt();
         }
 
         private static void MakeQuestion(string message)
         {
             Console.WriteLine(message);
             Console.ReadKey();
+        }
+
+        private static void WaitForInterrupt()
+        {
+            Logger.Write("Press Ctrl + C to exit the application.");
+
+            ConsoleKeyInfo keyInfo;
+            do
+            {
+                keyInfo = Console.ReadKey();
+            }
+            while (keyInfo.Key != ConsoleKey.C && 
+                   keyInfo.Modifiers.HasFlag(ConsoleModifiers.Control));
         }
 
         private static string GetListenerAddress()

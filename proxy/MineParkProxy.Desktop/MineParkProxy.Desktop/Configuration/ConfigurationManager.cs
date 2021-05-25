@@ -46,7 +46,7 @@ namespace MineParkProxy.Desktop.Configuration
                 ListenerAddress = Defaults.ListenerAddress,
                 ListenerPort = Defaults.ListenerPort,
                 ListenOnPort = Defaults.ListenOnPort,
-                TargetPort = Defaults.TargetPort
+                HostPort = Defaults.HostPort
             };
         }
 

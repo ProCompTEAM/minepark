@@ -2,7 +2,7 @@
 {
     public enum ProxyMode
     {
-        Source = 1,
+        Host = 1,
         Listener = 2
     }
 }

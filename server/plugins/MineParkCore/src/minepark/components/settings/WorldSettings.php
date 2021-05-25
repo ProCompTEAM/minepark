@@ -5,7 +5,6 @@ use minepark\Events;
 use minepark\defaults\EventList;
 use minepark\components\base\Component;
 use pocketmine\event\block\BlockBurnEvent;
-use pocketmine\event\level\ChunkLoadEvent;
 
 class WorldSettings extends Component
 {

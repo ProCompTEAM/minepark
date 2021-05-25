@@ -12,6 +12,6 @@ namespace MineParkProxy.Desktop.Configuration.Models
 
         public int ListenOnPort { get; set; }
 
-        public int TargetPort { get; set; }
+        public int HostPort { get; set; }
     }
 }
