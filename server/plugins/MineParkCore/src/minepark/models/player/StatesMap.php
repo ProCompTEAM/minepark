@@ -17,9 +17,11 @@ class StatesMap
 
     public ?string $bar;
 
-    public ?MineParkPlayer $phoneRcv;
+    public ?MineParkPlayer $phoneCompanion;
 
-    public ?MineParkPlayer $phoneReq;
+    public ?MineParkPlayer $phoneIncomingCall;
+
+    public ?MineParkPlayer $phoneOutcomingCall;
 
     public array $goods;
 

@@ -1,13 +1,10 @@
 <?php
 namespace minepark\providers;
 
-use minepark\Core;
 use minepark\providers\base\Provider;
 use minepark\common\player\MineParkPlayer;
 use minepark\defaults\PaymentMethods;
 use minepark\models\dtos\PaymentMethodDto;
-use minepark\providers\data\BankingSource;
-use minepark\models\dtos\BankTransactionDto;
 use minepark\Providers;
 use minepark\providers\data\BankingDataProvider;
 
@@ -107,38 +104,37 @@ class BankingProvider extends Provider
 
     public function giveCash(MineParkPlayer $player, float $amount) : bool
     {
-        $dto = $this->getBankTransactionDto($player->getName(), $amount);
-        return $this->bankingDataProvider->giveCash($dto);
+        return $this->bankingDataProvider->giveCash($player->getName(), $amount);
     }
 
     public function giveDebit(MineParkPlayer $player, float $amount) : bool
     {
-        $dto = $this->getBankTransactionDto($player->getName(), $amount);
-        return $this->bankingDataProvider->giveDebit($dto);
+        return $this->bankingDataProvider->giveDebit($player->getName(), $amount);
     }
 
     public function giveCredit(MineParkPlayer $player, float $amount) : bool
     {
-        $dto = $this->getBankTransactionDto($player->getName(), $amount);
-        return $this->bankingDataProvider->giveCredit($dto);
+        return $this->bankingDataProvider->giveCredit($player->getName(), $amount);
     }
 
     public function reduceCash(MineParkPlayer $player, float $amount) : bool
     {
-        $dto = $this->getBankTransactionDto($player->getName(), $amount);
-        return $this->bankingDataProvider->reduceCash($dto);
+        return $this->bankingDataProvider->reduceCash($player->getName(), $amount);
     }
 
     public function reduceDebit(MineParkPlayer $player, float $amount) : bool
     {
-        $dto = $this->getBankTransactionDto($player->getName(), $amount);
-        return $this->bankingDataProvider->reduceDebit($dto);
+        return $this->bankingDataProvider->reduceDebit($player->getName(), $amount);
     }
 
     public function reduceCredit(MineParkPlayer $player, float $amount) : bool
     {
-        $dto = $this->getBankTransactionDto($player->getName(), $amount);
-        return $this->bankingDataProvider->reduceCredit($dto);
+        return $this->bankingDataProvider->reduceCredit($player->getName(), $amount);
+    }
+
+    public function transferDebit(string $userName, string $target, float $amount) : bool
+    {
+        return $this->bankingDataProvider->transferDebit($userName, $target, $amount);
     }
 
     public function getPaymentMethod(MineParkPlayer $player) : int
@@ -169,14 +165,6 @@ class BankingProvider extends Provider
         $dto = new PaymentMethodDto;
         $dto->name = $userName;
         $dto->method = $method;
-        return $dto;
-    }
-
-    private function getBankTransactionDto(string $userName, float $amount) : BankTransactionDto
-    {
-        $dto = new BankTransactionDto;
-        $dto->name = $userName;
-        $dto->amount = $amount;
         return $dto;
     }
 }

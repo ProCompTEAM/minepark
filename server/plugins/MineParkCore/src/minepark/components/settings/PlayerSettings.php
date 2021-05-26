@@ -182,6 +182,7 @@ class PlayerSettings extends Component
 
         $statesMap->phoneRcv = null;
         $statesMap->phoneReq = null;
+        $statesMap->phoneSnd = null;
 
         $statesMap->goods = array();
 

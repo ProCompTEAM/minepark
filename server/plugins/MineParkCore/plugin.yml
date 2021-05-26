@@ -141,6 +141,9 @@ commands:
  floatingtexts:
   default: true
   permissions: minepark.all
+ atm:
+  default: true
+  permissions: minepark.all
 
 permissions:
   minepark.service:

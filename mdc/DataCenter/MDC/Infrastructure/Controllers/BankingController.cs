@@ -83,6 +83,18 @@ namespace MDC.Infrastructure.Controllers
             return await bankingService.GiveCredit(unitId, bankDto.Name, bankDto.Amount);
         }
 
+        public async Task<bool> Exists(string userName, RequestContext requestContext)
+        {
+            string unitId = unitProvider.GetCurrentUnitId(requestContext.AccessToken);
+            return await bankingService.Exists(unitId, userName);
+        }
+
+        public async Task<bool> TransferDebit(TransferDebitDto dto, RequestContext requestContext)
+        {
+            string unitId = unitProvider.GetCurrentUnitId(requestContext.AccessToken);
+            return await bankingService.TransferDebit(unitId, dto.Name, dto.Target, dto.Amount);
+        }
+
         public async Task<int> GetPaymentMethod(string userName, RequestContext requestContext)
         {
             string unitId = unitProvider.GetCurrentUnitId(requestContext.AccessToken);

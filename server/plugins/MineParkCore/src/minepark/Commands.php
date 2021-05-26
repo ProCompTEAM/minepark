@@ -46,6 +46,7 @@ use minepark\commands\workers\GetFarmCommand;
 use minepark\commands\workers\PutFarmCommand;
 use minepark\commands\workers\TakeBoxCommand;
 use minepark\commands\base\OrganisationsCommand;
+use minepark\commands\map\ATMCommand;
 use minepark\commands\map\FloatingTextsCommand;
 use minepark\commands\organisations\AddCommand;
 use minepark\commands\organisations\HealCommand;
@@ -127,7 +128,8 @@ class Commands
             new NightCommand,
             new TransportCommand,
             new SwitchCommand,
-            new FloatingTextsCommand
+            new FloatingTextsCommand,
+            new ATMCommand
         ];
     }
 
@@ -150,12 +152,17 @@ class Commands
 
     public function executeInputData(PlayerCommandPreprocessEvent $event)
     {
+        $player = MineParkPlayer::cast($event->getPlayer());
+
+        if(!$player->getStatesMap()->auth) {
+            return;
+        }
+
         if ($event->getMessage()[0] !== self::COMMAND_PREFIX) {
             return;
         }
 
         $rawCommand = substr($event->getMessage(), 1);
-        $player = MineParkPlayer::cast($event->getPlayer());
         $arguments = explode(Command::ARGUMENTS_SEPERATOR, $rawCommand);
 
         if ($arguments[0] === self::ORGANISATIONS_COMMANDS_PREFIX) {
