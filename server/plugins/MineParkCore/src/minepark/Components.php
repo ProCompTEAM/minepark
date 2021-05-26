@@ -55,7 +55,7 @@ class Components
             new WorldProtector,
             new PermissionsSwitch,
             new FloatingTexts,
-            New ATM
+            new ATM
         ];
 
         foreach(self::$components as $component) {
