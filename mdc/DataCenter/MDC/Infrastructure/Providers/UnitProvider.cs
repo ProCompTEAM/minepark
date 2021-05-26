@@ -1,6 +1,7 @@
 ﻿using MDC.Data.Models;
 using MDC.Infrastructure.Providers.Interfaces;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MDC.Infrastructure.Providers
 {
@@ -40,6 +41,22 @@ namespace MDC.Infrastructure.Providers
         public void SetCurrentUnitId(string accessToken, string unitId)
         {
             tokenUnitIdPairs[accessToken] = unitId;
+        }
+
+        public void AddAccessToken(string accessToken)
+        {
+            if (!tokens.Contains(accessToken))
+            {
+                tokens.Add(accessToken);
+            }
+        }
+
+        public void RemoveAccessToken(string accessToken)
+        {
+            if (tokens.Contains(accessToken))
+            {
+                tokens.Remove(accessToken);
+            }
         }
     }
 }
