@@ -1,6 +1,7 @@
 <?php
 namespace minepark\providers\data;
 
+use minepark\models\dtos\ExecutedCommandDto;
 use minepark\models\dtos\PasswordDto;
 use minepark\models\dtos\UserDto;
 use minepark\providers\base\DataProvider;
@@ -22,7 +23,6 @@ class UsersDataProvider extends DataProvider
     public function getUser(string $userName) : ?UserDto
     {
         $requestResult = $this->createRequest("get-user", $userName);
-
         return $requestResult ? $this->createDto($requestResult) : null;
     }
 

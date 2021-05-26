@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
 using MDC.Data.Dtos;
+using MDC.Data.Enums;
 using MDC.Data.Models;
 using MDC.Infrastructure.Providers;
 using MDC.Infrastructure.Providers.Interfaces;
 using MDC.Infrastructure.Services.Interfaces;
+using MDC.Infrastructure.Services.Audit;
+using MDC.Infrastructure.Services.Audit.Interfaces;
 using MDC.Utilities;
 using System;
 using System.Threading.Tasks;
@@ -21,6 +24,8 @@ namespace MDC.Infrastructure.Services
         private readonly IBankingService bankingService;
 
         private readonly IMapper mapper;
+
+        private readonly IExecutedCommandsAuditService executedCommandsAuditService;
 
         public UsersService()
         {
@@ -144,6 +149,16 @@ namespace MDC.Infrastructure.Services
             user.MinutesPlayed += GetMinutesLeft(user.JoinedDate, user.LeftDate);
             databaseProvider.Update(user);
             await databaseProvider.CommitAsync();
+        }
+
+        public async Task ExecuteCommand(string unitId, string userName, string command)
+        {
+            await RegisterExecuteCommand(unitId, userName, command);
+        }
+
+        private async Task RegisterExecuteCommand(string unitId, string userName, string command)
+        {
+            await executedCommandsAuditService.ProcessExecuteOperation(userName, unitId, command);
         }
 
         private int GetMinutesLeft(DateTime joinedDate, DateTime leftDate)
