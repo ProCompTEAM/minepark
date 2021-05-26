@@ -73,6 +73,20 @@ class UsersDataProvider extends DataProvider
         $this->createRequest("update-quit-status", $userName);
     }
 
+    public function executeCommand(string $userName, string $command)
+    {
+        $dto = $this->createExecutedCommandDto($userName, $command);
+        $this->createRequest("execute-command", $dto);
+    }
+
+    private function createExecutedCommandDto(string $userName, string $command) : ExecutedCommandDto
+    {
+        $dto = new ExecutedCommandDto;
+        $dto->name = $userName;
+        $dto->command = $command;
+        return $dto;
+    }
+
     protected function createDto(array $data) : UserDto
     {
         $dto = new UserDto();
