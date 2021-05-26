@@ -57,16 +57,16 @@ class Phone extends Component
     {
         $player = MineParkPlayer::cast($event->getPlayer());
 
-        if(isset($player->getStatesMap()->phoneSnd)) {
-            $player->getStatesMap()->phoneSnd->getStatesMap()->phoneReq = null;
+        if(isset($player->getStatesMap()->phoneOutcomingCall)) {
+            $player->getStatesMap()->phoneOutcomingCall->getStatesMap()->phoneIncomingCall = null;
         }
 
-        if(isset($player->getStatesMap()->phoneReq)) {
-            $player->getStatesMap()->phoneReq->getStatesMap()->phoneSnd = null;
+        if(isset($player->getStatesMap()->phoneIncomingCall)) {
+            $player->getStatesMap()->phoneIncomingCall->getStatesMap()->phoneOutcomingCall = null;
         }
 
-        if(isset($player->getStatesMap()->phoneRcv)) {
-            $this->breakCall($player->getStatesMap()->phoneRcv);
+        if(isset($player->getStatesMap()->phoneCompanion)) {
+            $this->breakCall($player->getStatesMap()->phoneCompanion);
         }
     }
 
@@ -75,11 +75,11 @@ class Phone extends Component
         foreach($this->getServer()->getOnlinePlayers() as $player) {
             $player = MineParkPlayer::cast($player);
 
-            if(!isset($player->getStatesMap()->phoneRcv)) {
+            if(!isset($player->getStatesMap()->phoneCompanion)) {
                 continue;
             }
 
-            if(!$this->hasStream($player->getStatesMap()->phoneRcv->asPosition())) {
+            if(!$this->hasStream($player->getStatesMap()->phoneCompanion->asPosition())) {
                 $this->breakCallForNoStream($player);
             } elseif(!$this->reduceBalance($player, 20)) {
                 $this->breakCallForNoMoney($player);
@@ -92,10 +92,10 @@ class Phone extends Component
         $player->sendMessage("PhoneSmsNoNet");
         $player->sendMessage("PhoneSmsErrorNet");
 
-        $player->getStatesMap()->phoneRcv->sendMessage("PhoneSmsErrorNet");
+        $player->getStatesMap()->phoneCompanion->sendMessage("PhoneSmsErrorNet");
 
-        $player->getStatesMap()->phoneRcv->getStatesMap()->phoneRcv = null; 
-        $player->getStatesMap()->phoneRcv = null;
+        $player->getStatesMap()->phoneCompanion->getStatesMap()->phoneCompanion = null; 
+        $player->getStatesMap()->phoneCompanion = null;
     }
 
     private function breakCallForNoMoney(MineParkPlayer $player)
@@ -103,10 +103,10 @@ class Phone extends Component
         $player->sendMessage("PhoneSmsContinueNoMoney");
         $player->sendMessage("PhoneSmsErrorNet");
 
-        $player->getStatesMap()->phoneRcv->sendMessage("PhoneSmsErrorNet");
+        $player->getStatesMap()->phoneCompanion->sendMessage("PhoneSmsErrorNet");
 
-        $player->getStatesMap()->phoneRcv->getStatesMap()->phoneRcv = null; 
-        $player->getStatesMap()->phoneRcv = null;
+        $player->getStatesMap()->phoneCompanion->getStatesMap()->phoneCompanion = null; 
+        $player->getStatesMap()->phoneCompanion = null;
     }
 
     public function getPlayerByNumber(int $number, bool $nameOnly = false) : ?MineParkPlayer
@@ -155,20 +155,20 @@ class Phone extends Component
 
         $initializer->sendMessage("PhoneBeeps");
 
-        if(isset($initializer->getStatesMap()->phoneRcv) or isset($initializer->getStatesMap()->phoneReq)
-            or isset($initializer->getStatesMap()->phoneSnd)) {
+        if(isset($initializer->getStatesMap()->phoneCompanion) or isset($initializer->getStatesMap()->phoneIncomingCall)
+            or isset($initializer->getStatesMap()->phoneOutcomingCall)) {
             $initializer->sendMessage("PhoneAlreadyInCall");
             return;
         }
 
-        if(isset($target->getStatesMap()->phoneRcv) or isset($target->getStatesMap()->phoneReq)
-            or isset($target->getStatesMap()->phoneSnd)) {
+        if(isset($target->getStatesMap()->phoneCompanion) or isset($target->getStatesMap()->phoneIncomingCall)
+            or isset($target->getStatesMap()->phoneOutcomingCall)) {
             $initializer->sendMessage("PhoneCalling3");
             return;
         }
 
-        $target->getStatesMap()->phoneReq = $initializer;
-        $initializer->getStatesMap()->phoneSnd = $target;
+        $target->getStatesMap()->phoneIncomingCall = $initializer;
+        $initializer->getStatesMap()->phoneOutcomingCall = $target;
 
         $this->gameChat->sendLocalMessage($target, "{PhoneCallingBeep}", "§d : ", 10);
 
@@ -211,13 +211,13 @@ class Phone extends Component
 
     public function acceptOrEndCall(MineParkPlayer $player, string $method)
     {
-        if($method === "accept" and isset($player->getStatesMap()->phoneReq)) {
+        if($method === "accept" and isset($player->getStatesMap()->phoneIncomingCall)) {
             $this->acceptCall($player);
-        } elseif($method === "end" and isset($player->getStatesMap()->phoneRcv)) {
+        } elseif($method === "end" and isset($player->getStatesMap()->phoneCompanion)) {
             $this->endCall($player);
-        } elseif($method === "cancel" and isset($player->getStatesMap()->phoneSnd)) {
+        } elseif($method === "cancel" and isset($player->getStatesMap()->phoneOutcomingCall)) {
             $this->cancelRequest($player);
-        } elseif($method === "reject" and isset($player->getStatesMap()->phoneReq)) {
+        } elseif($method === "reject" and isset($player->getStatesMap()->phoneIncomingCall)) {
             $this->rejectCall($player);
         } else {
             $player->sendMessage("PhoneCallReload");
@@ -240,7 +240,7 @@ class Phone extends Component
     {
         $number = $player->getProfile()->phoneNumber;
 
-        $player->getStatesMap()->phoneRcv->sendMessage("§9✆ §e$number §6: §a".$message);
+        $player->getStatesMap()->phoneCompanion->sendMessage("§9✆ §e$number §6: §a".$message);
         $player->sendMessage("§9✆ §5$number §6: §2".$message);
     }
 
@@ -261,9 +261,9 @@ class Phone extends Component
 
     private function acceptCall(MineParkPlayer $player)
     {
-        $target = $player->getStatesMap()->phoneReq;
+        $target = $player->getStatesMap()->phoneIncomingCall;
 
-        if(!isset($target->getStatesMap()->phoneSnd)) {
+        if(!isset($target->getStatesMap()->phoneOutcomingCall)) {
             throw new Exception("Target doesn't have property");
         }
 
@@ -275,41 +275,41 @@ class Phone extends Component
         $target->sendMessage("PhoneCall2");
         $target->sendMessage("PhoneCall3");
 
-        $player->getStatesMap()->phoneReq = null;
-        $target->getStatesMap()->phoneSnd = null;
+        $player->getStatesMap()->phoneIncomingCall = null;
+        $target->getStatesMap()->phoneOutcomingCall = null;
 
-        $player->getStatesMap()->phoneRcv = $target;
-        $target->getStatesMap()->phoneRcv = $player;
+        $player->getStatesMap()->phoneCompanion = $target;
+        $target->getStatesMap()->phoneCompanion = $player;
     }
     
     private function rejectCall(MineParkPlayer $player)
     {
-        $player->getStatesMap()->phoneReq->sendMessage("PhoneCallRejected");
+        $player->getStatesMap()->phoneIncomingCall->sendMessage("PhoneCallRejected");
 
-        $player->getStatesMap()->phoneReq->getStatesMap()->phoneSnd = null;
-        $player->getStatesMap()->phoneReq = null;
+        $player->getStatesMap()->phoneIncomingCall->getStatesMap()->phoneOutcomingCall = null;
+        $player->getStatesMap()->phoneIncomingCall = null;
     }
 
     private function endCall(MineParkPlayer $player)
     {
         $player->sendMessage("PhoneCallEnd");
-        $player->getStatesMap()->phoneRcv->sendMessage("PhoneCallEnd");
+        $player->getStatesMap()->phoneCompanion->sendMessage("PhoneCallEnd");
 
-        $player->getStatesMap()->phoneRcv->getStatesMap()->phoneRcv = null;
-        $player->getStatesMap()->phoneRcv = null;
+        $player->getStatesMap()->phoneCompanion->getStatesMap()->phoneCompanion = null;
+        $player->getStatesMap()->phoneCompanion = null;
     }
 
     private function cancelRequest(MineParkPlayer $player)
     {
         $player->sendMessage("PhoneCancelRequest");
 
-        $player->getStatesMap()->phoneSnd->getStatesMap()->phoneReq = null;
-        $player->getStatesMap()->phoneSnd = null;
+        $player->getStatesMap()->phoneOutcomingCall->getStatesMap()->phoneIncomingCall = null;
+        $player->getStatesMap()->phoneOutcomingCall = null;
     }
 
     public function breakCall(MineParkPlayer $player)
     {
-        $player->getStatesMap()->phoneRcv = null;
+        $player->getStatesMap()->phoneCompanion = null;
         $player->sendMessage("PhoneErrorNet");
     }
 

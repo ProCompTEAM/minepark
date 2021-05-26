@@ -11,6 +11,7 @@ use minepark\components\base\Component;
 use minepark\common\player\MineParkPlayer;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockPlaceEvent;
+use pocketmine\event\inventory\InventoryTransactionEvent;
 use pocketmine\event\player\PlayerJoinEvent;
 use minepark\providers\data\UsersDataProvider;
 use pocketmine\event\player\PlayerInteractEvent;
@@ -32,6 +33,7 @@ class Auth extends Component
         Events::registerEvent(EventList::PLAYER_INTERACT_EVENT, [$this, "handleInteract"]);
         Events::registerEvent(EventList::BLOCK_BREAK_EVENT, [$this, "handleBlockBreak"]);
         Events::registerEvent(EventList::BLOCK_PLACE_EVENT, [$this, "handleBlockPlace"]);
+        Events::registerEvent(EventList::INVENTORY_TRANSACTION_EVENT, [$this, "handleInventoryTransaction"]);
         Events::registerEvent(EventList::PLAYER_COMMAND_PREPROCESS_EVENT, [$this, "executeInputData"]);
 
         $this->usersDataProvider = Providers::getUsersDataProvider();
@@ -72,7 +74,7 @@ class Auth extends Component
         $player = MineParkPlayer::cast($event->getPlayer());
 
         if (!$player->getStatesMap()->auth) {
-            return $event->setCancelled();
+            $event->setCancelled();
         }
     }
 
@@ -80,6 +82,16 @@ class Auth extends Component
     {
         if (!$event->getPlayer()->getStatesMap()->auth) {
             $event->setCancelled();
+        }
+    }
+
+    public function handleInventoryTransaction(InventoryTransactionEvent $event)
+    {
+        foreach($event->getTransaction()->getInventories() as $inventory) {
+            $holder = $inventory->getHolder();
+            if($holder instanceof MineParkPlayer and !$holder->getStatesMap()->auth) {
+                $event->setCancelled();
+            }
         }
     }
 

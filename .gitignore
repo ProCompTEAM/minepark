@@ -12,6 +12,7 @@ Thumbs.db
 /server/plugin_data/MapImageEngine/instructions/*
 /server/plugin_data/PocketRadio/volume.yml
 /server/players/*
+/server/plugins/.idea/*
 /server/crashdumps/*
 
 server.lock

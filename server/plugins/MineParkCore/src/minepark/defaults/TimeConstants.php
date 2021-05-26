@@ -24,5 +24,7 @@ class TimeConstants
     public const NOFIRE_UPDATE_INTERVAL = 180;
 
     public const TRAFFIC_LIGHTS_UPDATE_INTERVAL = 25;
+
+    public const CLEAR_LAGG_INTERVAL = 680;
 }
 ?>

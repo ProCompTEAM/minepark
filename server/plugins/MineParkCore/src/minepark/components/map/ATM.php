@@ -47,7 +47,7 @@ class ATM extends Component
         ];
     }
 
-    public function initializeMenu(MineParkPlayer $player)
+    public function sendMenu(MineParkPlayer $player)
     {
         $form = new SimpleForm([$this, "answerMenu"]);
         $form->setTitle("§eБанкомат");
@@ -72,19 +72,19 @@ class ATM extends Component
             break;
 
             case self::CHOICE_TAKE:
-                $this->initializeTakeBankMoneyForm($player);
+                $this->sendTakeBankMoneyForm($player);
             break;
 
             case self::CHOICE_PUT:
-                $this->initializePutBankMoneyForm($player);
+                $this->sendPutBankMoneyForm($player);
             break;
 
             case self::CHOICE_MOVE:
-                $this->initializeTransferDebitForm($player);
+                $this->sendTransferDebitForm($player);
             break;
 
             case self::CHOICE_PHONE_BALANCE:
-                $this->initializePhoneBalanceForm($player);
+                $this->sendPhoneBalanceForm($player);
             break;
 
             default:
@@ -100,7 +100,7 @@ class ATM extends Component
         $player->sendWindowMessage($contents, "§eБаланс");
     }
 
-    private function initializeTakeBankMoneyForm(MineParkPlayer $player)
+    private function sendTakeBankMoneyForm(MineParkPlayer $player)
     {
         $form = new CustomForm([$this, "answerTakeBankMoneyForm"]);
         $form->setTitle("§eВывод денег");
@@ -111,7 +111,7 @@ class ATM extends Component
     public function answerTakeBankMoneyForm(MineParkPlayer $player, ?array $data = null)
     {
         if(!isset($data)) {
-            $this->initializeMenu($player);
+            $this->sendMenu($player);
             return;
         }
 
@@ -132,7 +132,7 @@ class ATM extends Component
         $player->sendMessage("§bВы успешно вывели §e$input!");
     }
 
-    private function initializePutBankMoneyForm(MineParkPlayer $player)
+    private function sendPutBankMoneyForm(MineParkPlayer $player)
     {
         $form = new CustomForm([$this, "answerPutBankMoneyForm"]);
         $form->setTitle("§eПополнение счёта");
@@ -143,7 +143,7 @@ class ATM extends Component
     public function answerPutBankMoneyForm(MineParkPlayer $player, ?array $data = null)
     {
         if(!isset($data)) {
-            $this->initializeMenu($player);
+            $this->sendMenu($player);
             return;
         }
 
@@ -164,7 +164,7 @@ class ATM extends Component
         $player->sendMessage("§bВы успешно пополнили счёт на §e$input!");
     }
 
-    private function initializeTransferDebitForm(MineParkPlayer $player)
+    private function sendTransferDebitForm(MineParkPlayer $player)
     {
         $form = new CustomForm([$this, "answerTransferDebitForm"]);
         $form->setTitle("§eПеревод денег");
@@ -176,7 +176,7 @@ class ATM extends Component
     public function answerTransferDebitForm(MineParkPlayer $player, ?array $data = null)
     {
         if(!isset($data)) {
-            $this->initializeMenu($player);
+            $this->sendMenu($player);
             return;
         }
 
@@ -195,7 +195,7 @@ class ATM extends Component
         }
 
         if(!$this->bankingProvider->transferDebit($player->getName(), $target, $amount)) {
-            $player->sendMessage("§eПеревод денег прошел неуспешно");
+            $player->sendMessage("§eНе удалось перевести деньги");
             return;
         }
 
@@ -208,7 +208,7 @@ class ATM extends Component
         }
     }
 
-    public function initializePhoneBalanceForm(MineParkPlayer $player)
+    public function sendPhoneBalanceForm(MineParkPlayer $player)
     {
         $form = new CustomForm([$this, "answerPhoneBalanceForm"]);
         $form->setTitle("§eПополнение баланса телефона");
@@ -219,7 +219,7 @@ class ATM extends Component
     public function answerPhoneBalanceForm(MineParkPlayer $player, ?array $data = null)
     {
         if(!isset($data)) {
-            $this->initializeMenu($player);
+            $this->sendMenu($player);
             return;
         }
 
