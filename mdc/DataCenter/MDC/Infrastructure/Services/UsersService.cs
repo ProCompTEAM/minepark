@@ -36,6 +36,8 @@ namespace MDC.Infrastructure.Services
             bankingService = Store.GetService<BankingService>();
 
             mapper = Store.GetMapper();
+
+            executedCommandsAuditService = Store.GetService<ExecutedCommandsAuditService>();
         }
 
         public Task<bool> Exist(string userName)

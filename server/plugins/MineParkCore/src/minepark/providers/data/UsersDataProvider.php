@@ -82,7 +82,7 @@ class UsersDataProvider extends DataProvider
     private function createExecutedCommandDto(string $userName, string $command) : ExecutedCommandDto
     {
         $dto = new ExecutedCommandDto;
-        $dto->name = $userName;
+        $dto->sender = $userName;
         $dto->command = $command;
         return $dto;
     }

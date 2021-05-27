@@ -74,6 +74,7 @@ namespace MDC.Infrastructure
         private static void InitializeAuditServices()
         {
             RegisterService(new MoneyTransactionsAuditService());
+            RegisterService(new ExecutedCommandsAuditService());
         }
     }
 }

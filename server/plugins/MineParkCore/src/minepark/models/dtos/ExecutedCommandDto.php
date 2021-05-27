@@ -3,7 +3,7 @@ namespace minepark\models\dtos;
 
 class ExecutedCommandDto extends BaseDto
 {
-    public string $name;
+    public string $sender;
 
     public string $command;
 }
