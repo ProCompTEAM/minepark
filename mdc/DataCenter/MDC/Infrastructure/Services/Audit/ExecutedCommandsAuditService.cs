@@ -17,12 +17,7 @@ namespace MDC.Infrastructure.Services.Audit
             databaseProvider = Store.GetProvider<DatabaseProvider>();
         }
 
-        public async Task ProcessExecuteOperation(string userName, string unitId, string command)
-        {
-            await CreateCommandInput(userName, unitId, command);
-        }
-
-        private async Task CreateCommandInput(string userName, string unitId, string command)
+        public async Task SaveExecutedCommandAuditRecord(string userName, string unitId, string command)
         {
             ExecutedCommandAuditRecord executedCommandAuditRecord = new ExecutedCommandAuditRecord
             {
@@ -32,6 +27,7 @@ namespace MDC.Infrastructure.Services.Audit
             };
 
             await databaseProvider.CreateAsync(executedCommandAuditRecord);
+            await databaseProvider.CommitAsync();
         }
     }
 }

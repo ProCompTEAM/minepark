@@ -32,6 +32,6 @@ namespace MDC.Infrastructure.Services.Interfaces
 
         Task UpdateQuitStatus(string userName);
 
-        Task ExecuteCommand(string unitId, string userName, string command);
+        Task SaveExecutedCommandAuditRecord(string unitId, string userName, string command);
     }
 }

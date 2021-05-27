@@ -16,6 +16,7 @@ class ExecutedCommandsAudit extends Component
     public function initialize()
     {
         $this->usersProvider = Providers::getUsersDataProvider();
+
         Events::registerEvent(EventList::PLAYER_COMMAND_PREPROCESS_EVENT, [$this, "handleCommand"]);
     }
 

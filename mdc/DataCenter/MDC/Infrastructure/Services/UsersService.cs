@@ -153,15 +153,9 @@ namespace MDC.Infrastructure.Services
             await databaseProvider.CommitAsync();
         }
 
-        public async Task ExecuteCommand(string unitId, string userName, string command)
+        public async Task SaveExecutedCommandAuditRecord(string unitId, string userName, string command)
         {
-            await RegisterExecuteCommand(unitId, userName, command);
-            await databaseProvider.CommitAsync();
-        }
-
-        private async Task RegisterExecuteCommand(string unitId, string userName, string command)
-        {
-            await executedCommandsAuditService.ProcessExecuteOperation(userName, unitId, command);
+            await executedCommandsAuditService.SaveExecutedCommandAuditRecord(userName, unitId, command);
         }
 
         private int GetMinutesLeft(DateTime joinedDate, DateTime leftDate)

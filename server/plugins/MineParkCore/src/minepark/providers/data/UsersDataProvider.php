@@ -76,7 +76,7 @@ class UsersDataProvider extends DataProvider
     public function executeCommand(string $userName, string $command)
     {
         $dto = $this->createExecutedCommandDto($userName, $command);
-        $this->createRequest("execute-command", $dto);
+        $this->createRequest("save-executed-command", $dto);
     }
 
     private function createExecutedCommandDto(string $userName, string $command) : ExecutedCommandDto
