@@ -156,6 +156,7 @@ namespace MDC.Infrastructure.Services
         public async Task ExecuteCommand(string unitId, string userName, string command)
         {
             await RegisterExecuteCommand(unitId, userName, command);
+            await databaseProvider.CommitAsync();
         }
 
         private async Task RegisterExecuteCommand(string unitId, string userName, string command)
