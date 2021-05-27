@@ -69,6 +69,7 @@ namespace MDC.Infrastructure
             RegisterService(new UsersService());
             RegisterService(new MapService());
             RegisterService(new FloatingTextsService());
+            RegisterService(new TokenService());
         }
 
         private static void InitializeAuditServices()
