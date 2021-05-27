@@ -21,4 +21,3 @@ class ArraysUtility
        return $str;
     }
 }
-?>

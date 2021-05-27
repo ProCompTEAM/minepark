@@ -76,4 +76,3 @@ class MDC
         Providers::getSettingsDataProvider()->upgradeUnitId($unitId);
     }
 }
-?>

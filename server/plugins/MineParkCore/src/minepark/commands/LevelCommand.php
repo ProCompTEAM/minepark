@@ -41,4 +41,3 @@ class LevelCommand extends Command
         }
     }
 }
-?>

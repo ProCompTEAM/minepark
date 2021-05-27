@@ -88,4 +88,3 @@ class InfoCommand extends OrganisationsCommand
         $requestor->sendMessage($f);
     }
 }
-?>

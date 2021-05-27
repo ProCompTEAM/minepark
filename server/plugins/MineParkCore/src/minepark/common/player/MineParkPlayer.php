@@ -359,4 +359,3 @@ class MineParkPlayer extends Player
         return parent::kick($reason, $isAdmin, $quitMessage);
     }
 }
-?>

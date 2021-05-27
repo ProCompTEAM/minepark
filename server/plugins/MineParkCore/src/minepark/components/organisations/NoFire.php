@@ -175,4 +175,3 @@ class NoFire extends Component
         return false;
     }
 }
-?>

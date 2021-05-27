@@ -64,4 +64,3 @@ class Tasks
         self::$scheduler->scheduleRepeatingTask($task, TimeConstants::ONE_SECOND_TICKS);
     }
 }
-?>

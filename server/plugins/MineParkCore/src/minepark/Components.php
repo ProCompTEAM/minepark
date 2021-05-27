@@ -80,4 +80,3 @@ class Components
         throw new Exception("Component does not exist");
     }
 }
-?>

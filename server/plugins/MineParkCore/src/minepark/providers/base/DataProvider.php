@@ -12,4 +12,3 @@ abstract class DataProvider extends Provider
         return $this->getCore()->getMDC()->createRequest($this->getRoute(), $remoteMethod, $data);
     }
 }
-?>

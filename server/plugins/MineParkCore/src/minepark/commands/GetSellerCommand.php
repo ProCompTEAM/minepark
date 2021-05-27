@@ -74,4 +74,3 @@ class GetSellerCommand extends Command
         return null;
     }
 }
-?>

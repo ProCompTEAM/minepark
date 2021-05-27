@@ -170,4 +170,3 @@ class GPSCommand extends Command
         }
     }
 }
-?>

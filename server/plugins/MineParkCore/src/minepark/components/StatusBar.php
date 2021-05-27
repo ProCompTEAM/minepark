@@ -27,4 +27,3 @@ class StatusBar extends Component
         }
     }
 }
-?>

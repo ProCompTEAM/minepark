@@ -101,4 +101,3 @@ class Providers
         return self::$floatingTextsDataProvider;
     }
 }
-?>

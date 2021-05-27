@@ -133,4 +133,3 @@ class LocalizationProvider extends Provider
         return $this->data[$langKey][$stringKey];
     }
 }
-?>

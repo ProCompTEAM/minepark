@@ -240,4 +240,3 @@ class ATM extends Component
         $player->sendMessage("§bВы успешно пополнили баланс на §e$input");
     }
 }
-?>

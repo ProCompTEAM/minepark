@@ -26,4 +26,3 @@ abstract class Script
         $this->getServer()->getLogger()->info("$prefix $message");
     }
 }
-?>

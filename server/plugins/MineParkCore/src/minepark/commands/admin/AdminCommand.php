@@ -302,4 +302,3 @@ class AdminCommand extends Command
         return true;
     }
 }
-?>

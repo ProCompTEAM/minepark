@@ -17,4 +17,3 @@ class MapPointDto extends BaseDto
 
     public string $createdDate;
 }
-?>

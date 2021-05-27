@@ -110,4 +110,3 @@ class Navigation extends Component
         return round(sqrt(pow($toX - $fromX, 2) + pow($toY - $fromY, 2)));
     }
 }
-?>

@@ -41,4 +41,3 @@ class ProfileProvider extends Provider
         $this->usersDataProvider->updateUserData($player->getProfile());
     }
 }
-?>

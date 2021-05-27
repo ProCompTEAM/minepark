@@ -50,4 +50,3 @@ class FloatingTextsDataProvider extends DataProvider
         return $dtos;
     }
 }
-?>

@@ -205,4 +205,3 @@ class Core extends PluginBase implements Listener
         }
     }
 }
-?>

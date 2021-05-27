@@ -43,4 +43,3 @@ class PutBoxCommand extends Command
         $player->sendSound(Sounds::ROLEPLAY);
     }
 }
-?>

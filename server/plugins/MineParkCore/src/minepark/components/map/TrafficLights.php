@@ -98,4 +98,3 @@ class TrafficLights extends Component
         $player->showFloatingTexts();
     }
 }
-?>

@@ -11,4 +11,3 @@ class PlayerAttributes
     
     public const BOSS = 'B';
 }
-?>

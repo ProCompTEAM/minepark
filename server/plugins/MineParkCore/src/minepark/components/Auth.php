@@ -214,4 +214,3 @@ class Auth extends Component
         Tasks::registerDelayedAction($timeoutTicks, [$this, "sendWelcomeText"], [$player]);
     }
 }
-?>

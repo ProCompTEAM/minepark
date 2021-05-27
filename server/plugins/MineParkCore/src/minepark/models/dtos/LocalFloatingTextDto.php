@@ -13,4 +13,3 @@ class LocalFloatingTextDto extends BaseDto
 
     public float $z;
 }
-?>

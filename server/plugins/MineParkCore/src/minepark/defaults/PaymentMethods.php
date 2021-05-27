@@ -9,4 +9,3 @@ class PaymentMethods
 
     public const CREDIT = 3;
 }
-?>

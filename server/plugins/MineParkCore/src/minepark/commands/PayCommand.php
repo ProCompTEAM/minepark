@@ -78,4 +78,3 @@ class PayCommand extends Command
         $event->setCancelled();
     }
 }
-?>

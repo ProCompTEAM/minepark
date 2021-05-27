@@ -44,4 +44,3 @@ class FloatingTextsCommand extends Command
         $this->floatingTexts->initializeMenu($player);
     }
 }
-?>

@@ -113,4 +113,3 @@ class BankingDataProvider extends DataProvider
         return $dto;
     }
 }
-?>

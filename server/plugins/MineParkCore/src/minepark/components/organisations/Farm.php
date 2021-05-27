@@ -88,4 +88,3 @@ class Farm extends Component
         return $player->getLevel()->getBlockIdAt($player->getX(), $player->getY() - 1, $player->getZ()) == 255;
     }
 }
-?>

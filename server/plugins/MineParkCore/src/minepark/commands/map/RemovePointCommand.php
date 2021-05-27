@@ -48,4 +48,3 @@ class RemovePointCommand extends Command
         $player->sendMessage($status ? "CommandRemovePointSuccess" : "CommandRemovePointUnsuccess");
     }
 }
-?>

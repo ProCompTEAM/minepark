@@ -82,4 +82,3 @@ class RemoveCommand extends OrganisationsCommand
         return $players;
     }
 }
-?>

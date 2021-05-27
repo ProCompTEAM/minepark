@@ -26,4 +26,3 @@ class CallbackTask extends Task
         call_user_func_array($this->callable, $this->arguments);
     }
 }
-?>

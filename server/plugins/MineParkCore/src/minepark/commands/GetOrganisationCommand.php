@@ -117,4 +117,3 @@ class GetOrganisationCommand extends Command
         $player->sendMessage("CommandGetOrgGet");
     }
 }
-?>
