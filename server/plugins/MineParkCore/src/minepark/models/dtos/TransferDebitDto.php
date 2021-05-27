@@ -9,4 +9,3 @@ class TransferDebitDto extends BaseDto
 
     public float $amount;
 }
-?>

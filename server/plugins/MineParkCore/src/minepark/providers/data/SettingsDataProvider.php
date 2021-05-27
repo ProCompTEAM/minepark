@@ -17,4 +17,3 @@ class SettingsDataProvider extends DataProvider
         $this->createRequest("upgrade-unit-id", $unitId);
     }
 }
-?>

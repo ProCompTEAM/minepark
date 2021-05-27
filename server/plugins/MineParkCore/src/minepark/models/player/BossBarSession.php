@@ -11,4 +11,3 @@ class BossBarSession
 
     public bool $loaded;
 }
-?>

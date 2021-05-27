@@ -24,5 +24,3 @@ class WorldSettings extends Component
         $event->setCancelled();
     }
 }
-
-?>

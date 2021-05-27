@@ -120,4 +120,3 @@ class HealCommand extends OrganisationsCommand
         $this->bankingProvider->givePlayerMoney($healer, 500);
     }
 }
-?>

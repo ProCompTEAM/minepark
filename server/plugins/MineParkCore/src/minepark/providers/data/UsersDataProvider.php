@@ -80,4 +80,3 @@ class UsersDataProvider extends DataProvider
         return $dto;
     }
 }
-?>

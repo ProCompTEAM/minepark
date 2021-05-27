@@ -13,4 +13,3 @@ class LocalMapPointDto extends BaseDto
 
     public int $distance;
 }
-?>

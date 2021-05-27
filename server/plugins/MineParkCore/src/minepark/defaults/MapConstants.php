@@ -19,4 +19,3 @@ class MapConstants
     public const POINT_GROUP_TRAFFIC_LIGHT1 = 9;
     public const POINT_GROUP_TRAFFIC_LIGHT2 = 10;
 }
-?>

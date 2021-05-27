@@ -134,4 +134,3 @@ class ChangeNameCommand extends OrganisationsCommand
         return $players;
     }
 }
-?>

@@ -12,4 +12,3 @@ class Defaults
     public const SERVER_LOBBY_ADDRESS = "minepark.ru";
     public const SERVER_LOBBY_PORT = 19132;
 }
-?>

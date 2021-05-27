@@ -60,4 +60,3 @@ class TryCommand extends Command
         $this->tracking->actionRP($player, $message . " " . $actResult, self::DISTANCE, "[TRY]");
     }
 }
-?>

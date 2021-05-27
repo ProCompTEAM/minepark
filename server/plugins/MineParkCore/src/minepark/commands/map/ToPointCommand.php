@@ -46,4 +46,3 @@ class ToPointCommand extends Command
         $this->mapProvider->teleportPoint($player, $args[0]);
     }
 }
-?>

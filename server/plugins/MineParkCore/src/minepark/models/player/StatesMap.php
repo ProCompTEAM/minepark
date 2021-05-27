@@ -41,4 +41,3 @@ class StatesMap
 
     public ?BossBarSession $bossBarSession;
 }
-?>

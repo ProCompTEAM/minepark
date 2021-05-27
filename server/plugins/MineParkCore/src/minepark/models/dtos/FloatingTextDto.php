@@ -15,4 +15,3 @@ class FloatingTextDto extends BaseDto
 
     public string $createdDate;
 }
-?>

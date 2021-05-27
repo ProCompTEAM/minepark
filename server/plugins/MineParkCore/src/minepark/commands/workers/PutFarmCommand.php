@@ -43,4 +43,3 @@ class PutFarmCommand extends Command
         $player->sendSound(Sounds::ROLEPLAY);
     }
 }
-?>

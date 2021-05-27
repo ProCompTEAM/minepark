@@ -74,4 +74,3 @@ class GuestCar2 extends BaseCar
         return new Vector3(-0.5, 1.4, 0.2);
     }
 }
-?>

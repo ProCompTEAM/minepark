@@ -7,4 +7,3 @@ class BalanceDto extends BaseDto
 
     public float $amount;
 }
-?>

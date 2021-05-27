@@ -11,4 +11,3 @@ class ChatConstants
 
     public const ROLEPLAY_ACTION_RADIUS = 10;
 }
-?>

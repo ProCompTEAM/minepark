@@ -70,4 +70,3 @@ class PlayersLocation extends Component
         }
     }
 }
-?>

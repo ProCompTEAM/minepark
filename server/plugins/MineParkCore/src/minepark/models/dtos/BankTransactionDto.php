@@ -7,4 +7,3 @@ class BankTransactionDto extends BaseDto
 
     public float $amount;
 }
-?>

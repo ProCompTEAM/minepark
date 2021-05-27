@@ -25,4 +25,3 @@ abstract class Component
         return Server::getInstance();
     }
 }
-?>

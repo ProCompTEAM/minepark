@@ -51,4 +51,3 @@ class ReplyCommand extends Command
         $this->reports->replyReport($player, $ticketID, $messageToSend);
     }
 }
-?>

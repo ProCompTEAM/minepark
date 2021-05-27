@@ -56,4 +56,3 @@ class PhonesDataProvider extends DataProvider
         return $dto;
     }
 }
-?>

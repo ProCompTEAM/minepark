@@ -38,4 +38,3 @@ class OnlineCommand extends Command
         $player->sendMessage(implode("\n - ", $admins));
     }
 }
-?>

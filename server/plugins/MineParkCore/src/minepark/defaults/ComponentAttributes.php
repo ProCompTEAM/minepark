@@ -7,4 +7,3 @@ class ComponentAttributes
 
     public const SHARED = 2;
 }
-?>

@@ -48,4 +48,3 @@ class SwitchCommand extends Command
         return $player->isOp() or $this->permissionsSwitch->isOperator($player->getName());
     }
 }
-?>

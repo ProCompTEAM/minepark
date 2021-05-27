@@ -8,4 +8,3 @@ class MathUtility
         return $value >= min($from, $to) and $value <= max($from, $to);
     }
 }
-?>

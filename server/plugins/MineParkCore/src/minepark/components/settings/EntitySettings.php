@@ -166,4 +166,3 @@ class EntitySettings extends Component
         return $this->reasons[mt_rand(0, count($this->reasons) - 1)];
     }
 }
-?>

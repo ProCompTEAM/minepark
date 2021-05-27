@@ -188,4 +188,3 @@ class BossBar extends Component
         ];
     }
 }
-?>

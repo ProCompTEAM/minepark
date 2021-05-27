@@ -47,4 +47,3 @@ class MoneyCommand extends Command
         $player->sendMessage("§4→ В кредит§e $credit §3рублей.");
     }
 }
-?>

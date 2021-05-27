@@ -387,5 +387,3 @@ class PlayerSettings extends Component
         }
     }
 }
-
-?>

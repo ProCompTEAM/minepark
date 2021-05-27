@@ -16,4 +16,3 @@ abstract class Provider
         return Server::getInstance();
     }
 }
-?>

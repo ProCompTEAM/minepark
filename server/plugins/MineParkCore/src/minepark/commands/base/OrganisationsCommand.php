@@ -11,4 +11,3 @@ abstract class OrganisationsCommand extends Command
         return $player->existsAttribute(PlayerAttributes::BOSS);
     }
 }
-?>

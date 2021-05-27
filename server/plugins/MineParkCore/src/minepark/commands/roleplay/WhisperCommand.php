@@ -60,4 +60,3 @@ class WhisperCommand extends Command
         $this->tracking->actionRP($player, $message, self::DISTANCE, "[WHISPER]");
     }
 }
-?>

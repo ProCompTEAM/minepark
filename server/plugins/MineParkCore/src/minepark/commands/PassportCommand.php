@@ -94,4 +94,3 @@ class PassportCommand extends Command
         }
     }
 }
-?>

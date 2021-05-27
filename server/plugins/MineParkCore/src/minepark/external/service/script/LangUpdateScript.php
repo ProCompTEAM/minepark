@@ -50,4 +50,3 @@ class LangUpdateScript extends Script
         return str_replace("\/", "/", $json);
     }
 }
-?>

@@ -140,4 +140,3 @@ class Events implements Listener
         self::callEvent(EventList::INVENTORY_TRANSACTION_EVENT, $event);
     }
 }
-?>

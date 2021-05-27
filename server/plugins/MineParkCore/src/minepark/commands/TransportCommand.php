@@ -58,4 +58,3 @@ class TransportCommand extends Command
         return $this->vehicles->createVehicle($model, $player->getLevel(), $player->asVector3(), $player->getYaw());
     }
 }
-?>

@@ -30,4 +30,3 @@ class AnimationCommand extends Command
         $player->sleepOn($player->getPosition()->subtract(0, 1, 0));
     }
 }
-?>

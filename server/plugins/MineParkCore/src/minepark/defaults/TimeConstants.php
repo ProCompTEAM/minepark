@@ -27,4 +27,3 @@ class TimeConstants
 
     public const CLEAR_LAGG_INTERVAL = 680;
 }
-?>

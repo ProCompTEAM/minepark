@@ -164,4 +164,3 @@ class Workers extends Component
         $player->getStatesMap()->bar = null;
     }
 }
-?>
