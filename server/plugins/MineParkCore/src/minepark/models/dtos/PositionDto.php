@@ -11,4 +11,3 @@ class PositionDto extends BaseDto
 
     public float $z;
 }
-?>

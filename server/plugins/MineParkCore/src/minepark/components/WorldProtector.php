@@ -103,4 +103,3 @@ class WorldProtector extends Component
         return $this->level;
     }
 }
-?>

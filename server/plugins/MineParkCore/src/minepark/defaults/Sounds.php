@@ -15,4 +15,3 @@ class Sounds
 
     public const SIREN_SOUND = "minepark.sound5";
 }
-?>

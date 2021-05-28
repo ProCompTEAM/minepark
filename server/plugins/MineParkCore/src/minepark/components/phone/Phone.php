@@ -379,4 +379,3 @@ class Phone extends Component
         return $messages;
     }
 }
-?>

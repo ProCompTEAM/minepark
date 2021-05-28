@@ -65,4 +65,3 @@ class ATMCommand extends Command
         return false;
     }
 }
-?>

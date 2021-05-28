@@ -7,4 +7,3 @@ class PaymentMethodDto extends BaseDto
 
     public int $method;
 }
-?>

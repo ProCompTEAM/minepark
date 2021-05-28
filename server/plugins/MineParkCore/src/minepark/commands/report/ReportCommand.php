@@ -48,4 +48,3 @@ class ReportCommand extends Command
         $this->reports->playerReport($player, $reportMessage);
     }
 }
-?>

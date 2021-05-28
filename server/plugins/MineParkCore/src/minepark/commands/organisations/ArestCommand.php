@@ -85,4 +85,3 @@ class ArestCommand extends OrganisationsCommand
         $arrester->sendLocalizedMessage("{CommandArestPolice}".$playerToArrest->getProfile()->fullName);
     }
 }
-?>

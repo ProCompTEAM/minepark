@@ -51,4 +51,3 @@ class NoFireCommand extends OrganisationsCommand
         $this->organisations->getNoFire()->clean($player);
     }
 }
-?>

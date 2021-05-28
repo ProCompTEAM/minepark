@@ -307,4 +307,3 @@ class FloatingTexts extends Component
         $player->showFloatingTexts();
     }
 }
-?>

@@ -553,4 +553,3 @@ abstract class BaseCar extends Vehicle
         $player->sendForm($form);
     }
 }
-?>

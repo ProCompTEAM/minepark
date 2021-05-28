@@ -4,6 +4,7 @@ namespace minepark;
 use Exception;
 use minepark\components\Auth;
 use minepark\components\map\ClearLagg;
+use minepark\components\audit\ExecutedCommandsAudit;
 use minepark\components\organisations\PayDay;
 use minepark\components\BossBar;
 use minepark\components\FastFood;
@@ -57,7 +58,8 @@ class Components
             new PermissionsSwitch,
             new FloatingTexts,
             new ATM,
-            new ClearLagg
+            new ClearLagg,
+            new ExecutedCommandsAudit
         ];
 
         foreach(self::$components as $component) {
@@ -80,4 +82,3 @@ class Components
         throw new Exception("Component does not exist");
     }
 }
-?>

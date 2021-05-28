@@ -33,4 +33,3 @@ class NightCommand extends Command
         $player->sendMessage("§9⌚ Вы включили §1ночь §9в игровом мире §e" . $player->getLevel()->getName());
     }
 }
-?>

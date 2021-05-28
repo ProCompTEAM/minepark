@@ -53,4 +53,3 @@ class ShowCommand extends OrganisationsCommand
         $this->gameChat->sendLocalMessage($player, "{CommandShowHandLic}" . $organisationName . "*§8)", "§d : ", 10);
     }
 }
-?>

@@ -11,4 +11,3 @@ class RepeatingActionStates
 
     public int $penIndex = 0;
 }
-?>

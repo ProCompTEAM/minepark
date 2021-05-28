@@ -16,4 +16,3 @@ class FloatingText
 
     public FloatingTextParticle $particle;
 }
-?>

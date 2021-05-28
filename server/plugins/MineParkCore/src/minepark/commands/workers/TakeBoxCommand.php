@@ -43,4 +43,3 @@ class TakeBoxCommand extends Command
         $player->sendSound(Sounds::ROLEPLAY);
     }
 }
-?>

@@ -1,4 +1,6 @@
-﻿namespace MDC.Infrastructure.Providers.Interfaces
+﻿using System.Threading.Tasks;
+
+namespace MDC.Infrastructure.Providers.Interfaces
 {
     public interface IUnitProvider
     {
@@ -9,5 +11,9 @@
         string GetCurrentUnitId(string accessToken);
 
         void SetCurrentUnitId(string accessToken, string unitId);
+
+        void AddAccessToken(string accessToken);
+
+        void RemoveAccessToken(string accessToken);
     }
 }

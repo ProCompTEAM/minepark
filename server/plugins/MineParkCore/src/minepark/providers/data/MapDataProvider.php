@@ -66,4 +66,3 @@ class MapDataProvider extends DataProvider
         return $data;
     }
 }
-?>

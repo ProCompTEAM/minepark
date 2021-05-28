@@ -104,4 +104,3 @@ class PayDay extends Component
         return 0;
     }
 }
-?>

@@ -63,4 +63,3 @@ class ResetPasswordCommand extends Command
         }
     }
 }
-?>

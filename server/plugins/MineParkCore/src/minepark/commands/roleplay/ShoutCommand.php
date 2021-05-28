@@ -58,4 +58,3 @@ class ShoutCommand extends Command
         $this->tracking->actionRP($player, $message, self::DISTANCE, "[SHOUT]");
     }
 }
-?>

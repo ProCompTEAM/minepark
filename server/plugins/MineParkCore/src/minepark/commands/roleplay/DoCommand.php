@@ -58,4 +58,3 @@ class DoCommand extends Command
         $this->tracking->actionRP($player, $message, self::DISTANCE, "[DO]");
     }
 }
-?>

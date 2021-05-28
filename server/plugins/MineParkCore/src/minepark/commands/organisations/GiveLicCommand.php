@@ -116,4 +116,3 @@ class GiveLicCommand extends OrganisationsCommand
         return $players;
     }
 }
-?>

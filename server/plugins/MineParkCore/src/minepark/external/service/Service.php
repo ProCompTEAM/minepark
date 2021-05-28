@@ -63,4 +63,3 @@ class Service
         $this->getCore()->getLogger()->info("Use: /" . self::COMMAND . " <script name>");
     }
 }
-?>

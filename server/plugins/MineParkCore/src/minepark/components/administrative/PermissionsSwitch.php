@@ -101,4 +101,3 @@ class PermissionsSwitch extends Component
         $player->kick("§eИзменения применены.");
     }
 }
-?>

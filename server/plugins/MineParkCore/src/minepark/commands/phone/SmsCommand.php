@@ -50,4 +50,3 @@ class SmsCommand extends Command
         }
     }
 }
-?>

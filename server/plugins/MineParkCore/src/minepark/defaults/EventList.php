@@ -33,4 +33,3 @@ class EventList
 
     public const INVENTORY_TRANSACTION_EVENT = 15;
 }
-?>

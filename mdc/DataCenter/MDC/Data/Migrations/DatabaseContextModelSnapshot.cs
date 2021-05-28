@@ -72,6 +72,32 @@ namespace MDC.Data.Migrations
                     b.ToTable("Credentials");
                 });
 
+            modelBuilder.Entity("MDC.Data.Models.ExecutedCommandAuditRecord", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Command")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("Subject")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("UnitId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(128)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ExecutedCommandAuditRecords");
+                });
+
             modelBuilder.Entity("MDC.Data.Models.FloatingText", b =>
                 {
                     b.Property<int>("Id")

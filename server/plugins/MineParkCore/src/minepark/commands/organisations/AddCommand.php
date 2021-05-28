@@ -81,4 +81,3 @@ class AddCommand extends OrganisationsCommand
         return $players;
     }
 }
-?>

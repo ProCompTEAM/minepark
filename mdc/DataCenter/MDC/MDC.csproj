@@ -22,6 +22,8 @@
   <ItemGroup>
     <Compile Remove="Data\Migrations\20200704154429_AddUserIdForeignKey.cs" />
     <Compile Remove="Data\Migrations\20200704154429_AddUserIdForeignKey.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210526170743_AddExecutedCommandsAuditRecord.cs" />
+    <Compile Remove="Data\Migrations\20210526170743_AddExecutedCommandsAuditRecord.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

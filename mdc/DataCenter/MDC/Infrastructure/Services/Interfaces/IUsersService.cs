@@ -31,5 +31,7 @@ namespace MDC.Infrastructure.Services.Interfaces
         Task UpdateJoinStatus(string userName);
 
         Task UpdateQuitStatus(string userName);
+
+        Task SaveExecutedCommandAuditRecord(string unitId, string userName, string command);
     }
 }

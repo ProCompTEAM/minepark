@@ -51,4 +51,3 @@ class GPSNearCommand extends Command
         $player->sendSound(Sounds::OPEN_NAVIGATOR);
     }
 }
-?>

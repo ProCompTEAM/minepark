@@ -9,4 +9,3 @@ class Files
     public const MESSAGES_LOG_FILE = "msg-log.txt";
     public const WEBAPI_LOG_FILE = "webapi-log.txt";
 }
-?>

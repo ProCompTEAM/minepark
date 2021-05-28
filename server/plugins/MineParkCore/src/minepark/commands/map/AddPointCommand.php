@@ -57,4 +57,3 @@ class AddPointCommand extends Command
         $player->sendLocalizedMessage("{AddPointSuccessPart1}$pointName{AddPointSuccessPart2}");
     }
 }
-?>

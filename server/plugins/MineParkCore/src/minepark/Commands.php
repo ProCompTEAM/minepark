@@ -1,6 +1,7 @@
 <?php
 namespace minepark;
 
+use minepark\defaults\ChatConstants;
 use pocketmine\event\Event;
 use pocketmine\event\player\PlayerCommandPreprocessEvent;
 use minepark\defaults\EventList;
@@ -63,9 +64,6 @@ use minepark\commands\permissions\SwitchCommand;
 
 class Commands
 {
-    private const COMMAND_PREFIX = "/";
-    private const ORGANISATIONS_COMMANDS_PREFIX = "o";
-
     private $commands;
     private $organisationsCommands;
 
@@ -158,14 +156,14 @@ class Commands
             return;
         }
 
-        if ($event->getMessage()[0] !== self::COMMAND_PREFIX) {
+        if ($event->getMessage()[0] !== ChatConstants::COMMAND_PREFIX) {
             return;
         }
 
         $rawCommand = substr($event->getMessage(), 1);
         $arguments = explode(Command::ARGUMENTS_SEPERATOR, $rawCommand);
 
-        if ($arguments[0] === self::ORGANISATIONS_COMMANDS_PREFIX) {
+        if ($arguments[0] === ChatConstants::ORGANISATIONS_COMMANDS_PREFIX) {
             return $this->executeOrganisationsCommand($player, array_slice($arguments, 1), $event);
         }
 
@@ -264,4 +262,3 @@ class Commands
         return false;
     }
 }
-?>

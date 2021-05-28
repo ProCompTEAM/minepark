@@ -33,4 +33,3 @@ class DayCommand extends Command
         $player->sendMessage("§9⌚ Вы включили §dдень §9в игровом мире §e" . $player->getLevel()->getName());
     }
 }
-?>

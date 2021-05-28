@@ -133,4 +133,3 @@ class SellCommand extends OrganisationsCommand
         $seller->sendLocalizedMessage("{CommandSellDo}" . ($buyerId + 1));
     }
 }
-?>

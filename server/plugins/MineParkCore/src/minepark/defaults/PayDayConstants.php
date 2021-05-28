@@ -15,4 +15,3 @@ class PayDayConstants
     public const GOVERNMENT_WORK_SALARY = 2000;
     public const EMERGENCY_WORK_SALARY = 500;
 }
-?>

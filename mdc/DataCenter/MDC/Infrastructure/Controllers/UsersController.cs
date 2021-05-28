@@ -79,5 +79,11 @@ namespace MDC.Infrastructure.Controllers
         {
             await usersService.UpdateQuitStatus(userName);
         }
+
+        public async Task SaveExecutedCommand(ExecutedCommandDto commandDto, RequestContext requestContext)
+        {
+            string unitId = unitProvider.GetCurrentUnitId(requestContext.AccessToken);
+            await usersService.SaveExecutedCommandAuditRecord(unitId, commandDto.Sender, commandDto.Command);
+        }
     }
 }
