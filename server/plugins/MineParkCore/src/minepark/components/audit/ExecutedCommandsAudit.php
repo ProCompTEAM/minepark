@@ -32,7 +32,7 @@ class ExecutedCommandsAudit extends Component
         $message = $event->getMessage();
 
         if($message[0] === ChatConstants::COMMAND_PREFIX) {
-            $this->usersProvider->executeCommand($sender->getName(), substr($message, 1));
+            $this->usersProvider->saveExecutedCommand($sender->getName(), substr($message, 1));
         }
     }
 }
