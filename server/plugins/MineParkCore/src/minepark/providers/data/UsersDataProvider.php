@@ -1,6 +1,7 @@
 <?php
 namespace minepark\providers\data;
 
+use minepark\models\dtos\ExecutedCommandDto;
 use minepark\models\dtos\PasswordDto;
 use minepark\models\dtos\UserDto;
 use minepark\providers\base\DataProvider;
@@ -22,7 +23,6 @@ class UsersDataProvider extends DataProvider
     public function getUser(string $userName) : ?UserDto
     {
         $requestResult = $this->createRequest("get-user", $userName);
-
         return $requestResult ? $this->createDto($requestResult) : null;
     }
 
@@ -71,6 +71,20 @@ class UsersDataProvider extends DataProvider
     public function updateUserQuitStatus(string $userName)
     {
         $this->createRequest("update-quit-status", $userName);
+    }
+
+    public function saveExecutedCommand(string $userName, string $command)
+    {
+        $dto = $this->createExecutedCommandDto($userName, $command);
+        $this->createRequest("save-executed-command", $dto);
+    }
+
+    private function createExecutedCommandDto(string $userName, string $command) : ExecutedCommandDto
+    {
+        $dto = new ExecutedCommandDto;
+        $dto->sender = $userName;
+        $dto->command = $command;
+        return $dto;
     }
 
     protected function createDto(array $data) : UserDto
