@@ -1,5 +1,6 @@
 ﻿using MDC.Common.Network.HttpWeb;
 using MDC.Data.Dtos;
+using MDC.Data.Dtos.Audit;
 using MDC.Infrastructure.Controllers.Interfaces;
 using MDC.Infrastructure.Providers;
 using MDC.Infrastructure.Providers.Interfaces;
@@ -84,6 +85,12 @@ namespace MDC.Infrastructure.Controllers
         {
             string unitId = unitProvider.GetCurrentUnitId(requestContext.AccessToken);
             await usersService.SaveExecutedCommandAuditRecord(unitId, commandDto.Sender, commandDto.Command);
+        }
+
+        public async Task SaveChatMessage(ChatMessageDto messageDto, RequestContext requestContext)
+        {
+            string unitId = unitProvider.GetCurrentUnitId(requestContext.AccessToken);
+            await usersService.SaveChatMessageAuditRecord(unitId, messageDto.Sender, messageDto.Message);
         }
     }
 }

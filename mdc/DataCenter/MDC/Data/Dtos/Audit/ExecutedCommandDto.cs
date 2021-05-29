@@ -1,6 +1,4 @@
-﻿using MDC.Data.Enums;
-
-namespace MDC.Data.Dtos
+﻿namespace MDC.Data.Dtos.Audit
 {
     public class ExecutedCommandDto
     {

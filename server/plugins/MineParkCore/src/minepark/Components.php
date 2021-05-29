@@ -3,31 +3,31 @@ namespace minepark;
 
 use Exception;
 use minepark\components\Auth;
-use minepark\components\map\ClearLagg;
-use minepark\components\audit\ExecutedCommandsAudit;
-use minepark\components\organisations\PayDay;
 use minepark\components\BossBar;
+use minepark\components\map\ATM;
 use minepark\components\FastFood;
+use minepark\components\chat\Chat;
 use minepark\components\StatusBar;
+use minepark\components\phone\Phone;
 use minepark\components\Broadcasting;
+use minepark\components\map\ClearLagg;
 use minepark\components\base\Component;
+use minepark\components\chat\ChatAudit;
 use minepark\components\map\Navigation;
 use minepark\components\WorldProtector;
+use minepark\components\map\FloatingTexts;
+use minepark\components\map\TrafficLights;
 use minepark\components\vehicles\Vehicles;
 use minepark\defaults\ComponentAttributes;
+use minepark\components\map\PlayersLocation;
+use minepark\components\organisations\PayDay;
 use minepark\components\administrative\Reports;
 use minepark\components\settings\WorldSettings;
 use minepark\components\administrative\Tracking;
 use minepark\components\settings\EntitySettings;
 use minepark\components\settings\PlayerSettings;
-use minepark\components\chat\GameChat;
 use minepark\components\organisations\Organisations;
 use minepark\components\administrative\PermissionsSwitch;
-use minepark\components\map\ATM;
-use minepark\components\map\FloatingTexts;
-use minepark\components\map\PlayersLocation;
-use minepark\components\map\TrafficLights;
-use minepark\components\phone\Phone;
 
 class Components
 {
@@ -41,7 +41,8 @@ class Components
             new BossBar,
             new Broadcasting,
             new FastFood,
-            new GameChat,
+            new Chat,
+            new ChatAudit,
             new Navigation,
             new PlayersLocation,
             new PayDay,
@@ -58,8 +59,7 @@ class Components
             new PermissionsSwitch,
             new FloatingTexts,
             new ATM,
-            new ClearLagg,
-            new ExecutedCommandsAudit
+            new ClearLagg
         ];
 
         foreach(self::$components as $component) {

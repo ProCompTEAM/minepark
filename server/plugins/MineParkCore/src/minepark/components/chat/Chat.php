@@ -13,7 +13,7 @@ use minepark\common\player\MineParkPlayer;
 use minepark\defaults\ComponentAttributes;
 use pocketmine\event\player\PlayerChatEvent;
 
-class GameChat extends Component
+class Chat extends Component
 {
     private const CHAT_MESSAGE_PREFIX = "{ChatSaid}";
 

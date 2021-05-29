@@ -1,10 +1,9 @@
-﻿using MDC.Data.Enums;
-using MDC.Data.Models;
-using MDC.Infrastructure.Services.Audit.Interfaces;
+﻿using MDC.Infrastructure.Services.Audit.Interfaces;
 using MDC.Infrastructure.Services.Interfaces;
 using MDC.Infrastructure.Providers;
 using MDC.Infrastructure.Providers.Interfaces;
 using System.Threading.Tasks;
+using MDC.Data.Models.Audit;
 
 namespace MDC.Infrastructure.Services.Audit
 {

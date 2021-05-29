@@ -1,6 +1,4 @@
-using System;
-
-namespace MDC.Data.Dtos
+namespace MDC.Data.Dtos.Audit
 {
     public class BankTransactionDto
     {

@@ -3,9 +3,22 @@ Migrations documentation:
 - https://docs.microsoft.com/en-us/ef/core/managing-schemas/migrations/projects?tabs=dotnet-core-cli
 - https://coding.abel.nu/2012/03/ef-migrations-command-reference/
 
+INSTALLATION:
+Create source database;
+
 Init db history:
 CREATE TABLE `__EFMigrationsHistory` ( `MigrationId` nvarchar(150) NOT NULL, `ProductVersion` nvarchar(32) NOT NULL, PRIMARY KEY (`MigrationId`) );
 
+Execute on NUGET console:
+> Enable-Migrations -ContextAssemblyName MDC -MigrationsDirectory "MDC\Data\Migrations"
+Then
+> Update-Database -Project MDC
+
+Add default access token from \Data\Sql\AddDefaultToken.sql
+Execute this script for minepark db
+
+
+MIGRATIONS:
 Create the first migration:
 > Enable-Migrations -ContextAssemblyName MDC -MigrationsDirectory "MDC\Data\Migrations"
 > Add-Migration InitializeAll -Project MDC
@@ -14,6 +27,3 @@ Create the first migration:
 And next migration:
 > Add-Migration <name> -Project MDC
 > Update-Database -Project MDC
-
-Add default access token from: \Data\Sql\AddDefaultToken.sql
-Execute this script for minepark db
