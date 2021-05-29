@@ -170,7 +170,7 @@ class PlayerSettings extends Component
     {
         $statesMap = new StatesMap();
 
-        $statesMap->auth = false;
+        $statesMap->authorized = false;
 
         $statesMap->isNew = false;
         $statesMap->isBeginner = false;
@@ -180,9 +180,9 @@ class PlayerSettings extends Component
         $statesMap->gps = null;
         $statesMap->bar = null;
 
-        $statesMap->phoneRcv = null;
-        $statesMap->phoneReq = null;
-        $statesMap->phoneSnd = null;
+        $statesMap->phoneCompanion = null;
+        $statesMap->phoneIncomingCall = null;
+        $statesMap->phoneOutcomingCall = null;
 
         $statesMap->goods = array();
 

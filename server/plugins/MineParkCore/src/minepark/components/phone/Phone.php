@@ -12,7 +12,6 @@ use minepark\defaults\EventList;
 use minepark\defaults\MapConstants;
 use minepark\defaults\TimeConstants;
 use minepark\Events;
-use minepark\models\dtos\BalanceDto;
 use minepark\Providers;
 use minepark\providers\data\PhonesDataProvider;
 use minepark\providers\MapProvider;

@@ -45,6 +45,10 @@ class Chat extends Component
 
         $player = MineParkPlayer::cast($event->getPlayer());
 
+        if(!$player->isAuthorized()) {
+            return;
+        }
+
         if ($player->muted) {
             $player->sendMessage("ChatMute");
             return;
@@ -52,8 +56,9 @@ class Chat extends Component
 
         $message = $event->getMessage();
 
-        if (isset($player->getStatesMap()->phoneRcv)) {
-            return $this->handleInCallMessage($player, $message);
+        if (isset($player->getStatesMap()->phoneCompanion)) {
+            $this->handleInCallMessage($player, $message);
+            return;
         }
 
         $signature = $message[0];
@@ -65,8 +70,6 @@ class Chat extends Component
         } else {
             $this->sendLocalMessage($player, $message, self::CHAT_MESSAGE_PREFIX, ChatConstants::LOCAL_CHAT_HEAR_RADIUS, true);
         }
-
-        $this->getCore()->sendToMessagesLog($player->getName(), $message);
     }
 
     public function sendLocalMessage(MineParkPlayer $player, string $message, string $prefix = self::CHAT_MESSAGE_PREFIX, int $radius = ChatConstants::LOCAL_CHAT_HEAR_RADIUS, bool $checkForEmotions = false)
@@ -133,7 +136,9 @@ class Chat extends Component
     private function handleInCallMessage(MineParkPlayer $player, string $message)
     {
         $this->phone->handleMessage($player, $message);
+
         $this->sendLocalMessage($player, $message, "{ChatSpeakPhone}");
+        
         $this->tracking->message($player, $message, 7, "[PHONE]");
     }
 

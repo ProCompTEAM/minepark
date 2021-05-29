@@ -80,7 +80,7 @@ class MineParkPlayer extends Player
 
     public function isAuthorized() : bool
     {
-        return $this->statesMap->auth;
+        return $this->statesMap->authorized;
     }
 
     /*

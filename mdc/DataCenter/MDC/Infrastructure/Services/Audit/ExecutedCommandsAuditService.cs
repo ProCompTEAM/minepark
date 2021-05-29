@@ -4,6 +4,7 @@ using MDC.Infrastructure.Providers;
 using MDC.Infrastructure.Providers.Interfaces;
 using System.Threading.Tasks;
 using MDC.Data.Models.Audit;
+using MDC.Common;
 
 namespace MDC.Infrastructure.Services.Audit
 {
@@ -18,6 +19,11 @@ namespace MDC.Infrastructure.Services.Audit
 
         public async Task SaveExecutedCommandAuditRecord(string userName, string unitId, string command)
         {
+            if (command.Length > Defaults.DefaultStringLength)
+            {
+                command = StringUtility.CutWithEnding(command, Defaults.DefaultStringLength);
+            }
+
             ExecutedCommandAuditRecord executedCommandAuditRecord = new ExecutedCommandAuditRecord
             {
                 Subject = userName,

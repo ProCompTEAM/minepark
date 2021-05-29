@@ -1,4 +1,5 @@
-﻿using MDC.Data.Models.Audit;
+﻿using MDC.Common;
+using MDC.Data.Models.Audit;
 using MDC.Infrastructure.Providers;
 using MDC.Infrastructure.Providers.Interfaces;
 using MDC.Infrastructure.Services.Audit.Interfaces;
@@ -18,6 +19,11 @@ namespace MDC.Infrastructure.Services.Audit
 
         public async Task SaveChatMessageAuditRecord(string userName, string unitId, string message)
         {
+            if(message.Length > Defaults.DefaultStringLength)
+            {
+                message = StringUtility.CutWithEnding(message, Defaults.DefaultStringLength);
+            }
+            
             ChatMessageAuditRecord chatMessageAuditRecord = new ChatMessageAuditRecord
             {
                 Subject = userName,

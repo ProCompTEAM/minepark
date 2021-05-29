@@ -87,7 +87,7 @@ class Auth extends Component
     {
         foreach($event->getTransaction()->getInventories() as $inventory) {
             $holder = $inventory->getHolder();
-            if($holder instanceof MineParkPlayer and !$holder->getStatesMap()->auth) {
+            if($holder instanceof MineParkPlayer and !$holder->getStatesMap()->authorized) {
                 $event->setCancelled();
             }
         }
@@ -168,7 +168,7 @@ class Auth extends Component
 
     private function logInUser(MineParkPlayer $player)
     {
-        $player->getStatesMap()->auth = true;
+        $player->getStatesMap()->authorized = true;
         $player->getStatesMap()->bar = null;
 
         $this->ips[$player->getName()] = $player->getAddress();
@@ -183,7 +183,7 @@ class Auth extends Component
         $this->updatePassword($player, $password);
         $this->ips[$player->getName()] = $player->getAddress();
 
-        $player->getStatesMap()->auth = true;
+        $player->getStatesMap()->authorized = true;
         $player->getStatesMap()->bar = null; 
 
         $this->sendWelcomeText($player);
@@ -203,7 +203,7 @@ class Auth extends Component
 
     private function autoLogInUser(MineParkPlayer $player)
     {
-        $player->getStatesMap()->auth = true; 
+        $player->getStatesMap()->authorized = true; 
         $player->getStatesMap()->bar = null;
 
         $this->setMovement($player, true);
