@@ -7,7 +7,7 @@ use pocketmine\item\Item;
 use pocketmine\event\Event;
 use minepark\defaults\MapConstants;
 use minepark\providers\MapProvider;
-use minepark\components\chat\GameChat;
+use minepark\components\chat\Chat;
 use minepark\components\base\Component;
 use minepark\providers\BankingProvider;
 use minepark\common\player\MineParkPlayer;
@@ -20,7 +20,7 @@ class FastFood extends Component
 
     private MapProvider $mapProvider;
 
-    private GameChat $gameChat;
+    private Chat $gameChat;
 
     public function initialize()
     {
@@ -28,7 +28,7 @@ class FastFood extends Component
 
         $this->mapProvider = Providers::getMapProvider();
 
-        $this->gameChat = Components::getComponent(GameChat::class);
+        $this->gameChat = Components::getComponent(Chat::class);
     }
 
     public function getAttributes() : array

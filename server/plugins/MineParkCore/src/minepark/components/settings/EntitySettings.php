@@ -10,7 +10,7 @@ use pocketmine\entity\Effect;
 use pocketmine\entity\Entity;
 use minepark\utils\MathUtility;
 use minepark\defaults\EventList;
-use minepark\components\chat\GameChat;
+use minepark\components\chat\Chat;
 use minepark\defaults\MapConstants;
 use pocketmine\entity\EffectInstance;
 use minepark\components\base\Component;
@@ -26,11 +26,11 @@ class EntitySettings extends Component
 
     private array $reasons;
 
-    private GameChat $gameChat;
+    private Chat $gameChat;
 
     public function initialize()
     {
-        $this->gameChat = Components::getComponent(GameChat::class);
+        $this->gameChat = Components::getComponent(Chat::class);
 
         Events::registerEvent(EventList::ENTITY_DAMAGE_EVENT, [$this, "processEntityDamageEvent"]);
 

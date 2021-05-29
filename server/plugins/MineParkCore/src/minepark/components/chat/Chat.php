@@ -102,7 +102,7 @@ class Chat extends Component
             return $player->sendMessage("ChatNoStream");
         }
 
-        $generatedMessage = "{GlobalMessagePart1}" . $player->getProfile()->fullName . "{GlobalMessagePart2}$message";
+        $generatedMessage = "{GlobalMessagePart1}" . $player->getProfile()->fullName . " {GlobalMessagePart2}$message";
 
         foreach ($this->getServer()->getOnlinePlayers() as $onlinePlayer) {
             $onlinePlayer = MineParkPlayer::cast($onlinePlayer);
@@ -119,7 +119,7 @@ class Chat extends Component
             return $player->sendMessage("ChatRestrictAdmin");
         }
 
-        $generatedMessage = "{AdminChatPart1} " . $player->getProfile()->fullName . "{AdminChatPart2}$message";
+        $generatedMessage = "{AdminChatPart1}" . $player->getProfile()->fullName . " {AdminChatPart2}$message";
 
         foreach ($this->getServer()->getOnlinePlayers() as $onlinePlayer) {
             $onlinePlayer = MineParkPlayer::cast($onlinePlayer);

@@ -9,7 +9,7 @@ use pocketmine\entity\EffectInstance;
 use minepark\components\base\Component;
 use minepark\common\player\MineParkPlayer;
 use minepark\Components;
-use minepark\components\chat\GameChat;
+use minepark\components\chat\Chat;
 use minepark\defaults\ComponentAttributes;
 use minepark\providers\BankingProvider;
 use minepark\providers\MapProvider;
@@ -22,7 +22,7 @@ class Farm extends Component
 
     private MapProvider $mapProvider;
 
-    private GameChat $gameChat;
+    private Chat $gameChat;
 
     public function initialize()
     {
@@ -30,7 +30,7 @@ class Farm extends Component
 
         $this->mapProvider = Providers::getMapProvider();
 
-        $this->gameChat = Components::getComponent(GameChat::class);
+        $this->gameChat = Components::getComponent(Chat::class);
     }
 
     public function getAttributes() : array

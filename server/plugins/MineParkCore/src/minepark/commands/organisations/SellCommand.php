@@ -9,7 +9,7 @@ use pocketmine\event\Event;
 use minepark\defaults\Permissions;
 use minepark\common\player\MineParkPlayer;
 use minepark\Components;
-use minepark\components\chat\GameChat;
+use minepark\components\chat\Chat;
 use minepark\components\organisations\Organisations;
 use minepark\defaults\MapConstants;
 
@@ -19,11 +19,11 @@ class SellCommand extends OrganisationsCommand
 
     private const MARKETPLACE_DISTANCE = 15;
 
-    private GameChat $gameChat;
+    private Chat $gameChat;
 
     public function __construct()
     {
-        $this->gameChat = Components::getComponent(GameChat::class);
+        $this->gameChat = Components::getComponent(Chat::class);
     }
 
     public function getCommand() : array

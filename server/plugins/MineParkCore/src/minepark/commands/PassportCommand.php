@@ -9,7 +9,7 @@ use minepark\defaults\Permissions;
 use minepark\commands\base\Command;
 use minepark\common\player\MineParkPlayer;
 use minepark\Components;
-use minepark\components\chat\GameChat;
+use minepark\components\chat\Chat;
 use minepark\components\organisations\Organisations;
 use minepark\defaults\PlayerAttributes;
 use minepark\providers\ProfileProvider;
@@ -22,7 +22,7 @@ class PassportCommand extends Command
 
     private ProfileProvider $profileProvider;
 
-    private GameChat $gameChat;
+    private Chat $gameChat;
 
     private Organisations $organisations;
 
@@ -30,7 +30,7 @@ class PassportCommand extends Command
     {
         $this->profileProvider = Providers::getProfileProvider();
 
-        $this->gameChat = Components::getComponent(GameChat::class);
+        $this->gameChat = Components::getComponent(Chat::class);
 
         $this->organisations = Components::getComponent(Organisations::class);
     }

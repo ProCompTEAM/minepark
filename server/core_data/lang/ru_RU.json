@@ -330,7 +330,7 @@
     "ChatRestrictBeginner": "§eЭтот чат станет доступен после того, как вы отыграете некоторое время.",
     "ChatRestrictAdmin": "§cДоступ к этому чату есть только у администрации проекта!",
     "GlobalMessagePart1": "§7<§eСмартфон §d: §8Сообщество§7> §fпользователь §3",
-    "GlobalMessagePart2": " §fпишет§c: §7",
+    "GlobalMessagePart2": "§fпишет§c: §7",
     "AdminChatPart1": "§7<§aАдминистрация§7> §3",
     "AdminChatPart2":  "§fпишет§c: §7",
     "ChatSaid": " §8сказал(а) §7>",

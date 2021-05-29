@@ -38,11 +38,11 @@ class Components
         self::$components = [
             new Organisations,
             new Auth,
+            new Chat,
+            new ChatAudit,
             new BossBar,
             new Broadcasting,
             new FastFood,
-            new Chat,
-            new ChatAudit,
             new Navigation,
             new PlayersLocation,
             new PayDay,
@@ -59,7 +59,7 @@ class Components
             new PermissionsSwitch,
             new FloatingTexts,
             new ATM,
-            new ClearLagg
+            new ClearLagg,
         ];
 
         foreach(self::$components as $component) {
@@ -79,6 +79,6 @@ class Components
             }
         }
 
-        throw new Exception("Component does not exist");
+        throw new Exception("Component '" . get_class($component) . "' does not exist");
     }
 }

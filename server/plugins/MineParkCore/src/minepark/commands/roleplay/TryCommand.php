@@ -6,7 +6,7 @@ use minepark\Components;
 use pocketmine\event\Event;
 use minepark\defaults\Sounds;
 
-use minepark\components\chat\GameChat;
+use minepark\components\chat\Chat;
 use minepark\components\administrative\Tracking;
 use minepark\defaults\Permissions;
 use minepark\commands\base\Command;
@@ -20,13 +20,13 @@ class TryCommand extends Command
 
     private Tracking $tracking;
 
-    private GameChat $gameChat;
+    private Chat $gameChat;
 
     public function __construct()
     {
         $this->tracking = Components::getComponent(Tracking::class);
 
-        $this->gameChat = Components::getComponent(GameChat::class);
+        $this->gameChat = Components::getComponent(Chat::class);
     }
 
     public function getCommand() : array

@@ -1,6 +1,7 @@
 <?php
 namespace minepark\components\chat;
 
+use minepark\common\player\MineParkPlayer;
 use minepark\defaults\ChatConstants;
 use minepark\defaults\EventList;
 use minepark\Events;
@@ -28,7 +29,12 @@ class ChatAudit extends Component
 
     public function handleMessage(PlayerCommandPreprocessEvent $event)
     {
-        $sender = $event->getPlayer();
+        $sender = MineParkPlayer::cast($event->getPlayer());
+
+        if(!$sender->isAuthorized()) {
+            return;
+        }
+
         $message = $event->getMessage();
 
         if($message[0] === ChatConstants::COMMAND_PREFIX) {

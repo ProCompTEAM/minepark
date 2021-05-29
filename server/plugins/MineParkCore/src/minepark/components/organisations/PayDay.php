@@ -76,7 +76,7 @@ class PayDay extends Component
         $form .= "\n§8- - - -== -==- ==- - - -";
         $form .= "\n §3☛ §fИтого: §2" . $summ;
 
-        if($player->getStatesMap()->auth) {
+        if($player->isAuthorized()) {
             $player->sendMessage($form);
         }
     }

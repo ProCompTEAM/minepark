@@ -9,7 +9,7 @@ use minepark\defaults\Permissions;
 use pocketmine\event\Event;
 use minepark\commands\base\Command;
 use minepark\Components;
-use minepark\components\chat\GameChat;
+use minepark\components\chat\Chat;
 use minepark\components\phone\Phone;
 
 class CallCommand extends Command
@@ -18,13 +18,13 @@ class CallCommand extends Command
 
     private Phone $phone;
 
-    private GameChat $gameChat;
+    private Chat $gameChat;
 
     public function __construct()
     {
         $this->phone = Components::getComponent(Phone::class);
 
-        $this->gameChat = Components::getComponent(GameChat::class);
+        $this->gameChat = Components::getComponent(Chat::class);
     }
 
     public function getCommand() : array

@@ -8,7 +8,7 @@ use pocketmine\event\Event;
 use minepark\defaults\Permissions;
 use minepark\common\player\MineParkPlayer;
 use minepark\Components;
-use minepark\components\chat\GameChat;
+use minepark\components\chat\Chat;
 use minepark\components\organisations\Organisations;
 use minepark\providers\BankingProvider;
 use minepark\providers\MapProvider;
@@ -23,7 +23,7 @@ class HealCommand extends OrganisationsCommand
 
     private BankingProvider $bankingProvider;
 
-    private GameChat $gameChat;
+    private Chat $gameChat;
 
     public function __construct()
     {
@@ -31,7 +31,7 @@ class HealCommand extends OrganisationsCommand
 
         $this->bankingProvider = Providers::getBankingProvider();
 
-        $this->gameChat = Components::getComponent(GameChat::class);
+        $this->gameChat = Components::getComponent(Chat::class);
     }
 
     public function getCommand() : array

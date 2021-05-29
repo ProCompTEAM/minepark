@@ -71,16 +71,14 @@ class Auth extends Component
 
     public function handleInteract(PlayerInteractEvent $event)
     {
-        $player = MineParkPlayer::cast($event->getPlayer());
-
-        if (!$player->getStatesMap()->auth) {
+        if (!$event->getPlayer()->isAuthorized()) {
             $event->setCancelled();
         }
     }
 
     public function handleBlockBreak(BlockBreakEvent $event)
     {
-        if (!$event->getPlayer()->getStatesMap()->auth) {
+        if (!$event->getPlayer()->isAuthorized()) {
             $event->setCancelled();
         }
     }
@@ -97,7 +95,7 @@ class Auth extends Component
 
     public function handleBlockPlace(BlockPlaceEvent $event)
     {
-        if (!$event->getPlayer()->getStatesMap()->auth) {
+        if (!$event->getPlayer()->isAuthorized()) {
             $event->setCancelled();
         }
     }
@@ -106,7 +104,7 @@ class Auth extends Component
     {
         $player = MineParkPlayer::cast($event->getPlayer());
 
-        if(!$player->getStatesMap()->auth) {
+        if(!$player->isAuthorized()) {
             $this->login($player, $event->getMessage());
             $event->setCancelled();
             return;
