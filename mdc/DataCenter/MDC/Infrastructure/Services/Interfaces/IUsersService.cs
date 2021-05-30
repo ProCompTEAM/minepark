@@ -33,5 +33,7 @@ namespace MDC.Infrastructure.Services.Interfaces
         Task UpdateQuitStatus(string userName);
 
         Task SaveExecutedCommandAuditRecord(string unitId, string userName, string command);
+
+        Task SaveChatMessageAuditRecord(string unitId, string userName, string message);
     }
 }

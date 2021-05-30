@@ -5,14 +5,13 @@ use Exception;
 use minepark\common\player\MineParkPlayer;
 use minepark\Components;
 use minepark\components\base\Component;
-use minepark\components\chat\GameChat;
+use minepark\components\chat\Chat;
 use minepark\components\organisations\Organisations;
 use minepark\defaults\ComponentAttributes;
 use minepark\defaults\EventList;
 use minepark\defaults\MapConstants;
 use minepark\defaults\TimeConstants;
 use minepark\Events;
-use minepark\models\dtos\BalanceDto;
 use minepark\Providers;
 use minepark\providers\data\PhonesDataProvider;
 use minepark\providers\MapProvider;
@@ -32,7 +31,7 @@ class Phone extends Component
 
     private MapProvider $mapProvider;
 
-    private GameChat $gameChat;
+    private Chat $chat;
 
     public function initialize()
     {
@@ -40,7 +39,7 @@ class Phone extends Component
 
         $this->mapProvider = Providers::getMapProvider();
 
-        $this->gameChat = Components::getComponent(GameChat::class);
+        $this->chat = Components::getComponent(Chat::class);
 
         Events::registerEvent(EventList::PLAYER_QUIT_EVENT, [$this, "playerQuitEvent"]);
         Tasks::registerRepeatingAction(TimeConstants::PHONE_TAKE_FEE_INTERVAL, [$this, "takeFee"]);
@@ -170,7 +169,7 @@ class Phone extends Component
         $target->getStatesMap()->phoneIncomingCall = $initializer;
         $initializer->getStatesMap()->phoneOutcomingCall = $target;
 
-        $this->gameChat->sendLocalMessage($target, "{PhoneCallingBeep}", "§d : ", 10);
+        $this->chat->sendLocalMessage($target, "{PhoneCallingBeep}", "§d : ", 10);
 
         $target->sendLocalizedMessage("{PhoneCalling1}" . $initializer->getProfile()->phoneNumber . ".");
         $target->sendMessage("PhoneCalling2");

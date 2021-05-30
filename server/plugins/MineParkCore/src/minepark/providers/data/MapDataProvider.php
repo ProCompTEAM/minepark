@@ -63,6 +63,7 @@ class MapDataProvider extends DataProvider
             $data[$index] = new MapPointDto();
             $data[$index]->set($value);
         }
+
         return $data;
     }
 }

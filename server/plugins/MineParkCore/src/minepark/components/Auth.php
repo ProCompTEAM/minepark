@@ -71,16 +71,14 @@ class Auth extends Component
 
     public function handleInteract(PlayerInteractEvent $event)
     {
-        $player = MineParkPlayer::cast($event->getPlayer());
-
-        if (!$player->getStatesMap()->auth) {
+        if (!$event->getPlayer()->isAuthorized()) {
             $event->setCancelled();
         }
     }
 
     public function handleBlockBreak(BlockBreakEvent $event)
     {
-        if (!$event->getPlayer()->getStatesMap()->auth) {
+        if (!$event->getPlayer()->isAuthorized()) {
             $event->setCancelled();
         }
     }
@@ -89,7 +87,7 @@ class Auth extends Component
     {
         foreach($event->getTransaction()->getInventories() as $inventory) {
             $holder = $inventory->getHolder();
-            if($holder instanceof MineParkPlayer and !$holder->getStatesMap()->auth) {
+            if($holder instanceof MineParkPlayer and !$holder->getStatesMap()->authorized) {
                 $event->setCancelled();
             }
         }
@@ -97,7 +95,7 @@ class Auth extends Component
 
     public function handleBlockPlace(BlockPlaceEvent $event)
     {
-        if (!$event->getPlayer()->getStatesMap()->auth) {
+        if (!$event->getPlayer()->isAuthorized()) {
             $event->setCancelled();
         }
     }
@@ -106,7 +104,7 @@ class Auth extends Component
     {
         $player = MineParkPlayer::cast($event->getPlayer());
 
-        if(!$player->getStatesMap()->auth) {
+        if(!$player->isAuthorized()) {
             $this->login($player, $event->getMessage());
             $event->setCancelled();
             return;
@@ -170,7 +168,7 @@ class Auth extends Component
 
     private function logInUser(MineParkPlayer $player)
     {
-        $player->getStatesMap()->auth = true;
+        $player->getStatesMap()->authorized = true;
         $player->getStatesMap()->bar = null;
 
         $this->ips[$player->getName()] = $player->getAddress();
@@ -185,7 +183,7 @@ class Auth extends Component
         $this->updatePassword($player, $password);
         $this->ips[$player->getName()] = $player->getAddress();
 
-        $player->getStatesMap()->auth = true;
+        $player->getStatesMap()->authorized = true;
         $player->getStatesMap()->bar = null; 
 
         $this->sendWelcomeText($player);
@@ -205,7 +203,7 @@ class Auth extends Component
 
     private function autoLogInUser(MineParkPlayer $player)
     {
-        $player->getStatesMap()->auth = true; 
+        $player->getStatesMap()->authorized = true; 
         $player->getStatesMap()->bar = null;
 
         $this->setMovement($player, true);

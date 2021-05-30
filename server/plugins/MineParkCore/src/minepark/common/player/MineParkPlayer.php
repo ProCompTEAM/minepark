@@ -78,6 +78,11 @@ class MineParkPlayer extends Player
         $this->statesMap = $map;
     }
 
+    public function isAuthorized() : bool
+    {
+        return $this->statesMap->authorized;
+    }
+
     /*
         Permissions API
     */

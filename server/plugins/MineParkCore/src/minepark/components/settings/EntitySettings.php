@@ -10,7 +10,7 @@ use pocketmine\entity\Effect;
 use pocketmine\entity\Entity;
 use minepark\utils\MathUtility;
 use minepark\defaults\EventList;
-use minepark\components\chat\GameChat;
+use minepark\components\chat\Chat;
 use minepark\defaults\MapConstants;
 use pocketmine\entity\EffectInstance;
 use minepark\components\base\Component;
@@ -26,11 +26,11 @@ class EntitySettings extends Component
 
     private array $reasons;
 
-    private GameChat $gameChat;
+    private Chat $chat;
 
     public function initialize()
     {
-        $this->gameChat = Components::getComponent(GameChat::class);
+        $this->chat = Components::getComponent(Chat::class);
 
         Events::registerEvent(EventList::ENTITY_DAMAGE_EVENT, [$this, "processEntityDamageEvent"]);
 
@@ -105,8 +105,8 @@ class EntitySettings extends Component
 
     private function processStunAction(MineParkPlayer $victim, MineParkPlayer $policeMan)
     {
-        $this->gameChat->sendLocalMessage($policeMan, "§8(§dв руках дубинка-электрошокер§8)", "§d : ", 10);
-        $this->gameChat->sendLocalMessage($victim, "§8(§dлежит на полу | ослеплен§8)", "§d : ", 12);
+        $this->chat->sendLocalMessage($policeMan, "§8(§dв руках дубинка-электрошокер§8)", "§d : ", 10);
+        $this->chat->sendLocalMessage($victim, "§8(§dлежит на полу | ослеплен§8)", "§d : ", 12);
         
         $victim->changeAttribute(PlayerAttributes::WANTED);
 

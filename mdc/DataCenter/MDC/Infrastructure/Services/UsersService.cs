@@ -1,12 +1,11 @@
 ﻿using AutoMapper;
 using MDC.Data.Dtos;
-using MDC.Data.Enums;
 using MDC.Data.Models;
 using MDC.Infrastructure.Providers;
 using MDC.Infrastructure.Providers.Interfaces;
-using MDC.Infrastructure.Services.Interfaces;
 using MDC.Infrastructure.Services.Audit;
 using MDC.Infrastructure.Services.Audit.Interfaces;
+using MDC.Infrastructure.Services.Interfaces;
 using MDC.Utilities;
 using System;
 using System.Threading.Tasks;
@@ -23,9 +22,11 @@ namespace MDC.Infrastructure.Services
 
         private readonly IBankingService bankingService;
 
-        private readonly IMapper mapper;
-
         private readonly IExecutedCommandsAuditService executedCommandsAuditService;
+
+        private readonly IChatMessagesAuditService chatMessagesAuditService;
+
+        private readonly IMapper mapper;
 
         public UsersService()
         {
@@ -35,9 +36,10 @@ namespace MDC.Infrastructure.Services
             phonesService = Store.GetService<PhonesService>();
             bankingService = Store.GetService<BankingService>();
 
-            mapper = Store.GetMapper();
-
             executedCommandsAuditService = Store.GetService<ExecutedCommandsAuditService>();
+            chatMessagesAuditService = Store.GetService<ChatMessagesAuditService>();
+
+            mapper = Store.GetMapper();
         }
 
         public Task<bool> Exist(string userName)
@@ -140,6 +142,7 @@ namespace MDC.Infrastructure.Services
         {
             User user = await GetUser(userName);
             user.JoinedDate = dateTimeProvider.Now;
+
             databaseProvider.Update(user);
             await databaseProvider.CommitAsync();
         }
@@ -149,6 +152,7 @@ namespace MDC.Infrastructure.Services
             User user = await GetUser(userName);
             user.LeftDate = dateTimeProvider.Now;
             user.MinutesPlayed += GetMinutesLeft(user.JoinedDate, user.LeftDate);
+
             databaseProvider.Update(user);
             await databaseProvider.CommitAsync();
         }
@@ -156,6 +160,11 @@ namespace MDC.Infrastructure.Services
         public async Task SaveExecutedCommandAuditRecord(string unitId, string userName, string command)
         {
             await executedCommandsAuditService.SaveExecutedCommandAuditRecord(userName, unitId, command);
+        }
+
+        public async Task SaveChatMessageAuditRecord(string unitId, string userName, string message)
+        {
+            await chatMessagesAuditService.SaveChatMessageAuditRecord(userName, unitId, message);
         }
 
         private int GetMinutesLeft(DateTime joinedDate, DateTime leftDate)
@@ -188,7 +197,7 @@ namespace MDC.Infrastructure.Services
         {
             if (await Exist(userName))
             {
-                throw new InvalidOperationException("User already exists.");
+                throw new InvalidOperationException("User already exists");
             }
         }
     }

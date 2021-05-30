@@ -9,7 +9,7 @@ use pocketmine\entity\EffectInstance;
 use minepark\components\base\Component;
 use minepark\common\player\MineParkPlayer;
 use minepark\Components;
-use minepark\components\chat\GameChat;
+use minepark\components\chat\Chat;
 use minepark\defaults\ComponentAttributes;
 use minepark\providers\BankingProvider;
 use minepark\providers\MapProvider;
@@ -22,7 +22,7 @@ class Farm extends Component
 
     private MapProvider $mapProvider;
 
-    private GameChat $gameChat;
+    private Chat $chat;
 
     public function initialize()
     {
@@ -30,7 +30,7 @@ class Farm extends Component
 
         $this->mapProvider = Providers::getMapProvider();
 
-        $this->gameChat = Components::getComponent(GameChat::class);
+        $this->chat = Components::getComponent(Chat::class);
     }
 
     public function getAttributes() : array
@@ -45,7 +45,7 @@ class Farm extends Component
         if ($this->playerIsNearWheat($player)) {
             $player->addEffect(new EffectInstance(Effect::getEffect(2), 20 * 9999, 1));
 
-            $this->gameChat->sendLocalMessage($player, "§8(§dв корзине собранный урожай |§8)", "§d : ", 12);
+            $this->chat->sendLocalMessage($player, "§8(§dв корзине собранный урожай |§8)", "§d : ", 12);
             $player->getStatesMap()->bar = "§eДонесите корзину на пункт сбора около фермы"; 
             $player->getStatesMap()->loadWeight = 1; 
         } else {
@@ -76,7 +76,7 @@ class Farm extends Component
     {
         $player->removeAllEffects();
 
-        $this->gameChat->sendLocalMessage($player, "высыпал из корзины урожай", "§d ", 12);
+        $this->chat->sendLocalMessage($player, "высыпал из корзины урожай", "§d ", 12);
         $this->bankingProvider->givePlayerMoney($player, 150);
 
         $player->getStatesMap()->loadWeight = null; 

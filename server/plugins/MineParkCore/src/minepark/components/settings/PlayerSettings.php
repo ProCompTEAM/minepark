@@ -90,8 +90,6 @@ class PlayerSettings extends Component
         $this->addInventoryItems($player);
 
         Providers::getUsersDataProvider()->updateUserJoinStatus($player->getName());
-
-        $this->getCore()->sendToMessagesLog($player->getName(), "Вход осуществлен ***");
     }
 
     public function applyQuitSettings(PlayerQuitEvent $event)
@@ -101,8 +99,6 @@ class PlayerSettings extends Component
         $event->setQuitMessage(null);
 
         Providers::getUsersDataProvider()->updateUserQuitStatus($player->getName());
-
-        $this->getCore()->sendToMessagesLog($player->getName(), "*** Выход из игры");
     }
 
     public function applyInteractSettings(PlayerInteractEvent $event)
@@ -170,7 +166,7 @@ class PlayerSettings extends Component
     {
         $statesMap = new StatesMap();
 
-        $statesMap->auth = false;
+        $statesMap->authorized = false;
 
         $statesMap->isNew = false;
         $statesMap->isBeginner = false;
@@ -180,9 +176,9 @@ class PlayerSettings extends Component
         $statesMap->gps = null;
         $statesMap->bar = null;
 
-        $statesMap->phoneRcv = null;
-        $statesMap->phoneReq = null;
-        $statesMap->phoneSnd = null;
+        $statesMap->phoneCompanion = null;
+        $statesMap->phoneIncomingCall = null;
+        $statesMap->phoneOutcomingCall = null;
 
         $statesMap->goods = array();
 

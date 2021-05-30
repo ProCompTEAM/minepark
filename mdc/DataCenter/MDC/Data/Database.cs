@@ -24,7 +24,9 @@ namespace MDC.Data
         
         public static void Initialize()
         {
-            properties = new Properties(GetPropertiesPath());
+            string propertiesPath = GetPropertiesPath();
+            properties = new Properties(propertiesPath);
+
             SetDefaultsForConfig();
             LoadProperties();
 

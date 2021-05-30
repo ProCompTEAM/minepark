@@ -19,10 +19,9 @@ server.lock
 server.properties
 banned-ips.txt
 banned-players.txt
-msg-log.txt
-webapi-log.txt
 ops.txt
 white-list.txt
+
 mdc.yml
 world-protector.yml
 phone.json
