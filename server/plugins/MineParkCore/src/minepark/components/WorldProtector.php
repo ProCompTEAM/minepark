@@ -2,8 +2,10 @@
 namespace minepark\components;
 
 use minepark\Events;
+use minepark\defaults\Files;
 use pocketmine\utils\Config;
 use pocketmine\level\Position;
+use minepark\defaults\Defaults;
 use minepark\defaults\EventList;
 use minepark\components\base\Component;
 use pocketmine\event\block\BlockBreakEvent;
@@ -60,7 +62,7 @@ class WorldProtector extends Component
 
     private function loadConfiguration()
     {
-        $file = $this->getServer()->getDataPath() . "world-protector.yml";
+        $file = $this->getCore()->getTargetDirectory() . "world-protector.yml";
         $defaultLevelName = $this->getServer()->getDefaultLevel()->getName();
 
         $config = new Config($file, Config::YAML, [

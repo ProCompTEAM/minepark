@@ -1,6 +1,7 @@
 <?php
-namespace minepark\components\audit;
+namespace minepark\components\chat;
 
+use minepark\common\player\MineParkPlayer;
 use minepark\defaults\ChatConstants;
 use minepark\defaults\EventList;
 use minepark\Events;
@@ -9,7 +10,7 @@ use minepark\Providers;
 use minepark\providers\data\UsersDataProvider;
 use pocketmine\event\player\PlayerCommandPreprocessEvent;
 
-class ExecutedCommandsAudit extends Component
+class ChatAudit extends Component
 {
     private UsersDataProvider $usersProvider;
 
@@ -17,7 +18,7 @@ class ExecutedCommandsAudit extends Component
     {
         $this->usersProvider = Providers::getUsersDataProvider();
 
-        Events::registerEvent(EventList::PLAYER_COMMAND_PREPROCESS_EVENT, [$this, "handleCommand"]);
+        Events::registerEvent(EventList::PLAYER_COMMAND_PREPROCESS_EVENT, [$this, "handleMessage"]);
     }
 
     public function getAttributes() : array
@@ -26,13 +27,20 @@ class ExecutedCommandsAudit extends Component
         ];
     }
 
-    public function handleCommand(PlayerCommandPreprocessEvent $event)
+    public function handleMessage(PlayerCommandPreprocessEvent $event)
     {
-        $sender = $event->getPlayer();
+        $sender = MineParkPlayer::cast($event->getPlayer());
+
+        if(!$sender->isAuthorized()) {
+            return;
+        }
+
         $message = $event->getMessage();
 
         if($message[0] === ChatConstants::COMMAND_PREFIX) {
             $this->usersProvider->saveExecutedCommand($sender->getName(), substr($message, 1));
+        } else {
+            $this->usersProvider->saveChatMessage($sender->getName(), $message);
         }
     }
 }

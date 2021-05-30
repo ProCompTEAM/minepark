@@ -13,7 +13,7 @@ use minepark\common\player\MineParkPlayer;
 use minepark\defaults\ComponentAttributes;
 use pocketmine\event\player\PlayerChatEvent;
 
-class GameChat extends Component
+class Chat extends Component
 {
     private const CHAT_MESSAGE_PREFIX = "{ChatSaid}";
 
@@ -45,6 +45,10 @@ class GameChat extends Component
 
         $player = MineParkPlayer::cast($event->getPlayer());
 
+        if(!$player->isAuthorized()) {
+            return;
+        }
+
         if ($player->muted) {
             $player->sendMessage("ChatMute");
             return;
@@ -52,8 +56,9 @@ class GameChat extends Component
 
         $message = $event->getMessage();
 
-        if (isset($player->getStatesMap()->phoneRcv)) {
-            return $this->handleInCallMessage($player, $message);
+        if (isset($player->getStatesMap()->phoneCompanion)) {
+            $this->handleInCallMessage($player, $message);
+            return;
         }
 
         $signature = $message[0];
@@ -65,8 +70,6 @@ class GameChat extends Component
         } else {
             $this->sendLocalMessage($player, $message, self::CHAT_MESSAGE_PREFIX, ChatConstants::LOCAL_CHAT_HEAR_RADIUS, true);
         }
-
-        $this->getCore()->sendToMessagesLog($player->getName(), $message);
     }
 
     public function sendLocalMessage(MineParkPlayer $player, string $message, string $prefix = self::CHAT_MESSAGE_PREFIX, int $radius = ChatConstants::LOCAL_CHAT_HEAR_RADIUS, bool $checkForEmotions = false)
@@ -102,7 +105,7 @@ class GameChat extends Component
             return $player->sendMessage("ChatNoStream");
         }
 
-        $generatedMessage = "{GlobalMessagePart1}" . $player->getProfile()->fullName . "{GlobalMessagePart2}$message";
+        $generatedMessage = "{GlobalMessagePart1}" . $player->getProfile()->fullName . " {GlobalMessagePart2}$message";
 
         foreach ($this->getServer()->getOnlinePlayers() as $onlinePlayer) {
             $onlinePlayer = MineParkPlayer::cast($onlinePlayer);
@@ -119,7 +122,7 @@ class GameChat extends Component
             return $player->sendMessage("ChatRestrictAdmin");
         }
 
-        $generatedMessage = "{AdminChatPart1} " . $player->getProfile()->fullName . "{AdminChatPart2}$message";
+        $generatedMessage = "{AdminChatPart1}" . $player->getProfile()->fullName . " {AdminChatPart2}$message";
 
         foreach ($this->getServer()->getOnlinePlayers() as $onlinePlayer) {
             $onlinePlayer = MineParkPlayer::cast($onlinePlayer);
@@ -133,7 +136,9 @@ class GameChat extends Component
     private function handleInCallMessage(MineParkPlayer $player, string $message)
     {
         $this->phone->handleMessage($player, $message);
+
         $this->sendLocalMessage($player, $message, "{ChatSpeakPhone}");
+        
         $this->tracking->message($player, $message, 7, "[PHONE]");
     }
 

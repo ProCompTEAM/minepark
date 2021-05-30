@@ -1,5 +1,6 @@
 using MDC.Common.Network.HttpWeb;
 using MDC.Data.Dtos;
+using MDC.Data.Dtos.Audit;
 using MDC.Infrastructure.Controllers.Interfaces;
 using MDC.Infrastructure.Providers;
 using MDC.Infrastructure.Providers.Interfaces;

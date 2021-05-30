@@ -1,5 +1,4 @@
-﻿using MDC.Data.Enums;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace MDC.Infrastructure.Services.Audit.Interfaces
 {

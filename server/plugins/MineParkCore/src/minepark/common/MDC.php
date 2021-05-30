@@ -58,7 +58,8 @@ class MDC
 
     private function initializeConfig() 
     {
-        $file = $this->getCore()->getServer()->getDataPath() . "mdc.yml";
+        $file = $this->getCore()->getTargetDirectory() . "mdc.yml";
+
         $config = new Config($file, Config::YAML, [
             "Address" => "127.0.0.1:19000",
             "AccessToken" => "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",

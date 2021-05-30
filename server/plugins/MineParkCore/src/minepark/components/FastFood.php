@@ -7,7 +7,7 @@ use pocketmine\item\Item;
 use pocketmine\event\Event;
 use minepark\defaults\MapConstants;
 use minepark\providers\MapProvider;
-use minepark\components\chat\GameChat;
+use minepark\components\chat\Chat;
 use minepark\components\base\Component;
 use minepark\providers\BankingProvider;
 use minepark\common\player\MineParkPlayer;
@@ -20,7 +20,7 @@ class FastFood extends Component
 
     private MapProvider $mapProvider;
 
-    private GameChat $gameChat;
+    private Chat $chat;
 
     public function initialize()
     {
@@ -28,7 +28,7 @@ class FastFood extends Component
 
         $this->mapProvider = Providers::getMapProvider();
 
-        $this->gameChat = Components::getComponent(GameChat::class);
+        $this->chat = Components::getComponent(Chat::class);
     }
 
     public function getAttributes() : array
@@ -43,7 +43,7 @@ class FastFood extends Component
         $core = $this->getCore();
 
         if($this->mapProvider->hasNearPointWithType($player, 5, MapConstants::POINT_GROUP_FASTFOOD)) {
-            $this->gameChat->sendLocalMessage($player, "{FastFoodNear}", "§d : ", 10);
+            $this->chat->sendLocalMessage($player, "{FastFoodNear}", "§d : ", 10);
 
             if(Providers::getBankingProvider()->getPlayerMoney($player) >= 50) {
                 $core->uiWindows->sendFastfoodWindow($player);
@@ -72,7 +72,7 @@ class FastFood extends Component
     
     public function giveItem($player, $goodId)
     {
-        $this->gameChat->sendLocalMessage($player, "§8(§dслышен звук торгового автомата§8)", "§d : ", 18);
+        $this->chat->sendLocalMessage($player, "§8(§dслышен звук торгового автомата§8)", "§d : ", 18);
         
         $item = Item::get(0, 0, 1); //Item::get(<id>,<meta>,<count>)
 
@@ -91,7 +91,7 @@ class FastFood extends Component
         }
 
         $label = $this->getAllGoods()[$goodId];
-        $this->gameChat->sendLocalMessage($player, "§8(§dв руке товар с надписью ".$label." §8)", "§d : ", 10);
+        $this->chat->sendLocalMessage($player, "§8(§dв руке товар с надписью ".$label." §8)", "§d : ", 10);
 
         $player->getInventory()->addItem($item);
     }

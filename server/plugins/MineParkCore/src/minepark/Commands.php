@@ -152,7 +152,7 @@ class Commands
     {
         $player = MineParkPlayer::cast($event->getPlayer());
 
-        if(!$player->getStatesMap()->auth) {
+        if(!$player->isAuthorized()) {
             return;
         }
 

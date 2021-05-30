@@ -7,7 +7,7 @@ use minepark\components\vehicles\models\base\BaseCar;
 
 class StatesMap
 {
-    public bool $auth;
+    public bool $authorized;
 
     public bool $isNew;
 
