@@ -1,23 +1,15 @@
 {
 	"info": {
-		"_postman_id": "5acaa8d5-a1ae-41fc-92fc-014f778d95fa",
-		"name": "MinePark POST User",
+		"_postman_id": "29bc02af-7a3a-4677-8b0e-6a7e3c01c9ea",
+		"name": "POST Users",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
 			"name": "Create Internal",
 			"request": {
-				"auth": {
-					"type": "noauth"
-				},
 				"method": "POST",
 				"header": [
-					{
-						"key": "Authorization",
-						"value": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
-						"type": "text"
-					},
 					{
 						"key": "",
 						"value": "",
@@ -62,16 +54,8 @@
 		{
 			"name": "Get",
 			"request": {
-				"auth": {
-					"type": "noauth"
-				},
 				"method": "POST",
 				"header": [
-					{
-						"key": "Authorization",
-						"type": "text",
-						"value": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"
-					},
 					{
 						"key": "",
 						"type": "text",
@@ -116,16 +100,8 @@
 		{
 			"name": "Exist",
 			"request": {
-				"auth": {
-					"type": "noauth"
-				},
 				"method": "POST",
 				"header": [
-					{
-						"key": "Authorization",
-						"type": "text",
-						"value": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"
-					},
 					{
 						"key": "",
 						"type": "text",
@@ -170,16 +146,8 @@
 		{
 			"name": "Set Password",
 			"request": {
-				"auth": {
-					"type": "noauth"
-				},
 				"method": "POST",
 				"header": [
-					{
-						"key": "Authorization",
-						"type": "text",
-						"value": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"
-					},
 					{
 						"key": "",
 						"type": "text",
@@ -224,16 +192,8 @@
 		{
 			"name": "Get Password",
 			"request": {
-				"auth": {
-					"type": "noauth"
-				},
 				"method": "POST",
 				"header": [
-					{
-						"key": "Authorization",
-						"type": "text",
-						"value": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"
-					},
 					{
 						"key": "",
 						"type": "text",
@@ -278,16 +238,8 @@
 		{
 			"name": "Reset Password",
 			"request": {
-				"auth": {
-					"type": "noauth"
-				},
 				"method": "POST",
 				"header": [
-					{
-						"key": "Authorization",
-						"type": "text",
-						"value": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"
-					},
 					{
 						"key": "",
 						"type": "text",
@@ -332,16 +284,8 @@
 		{
 			"name": "Update",
 			"request": {
-				"auth": {
-					"type": "noauth"
-				},
 				"method": "POST",
 				"header": [
-					{
-						"key": "Authorization",
-						"type": "text",
-						"value": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"
-					},
 					{
 						"key": "",
 						"type": "text",
@@ -384,18 +328,10 @@
 			"response": []
 		},
 		{
-			"name": "Send join status",
+			"name": "Update join status",
 			"request": {
-				"auth": {
-					"type": "noauth"
-				},
 				"method": "POST",
 				"header": [
-					{
-						"key": "Authorization",
-						"type": "text",
-						"value": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"
-					},
 					{
 						"key": "",
 						"type": "text",
@@ -413,7 +349,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://127.0.0.1:19000/users/exist",
+					"raw": "http://127.0.0.1:19000/users/update-join-status",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -424,7 +360,7 @@
 					"port": "19000",
 					"path": [
 						"users",
-						"exist"
+						"update-join-status"
 					],
 					"query": [
 						{
@@ -438,18 +374,10 @@
 			"response": []
 		},
 		{
-			"name": "Send left status",
+			"name": "Update quit status",
 			"request": {
-				"auth": {
-					"type": "noauth"
-				},
 				"method": "POST",
 				"header": [
-					{
-						"key": "Authorization",
-						"type": "text",
-						"value": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"
-					},
 					{
 						"key": "",
 						"type": "text",
@@ -467,7 +395,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://127.0.0.1:19000/users/exist",
+					"raw": "http://127.0.0.1:19000/users/update-quit-status",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -478,111 +406,13 @@
 					"port": "19000",
 					"path": [
 						"users",
-						"exist"
+						"update-quit-status"
 					],
 					"query": [
 						{
 							"key": "",
 							"value": "",
 							"disabled": true
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Delete",
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "POST",
-				"header": [
-					{
-						"key": "Authorization",
-						"type": "text",
-						"value": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"
-					},
-					{
-						"key": "",
-						"type": "text",
-						"value": "",
-						"disabled": true
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "\"Ivan_Ivanov\"",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://127.0.0.1:19000/users/get-user",
-					"protocol": "http",
-					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
-					],
-					"port": "19000",
-					"path": [
-						"users",
-						"get-user"
-					],
-					"query": [
-						{
-							"key": "",
-							"value": "",
-							"disabled": true
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Use invalid access token",
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "POST",
-				"header": [
-					{
-						"key": "Authorization",
-						"type": "text",
-						"value": "invalid-token-data"
-					},
-					{
-						"key": "",
-						"type": "text",
-						"value": "",
-						"disabled": true
-					}
-				],
-				"url": {
-					"raw": "http://127.0.0.1:19000/users/create-internal?=",
-					"protocol": "http",
-					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
-					],
-					"port": "19000",
-					"path": [
-						"users",
-						"create-internal"
-					],
-					"query": [
-						{
-							"key": "",
-							"value": ""
 						}
 					]
 				}
@@ -590,5 +420,39 @@
 			"response": []
 		}
 	],
-	"protocolProfileBehavior": {}
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "value",
+				"value": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+				"type": "string"
+			},
+			{
+				"key": "key",
+				"value": "Authorization",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
 }

@@ -1,5 +1,5 @@
 Environment: 
-- PHP 8, net core 3.1
+- PHP 8, net 5.0
 - Latest version of MySQL (MariaDB) > dbo.minepark
 - Use Postman for MDC requests
 - We write PHP code with any IDE (PHP 8 support required)

@@ -1,0 +1,71 @@
+{
+	"info": {
+		"_postman_id": "7b633438-738f-43d7-bd67-a8cf6313d98b",
+		"name": "POST Settings",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Upgrade Unit ID",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\"MilkyWay\""
+				},
+				"url": {
+					"raw": "http://127.0.0.1:19000/settings/upgrade-unit-id",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "19000",
+					"path": [
+						"settings",
+						"upgrade-unit-id"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "value",
+				"value": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+				"type": "string"
+			},
+			{
+				"key": "key",
+				"value": "Authorization",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
