@@ -49,7 +49,7 @@ class ATMCommand extends Command
             return;
         }
 
-        $this->atm->initializeMenu($player);
+        $this->atm->sendMenu($player);
     }
 
     private function isNearATM(MineParkPlayer $player) : bool
