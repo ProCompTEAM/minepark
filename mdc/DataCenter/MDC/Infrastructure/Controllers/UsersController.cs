@@ -71,14 +71,16 @@ namespace MDC.Infrastructure.Controllers
             await usersService.Update(user);
         }
 
-        public async Task UpdateJoinStatus(string userName)
+        public async Task UpdateJoinStatus(string userName, RequestContext requestContext)
         {
-            await usersService.UpdateJoinStatus(userName);
+            string unitId = unitProvider.GetCurrentUnitId(requestContext.AccessToken);
+            await usersService.UpdateJoinStatus(unitId, userName);
         }
 
-        public async Task UpdateQuitStatus(string userName)
+        public async Task UpdateQuitStatus(string userName, RequestContext requestContext)
         {
-            await usersService.UpdateQuitStatus(userName);
+            string unitId = unitProvider.GetCurrentUnitId(requestContext.AccessToken);
+            await usersService.UpdateQuitStatus(unitId, userName);
         }
 
         public async Task SaveExecutedCommand(ExecutedCommandDto commandDto, RequestContext requestContext)

@@ -26,7 +26,9 @@ namespace MDC.Data
         public DbSet<ExecutedCommandAuditRecord> ExecutedCommandAuditRecords { get; set; }
 
         public DbSet<ChatMessageAuditRecord> ChatMessageAuditRecords { get; set; }
-        
+
+        public DbSet<UserTrafficAuditRecord> UserTrafficAuditRecords { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if(!MDCDatabase.IsInitialized)

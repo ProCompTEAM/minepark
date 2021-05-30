@@ -28,9 +28,9 @@ namespace MDC.Infrastructure.Services.Interfaces
 
         Task Update(UserDto userDto);
 
-        Task UpdateJoinStatus(string userName);
+        Task UpdateJoinStatus(string unitId, string userName);
 
-        Task UpdateQuitStatus(string userName);
+        Task UpdateQuitStatus(string unitId, string userName);
 
         Task SaveExecutedCommandAuditRecord(string unitId, string userName, string command);
 

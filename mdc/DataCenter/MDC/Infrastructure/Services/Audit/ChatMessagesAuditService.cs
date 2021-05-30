@@ -17,7 +17,7 @@ namespace MDC.Infrastructure.Services.Audit
             databaseProvider = Store.GetProvider<DatabaseProvider>();
         }
 
-        public async Task SaveChatMessageAuditRecord(string userName, string unitId, string message)
+        public async Task SaveChatMessageAuditRecord(string unitId, string userName, string message)
         {
             if(message.Length > Defaults.DefaultStringLength)
             {

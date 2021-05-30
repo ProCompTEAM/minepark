@@ -26,6 +26,8 @@ namespace MDC.Infrastructure.Services
 
         private readonly IChatMessagesAuditService chatMessagesAuditService;
 
+        private readonly IUserTrafficAuditService userTrafficAuditService;
+
         private readonly IMapper mapper;
 
         public UsersService()
@@ -38,6 +40,7 @@ namespace MDC.Infrastructure.Services
 
             executedCommandsAuditService = Store.GetService<ExecutedCommandsAuditService>();
             chatMessagesAuditService = Store.GetService<ChatMessagesAuditService>();
+            userTrafficAuditService = Store.GetService<UserTrafficAuditService>();
 
             mapper = Store.GetMapper();
         }
@@ -138,33 +141,35 @@ namespace MDC.Infrastructure.Services
             await databaseProvider.CommitAsync();
         }
 
-        public async Task UpdateJoinStatus(string userName)
+        public async Task UpdateJoinStatus(string unitId, string userName)
         {
             User user = await GetUser(userName);
             user.JoinedDate = dateTimeProvider.Now;
 
             databaseProvider.Update(user);
-            await databaseProvider.CommitAsync();
+
+            await userTrafficAuditService.SaveUserJoinAttempt(unitId, userName);
         }
 
-        public async Task UpdateQuitStatus(string userName)
+        public async Task UpdateQuitStatus(string unitId, string userName)
         {
             User user = await GetUser(userName);
             user.LeftDate = dateTimeProvider.Now;
             user.MinutesPlayed += GetMinutesLeft(user.JoinedDate, user.LeftDate);
 
             databaseProvider.Update(user);
-            await databaseProvider.CommitAsync();
+
+            await userTrafficAuditService.SaveUserQuitAttempt(unitId, userName);
         }
 
         public async Task SaveExecutedCommandAuditRecord(string unitId, string userName, string command)
         {
-            await executedCommandsAuditService.SaveExecutedCommandAuditRecord(userName, unitId, command);
+            await executedCommandsAuditService.SaveExecutedCommandAuditRecord(unitId, userName, command);
         }
 
         public async Task SaveChatMessageAuditRecord(string unitId, string userName, string message)
         {
-            await chatMessagesAuditService.SaveChatMessageAuditRecord(userName, unitId, message);
+            await chatMessagesAuditService.SaveChatMessageAuditRecord(unitId, userName, message);
         }
 
         private int GetMinutesLeft(DateTime joinedDate, DateTime leftDate)

@@ -29,7 +29,7 @@ namespace MDC.Infrastructure.Services
             mapper = Store.GetMapper();
         }
 
-        public async Task<string> GenerateToken(string tag)
+        public async Task<string> GenerateToken(string tag = null)
         {
             string generatedToken = tokenProvider.GenerateAuthToken();
 

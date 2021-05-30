@@ -3,11 +3,8 @@ using MDC.Data.Dtos;
 using MDC.Data.Models;
 using MDC.Infrastructure.Providers;
 using MDC.Infrastructure.Providers.Interfaces;
-using System;
 using MDC.Infrastructure.Services.Interfaces;
-using MDC.Utilities;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace MDC.Infrastructure.Services
@@ -43,7 +40,7 @@ namespace MDC.Infrastructure.Services
 
             floatingText.Text = dto.Text;
 
-            await Update(floatingText, dto.Text);
+            await Update(floatingText);
 
             return mapper.Map<FloatingTextDto>(floatingText);
         }
@@ -83,14 +80,7 @@ namespace MDC.Infrastructure.Services
                     && text.UnitId == unitId);
         }
 
-        private async Task<bool> Exists(string unitId, string level, double x, double y, double z)
-        {
-            return await databaseProvider.AnyAsync<FloatingText>(text => 
-                text.X == x &&  text.Y == y && text.Z == z && text.Level == level 
-                    && text.UnitId == unitId);
-        }
-
-        private async Task Update(FloatingText floatingText, string text)
+        private async Task Update(FloatingText floatingText)
         {
             databaseProvider.Update(floatingText);
             await databaseProvider.CommitAsync();
