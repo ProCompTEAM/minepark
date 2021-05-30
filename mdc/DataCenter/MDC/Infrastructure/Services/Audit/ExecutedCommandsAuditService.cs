@@ -17,7 +17,7 @@ namespace MDC.Infrastructure.Services.Audit
             databaseProvider = Store.GetProvider<DatabaseProvider>();
         }
 
-        public async Task SaveExecutedCommandAuditRecord(string userName, string unitId, string command)
+        public async Task SaveExecutedCommandAuditRecord(string unitId, string userName, string command)
         {
             if (command.Length > Defaults.DefaultStringLength)
             {

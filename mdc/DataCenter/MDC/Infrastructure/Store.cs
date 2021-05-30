@@ -77,6 +77,7 @@ namespace MDC.Infrastructure
             RegisterService(new MoneyTransactionsAuditService());
             RegisterService(new ExecutedCommandsAuditService());
             RegisterService(new ChatMessagesAuditService());
+            RegisterService(new UserTrafficAuditService());
         }
     }
 }

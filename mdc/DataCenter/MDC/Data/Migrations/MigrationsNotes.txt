@@ -3,7 +3,7 @@ Migrations documentation:
 - https://docs.microsoft.com/en-us/ef/core/managing-schemas/migrations/projects?tabs=dotnet-core-cli
 - https://coding.abel.nu/2012/03/ef-migrations-command-reference/
 
-INSTALLATION:
+SETUP:
 Create source database;
 
 Init db history:

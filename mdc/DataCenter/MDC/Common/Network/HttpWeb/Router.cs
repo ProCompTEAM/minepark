@@ -89,10 +89,8 @@ namespace MDC.Common.Network.HttpWeb
 
         private static string GetSerializationResult(object invokeResult)
         {
-            if (invokeResult is Task)
+            if (invokeResult is Task task)
             {
-                Task task = (Task) invokeResult;
-
                 var result = task.GetType().GetProperty("Result").GetValue(task);
                 return result == null ? null : JsonSerializer.Serialize(result, jsonSerializeOptions);
             }
