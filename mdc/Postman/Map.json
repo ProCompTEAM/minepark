@@ -1,0 +1,206 @@
+{
+	"info": {
+		"_postman_id": "8e1ef6df-b398-4ed7-948e-ccbb2b37f786",
+		"name": "POST Map",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get point",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\"testpoint\""
+				},
+				"url": {
+					"raw": "http://127.0.0.1:19000/map/get-point",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "19000",
+					"path": [
+						"map",
+						"get-point"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get point group",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\"testpoint\""
+				},
+				"url": {
+					"raw": "http://127.0.0.1:19000/map/get-point-group",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "19000",
+					"path": [
+						"map",
+						"get-point-group"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get points by group",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "0"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:19000/map/get-points-by-group",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "19000",
+					"path": [
+						"map",
+						"get-points-by-group"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get near points",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"level\": \"minepark\",\r\n    \"x\": 213,\r\n    \"y\": 70,\r\n    \"z\": 30\r\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:19000/map/get-near-points",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "19000",
+					"path": [
+						"map",
+						"get-near-points"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Set point",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"testpoint\",\r\n    \"level\": \"minepark\",\r\n    \"group: 0,\r\n    \"x\": 213,\r\n    \"y\": 70,\r\n    \"z\": 30\r\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:19000/map/set-point",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "19000",
+					"path": [
+						"map",
+						"set-point"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete point",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\"testpoint\""
+				},
+				"url": {
+					"raw": "http://127.0.0.1:19000/map/delete-point",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "19000",
+					"path": [
+						"map",
+						"delete-point"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "key",
+				"value": "Authorization",
+				"type": "string"
+			},
+			{
+				"key": "value",
+				"value": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
