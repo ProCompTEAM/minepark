@@ -20,13 +20,13 @@ class GiveLicCommand extends OrganisationsCommand
 
     private MapProvider $mapProvider;
 
-    private Chat $gameChat;
+    private Chat $chat;
 
     public function __construct()
     {
         $this->mapProvider = Providers::getMapProvider();
 
-        $this->gameChat = Components::getComponent(Chat::class);
+        $this->chat = Components::getComponent(Chat::class);
     }
 
     public function getCommand() : array
@@ -72,7 +72,7 @@ class GiveLicCommand extends OrganisationsCommand
 
     private function tryGiveLicense(MineParkPlayer $toPlayer, MineParkPlayer $government)
     {
-        $this->gameChat->sendLocalMessage($government, "{CommandGiveLicKeys}", "§d : ", 10);
+        $this->chat->sendLocalMessage($government, "{CommandGiveLicKeys}", "§d : ", 10);
 
         $government->sendMessage("CommandGiveLicNoLic1");
         $toPlayer->sendMessage("CommandGiveLicNoLic2");
@@ -80,7 +80,7 @@ class GiveLicCommand extends OrganisationsCommand
 
     private function moveThemOut(array $plrs, MineParkPlayer $government)
     {
-        $this->gameChat->sendLocalMessage($government, "{CommandGiveLicManyPlayers1}");
+        $this->chat->sendLocalMessage($government, "{CommandGiveLicManyPlayers1}");
 
         foreach($plrs as $id => $p) {
             if($id > 1) {

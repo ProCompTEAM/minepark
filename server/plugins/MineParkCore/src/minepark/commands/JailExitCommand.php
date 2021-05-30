@@ -26,7 +26,7 @@ class JailExitCommand extends Command
 
     private MapProvider $mapProvider;
 
-    private Chat $gameChat;
+    private Chat $chat;
 
     public function __construct()
     {
@@ -34,7 +34,7 @@ class JailExitCommand extends Command
 
         $this->mapProvider = Providers::getMapProvider();
 
-        $this->gameChat = Components::getComponent(Chat::class);
+        $this->chat = Components::getComponent(Chat::class);
     }
 
     public function getCommand() : array
@@ -59,7 +59,7 @@ class JailExitCommand extends Command
         }
         
         if($this->bankingProvider->takePlayerMoney($player, self::FREE_PRICE)) {
-            $this->gameChat->sendLocalMessage($player, "{CommandJailExit}", "§d", self::DOOR_DISTANCE);
+            $this->chat->sendLocalMessage($player, "{CommandJailExit}", "§d", self::DOOR_DISTANCE);
             $player->release();
         } else {
             $player->sendLocalizedMessage("{CommandJailExitNoMoney}". self::FREE_PRICE);

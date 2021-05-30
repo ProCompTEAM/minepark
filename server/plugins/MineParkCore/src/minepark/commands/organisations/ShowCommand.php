@@ -16,13 +16,13 @@ class ShowCommand extends OrganisationsCommand
 
     private Organisations $organisations;
     
-    private Chat $gameChat;
+    private Chat $chat;
 
     public function __construct()
     {
         $this->organisations = Components::getComponent(Organisations::class);
 
-        $this->gameChat = Components::getComponent(Chat::class);
+        $this->chat = Components::getComponent(Chat::class);
     }
 
     public function getCommand() : array
@@ -50,6 +50,6 @@ class ShowCommand extends OrganisationsCommand
 
         $organisationName = $this->organisations->getName($organisationId, false);
 
-        $this->gameChat->sendLocalMessage($player, "{CommandShowHandLic}" . $organisationName . "*§8)", "§d : ", 10);
+        $this->chat->sendLocalMessage($player, "{CommandShowHandLic}" . $organisationName . "*§8)", "§d : ", 10);
     }
 }

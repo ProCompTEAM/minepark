@@ -19,11 +19,11 @@ class SellCommand extends OrganisationsCommand
 
     private const MARKETPLACE_DISTANCE = 15;
 
-    private Chat $gameChat;
+    private Chat $chat;
 
     public function __construct()
     {
-        $this->gameChat = Components::getComponent(Chat::class);
+        $this->chat = Components::getComponent(Chat::class);
     }
 
     public function getCommand() : array
@@ -47,7 +47,7 @@ class SellCommand extends OrganisationsCommand
             return;
         }
 
-        $this->gameChat->sendLocalMessage($player, "{CommandSellKey}", "§d : ", 10);
+        $this->chat->sendLocalMessage($player, "{CommandSellKey}", "§d : ", 10);
 
         if (!$this->isShopClose($player)) {
             $player->sendMessage("CommandSellNoShop");

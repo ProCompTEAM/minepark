@@ -26,11 +26,11 @@ class EntitySettings extends Component
 
     private array $reasons;
 
-    private Chat $gameChat;
+    private Chat $chat;
 
     public function initialize()
     {
-        $this->gameChat = Components::getComponent(Chat::class);
+        $this->chat = Components::getComponent(Chat::class);
 
         Events::registerEvent(EventList::ENTITY_DAMAGE_EVENT, [$this, "processEntityDamageEvent"]);
 
@@ -105,8 +105,8 @@ class EntitySettings extends Component
 
     private function processStunAction(MineParkPlayer $victim, MineParkPlayer $policeMan)
     {
-        $this->gameChat->sendLocalMessage($policeMan, "§8(§dв руках дубинка-электрошокер§8)", "§d : ", 10);
-        $this->gameChat->sendLocalMessage($victim, "§8(§dлежит на полу | ослеплен§8)", "§d : ", 12);
+        $this->chat->sendLocalMessage($policeMan, "§8(§dв руках дубинка-электрошокер§8)", "§d : ", 10);
+        $this->chat->sendLocalMessage($victim, "§8(§dлежит на полу | ослеплен§8)", "§d : ", 12);
         
         $victim->changeAttribute(PlayerAttributes::WANTED);
 

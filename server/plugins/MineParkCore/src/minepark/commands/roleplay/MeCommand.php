@@ -20,13 +20,13 @@ class MeCommand extends Command
 
     private Tracking $tracking;
 
-    private Chat $gameChat;
+    private Chat $chat;
 
     public function __construct()
     {
         $this->tracking = Components::getComponent(Tracking::class);
 
-        $this->gameChat = Components::getComponent(Chat::class);
+        $this->chat = Components::getComponent(Chat::class);
     }
 
     public function getCommand() : array
@@ -54,7 +54,7 @@ class MeCommand extends Command
 
         $message = implode(self::ARGUMENTS_SEPERATOR, $args);
         
-        $this->gameChat->sendLocalMessage($player, $message, "§d", self::DISTANCE);
+        $this->chat->sendLocalMessage($player, $message, "§d", self::DISTANCE);
         $player->sendSound(Sounds::ROLEPLAY);
 
         $this->tracking->actionRP($player, $message, self::DISTANCE, "[ME]");

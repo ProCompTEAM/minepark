@@ -23,7 +23,7 @@ class HealCommand extends OrganisationsCommand
 
     private BankingProvider $bankingProvider;
 
-    private Chat $gameChat;
+    private Chat $chat;
 
     public function __construct()
     {
@@ -31,7 +31,7 @@ class HealCommand extends OrganisationsCommand
 
         $this->bankingProvider = Providers::getBankingProvider();
 
-        $this->gameChat = Components::getComponent(Chat::class);
+        $this->chat = Components::getComponent(Chat::class);
     }
 
     public function getCommand() : array
@@ -85,7 +85,7 @@ class HealCommand extends OrganisationsCommand
 
     private function moveThemOut(array $plrs, MineParkPlayer $healer)
     {
-        $this->gameChat->sendLocalMessage($healer, "{CommandHealManyPlayers1}");
+        $this->chat->sendLocalMessage($healer, "{CommandHealManyPlayers1}");
 
         foreach($plrs as $id => $p) {
             if($id > 1) {

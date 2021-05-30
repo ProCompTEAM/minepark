@@ -131,12 +131,6 @@ class Core extends PluginBase implements Listener
         return false;
     }
 
-    public function sendToMessagesLog(string $prefix, string $message)
-    {
-        //TODO: replace to MDC Audit
-        file_put_contents(Files::MESSAGES_LOG_FILE, (PHP_EOL . "(" . $prefix . ") - " . $message), FILE_APPEND);
-    }
-
     public function getAdministration(bool $namesOnly = false) : array
     {
         $list = [];

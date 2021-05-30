@@ -22,7 +22,7 @@ class PassportCommand extends Command
 
     private ProfileProvider $profileProvider;
 
-    private Chat $gameChat;
+    private Chat $chat;
 
     private Organisations $organisations;
 
@@ -30,7 +30,7 @@ class PassportCommand extends Command
     {
         $this->profileProvider = Providers::getProfileProvider();
 
-        $this->gameChat = Components::getComponent(Chat::class);
+        $this->chat = Components::getComponent(Chat::class);
 
         $this->organisations = Components::getComponent(Organisations::class);
     }
@@ -59,7 +59,7 @@ class PassportCommand extends Command
         
         $this->showPassportForm($player, $form);
         
-        $this->gameChat->sendLocalMessage($player, "{CommandPassportTake}", "§d", 10);
+        $this->chat->sendLocalMessage($player, "{CommandPassportTake}", "§d", 10);
     }
 
     private function getPassportForm(MineParkPlayer $player) : string

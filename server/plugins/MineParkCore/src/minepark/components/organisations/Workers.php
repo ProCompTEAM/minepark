@@ -27,7 +27,7 @@ class Workers extends Component
 
     private BankingProvider $bankingProvider;
 
-    private Chat $gameChat;
+    private Chat $chat;
     
     public function initialize()
     {
@@ -54,7 +54,7 @@ class Workers extends Component
 
         $this->bankingProvider = Providers::getBankingProvider();
 
-        $this->gameChat = Components::getComponent(Chat::class);
+        $this->chat = Components::getComponent(Chat::class);
     }
 
     public function getAttributes() : array
@@ -131,7 +131,7 @@ class Workers extends Component
         
         $player->sendMessage("§7Найдите точку разгрузки и положите ящик!");
         
-        $this->gameChat->sendLocalMessage($player, "§8(§dв руках ящик с надписью | $box |§8)", "§d : ", 12);
+        $this->chat->sendLocalMessage($player, "§8(§dв руках ящик с надписью | $box |§8)", "§d : ", 12);
     
         $player->getStatesMap()->bar = "§aВ руках ящик около " . $player->getStatesMap()->loadWeight . " кг";
     }
@@ -157,7 +157,7 @@ class Workers extends Component
     {
         $player->removeAllEffects();
 
-        $this->gameChat->sendLocalMessage($player, "§8(§dЯщик расположился на складе§8)", "§d : ", 12);
+        $this->chat->sendLocalMessage($player, "§8(§dЯщик расположился на складе§8)", "§d : ", 12);
         $this->bankingProvider->givePlayerMoney($player, 20 * $player->getStatesMap()->loadWeight);
 
         $player->getStatesMap()->loadWeight = null; 

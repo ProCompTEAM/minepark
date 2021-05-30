@@ -90,8 +90,6 @@ class PlayerSettings extends Component
         $this->addInventoryItems($player);
 
         Providers::getUsersDataProvider()->updateUserJoinStatus($player->getName());
-
-        $this->getCore()->sendToMessagesLog($player->getName(), "Вход осуществлен ***");
     }
 
     public function applyQuitSettings(PlayerQuitEvent $event)
@@ -101,8 +99,6 @@ class PlayerSettings extends Component
         $event->setQuitMessage(null);
 
         Providers::getUsersDataProvider()->updateUserQuitStatus($player->getName());
-
-        $this->getCore()->sendToMessagesLog($player->getName(), "*** Выход из игры");
     }
 
     public function applyInteractSettings(PlayerInteractEvent $event)

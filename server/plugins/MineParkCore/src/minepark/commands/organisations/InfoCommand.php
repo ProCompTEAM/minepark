@@ -14,11 +14,11 @@ class InfoCommand extends OrganisationsCommand
 {
     public const CURRENT_COMMAND = "info";
 
-    private Chat $gameChat;
+    private Chat $chat;
 
     public function __construct()
     {
-        $this->gameChat = Components::getComponent(Chat::class);
+        $this->chat = Components::getComponent(Chat::class);
     }
 
     public function getCommand() : array
@@ -42,7 +42,7 @@ class InfoCommand extends OrganisationsCommand
             return;
         }
 
-        $this->gameChat->sendLocalMessage($player, "{CommandInfoPrint}", "§d : ", 10);
+        $this->chat->sendLocalMessage($player, "{CommandInfoPrint}", "§d : ", 10);
 
         $plrs = $this->getPlayersNear($player);
 

@@ -18,13 +18,13 @@ class CallCommand extends Command
 
     private Phone $phone;
 
-    private Chat $gameChat;
+    private Chat $chat;
 
     public function __construct()
     {
         $this->phone = Components::getComponent(Phone::class);
 
-        $this->gameChat = Components::getComponent(Chat::class);
+        $this->chat = Components::getComponent(Chat::class);
     }
 
     public function getCommand() : array
@@ -43,7 +43,7 @@ class CallCommand extends Command
 
     public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
-        $this->gameChat->sendLocalMessage($player, "§8(§dв руках телефон§8)", "§d : ", 10);
+        $this->chat->sendLocalMessage($player, "§8(§dв руках телефон§8)", "§d : ", 10);
 
         $player->sendSound(Sounds::ENABLE_PHONE, null, 20);
 

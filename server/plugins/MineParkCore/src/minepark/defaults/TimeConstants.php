@@ -15,11 +15,11 @@ class TimeConstants
 
     public const PHONE_TAKE_FEE_INTERVAL = 60;
 
-    public const AUTO_BROADCAST_INTERVAL = 200;
+    public const AUTO_BROADCAST_INTERVAL = 210;
 
     public const PAYDAY_INTERVAL = 600;
 
-    public const SHOW_PLAYERS_LIST_INTERVAL = 450;
+    public const SHOW_PLAYERS_LIST_INTERVAL = 470;
 
     public const NOFIRE_UPDATE_INTERVAL = 180;
 

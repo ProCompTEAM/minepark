@@ -26,7 +26,7 @@ class ChangeNameCommand extends OrganisationsCommand
 
     private MapProvider $mapProvider;
 
-    private Chat $gameChat;
+    private Chat $chat;
 
     public function __construct()
     {
@@ -36,7 +36,7 @@ class ChangeNameCommand extends OrganisationsCommand
 
         $this->mapProvider = Providers::getMapProvider();
 
-        $this->gameChat = Components::getComponent(Chat::class);
+        $this->chat = Components::getComponent(Chat::class);
     }
 
     public function getCommand() : array
@@ -100,7 +100,7 @@ class ChangeNameCommand extends OrganisationsCommand
 
     private function moveThemOut(array $plrs, MineParkPlayer $government)
     {
-        $this->gameChat->sendLocalMessage($government, "{CommandChangeNameManyPlayers1}");
+        $this->chat->sendLocalMessage($government, "{CommandChangeNameManyPlayers1}");
         foreach($plrs as $id => $player) {
             if($id > 1) {
                 $player->sendMessage("CommandChangeNameManyPlayers2");
