@@ -45,9 +45,19 @@ namespace MDC.Common.Network.HttpWeb
 
             try
             {
-                IController controller = Store.GetControllerByRoute(routes[0]);
-                string result = ExecuteMethod(controller, routes[1], requestContext, jsonData);
-                return CreateExecutionResult(HttpStatusCode.OK, result);
+                return TryToExecute(routes, requestContext, jsonData);
+            }
+            catch(TargetInvocationException exception)
+            {
+                Exception originalException = exception.InnerException;
+
+                if (originalException.InnerException != null)
+                {
+			        originalException = originalException.InnerException;
+		        }
+
+                General.Crash(originalException.Message, originalException.StackTrace.Split("\n\r"));
+                return CreateExecutionResult(HttpStatusCode.InternalServerError);
             }
             catch(Exception exception)
             {
@@ -65,12 +75,44 @@ namespace MDC.Common.Network.HttpWeb
             };
         }
 
-        private static string ExecuteMethod(IController controller, string methodName, RequestContext requestContext, string jsonData)
+        private static ExecutionResult TryToExecute(string[] routes, RequestContext requestContext, string jsonData)
+        {
+            IController controller = Store.GetControllerByRoute(routes[0]);
+
+            if (controller == null)
+            {
+                return CreateExecutionResult(HttpStatusCode.NotFound);
+            }
+
+            MethodInfo method = SearchForMethod(controller, routes[1]);
+
+            if (method == null)
+            {
+                return CreateExecutionResult(HttpStatusCode.NotFound);
+            }
+
+            string methodExecutionResult = ExecuteMethod(controller, method, requestContext, jsonData);
+            return CreateExecutionResult(HttpStatusCode.OK, methodExecutionResult);
+        }
+
+        private static MethodInfo SearchForMethod(IController controller, string methodName)
         {
             methodName = NormalizeMethodName(methodName);
-            Type currentType = controller.GetType();
-            MethodInfo method = currentType.GetMethod(methodName);
 
+            if (controller == null)
+            {
+                return null;
+            }
+
+            Type controllerType = controller.GetType();
+
+            MethodInfo method = controllerType.GetMethod(methodName);
+
+            return method;
+        }
+
+        private static string ExecuteMethod(IController controller, MethodInfo method, RequestContext requestContext, string jsonData)
+        {
             if(!IsMethodContainArgument(method, typeof(RequestContext)))
             {
                 requestContext = null;
