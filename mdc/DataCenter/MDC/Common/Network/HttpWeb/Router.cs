@@ -53,8 +53,8 @@ namespace MDC.Common.Network.HttpWeb
 
                 if (originalException.InnerException != null)
                 {
-			        originalException = originalException.InnerException;
-		        }
+                    originalException = originalException.InnerException;
+                }
 
                 General.Crash(originalException.Message, originalException.StackTrace.Split("\n\r"));
                 return CreateExecutionResult(HttpStatusCode.InternalServerError);
