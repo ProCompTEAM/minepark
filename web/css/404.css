@@ -1,0 +1,136 @@
+body {
+	padding: 0;
+	margin: 0;
+}
+
+.header {
+	width: 100%;
+}
+
+.wrapper {
+	width: 1170px;
+	margin: 0 auto;
+}
+
+.img_error {
+	width: 370px;
+	height: 243px;
+	margin: 0 auto;
+	background: url("../src_mcrpg/img_error/404.png") no-repeat;
+	background-size: cover;
+}
+
+.information {
+	margin: 0 auto;
+}
+
+.information__H2 {
+	width: 424px;
+	height: 27px;
+	margin: 0 auto;
+	padding-top: 27px;
+	font-family: Open Sans;
+	font-style: normal;
+	font-weight: 800;
+	font-size: 20px;
+	line-height: 27px;
+	text-align: center;
+}
+
+.information__P {
+	width: 339px;
+	height: 50px;
+	margin: 0 auto;
+	padding-top: 20px;
+	font-family: Open Sans;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 18px;
+	line-height: 25px;
+	text-align: center;
+}
+
+.but {
+	display: block;
+	width: 370px;
+	height: 43px;
+	background: url("../src_mcrpg/img_error/button.png") no-repeat;
+	background-size: contain;
+	margin: 61px auto;
+	padding-top: 51px;
+	transition: 0.5s all;
+}
+
+
+.but:hover {
+	margin-top: 70px;
+	transition: 0.5s all;
+}
+
+@media screen and (max-width: 1200px) {
+	.wrapper {
+		width: 720px;
+	}
+
+}
+
+@media screen and (max-width: 992px) {
+	.wrapper {
+		width: 720px;
+	}
+}
+
+@media screen and (max-width: 768px) {
+	.wrapper {
+		width: 540px;
+	}
+}
+
+@media screen and (max-width: 576px) {
+	.wrapper {
+		width: 90%;
+	}
+}
+
+@media screen and (max-width: 469px) {
+	.information__H2 {
+		width: 200px;
+		padding-bottom: 20px;
+	}
+
+	.information__P {
+		width: 192px;
+		padding-top: 50px;
+	}
+
+	.img_error, .but {
+		width: 192px;
+		height: 117px;
+	}
+}
+
+@media screen and (max-width: 200px) {
+	.img_error, .but, .information__H2, .information__P {
+		width: 100px;
+		font-size: 10px;
+		line-height: 10px;
+		margin-top: 0;
+		padding-top: 0;
+	}
+
+	.img_error, .but {
+		height: 65px;
+	}
+}
+
+@media screen and (max-width: 105px) {
+	.img_error, .but, .information__H2, .information__P {
+		width: 50px;
+		font-size: 7px;
+		margin-top: 5px;
+	}
+
+	.img_error, .but {
+		height: 30px;
+	}
+}

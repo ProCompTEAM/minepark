@@ -41,11 +41,11 @@ h1{font-family:Montserrat;font-size:44px;font-weight:700;line-height:1.18;color:
   margin-top: 20px;
   color: rgb(128,128,128);
 }
-#shopModal #close-shop-modal:hover,
-#shopModal #close-shop-modal:focus {
+#shopModal #close-shop-modal:hover, #shopModal #close-shop-modal:focus {
   color: red;
   cursor: pointer;
 }
+
 #shopModal {
   display: none;
   position: fixed;
