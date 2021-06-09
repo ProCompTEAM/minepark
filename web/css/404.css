@@ -52,8 +52,8 @@ body {
 
 .but {
 	display: block;
-	width: 370px;
-	height: 43px;
+	width: 340px;
+	height: 0;
 	background: url("../src_mcrpg/img_error/button.png") no-repeat;
 	background-size: contain;
 	margin: 61px auto;
@@ -70,6 +70,10 @@ body {
 @media screen and (max-width: 1200px) {
 	.wrapper {
 		width: 720px;
+	}
+
+	.but {
+		height: 0;
 	}
 
 }
@@ -103,14 +107,19 @@ body {
 		padding-top: 50px;
 	}
 
-	.img_error, .but {
+	.img_error {
 		width: 192px;
 		height: 117px;
+	}
+
+	.but {
+		width: 190px;
+		padding-top: 30px;
 	}
 }
 
 @media screen and (max-width: 200px) {
-	.img_error, .but, .information__H2, .information__P {
+	.img_error, .information__H2, .information__P {
 		width: 100px;
 		font-size: 10px;
 		line-height: 10px;
@@ -118,19 +127,30 @@ body {
 		padding-top: 0;
 	}
 
-	.img_error, .but {
+	.img_error {
 		height: 65px;
+	}
+
+	.but {
+		width: 100px;
+		margin-top: 10px;
+		padding-top: 20px;
 	}
 }
 
 @media screen and (max-width: 105px) {
-	.img_error, .but, .information__H2, .information__P {
+	.img_error, .information__H2, .information__P {
 		width: 50px;
 		font-size: 7px;
 		margin-top: 5px;
 	}
 
-	.img_error, .but {
+	.img_error {
 		height: 30px;
+	}
+
+	.but {
+		width: 50px;
+		padding-top: 10px;
 	}
 }
