@@ -5,7 +5,7 @@ use minepark\Providers;
 use pocketmine\block\Block;
 use pocketmine\world\World;
 use pocketmine\math\Vector3;
-use pocketmine\entity\Vehicle;
+use pocketmine\entity\Entity as Vehicle; //TODO: Сделать отдельный класс
 use jojoe77777\FormAPI\ModalForm;
 use jojoe77777\FormAPI\SimpleForm;
 use pocketmine\nbt\tag\CompoundTag;
@@ -34,7 +34,7 @@ abstract class BaseCar extends Vehicle
 
     private float $speed;
 
-    public function __construct(Level $level, CompoundTag $nbt)
+    public function __construct(World $level, CompoundTag $nbt)
     {
         parent::__construct($level, $nbt);
 
@@ -98,10 +98,7 @@ abstract class BaseCar extends Vehicle
             $this->passenger->getStatesMap()->ridingVehicle = null;
         }
 
-        // we need this check for some reasons(bad pmmp code)
-        if (isset($this->health)) {
-            $this->health = 0;
-        }
+        $this->setHealth(0);
 
         $this->scheduleUpdate();
     }

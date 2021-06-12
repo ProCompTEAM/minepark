@@ -1,7 +1,7 @@
 name: MineParkCore
 main: minepark\Core
 version: 1.0
-api: [3.0.0, 3.0.0-ALPHA13]
+api: 4.0.0
 load: POSTWORLD
 website: http://vk.com/mcperp
 

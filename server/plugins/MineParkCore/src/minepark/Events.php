@@ -6,7 +6,7 @@ use pocketmine\event\Event;
 use pocketmine\event\inventory\InventoryTransactionEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\block\BlockBurnEvent;
-use pocketmine\event\level\ChunkLoadEvent;
+use pocketmine\event\world\ChunkLoadEvent;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\block\SignChangeEvent;

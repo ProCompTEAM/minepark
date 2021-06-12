@@ -30,7 +30,7 @@ class Core extends PluginBase implements Listener
         return self::$_instance;
     }
 
-    public function onEnable()
+    public function onEnable(): void
     {
         Core::$_instance = $this;
 
@@ -48,7 +48,7 @@ class Core extends PluginBase implements Listener
         $this->initializeServiceModule();
     }
 
-    public function onDisable()
+    public function onDisable(): void
     {
         $this->transferPlayersToLobby();
     }
@@ -136,7 +136,7 @@ class Core extends PluginBase implements Listener
         $list = [];
 
         foreach($this->getServer()->getOnlinePlayers() as $player) {
-            if ($player->hasPermission(Permissions::ADMINISTRATOR) or $player->isOp()) {
+            if ($player->hasPermission(Permissions::ADMINISTRATOR) or $player->getServer()->isOp($player)) {
                 $namesOnly ? array_push($list, $player->getName()) : array_push($list, $player);
             }
         }
