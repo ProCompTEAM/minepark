@@ -69,7 +69,7 @@ class GPSCommand extends Command
             return;
         }
 
-        $player->getStatesMap()->gps = new Position($args[0], $player->getY(), $args[1], $player->getLevel());
+        $player->getStatesMap()->gps = new Position($args[0], $player->getY(), $args[1], $player->getWorld());
 
         $player->sendMessage("CommandGPSPath1");
         $player->sendMessage("CommandGPSPath2");
@@ -140,8 +140,8 @@ class GPSCommand extends Command
         foreach($points as $point) {
             $point = $this->castToMapPointDto($point);
 
-            if(strtolower($player->getLevel()->getName()) === $point->level) {
-                $level = $this->getServer()->getLevelByName($point->level);
+            if(strtolower($player->getWorld()->getName()) === $point->level) {
+                $level = $this->getServer()->getWorldByName($point->level);
                 $position = new Position($point->x, $point->y, $point->z, $level);
                 $player->setFloatingText($position, $prefix . $point->name, self::FLOATING_TEXT_TAG);
             }

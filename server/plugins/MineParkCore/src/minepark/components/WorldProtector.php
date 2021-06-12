@@ -52,7 +52,7 @@ class WorldProtector extends Component
     public function isInRange(Position $position) : bool
     {
         return (
-            $position->getLevel()->getName() == $this->getLevelName() and
+            $position->getWorld()->getName() == $this->getWorldName() and
             $position->getX() >= $this->getMinimumX() and
             $position->getZ() >= $this->getMinimumZ() and
             $position->getX() <= $this->getMaximumX() and
@@ -100,7 +100,7 @@ class WorldProtector extends Component
         return $this->maximumZ;
     }
 
-    private function getLevelName() : string
+    private function getWorldName() : string
     {
         return $this->level;
     }

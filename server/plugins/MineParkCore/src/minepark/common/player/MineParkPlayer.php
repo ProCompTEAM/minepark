@@ -286,7 +286,7 @@ class MineParkPlayer extends Player
     {
         foreach($this->floatingTexts as $floatingText) {
             if(!$floatingText->delivered) {
-                $level = $floatingText->position->getLevel();
+                $level = $floatingText->position->getWorld();
                 $level->addParticle($floatingText->particle, [$this]);
                 $floatingText->delivered = true;
             }

@@ -29,7 +29,7 @@ class NightCommand extends Command
 
     public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
-        $player->getLevel()->setTime(Level::TIME_NIGHT);
-        $player->sendMessage("§9⌚ Вы включили §1ночь §9в игровом мире §e" . $player->getLevel()->getName());
+        $player->getWorld()->setTime(Level::TIME_NIGHT);
+        $player->sendMessage("§9⌚ Вы включили §1ночь §9в игровом мире §e" . $player->getWorld()->getName());
     }
 }

@@ -1,7 +1,7 @@
 <?php
 namespace Lolya;
 
-use pocketmine\Player;
+use pocketmine\player\Player;
 use Lolya\utils\CallbackTask;
 use pocketmine\event\Listener;
 

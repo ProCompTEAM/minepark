@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace xenialdan\PocketRadio\task;
 
 use pocketmine\network\mcpe\protocol\PlaySoundPacket;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\plugin\Plugin;
 use pocketmine\scheduler\Task;
 use pocketmine\utils\TextFormat;
@@ -99,7 +99,7 @@ class SongPlayerTask extends Task
             $pk->x = $vector->x;
             $pk->y = $vector->y + $player->getEyeHeight();
             $pk->z = $vector->z;
-            $player->dataPacket($pk);
+            $player->getNetworkSession()->sendDataPacket($pk);
             unset($add, $pk, $vector, $note);
         }
     }

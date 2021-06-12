@@ -33,7 +33,7 @@ class LevelCommand extends Command
             return;
         }
 
-        $lvl = $this->getServer()->getLevelByName($args[0]);
+        $lvl = $this->getServer()->getWorldByName($args[0]);
         if($lvl != null) {
             $player->teleport($lvl->getSafeSpawn());
         } else {

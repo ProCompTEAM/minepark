@@ -13,7 +13,7 @@ use minepark\defaults\VehicleConstants;
 use minepark\common\player\MineParkPlayer;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
-use pocketmine\network\mcpe\protocol\types\EntityLink;
+use pocketmine\network\mcpe\protocol\types\entity\EntityLink;
 use pocketmine\network\mcpe\protocol\SetActorLinkPacket;
 
 abstract class BaseCar extends Vehicle
@@ -315,7 +315,7 @@ abstract class BaseCar extends Vehicle
         $blocks = [];
         
         foreach($vectors as $vector) {
-            $block = $this->getLevel()->getBlockAt($vector->getX(), $vector->getY(), $vector->getZ(), false, false);
+            $block = $this->getWorld()->getBlockAt($vector->getX(), $vector->getY(), $vector->getZ(), false, false);
 
             if ($block->getId() !== Block::AIR) {
                 $blocks[] = $block;

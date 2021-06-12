@@ -3,9 +3,9 @@ declare(strict_types = 1);
 
 namespace Kirill_Poroh;
 
-use pocketmine\Player;
+use pocketmine\player\Player;
 
-use pocketmine\level\Position;
+use pocketmine\world\Position;
 use pocketmine\math\Vector3;
 use pocketmine\entity\Entity;
 use pocketmine\block\Block;
@@ -56,7 +56,7 @@ class InvseeCommand
                 
                 $chestBlock = new \pocketmine\block\Chest();
                 
-                $player->getLevel()->setBlock(new Vector3($player->getX(), $player->getY() - 4, $player->getZ()), $chestBlock, true, true);
+                $player->getWorld()->setBlock(new Vector3($player->getX(), $player->getY() - 4, $player->getZ()), $chestBlock, true, true);
                 
                 $nbt = new CompoundTag("", [
                     new CompoundTag("Items", array()),
@@ -66,7 +66,7 @@ class InvseeCommand
                     new IntTag("z", (int) floor($player->getZ()))
                 ]);
                     
-                $tile = Tile::createTile("Chest", $player->getLevel(), $nbt);
+                $tile = Tile::createTile("Chest", $player->getWorld(), $nbt);
                 
                 foreach($player->getInventory()->getContents() as $item) 
                 {

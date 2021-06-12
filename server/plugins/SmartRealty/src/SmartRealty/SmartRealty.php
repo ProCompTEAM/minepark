@@ -7,7 +7,7 @@
 namespace SmartRealty;
 
 use pocketmine\plugin\PluginBase;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\block\SignPost;
 use pocketmine\block\WallSign;
 use pocketmine\tile\Sign;
@@ -83,7 +83,7 @@ class SmartRealty extends PluginBase implements Listener
     
     public function tapEvent(PlayerInteractEvent $e)
     {	
-        if(!isset($this->levels[strtolower($e->getPlayer()->getLevel()->getName())])) {
+        if(!isset($this->levels[strtolower($e->getPlayer()->getWorld()->getName())])) {
             return;
         }
     
@@ -108,7 +108,7 @@ class SmartRealty extends PluginBase implements Listener
             return;
         }
         
-        if(!isset($this->levels[strtolower($e->getPlayer()->getLevel()->getName())])) {
+        if(!isset($this->levels[strtolower($e->getPlayer()->getWorld()->getName())])) {
             return;
         }
         
@@ -121,7 +121,7 @@ class SmartRealty extends PluginBase implements Listener
             return;
         }
 
-        if(!isset($this->levels[strtolower($e->getPlayer()->getLevel()->getName())])) {
+        if(!isset($this->levels[strtolower($e->getPlayer()->getWorld()->getName())])) {
             return;
         }
         
@@ -130,7 +130,7 @@ class SmartRealty extends PluginBase implements Listener
     
     public function onCommand(CommandSender $sender, Command $cmd, $label, array $cmds) : bool
     {
-        if($sender instanceof Player and !isset($this->levels[strtolower($sender->getLevel()->getName())])) {
+        if($sender instanceof Player and !isset($this->levels[strtolower($sender->getWorld()->getName())])) {
             return false;
         }
         

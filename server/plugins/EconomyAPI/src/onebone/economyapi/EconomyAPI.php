@@ -2,7 +2,7 @@
 namespace onebone\economyapi;
 
 use minepark\Core;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use minepark\Providers;
 use pocketmine\plugin\PluginBase;
 

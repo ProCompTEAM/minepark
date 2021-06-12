@@ -1,7 +1,7 @@
 <?php
 namespace lifts;
 
-use pocketmine\level\Position;
+use pocketmine\world\Position;
 use pocketmine\math\Vector3;
 use pocketmine\block\Block;
 
@@ -22,7 +22,7 @@ class Run {
         $y = floor($pos->getY());
         $z = floor($pos->getZ());
 
-        $wname = $pos->getLevel()->getName();
+        $wname = $pos->getWorld()->getName();
         file_put_contents($file, "$x $y $z $wname");
         $this->loadAll();
         $this->cs->move($pos, Block::get(Block::IRON_BLOCK));
@@ -47,7 +47,7 @@ class Run {
             $data = file_get_contents($dir.$file);
             if(!Empty(explode(" ", $data)[3])) { 
                 $my = explode(" ", $data);
-                array_push($this->all, new Position($my[0], $my[1], $my[2], $this->cs->getServer()->getLevelByName($my[3])));
+                array_push($this->all, new Position($my[0], $my[1], $my[2], $this->cs->getServer()->getWorldByName($my[3])));
             } 
         } 
     } 
@@ -70,11 +70,11 @@ class Run {
     { 
         if($get_str == "down") {
             for ($i=0; $i < 124; $i++) { 
-                $block = $pos->getLevel()->getBlock(new Vector3($pos->getX(), $pos->getY()-$i-2, $pos->getZ()));
+                $block = $pos->getWorld()->getBlock(new Vector3($pos->getX(), $pos->getY()-$i-2, $pos->getZ()));
                 if($block->getName() != "Air") break;
             } 
             
-            $endpos = new Position($block->getX(), $block->getY(), $block->getZ(), $pos->getLevel());
+            $endpos = new Position($block->getX(), $block->getY(), $block->getZ(), $pos->getWorld());
 
             array_push($this->cs->lifts, array($pos, $endpos, 0, \false, 1));
             
@@ -82,11 +82,11 @@ class Run {
         } 
         else {  
             for ($i=0; $i < 124; $i++) { 
-                $block = $pos->getLevel()->getBlock(new Vector3($pos->getX(), $pos->getY()-$i-2, $pos->getZ()));
+                $block = $pos->getWorld()->getBlock(new Vector3($pos->getX(), $pos->getY()-$i-2, $pos->getZ()));
                 if($block->getName() != "Air") break;
             } 
 
-            $endpos = new Position($block->getX(), $block->getY(), $block->getZ(), $pos->getLevel());
+            $endpos = new Position($block->getX(), $block->getY(), $block->getZ(), $pos->getWorld());
             array_push($this->cs->lifts, array($pos, $endpos, 0, \false, 2));
             $this->cs->work->reload();
         }

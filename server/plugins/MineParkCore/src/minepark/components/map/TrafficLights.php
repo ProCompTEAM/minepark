@@ -53,7 +53,7 @@ class TrafficLights extends Component
         $lightPoints = $this->mapProvider->getPointsByGroup(MapConstants::POINT_GROUP_TRAFFIC_LIGHT1, false);
 
         foreach($lightPoints as $point) {
-            $level = $this->getServer()->getLevelByName($point->level);
+            $level = $this->getServer()->getWorldByName($point->level);
             array_push($this->lightPositionsVariation1, new Position($point->x, $point->y, $point->z, $level));
         }
     }
@@ -63,7 +63,7 @@ class TrafficLights extends Component
         $lightPoints = $this->mapProvider->getPointsByGroup(MapConstants::POINT_GROUP_TRAFFIC_LIGHT2, false);
 
         foreach($lightPoints as $point) {
-            $level = $this->getServer()->getLevelByName($point->level);
+            $level = $this->getServer()->getWorldByName($point->level);
             array_push($this->lightPositionsVariation2, new Position($point->x, $point->y, $point->z, $level));
         }
     }

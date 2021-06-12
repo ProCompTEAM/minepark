@@ -2,12 +2,12 @@
 namespace lifts; 
 
 use lifts\Run; 
-use pocketmine\Player; 
+use pocketmine\player\Player;
 use pocketmine\block\Block;
 use pocketmine\math\Vector3; 
 use pocketmine\event\Listener;
 use pocketmine\scheduler\Task;
-use pocketmine\level\Position; 
+use pocketmine\world\Position;
 use pocketmine\command\Command; 
 use pocketmine\utils\TextFormat;
 use pocketmine\plugin\PluginBase; 
@@ -43,7 +43,7 @@ class Control extends PluginBase implements Listener
         $x = $pos->getX();
         $y = $pos->getY()-1;
         $z = $pos->getZ();
-        $w = $pos->getLevel(); 
+        $w = $pos->getWorld();
 
         $allpos = array( 
             new Position($x, $y, $z, $w), 
@@ -70,7 +70,7 @@ class Control extends PluginBase implements Listener
         $x = $pos->getX();
         $y = $pos->getY()-1;
         $z = $pos->getZ();
-        $w = $pos->getLevel(); 
+        $w = $pos->getWorld();
 
         $allpos = array( 
             new Position($x, $y, $z, $w), 
@@ -161,14 +161,14 @@ class Control extends PluginBase implements Listener
         $x = floor($b->getX()); 
         $y = floor($b->getY()); 
         $z = floor($b->getZ());
-        $wname = $p->getLevel()->getName(); 
+        $wname = $p->getWorld()->getName();
 
         $form1 = "$x:$y:$z:$wname";
 
         if($e->getBlock()->getId() == 42 and is_array($list)) { 
             foreach($list as $i) { 
                 $x = $i->getX(); $y = $i->getY()-1; $z = $i->getZ(); 
-                $wname = $i->getLevel()->getName(); $form2 = "$x:$y:$z:$wname"; 
+                $wname = $i->getWorld()->getName(); $form2 = "$x:$y:$z:$wname";
                 if($form1 == $form2) { 
                     $this->run->start($i, "down"); 
                     $p->sendMessage("LiftsDown"); 
@@ -176,18 +176,18 @@ class Control extends PluginBase implements Listener
                 } 
             }
             
-            $pos = new Position($b->getX(), $b->getY(), $b->getZ(), $p->getLevel()); 
+            $pos = new Position($b->getX(), $b->getY(), $b->getZ(), $p->getWorld());
             
             for ($a=0; $a < 124; $a++) { 
-                $block = $pos->getLevel()->getBlock(new Vector3($pos->getX(), $pos->getY()+$a+1, $pos->getZ())); 
+                $block = $pos->getWorld()->getBlock(new Vector3($pos->getX(), $pos->getY()+$a+1, $pos->getZ()));
                 if($block->getName() != "Air") break; 
             }
 
-            $mpos = new Position($block->getX(), $block->getY()+1, $block->getZ(), $p->getLevel());
+            $mpos = new Position($block->getX(), $block->getY()+1, $block->getZ(), $p->getWorld());
 
             foreach($list as $i) { 
                 if($i->getX() == $mpos->getX() and $i->getY() == $mpos->getY() and $i->getZ() == $mpos->getZ() 
-                    and $i->getLevel()->getName() == $mpos->getLevel()->getName()) 
+                    and $i->getWorld()->getName() == $mpos->getWorld()->getName())
                 { 
                     $this->run->start($mpos, "up"); $p->sendMessage("LiftsUp"); 
                 } 
@@ -237,7 +237,7 @@ class Work extends Task
                     unset($this->p->lifts[$key]); 
                     return; 
                 } 
-                $pos = new Position($i[0]->getX(), $y,$i[0]->getZ(), $i[0]->getLevel()); 
+                $pos = new Position($i[0]->getX(), $y,$i[0]->getZ(), $i[0]->getWorld());
                 $this->p->move($pos); 
                 $this->p->lifts[$key][2]--;
             } else { 
@@ -245,13 +245,13 @@ class Work extends Task
 
                 if($this->p->lifts[$key][2] == 1) $this->p->clear($i[0]); 
                 if($this->p->lifts[$key][2] == $i[4]) { 
-                    $posend = new Position($i[1]->getX(), $i[1]->getY()+1,$i[1]->getZ(), $i[1]->getLevel()); 
+                    $posend = new Position($i[1]->getX(), $i[1]->getY()+1,$i[1]->getZ(), $i[1]->getWorld());
                     $this->p->move($posend); 
                     unset($this->p->lifts[$key]); 
                     return; 
                 }
 
-                $pos = new Position($i[0]->getX(), $y,$i[0]->getZ(), $i[0]->getLevel()); 
+                $pos = new Position($i[0]->getX(), $y,$i[0]->getZ(), $i[0]->getWorld());
                 $this->p->move($pos);  
                 $this->liftControl($pos); 
                 $this->p->lifts[$key][2]++;  
