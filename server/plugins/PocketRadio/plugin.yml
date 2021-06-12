@@ -10,12 +10,10 @@ softdepend: [DEVirion]
 permissions:
   pocketradio.command:
     default: true
-    children:
-      pocketradio.command.radio:
-        default: true
-        children:
-          pocketradio.command.radio.next:
-            default: op
-          pocketradio.command.radio.volume:
-            default: true
+  pocketradio.command.radio:
+    default: true
+  pocketradio.command.radio.next:
+    default: op
+  pocketradio.command.radio.volume:
+    default: true
 ...
