@@ -2,7 +2,7 @@
 namespace minepark\components\vehicles;
 
 use minepark\Events;
-use pocketmine\level\Level;
+use pocketmine\world\World;
 use pocketmine\math\Vector3;
 use minepark\defaults\EventList;
 use minepark\components\base\Component;

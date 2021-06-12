@@ -17,7 +17,7 @@ use minepark\providers\data\PhonesDataProvider;
 use minepark\providers\MapProvider;
 use minepark\Tasks;
 use pocketmine\event\player\PlayerQuitEvent;
-use pocketmine\level\Position;
+use pocketmine\world\Position;
 
 class Phone extends Component
 {

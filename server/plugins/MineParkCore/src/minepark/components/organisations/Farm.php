@@ -3,7 +3,7 @@ namespace minepark\components\organisations;
 
 use minepark\Providers;
 use pocketmine\entity\Effect;
-use pocketmine\level\Position;
+use pocketmine\world\Position;
 
 use pocketmine\entity\EffectInstance;
 use minepark\components\base\Component;

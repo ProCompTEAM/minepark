@@ -5,7 +5,7 @@ use minepark\Providers;
 use pocketmine\event\Event;
 use pocketmine\entity\Effect;
 
-use pocketmine\level\Position;
+use pocketmine\world\Position;
 use pocketmine\entity\EffectInstance;
 use minepark\common\player\MineParkPlayer;
 use minepark\Components;

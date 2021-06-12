@@ -3,7 +3,7 @@ namespace minepark\components\map;
 
 use minepark\Tasks;
 use minepark\Providers;
-use pocketmine\level\Position;
+use pocketmine\world\Position;
 use minepark\defaults\MapConstants;
 use minepark\providers\MapProvider;
 use minepark\defaults\TimeConstants;

@@ -15,8 +15,8 @@ use minepark\models\dtos\PositionDto;
 use minepark\Providers;
 use minepark\providers\data\FloatingTextsDataProvider;
 use pocketmine\event\player\PlayerJoinEvent;
-use pocketmine\level\Level;
-use pocketmine\level\Position;
+use pocketmine\world\World;
+use pocketmine\world\Position;
 
 class FloatingTexts extends Component
 {

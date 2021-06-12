@@ -1,7 +1,7 @@
 <?php
 namespace minepark\providers;
 
-use pocketmine\level\Position;
+use pocketmine\world\Position;
 use minepark\defaults\MapConstants;
 use minepark\models\dtos\MapPointDto;
 use minepark\providers\base\Provider;

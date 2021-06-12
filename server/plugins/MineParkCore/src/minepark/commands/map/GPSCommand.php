@@ -7,7 +7,7 @@ use minepark\Providers;
 use pocketmine\event\Event;
 use minepark\defaults\Sounds;
 
-use pocketmine\level\Position;
+use pocketmine\world\Position;
 use minepark\defaults\Permissions;
 use minepark\commands\base\Command;
 use minepark\defaults\MapConstants;

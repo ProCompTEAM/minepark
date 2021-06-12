@@ -2,17 +2,17 @@
 namespace minepark\common\player;
 
 use Exception;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use minepark\Providers;
 use pocketmine\math\Vector3;
-use pocketmine\level\Position;
+use pocketmine\world\Position;
 use minepark\models\dtos\UserDto;
 use minepark\defaults\MapConstants;
 use minepark\models\player\StatesMap;
 use minepark\defaults\PlayerAttributes;
 use pocketmine\network\SourceInterface;
 use minepark\models\player\FloatingText;
-use pocketmine\level\particle\FloatingTextParticle;
+use pocketmine\world\particle\FloatingTextParticle;
 use pocketmine\network\mcpe\protocol\PlaySoundPacket;
 use pocketmine\event\player\PlayerCommandPreprocessEvent;
 use pocketmine\network\mcpe\protocol\ModalFormRequestPacket;
@@ -89,7 +89,7 @@ class MineParkPlayer extends Player
 
     public function isAdministrator() : bool
     {
-        return $this->profile->administrator or $this->isOp();
+        return $this->profile->administrator or $this->getServer()->isOp($this);
     }
 
     public function isVip() : bool
@@ -109,7 +109,7 @@ class MineParkPlayer extends Player
 
     public function canBuild() : bool
     {
-        return $this->isBuilder() or $this->isOp();
+        return $this->isBuilder() or $this->getServer()->isOp($this);
     }
 
     /*
@@ -128,7 +128,7 @@ class MineParkPlayer extends Player
         $pk = new ModalFormRequestPacket();
         $pk->formId = 2147483647;
         $pk->formData = json_encode($data);
-        $this->dataPacket($pk);
+        $this->getNetworkSession()->sendDataPacket($pk);
     }
     
     public function sendSound(string $soundName, Vector3 $vector3 = null, int $volume = 100, int $pitch = 1)
@@ -145,7 +145,7 @@ class MineParkPlayer extends Player
         $pk->volume = $volume;
         $pk->pitch = $pitch;
         
-        $this->dataPacket($pk);
+        $this->getNetworkSession()->sendDataPacket($pk);
     }
     
     public function hasPermissions(array $permissions)
@@ -209,7 +209,7 @@ class MineParkPlayer extends Player
         Floating Texts API
     */
 
-    public function setFloatingText(Position $position, string $text, string $tag = null) : FloatingText
+    public function setFloatingText(Position $position, string $text, string $tag) : FloatingText
     {
         $floatingText = new FloatingText;
         $floatingText->delivered = false;
@@ -262,7 +262,7 @@ class MineParkPlayer extends Player
 
     public function unsetFloatingText(FloatingText $floatingText)
     {
-        $level = $floatingText->position->getLevel();
+        $level = $floatingText->position->getWorld();
 
         $floatingText->particle->setInvisible(true);
         $level->addParticle($floatingText->particle, [$this]);
@@ -277,7 +277,7 @@ class MineParkPlayer extends Player
 
     public function updateFloatingText(FloatingText $floatingText)
     {
-        $level = $floatingText->position->getLevel();
+        $level = $floatingText->position->getWorld();
         $floatingText->particle->setText($floatingText->text);
         $level->addParticle($floatingText->particle, [$this]);
     }
@@ -297,7 +297,7 @@ class MineParkPlayer extends Player
         Localization
     */
 
-    public function sendMessage($message)
+    public function sendMessage($message): void
     {
         parent::sendMessage(Providers::getLocalizationProvider()->take($this->locale, $message) ?? $message);
     }
@@ -307,7 +307,7 @@ class MineParkPlayer extends Player
         parent::sendMessage(Providers::getLocalizationProvider()->translateFrom($this->locale, $message));
     }
 
-    public function sendTip(string $message)
+    public function sendTip(string $message): void
     {
         parent::sendTip(Providers::getLocalizationProvider()->take($this->locale, $message) ?? $message);
     }
@@ -327,7 +327,7 @@ class MineParkPlayer extends Player
         parent::sendWhisper($sender, Providers::getLocalizationProvider()->translateFrom($this->locale, $message));
     }
 
-    public function sendPopup(string $message, string $subtitle = "")
+    public function sendPopup(string $message, string $subtitle = ""): void
     {
         parent::sendPopup(Providers::getLocalizationProvider()->take($this->locale, $message) ?? $message);
     }

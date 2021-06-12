@@ -5,7 +5,7 @@ use minepark\Tasks;
 use minepark\Providers;
 use pocketmine\block\Block;
 
-use pocketmine\level\Position;
+use pocketmine\world\Position;
 use minepark\defaults\TimeConstants;
 use minepark\components\base\Component;
 use minepark\common\player\MineParkPlayer;

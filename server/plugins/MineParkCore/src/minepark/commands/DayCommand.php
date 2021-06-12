@@ -2,7 +2,7 @@
 namespace minepark\commands;
 
 use pocketmine\event\Event;
-use pocketmine\level\Level;
+use pocketmine\world\World;
 
 use minepark\defaults\Permissions;
 use minepark\commands\base\Command;

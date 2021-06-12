@@ -3,7 +3,7 @@ namespace minepark\commands;
 
 use minepark\Providers;
 use pocketmine\event\Event;
-use pocketmine\level\Position;
+use pocketmine\world\Position;
 
 use minepark\defaults\Permissions;
 use minepark\commands\base\Command;

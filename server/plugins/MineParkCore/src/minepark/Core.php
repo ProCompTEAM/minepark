@@ -6,7 +6,7 @@ use minepark\Providers;
 use minepark\common\MDC;
 use minepark\defaults\Files;
 use pocketmine\event\Listener;
-use pocketmine\level\Position;
+use pocketmine\world\Position;
 use jojoe77777\FormAPI\FormAPI;
 use minepark\defaults\Defaults;
 use pocketmine\command\Command;
