@@ -15,6 +15,7 @@ Thumbs.db
 /server/plugins/.idea/*
 /server/crashdumps/*
 
+msg-log.txt
 server.lock
 server.properties
 banned-ips.txt
