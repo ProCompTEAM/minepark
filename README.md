@@ -7,7 +7,7 @@ __Copyright http://vk.com/mcperp__
 ```
 Environment: 
 - PHP 8, net 5.0
-- Latest version of MySQL (MariaDB) > dbo.minepark
+- MySQL (10.5.8-MariaDB) > dbo.minepark
 - Use Postman for MDC requests
 - We write PHP code with any IDE (PHP 8 support required)
 - For MDC development we use C# with Visual Studio 2019
