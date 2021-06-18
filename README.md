@@ -21,3 +21,10 @@ Startup:
 - Run latest MDC build with synchronized tokens and address (file mdc.yml)
 - Start PocketMine-MP server: \server\start.cmd
 ```
+
+```
+Branches:
+- master - main development branch
+- release - release versions of product
+- web - site and web pages development
+```
