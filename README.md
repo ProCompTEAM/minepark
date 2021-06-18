@@ -1,5 +1,6 @@
 ## MinePark Software - Release v1.0
-## Copyright http://vk.com/mcperp
+
+> Copyright http://vk.com/mcperp
 
 
 Environment: 
