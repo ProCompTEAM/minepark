@@ -15,5 +15,5 @@ class Sounds
 
     public const SIREN_SOUND = "minepark.sound5";
 
-    public const STATION = "station.station";
+    public const TRAIN_STATION = "train.station";
 }

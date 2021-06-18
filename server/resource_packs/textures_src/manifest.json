@@ -4,14 +4,14 @@
       "description" : "vk.com/mcperp",
       "name" : "MineParkRU",
       "uuid" : "b68714f1-4ecc-4bb3-ac0b-2656bef84a05",
-      "version" : [ 6, 3, 0 ]
+      "version" : [ 6, 4, 3 ]
    },
    "modules" : [
       {
          "description" : "MineParkRU",
          "type" : "resources",
-         "uuid" : "2e8651b1-8550-433a-85dd-b235518367ac",
-         "version" : [ 6, 3, 0 ]
+         "uuid" : "2e8651b1-8550-433a-85dd-b235518367a7",
+         "version" : [ 6, 4, 3 ]
       }
    ]
 }
