@@ -18,6 +18,6 @@ Environment:
 ```
 Startup:
 - About DB installation: read file \mdc\DataCenter\MDC\Data\Migrations\MigrationsNotes.txt
-- Running latest MDC build with synchronized tokens and address (file mdc.yml)
+- Run latest MDC build with synchronized tokens and address (file mdc.yml)
 - Start PocketMine-MP server: \server\start.cmd
 ```
