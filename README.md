@@ -24,7 +24,7 @@ Startup:
 
 ```
 Branches:
-- master - main development branch
-- release - release versions of product
-- web - site and web pages development
+- **master** => main development branch
+- **release** => release versions of product
+- **web** => site and web pages development
 ```
