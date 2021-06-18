@@ -3,9 +3,7 @@
 __Copyright http://vk.com/mcperp__
 
 
-
-```
-Environment:
+##Environment:
 - Minecraft BE Client support 1.17
 - PocketMine-MP API 3
 - PHP 8.x, net 5.0
@@ -13,18 +11,16 @@ Environment:
 - Use Postman for MDC requests
 - We write PHP code with any IDE (PHP 8 support required)
 - For MDC development we use C# with Visual Studio 2019
-```
 
-```
-Startup:
+##Startup:
 - About DB installation: read file \mdc\DataCenter\MDC\Data\Migrations\MigrationsNotes.txt
 - Run latest MDC build with synchronized tokens and address (file mdc.yml)
 - Start PocketMine-MP server: \server\start.cmd
-```
 
-```
-Branches:
-- **master** => main development branch
-- **release** => release versions of product
-- **web** => site and web pages development
-```
+##Branches:
+- master => main development branch
+- **release => release versions of product
+- web => site and web pages development
+
+##Links
+- GitLab Issues: https://gitlab.com/mcperp/public/-/issues
