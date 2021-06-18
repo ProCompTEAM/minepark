@@ -4,10 +4,10 @@ __Copyright http://vk.com/mcperp__
 ____
 
 ## Environment & Tools:
-- **Minecraft BE Client** support **1.17**
-- **PocketMine-MP API 3**
-- **PHP** 8.x, **.NET** 5.0
-- **MySQL (10.5.8-MariaDB)** > dbo.minepark
+- Minecraft BE Client support 1.17
+- PocketMine-MP API 3**
+- PHP 8.x, .NET 5.0
+- MySQL (10.5.8-MariaDB) > dbo.minepark
 - Use Postman for MDC requests
 - We write PHP code with any IDE (PHP 8 support required)
 - For MDC development we use C# with Visual Studio 2019
@@ -24,3 +24,4 @@ ____
 
 ## Links
 - GitLab Issues: https://gitlab.com/mcperp/public/-/issues
+- Documentation: https://gitlab.com/mcperp/public/-/wikis/
