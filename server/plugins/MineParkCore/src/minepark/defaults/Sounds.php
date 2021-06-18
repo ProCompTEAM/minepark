@@ -14,4 +14,6 @@ class Sounds
     public const PASSPORT_OPEN = "minepark.sound4";
 
     public const SIREN_SOUND = "minepark.sound5";
+
+    public const TRAIN_STATION = "train.station";
 }
