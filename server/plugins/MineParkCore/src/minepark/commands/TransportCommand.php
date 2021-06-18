@@ -71,7 +71,7 @@ class TransportCommand extends Command
         } elseif($subCommand == "station") {
             //TODO: Add check: is @driver in @vehicle only
 
-            if(!isset($args[1])) {
+            if(!self::argumentsMin(2, $args)) {
                 $player->sendMessage("Неправильное использование команды. /t station <порядковый номер>");
 
                 return;

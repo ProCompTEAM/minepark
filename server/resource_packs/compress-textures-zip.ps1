@@ -1,3 +1,4 @@
 rm textures.zip
 
-Compress-Archive -Path .\textures_src\* -DestinationPath .\textures.zip –CompressionLevel Fastest
+Add-Type -Assembly "System.IO.Compression.FileSystem" ;
+[System.IO.Compression.ZipFile]::CreateFromDirectory("textures_src", "textures.zip") ;
