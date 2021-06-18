@@ -7,6 +7,7 @@ __Copyright http://vk.com/mcperp__
 ```
 Environment:
 - Minecraft BE Client support 1.17
+- PocketMine-MP API 3
 - PHP 8.x, net 5.0
 - MySQL (10.5.8-MariaDB) > dbo.minepark
 - Use Postman for MDC requests
