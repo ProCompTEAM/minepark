@@ -124,7 +124,7 @@ class Commands
             new BankCommand,
             new DayCommand,
             new NightCommand,
-            #new TransportCommand,
+            new TransportCommand,
             new SwitchCommand,
             new FloatingTextsCommand,
             new ATMCommand
