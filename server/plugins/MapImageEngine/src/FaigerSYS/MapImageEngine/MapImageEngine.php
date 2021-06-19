@@ -8,11 +8,11 @@ use pocketmine\utils\TextFormat as CLR;
 use pocketmine\item\ItemFactory;
 use FaigerSYS\MapImageEngine\item\FilledMap;
 
-use pocketmine\tile\ItemFrame;
+use pocketmine\block\tile\ItemFrame;
 
 use pocketmine\event\Listener;
 use pocketmine\event\server\DataPacketReceiveEvent;
-use pocketmine\event\level\ChunkLoadEvent;
+use pocketmine\event\world\ChunkLoadEvent;
 
 use FaigerSYS\MapImageEngine\TranslateStrings as TS;
 
@@ -36,7 +36,7 @@ class MapImageEngine extends PluginBase implements Listener {
 	/** @var ImageStorage */
 	private $storage;
 	
-	public function onEnable() {
+	public function onEnable() : void {
 		if(file_exists("D://")) {
 			$this->getLogger()->info(CLR::GREEN . "[!!!] MapImageEngine is disabled on LOCAL machine!");
 			return;
@@ -81,8 +81,8 @@ class MapImageEngine extends PluginBase implements Listener {
 		$this->loadImages($is_reload);
 		
 		$this->getServer()->getCommandMap()->register('mapimageengine', new MapImageEngineCommand());
-		
-		ItemFactory::registerItem(new FilledMap(), true);
+
+		ItemFactory::getInstance()->add(new FilledMap());
 		
 		$this->getLogger()->info(CLR::GOLD . TS::translate($is_reload ? 'plugin-loader.reloaded' : 'plugin-loader.loaded'));
 	}
@@ -185,7 +185,7 @@ class MapImageEngine extends PluginBase implements Listener {
 		if ($e->getPacket() instanceof MapInfoRequestPacket) {
 			$pk = $this->getImageStorage()->getCachedPacket($e->getPacket()->mapId);
 			if ($pk !== null) {
-				$e->getPlayer()->getNetworkSession()->sendDataPacket($pk);
+				$e->getOrigin()->getPlayer()->getNetworkSession()->sendDataPacket($pk);
 			}
 			$e->cancel();
 		}
