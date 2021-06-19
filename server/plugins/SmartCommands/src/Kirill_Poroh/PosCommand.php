@@ -23,9 +23,9 @@ class PosCommand
                 $player->sendMessage
                 (
                     "§a☸ Ваша позиция: §3" . 
-                    floor($player->getX()) . " " .
-                    floor($player->getY()) . " " .
-                    floor($player->getZ())
+                    floor($player->getPosition()->getX()) . " " .
+                    floor($player->getPosition()->getY()) . " " .
+                    floor($player->getPosition()->getZ())
                 );
                 
                 return true;

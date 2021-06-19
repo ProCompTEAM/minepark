@@ -3,9 +3,9 @@ declare(strict_types = 1);
 
 namespace Kirill_Poroh;
 
+use pocketmine\entity\effect\EffectInstance;
+use pocketmine\entity\effect\VanillaEffects;
 use pocketmine\player\Player;
-use pocketmine\entity\Effect;
-use pocketmine\entity\EffectInstance;
 
 class SeeCommand
 {	
@@ -22,8 +22,12 @@ class SeeCommand
         {
             if($player->hasPermission("sc.command.see")) 
             {
-                if($player->getEffect(16) != null) $player->removeEffect(16);
-                else $player->addEffect(new EffectInstance(Effect::getEffect(16), 20 * 9999, 3));
+                $effect = VanillaEffects::fromString("night_vision");
+                $effectInstance = new EffectInstance($effect, 20 * 9999, 3, false);
+                if($player->getEffects()->has($effect))
+                    $player->getEffects()->remove($effect);
+                else
+                    $player->getEffects()->add($effectInstance);
             }
             else return false;
         }

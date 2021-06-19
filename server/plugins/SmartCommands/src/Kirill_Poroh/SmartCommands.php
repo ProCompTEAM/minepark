@@ -19,7 +19,7 @@ class SmartCommands extends PluginBase implements Listener
 {	
     private $command;
 
-    public function onEnable()
+    public function onEnable() : void
     {
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
         
@@ -111,7 +111,7 @@ class SmartCommands extends PluginBase implements Listener
         if($e->getPlayer()->muted) {
             $e->getPlayer()->sendMessage("§6Ваш чат заблокирован администрацией ;(");
             
-            $e->setCancelled(true);
+            $e->cancel();
         }
     }
     

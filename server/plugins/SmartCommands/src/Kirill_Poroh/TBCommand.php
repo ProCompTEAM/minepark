@@ -57,7 +57,7 @@ class TBCommand
                     
                     if(is_numeric($per) and $per > 0)
                     {
-                        if($p !== null) $player->close("", "§cБан выдан от " . $player->getName());
+                        if($p !== null) $player->kick("§cБан выдан от " . $player->getName(), "§cБан выдан от " . $player->getName());
                         
                         $this->config->set(strtolower($name), $this->format($per));
                         $this->config->save();
@@ -95,7 +95,7 @@ class TBCommand
                 
                 $this->config->save();
             }
-            else $player->close("", "§3Вы заблокированы на этом сервере. Установленный период: $per минут.");
+            else $player->kick("§3Вы заблокированы на этом сервере. Установленный период: $per минут.", "§3Вы заблокированы на этом сервере. Установленный период: $per минут.");
         }
     }
 }
