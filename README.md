@@ -22,6 +22,10 @@ ____
 - **release** => release versions of product
 - **web** => site and web pages development
 
-## Links
+## Links:
 - GitLab Issues: https://gitlab.com/mcperp/public/-/issues
-- Documentation: https://gitlab.com/mcperp/public/-/wikis/
+- Project Wiki: https://gitlab.com/mcperp/public/-/wikis/
+- PocketMine: https://github.com/pmmp/PocketMine-MP/
+- MBE Docs: http://bedrock.dev/
+- PocketMine-MP API: http://apidoc.pmmp.io/
+- Minecraft Wiki-VG: https://wiki.vg/
