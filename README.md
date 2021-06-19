@@ -22,7 +22,7 @@ ____
 - **release** => release versions of product
 - **web** => site and web pages development
 
-## .Net Specifications:
+## .NET Specifications:
 - UpperCamelCase: functions, fields, properties, classes, interface
 - lowerCamelCase: variables
 

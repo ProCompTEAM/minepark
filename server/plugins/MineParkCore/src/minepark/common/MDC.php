@@ -4,6 +4,8 @@ namespace minepark\common;
 use minepark\Core;
 use minepark\Providers;
 use pocketmine\utils\Config;
+use minepark\defaults\ProtocolConstants;
+use pocketmine\Server;
 
 class MDC
 {
@@ -31,6 +33,7 @@ class MDC
     public function initializeAll() 
     {
         $this->initializeConfig();
+        $this->checkProtocolVersion();
         $this->sendUnitId();
     }
 
@@ -69,6 +72,22 @@ class MDC
         $this->address = $config->get("Address");
         $this->token = $config->get("AccessToken");
         $this->unitId = $config->get("UnitId");
+    }
+
+    private function checkProtocolVersion()
+    {
+        $expectedProtocolVersion = Providers::getSettingsDataProvider()->getProtocolVersion();
+        $actualProtocolVersion = ProtocolConstants::MDC_PROTOCOL_VERSION;
+
+        if($expectedProtocolVersion !== $actualProtocolVersion) {
+            $server = Server::getInstance();
+
+            $server->getLogger()->emergency("Invalid MDC Protocol Version!");
+            $server->getLogger()->emergency("MDC expected version = $expectedProtocolVersion");
+            $server->getLogger()->emergency("MineParkCore actual version = $actualProtocolVersion");
+
+			$server->forceShutdown();
+        }
     }
 
     private function sendUnitId()
