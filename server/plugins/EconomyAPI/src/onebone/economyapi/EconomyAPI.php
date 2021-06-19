@@ -10,7 +10,7 @@ class EconomyAPI extends PluginBase
 {
     public static $_instance;
 
-    public function onEnable()
+    public function onEnable() : void
     {
         self::$_instance = $this;
     }
