@@ -5,6 +5,7 @@ use minepark\Events;
 use minepark\Providers;
 use minepark\Components;
 use pocketmine\item\Item;
+use pocketmine\item\ItemIds;
 use pocketmine\utils\Config;
 use pocketmine\entity\Effect;
 use pocketmine\entity\Entity;
@@ -74,11 +75,13 @@ class EntitySettings extends Component
         $damager = MineParkPlayer::cast($event->getDamager());
         $player = MineParkPlayer::cast($event->getEntity());
 
-        if ($damager->getProfile()->organisation === Organisations::SECURITY_WORK and $damager->getInventory()->getItemInHand()->getId() === Item::STICK) {
+        if ($damager->getProfile()->organisation === Organisations::SECURITY_WORK and $damager->getInventory()->getItemInHand()->getId() === ItemIds::STICK) {
             $this->processStunAction($player, $damager);
         }
-        
-        $event->setCancelled($this->canPlayerHurt($player, $damager));
+
+        if(!$this->canPlayerHurt($player, $damager)) {
+            $event->cancel();
+        }
     }
 
     private function checkForPlayerKilling(int $finalDamage, MineParkPlayer $victim, ?Entity $damager)
@@ -135,7 +138,7 @@ class EntitySettings extends Component
     {
         if ($damager->getStatesMap()->damageDisabled) {
             $damager->sendMessage("§6PvP режим недоступен!");
-            return true;
+            return false;
         }
         
         foreach($this->config->getAll() as $name) {
@@ -146,19 +149,19 @@ class EntitySettings extends Component
             $y2 = $this->config->getNested("$name.pos2.y");
             $z2 = $this->config->getNested("$name.pos2.z");
 
-            $x = floor($player->getX());
-            $y = floor($player->getY());
-            $z = floor($player->getZ());
+            $x = floor($player->getLocation()->getX());
+            $y = floor($player->getLocation()->getY());
+            $z = floor($player->getLocation()->getZ());
 
             if(MathUtility::interval($x ,$x1, $x2) 
                 and MathUtility::interval($y, $y1, $y2) 
                     and MathUtility::interval($z, $z1 , $z2)) {
                 $damager->sendMessage("§aВы находитесь в зеленой зоне! Здесь запрещено драться!");
-                return true;
+                return false;
             }
         }
 
-        return false;
+        return true;
     }
 
     private function getRandomDeathReason() : string
