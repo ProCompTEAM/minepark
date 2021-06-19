@@ -171,7 +171,7 @@ class Control extends PluginBase implements Listener
         if($e->getBlock()->getId() == 42 and is_array($list)) { 
             foreach($list as $i) { 
                 $x = $i->getX(); $y = $i->getY()-1; $z = $i->getZ(); 
-                $wname = $i->getWorld()->getName(); $form2 = "$x:$y:$z:$wname";
+                $wname = $i->getWorld()->getDisplayName(); $form2 = "$x:$y:$z:$wname";
                 if($form1 == $form2) { 
                     $this->run->start($i, "down"); 
                     $p->sendMessage("LiftsDown"); 
@@ -190,7 +190,7 @@ class Control extends PluginBase implements Listener
 
             foreach($list as $i) { 
                 if($i->getX() == $mpos->getX() and $i->getY() == $mpos->getY() and $i->getZ() == $mpos->getZ() 
-                    and $i->getWorld()->getName() == $mpos->getWorld()->getDisplayName())
+                    and $i->getWorld()->getDisplayName() == $mpos->getWorld()->getDisplayName())
                 { 
                     $this->run->start($mpos, "up"); $p->sendMessage("LiftsUp"); 
                 } 
