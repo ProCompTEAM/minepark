@@ -86,7 +86,7 @@ class MDC
             $server->getLogger()->emergency("MDC expected version = $expectedProtocolVersion");
             $server->getLogger()->emergency("MineParkCore actual version = $actualProtocolVersion");
 
-			$server->forceShutdown();
+            $server->forceShutdown();
         }
     }
 
