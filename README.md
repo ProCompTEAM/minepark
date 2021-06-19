@@ -5,7 +5,7 @@ ____
 
 ## Environment & Tools:
 - Minecraft BE Client support 1.17
-- PocketMine-MP API 3**
+- PocketMine-MP API 3
 - PHP 8.x, .NET 5.0
 - MySQL (10.5.8-MariaDB) > dbo.minepark
 - Use Postman for MDC requests
@@ -22,6 +22,15 @@ ____
 - **release** => release versions of product
 - **web** => site and web pages development
 
+## .Net Specifications:
+- UpperCamelCase: functions, fields, properties, classes, interface
+- lowerCamelCase: variables
+
+## PHP Specifications:
+- UpperCamelCase: classes
+- lowerCamelCase: functions, fields, variables
+- UPPERCASE: constants
+
 ## Links:
 - GitLab Issues: https://gitlab.com/mcperp/public/-/issues
 - Project Wiki: https://gitlab.com/mcperp/public/-/wikis/
@@ -29,12 +38,3 @@ ____
 - PM Api Documentation: http://apidoc.pmmp.io/
 - MBE Docs: http://bedrock.dev/
 - Minecraft Wiki-VG: https://wiki.vg/
-
-## .Net Specifications:
-* UpperCamelCase: functions, fields, properties, classes, interface
-* lowerCamelCase: variables
-
-## PHP Specifications:
-* UpperCamelCase: classes
-* lowerCamelCase: functions, fields, variables
-* UPPERCASE: constants
