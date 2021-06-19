@@ -106,7 +106,7 @@ class PlayerSettings extends Component
         $player = $event->getPlayer();
 
         if($this->filterItemsAndBlocks($player)) {
-            $event->setCancelled();
+            $event->cancel();
         }
 
         if (!$this->isCanActivate($player)) {

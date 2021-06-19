@@ -85,7 +85,7 @@ class Vehicles extends Component
                 return;
             }
 
-            $event->setCancelled();
+            $event->cancel();
             $this->handleVehicleMove($event);
         } else if ($event->getPacket() instanceof InteractPacket) {
             if ($event->getPacket()->action !== InteractPacket::ACTION_LEAVE_VEHICLE) {
@@ -95,7 +95,7 @@ class Vehicles extends Component
             $vehicle = $event->getPlayer()->getWorld()->getEntity($event->getPacket()->target);
             if ($vehicle instanceof BaseCar) {
                 $vehicle->tryToRemovePlayer($event->getPlayer());
-                $event->setCancelled();
+                $event->cancel();
             }
         }
     }

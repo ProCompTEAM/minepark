@@ -267,7 +267,7 @@ class Property
         $block = $event->getBlock();
         
         if($block instanceof BaseSign and $event->getPlayer()->getProfile()->realtor) {
-            $event->setCancelled(false);
+            $event->uncancel();
             return;
         }
     
@@ -275,7 +275,7 @@ class Property
         $list = $player->property;
         $c = $this->getConfig($player->getPosition());
         
-        if($c === null) $event->setCancelled();
+        if($c === null) $event->cancel();
         else
         {
             foreach($list as $name)
@@ -292,12 +292,12 @@ class Property
                 $z = floor($block->getZ());
                 
                 if($this->interval($x,$x1,$x2) and $this->interval($y,$y1,$y2) and $this->interval($z,$z1,$z2)) {
-                        $event->setCancelled(false);
+                        $event->uncancel();
                         return;
                 }
             }
 
-            $event->setCancelled();
+            $event->cancel();
         }
     }
     

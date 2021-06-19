@@ -21,6 +21,6 @@ class WorldSettings extends Component
 
     public function applyBlockBurnSettings(BlockBurnEvent $event)
     {
-        $event->setCancelled();
+        $event->cancel();
     }
 }

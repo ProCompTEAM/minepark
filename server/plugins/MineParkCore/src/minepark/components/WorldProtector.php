@@ -40,12 +40,12 @@ class WorldProtector extends Component
     public function applyBlockUpdateSettings(BlockBreakEvent | BlockPlaceEvent $event)
     {
         if($event->getPlayer()->canBuild()) {
-            $event->setCancelled(false);
+            $event->uncancel();
             return;
         }
 
         if($this->isInRange($event->getBlock())) {
-            $event->setCancelled();
+            $event->cancel();
         }
     }
 

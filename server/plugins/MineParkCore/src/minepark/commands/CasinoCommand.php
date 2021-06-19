@@ -53,7 +53,7 @@ class CasinoCommand extends Command
             $player->sendMessage("CommandCasinoNoMoney");  
         } 
 
-        $event->setCancelled();
+        $event->cancel();
     }
 
     private function getCasinoPoint(Position $position) : ?string

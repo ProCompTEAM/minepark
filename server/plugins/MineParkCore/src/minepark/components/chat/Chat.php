@@ -41,7 +41,7 @@ class Chat extends Component
 
     public function executeInputData(PlayerChatEvent $event)
     {
-        $event->setCancelled();
+        $event->cancel();
 
         $player = MineParkPlayer::cast($event->getPlayer());
 

@@ -216,7 +216,7 @@ class MapImageEngineCommand extends Command implements PluginIdentifiableCommand
 				}
 			}
 			
-			$e->setCancelled(true);
+			$e->cancel();
 		}
 	}
 	

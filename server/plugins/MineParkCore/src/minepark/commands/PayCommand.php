@@ -75,6 +75,6 @@ class PayCommand extends Command
         
         $this->chat->sendLocalMessage($player, "{CommandPayPut}", "§d", self::DISTANCE);
         
-        $event->setCancelled();
+        $event->cancel();
     }
 }
