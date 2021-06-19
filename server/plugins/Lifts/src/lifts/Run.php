@@ -1,6 +1,8 @@
 <?php
 namespace lifts;
 
+use pocketmine\block\BlockFactory;
+use pocketmine\block\BlockLegacyIds;
 use pocketmine\world\Position;
 use pocketmine\math\Vector3;
 use pocketmine\block\Block;
@@ -22,10 +24,10 @@ class Run {
         $y = floor($pos->getY());
         $z = floor($pos->getZ());
 
-        $wname = $pos->getWorld()->getName();
+        $wname = $pos->getWorld()->getDisplayName();
         file_put_contents($file, "$x $y $z $wname");
         $this->loadAll();
-        $this->cs->move($pos, Block::get(Block::IRON_BLOCK));
+        $this->cs->move($pos, BlockFactory::getInstance()->get(BlockLegacyIds::IRON_BLOCK));
     }
     
     public function remove($id) 
@@ -74,7 +76,7 @@ class Run {
                 if($block->getName() != "Air") break;
             } 
             
-            $endpos = new Position($block->getX(), $block->getY(), $block->getZ(), $pos->getWorld());
+            $endpos = new Position($block->getPos()->getX(), $block->getPos()->getY(), $block->getPos()->getZ(), $pos->getWorld());
 
             array_push($this->cs->lifts, array($pos, $endpos, 0, \false, 1));
             
@@ -86,7 +88,7 @@ class Run {
                 if($block->getName() != "Air") break;
             } 
 
-            $endpos = new Position($block->getX(), $block->getY(), $block->getZ(), $pos->getWorld());
+            $endpos = new Position($block->getPos()->getX(), $block->getPos()->getX(), $block->getPos()->getX(), $pos->getWorld());
             array_push($this->cs->lifts, array($pos, $endpos, 0, \false, 2));
             $this->cs->work->reload();
         }
