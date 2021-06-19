@@ -22,7 +22,7 @@ class Shoot
     {
         $nbt = $this->generateNbt($player);
 
-        $bullet = new BulletEntity($player->getWorld(), $nbt, $player );
+        $bullet = new BulletEntity($player->getLocation(), $nbt, $player );
         $bullet->setAmmoDamage($damage);
 
         $bullet->setMotion ($bullet->getMotion()->multiply(5.0));

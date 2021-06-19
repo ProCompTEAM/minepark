@@ -57,7 +57,7 @@ class GunListener implements Listener
                 continue;
             }
 
-            if($player->distance($plr) < 10) {
+            if($player->getLocation()->distance($plr) < 10) {
                 $plr->sendSound($gunData['sound']);
             }
         }
