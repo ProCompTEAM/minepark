@@ -30,7 +30,7 @@ class GovernmentRPG extends PluginBase implements Listener
 
     private $current_law;
     
-    public function onEnable()
+    public function onEnable() : void
     {
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
         
@@ -47,7 +47,7 @@ class GovernmentRPG extends PluginBase implements Listener
         $this->current_law["accepts"] = 0;
     }
     
-    public function onDisable()
+    public function onDisable() : void
     {
         
     }
@@ -70,7 +70,12 @@ class GovernmentRPG extends PluginBase implements Listener
             
             if($sc == "join")
             {
-                if($sender->isOp() or $sender->hasPermission("mcrpg.gov.creator"))
+                if(!$sender instanceof Player)
+                {
+                    $sender->sendMessage("Команда недоступна из консоли");
+                    return false;
+                }
+                if($this->getServer()->isOp($sender->getName()) or $sender->hasPermission("mcrpg.gov.creator"))
                 {
                     $players = $this->getPlayers($sender->getPosition(), 8);
                     
@@ -107,6 +112,11 @@ class GovernmentRPG extends PluginBase implements Listener
             // // // // // PART I // // // // //
             elseif($sc == "setlaw")
             {
+                if(!$sender instanceof Player)
+                {
+                    $sender->sendMessage("Команда недоступна из консоли");
+                    return false;
+                }
                 if($this->isJoined($sender))
                 {
                     $players = $this->getPlayers($sender->getPosition());
@@ -149,6 +159,11 @@ class GovernmentRPG extends PluginBase implements Listener
             
             elseif($sc == "deny")
             {
+                if(!$sender instanceof Player)
+                {
+                    $sender->sendMessage("Команда недоступна из консоли");
+                    return false;
+                }
                 if($this->isJoined($sender))
                 {
                     if($this->current_law["text"] != null)
@@ -165,6 +180,11 @@ class GovernmentRPG extends PluginBase implements Listener
             
             elseif($sc == "accept")
             {
+                if(!$sender instanceof Player)
+                {
+                    $sender->sendMessage("Команда недоступна из консоли");
+                    return false;
+                }
                 if($this->isJoined($sender))
                 {
                     if($this->current_law["text"] != null)
@@ -239,7 +259,7 @@ class GovernmentRPG extends PluginBase implements Listener
         
         foreach($this->getServer()->getOnlinePlayers() as $player)
         {
-            if($player->distance($pos) <= $rad and $player->getPosition() != $pos) array_push($players, $player);
+            if($player->getLocation()->distance($pos) <= $rad and $player->getPosition() != $pos) array_push($players, $player);
         }
         
         return $players;
