@@ -44,7 +44,7 @@ class WorldProtector extends Component
             return;
         }
 
-        if($this->isInRange($event->getBlock())) {
+        if($this->isInRange($event->getBlock()->getPos())) {
             $event->cancel();
         }
     }
@@ -52,7 +52,7 @@ class WorldProtector extends Component
     public function isInRange(Position $position) : bool
     {
         return (
-            $position->getWorld()->getName() == $this->getWorldName() and
+            $position->getWorld()->getDisplayName() == $this->getWorldName() and
             $position->getX() >= $this->getMinimumX() and
             $position->getZ() >= $this->getMinimumZ() and
             $position->getX() <= $this->getMaximumX() and
@@ -63,7 +63,7 @@ class WorldProtector extends Component
     private function loadConfiguration()
     {
         $file = $this->getCore()->getTargetDirectory() . "world-protector.yml";
-        $defaultLevelName = $this->getServer()->getDefaultLevel()->getName();
+        $defaultLevelName = $this->getServer()->getWorldManager()->getDefaultWorld()->getDisplayName();
 
         $config = new Config($file, Config::YAML, [
             "Level" => $defaultLevelName,
