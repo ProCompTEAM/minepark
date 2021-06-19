@@ -8,7 +8,6 @@ use pocketmine\network\mcpe\protocol\PlaySoundPacket;
 use pocketmine\player\Player;
 use pocketmine\plugin\Plugin;
 use pocketmine\scheduler\Task;
-use pocketmine\utils\TextFormat;
 use xenialdan\libnbs\Layer;
 use xenialdan\libnbs\NBSFile;
 use xenialdan\libnbs\Song;
@@ -43,11 +42,9 @@ class SongPlayerTask extends Task
     /**
      * Actions to execute when run
      *
-     * @param int $currentTick
-     *
      * @return void
      */
-    public function onRun(int $currentTick)
+    public function onRun() : void
     {
         if (!$this->playing) {
             return;
@@ -88,7 +85,7 @@ class SongPlayerTask extends Task
             $pk->soundName = $sound;
             $pk->pitch = $pitch;
             $pk->volume = $volume;
-            $vector = $player->asVector3();
+            $vector = $player->getLocation()->asVector3();
             /*if ($layer->stereo !== 100) {//Not centered, modify position. TODO fix
                 $yaw = ($player->yaw - 90) % 360;
                 $add = (new Vector2(-cos(deg2rad($yaw) - M_PI_2), -sin(deg2rad($yaw) - M_PI_2)))->normalize();

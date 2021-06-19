@@ -5,7 +5,6 @@ namespace xenialdan\PocketRadio;
 use pocketmine\player\Player;
 use pocketmine\plugin\PluginBase;
 use pocketmine\scheduler\AsyncTask;
-use pocketmine\Server;
 use pocketmine\utils\Config;
 use xenialdan\libnbs\NBSFile;
 use xenialdan\libnbs\Song;
@@ -37,7 +36,7 @@ class Loader extends PluginBase
         return self::$instance;
     }
 
-    public function onLoad()
+    public function onLoad() : void
     {
         self::$instance = $this;
         $songPath = $this->getDataFolder() . "songs";
@@ -57,7 +56,7 @@ class Loader extends PluginBase
              *
              * @return void
              */
-            public function onRun()
+            public function onRun() : void
             {
                 $list = [];
                 $errors = [];
@@ -75,7 +74,7 @@ class Loader extends PluginBase
                 $this->setResult(compact("list", "errors"));
             }
 
-            public function onCompletion(Server $server)
+            public function onCompletion() : void
             {
                 $result = $this->getResult();
                 /**
@@ -95,13 +94,13 @@ class Loader extends PluginBase
         });
     }
 
-    public function onEnable()
+    public function onEnable() : void
     {
         $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
         $this->getServer()->getCommandMap()->registerAll("pocketradio", [new RadioCommand($this)]);
     }
 
-    public function onDisable()
+    public function onDisable() : void
     {
         self::$songlist = [];
         $all = array_filter(self::$volumeConfig->getAll(), function ($value) {
