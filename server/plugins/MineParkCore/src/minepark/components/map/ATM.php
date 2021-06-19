@@ -189,7 +189,7 @@ class ATM extends Component
 
         $target = strtolower($data[0]);
 
-        if($target === $player->getLowerCaseName()) {
+        if($target === strtolower($player->getName())) {
             $player->sendMessage("§eПереводить деньги самому себе запрещено");
             return;
         }
@@ -201,9 +201,9 @@ class ATM extends Component
 
         $player->sendMessage("§bВы успешно перевели игроку §e" . $target . " $amount §bденег!");
 
-        $targetPlayer = $this->getServer()->getPlayer($target);
+        $targetPlayer = $this->getServer()->getPlayerExact($target);
 
-        if(isset($targetPlayer) and $this->phone->hasStream($targetPlayer->asPosition())) {
+        if(isset($targetPlayer) and $this->phone->hasStream($targetPlayer->getPosition())) {
             $targetPlayer->sendMessage("§e[SMS] §bЧеловек §e" . $player->getName() . " §bперевёл вам §e$amount");
         }
     }
