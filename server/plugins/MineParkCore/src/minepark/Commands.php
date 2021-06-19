@@ -124,7 +124,7 @@ class Commands
             new BankCommand,
             new DayCommand,
             new NightCommand,
-            new TransportCommand,
+            #new TransportCommand,
             new SwitchCommand,
             new FloatingTextsCommand,
             new ATMCommand
@@ -249,7 +249,7 @@ class Commands
             return true;
         }
 
-        if (in_array(Permissions::OPERATOR, $permissions) and $player->isOp()) {
+        if (in_array(Permissions::OPERATOR, $permissions) and $player->isOperator()) {
             return true;
         }
 

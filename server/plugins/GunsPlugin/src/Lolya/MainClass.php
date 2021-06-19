@@ -6,6 +6,7 @@ namespace Lolya;
 use Lolya\creature\BulletEntity;
 use pocketmine\data\bedrock\EntityLegacyIds;
 use pocketmine\entity\EntityFactory;
+use pocketmine\item\ItemFactory;
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\plugin\PluginBase;
 use pocketmine\player\Player;
@@ -205,7 +206,7 @@ class MainClass extends PluginBase implements Listener
             return false;
         }
 
-        $generateditem = Item::get($weaponId, 0);
+        $generateditem = ItemFactory::getInstance()->get($weaponId);
         $weapon['id'] = intval($weaponId);
         $generateditem->setCustomName($weapon['name']);
         return $generateditem;
@@ -213,7 +214,7 @@ class MainClass extends PluginBase implements Listener
     
     public function getAmmo($gunId)
     {
-        $theAmmo = Item::get(262, 0);
+        $theAmmo = ItemFactory::getInstance()->get(262);
         $gunConfig = $this->getGunData()->getGun(intval($gunId));
 
         if (!$gunConfig) {

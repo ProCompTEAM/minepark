@@ -151,7 +151,7 @@ class NoFire extends Component
         }
             
         foreach($this->getServer()->getOnlinePlayers() as $p) {
-            if($p->isOp()) {
+            if($p->isOperator()) {
                 $p->sendMessage("§7[§6!§7] Fire : На территории $fire_created начался пожар!");
             }
         }

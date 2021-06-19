@@ -13,6 +13,7 @@ use minepark\providers\BankingProvider;
 use minepark\common\player\MineParkPlayer;
 use minepark\defaults\ComponentAttributes;
 use pocketmine\event\block\SignChangeEvent;
+use pocketmine\item\ItemFactory;
 
 class FastFood extends Component
 {
@@ -74,20 +75,20 @@ class FastFood extends Component
     {
         $this->chat->sendLocalMessage($player, "§8(§dслышен звук торгового автомата§8)", "§d : ", 18);
         
-        $item = Item::get(0, 0, 1); //Item::get(<id>,<meta>,<count>)
-
+        $item = ItemFactory::getInstance()->get(0); //ItemFactory::getInstance()->get(<id>)->setCount(<count)
         switch($goodId) {
-            case 0: $item = Item::get(260, 0, 5); break;  //Coca Cola 0.75
-            case 1: $item = Item::get(360, 0, 5); break;  //Lipton Yellow Tea
-            case 2: $item = Item::get(364, 0, 2); break;  //Hot Dark Chocolate
-            case 3: $item = Item::get(264, 0, 3); break;  //Hot Russiano Coffee
+            case 0: $item = ItemFactory::getInstance()->get(260)->setCount(5); break;  //Coca Cola 0.75
+            case 1: $item = ItemFactory::getInstance()->get(360)->setCount(5); break;  //Lipton Yellow Tea
+            case 2: $item = ItemFactory::getInstance()->get(364)->setCount(2); break;  //Hot Dark Chocolate
+            case 3: $item = ItemFactory::getInstance()->get(264)->setCount(3); break;  //Hot Russiano Coffee
             case 4:								 		  //Lace - fresh onion
-            case 5: $item = Item::get(393, 0, 3); break;  //CyXaPiKi RUS EXTRO
-            case 6: $item = Item::get(297, 0, 4); break;  //Mini Pizza *Orion*
-            case 7: $item = Item::get(260, 0, 4); break;  //FruitJam *CosmiX*
+            case 5: $item = ItemFactory::getInstance()->get(393)->setCount(3); break;  //CyXaPiKi RUS EXTRO
+            case 6: $item = ItemFactory::getInstance()->get(297)->setCount(4); break;  //Mini Pizza *Orion*
+            case 7: $item = ItemFactory::getInstance()->get(260)->setCount(4); break;  //FruitJam *CosmiX*
             case 8: 							 		  //*Sweet Milky Way*
             case 9: 							 		  //*Big White KitKat*
-            case 10: $item = Item::get(357, 0, 3); break; //*Double TWIX*
+            case 10: $item = ItemFactory::getInstance()->get(357)->setCount(3); break; //*Double TWIX*
+
         }
 
         $label = $this->getAllGoods()[$goodId];
@@ -101,7 +102,7 @@ class FastFood extends Component
         $p = $event->getPlayer();
         $lns = $event->getLines();
 
-        if($lns[0] == "[eat]" and $p->isOp()) {
+        if($lns[0] == "[eat]" and $p->isOperator()) {
             $event->setLine(0, "§eТорговый автомат"); 
             $event->setLine(1, "§f[=1=2=3=4=5=6=]");
             $event->setLine(2, "§f[=BUY==CANCEL=]");

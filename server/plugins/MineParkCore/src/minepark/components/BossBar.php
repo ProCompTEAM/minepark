@@ -40,7 +40,7 @@ class BossBar extends Component
             return false;
         }
 
-        $fakeEntityId = Entity::$entityCount++;
+        $fakeEntityId = Entity::nextRuntimeId();
 
         $this->createBossEntity($player, $fakeEntityId);
 

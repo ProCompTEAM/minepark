@@ -74,7 +74,7 @@ class Farm extends Component
     
     private function handleDrop(MineParkPlayer $player)
     {
-        $player->removeAllEffects();
+        $player->getEffects()->clear();
 
         $this->chat->sendLocalMessage($player, "высыпал из корзины урожай", "§d ", 12);
         $this->bankingProvider->givePlayerMoney($player, 150);

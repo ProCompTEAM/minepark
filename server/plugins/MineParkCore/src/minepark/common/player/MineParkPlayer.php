@@ -2,15 +2,19 @@
 namespace minepark\common\player;
 
 use Exception;
+use pocketmine\entity\Location;
+use pocketmine\nbt\tag\CompoundTag;
+use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\player\Player;
 use minepark\Providers;
 use pocketmine\math\Vector3;
+use pocketmine\player\PlayerInfo;
+use pocketmine\Server;
 use pocketmine\world\Position;
 use minepark\models\dtos\UserDto;
 use minepark\defaults\MapConstants;
 use minepark\models\player\StatesMap;
 use minepark\defaults\PlayerAttributes;
-use pocketmine\network\SourceInterface;
 use minepark\models\player\FloatingText;
 use pocketmine\world\particle\FloatingTextParticle;
 use pocketmine\network\mcpe\protocol\PlaySoundPacket;
@@ -35,9 +39,9 @@ class MineParkPlayer extends Player
         }
     }
 
-    public function __construct(SourceInterface $interface, string $ip, int $port)
+    public function __construct(Server $server, NetworkSession $session, PlayerInfo $playerInfo, bool $authenticated, Location $spawnLocation, ?CompoundTag $namedtag)
     {
-        parent::__construct($interface, $ip, $port);
+        parent::__construct($server, $session, $playerInfo, $authenticated, $spawnLocation, $namedtag);
     }
     
     public function __get($name) //rudiment
@@ -89,7 +93,7 @@ class MineParkPlayer extends Player
 
     public function isAdministrator() : bool
     {
-        return $this->profile->administrator or $this->getServer()->isOp($this);
+        return $this->profile->administrator or $this->isOperator();
     }
 
     public function isVip() : bool
@@ -109,7 +113,11 @@ class MineParkPlayer extends Player
 
     public function canBuild() : bool
     {
-        return $this->isBuilder() or $this->getServer()->isOp($this);
+        return $this->isBuilder() or $this->isOperator();
+    }
+
+    public function isOperator() : bool{
+        return $this->getServer()->isOp($this->getName());
     }
 
     /*
@@ -353,7 +361,7 @@ class MineParkPlayer extends Player
         parent::sendTitle($title, $subtitle, $fadeIn, $stay, $fadeOut);
     }
 
-    public function kick(string $reason = "", bool $isAdmin = true, $quitMessage = null) : bool
+    public function kick(string $reason = "", $quitMessage = null) : bool
     {
         if($reason === "") {
             return parent::kick();
@@ -361,6 +369,6 @@ class MineParkPlayer extends Player
 
         $reason = Providers::getLocalizationProvider()->take($this->locale, $reason) ?? $reason;
 
-        return parent::kick($reason, $isAdmin, $quitMessage);
+        return parent::kick($reason, $quitMessage);
     }
 }

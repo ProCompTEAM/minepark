@@ -66,7 +66,7 @@ class PermissionsSwitch extends Component
         $profile = $player->getProfile();
 
         $form->setTitle("§eНастройка разрешений");
-        $form->addToggle("§eOP", $player->isOp());
+        $form->addToggle("§eOP", $player->isOperator());
         $form->addToggle("§eАдминистратор", $profile->administrator);
         $form->addToggle("§eСтроитель", $profile->builder);
         $form->addToggle("§eРиэлтор", $profile->realtor);

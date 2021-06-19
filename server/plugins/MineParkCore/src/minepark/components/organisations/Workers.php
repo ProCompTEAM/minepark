@@ -69,9 +69,9 @@ class Workers extends Component
         $player = $event->getPlayer();
         $lns = $event->getLines();
 
-        if ($lns[0] == "[workers1]" and $player->isOp()) {
+        if ($lns[0] == "[workers1]" and $player->isOperator()) {
             $this->handleWorker1($event);
-        } elseif ($lns[0] == "[workers2]" and $player->isOp()) {
+        } elseif ($lns[0] == "[workers2]" and $player->isOperator()) {
             $this->handleWorker2($event);
         }
     }
@@ -155,7 +155,7 @@ class Workers extends Component
     
     private function handlePutBox(MineParkPlayer $player)
     {
-        $player->removeAllEffects();
+        $player->getEffects()->clear();
 
         $this->chat->sendLocalMessage($player, "§8(§dЯщик расположился на складе§8)", "§d : ", 12);
         $this->bankingProvider->givePlayerMoney($player, 20 * $player->getStatesMap()->loadWeight);

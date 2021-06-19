@@ -12,6 +12,7 @@ use minepark\Components;
 use minepark\components\chat\Chat;
 use minepark\components\organisations\Organisations;
 use minepark\defaults\MapConstants;
+use pocketmine\item\ItemFactory;
 
 class SellCommand extends OrganisationsCommand
 {
@@ -118,7 +119,7 @@ class SellCommand extends OrganisationsCommand
         $receipt = "§e--==========ЧЕК==========--\n";
 
         foreach($buyer->getStatesMap()->goods as $good) {
-            $item = Item::get($good[0], 0, 1);
+            $item = ItemFactory::getInstance()->get($good[0]);
             $item->setCustomName($good[2]);
             $buyer->getInventory()->addItem($item);
             $receipt .= "§a".$good[2]." §eза §3".$good[1]." руб\n";

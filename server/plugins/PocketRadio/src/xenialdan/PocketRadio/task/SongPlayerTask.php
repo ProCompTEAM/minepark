@@ -29,7 +29,7 @@ class SongPlayerTask extends Task
         $this->owner = $owner;
         $this->song = $song;
         $this->songfilename = $songfilename;
-        Loader::$tasks[] = $this->getTaskId();
+        Loader::$tasks[] = $this->getName();
         $this->playing = true;
         foreach($owner->getServer()->getOnlinePlayers() as $p) {
             $p->sendLocalizedMessage("{RadioSong}" . (empty($this->song->getTitle()) ? basename($songfilename, ".nbs") : $this->song->getTitle()));
