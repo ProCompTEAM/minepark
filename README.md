@@ -25,7 +25,16 @@ ____
 ## Links:
 - GitLab Issues: https://gitlab.com/mcperp/public/-/issues
 - Project Wiki: https://gitlab.com/mcperp/public/-/wikis/
-- PocketMine: https://github.com/pmmp/PocketMine-MP/
+- PM Repository: https://github.com/pmmp/PocketMine-MP/
+- PM Api Documentation: http://apidoc.pmmp.io/
 - MBE Docs: http://bedrock.dev/
-- PocketMine-MP API: http://apidoc.pmmp.io/
 - Minecraft Wiki-VG: https://wiki.vg/
+
+## .Net Specifications:
+* UpperCamelCase: functions, fields, properties, classes, interface
+* lowerCamelCase: variables
+
+## PHP Specifications:
+* UpperCamelCase: classes
+* lowerCamelCase: functions, fields, variables
+* UPPERCASE: constants
