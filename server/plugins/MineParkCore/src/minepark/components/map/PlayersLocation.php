@@ -42,7 +42,7 @@ class PlayersLocation extends Component
                     continue;
                 }
 
-                $vector1 = $plr->asVector3();
+                $vector1 = $plr->getPosition()->asVector3();
                 $vector2 = $this->mapProvider->getPointPosition($pointName)->asVector3();
                 
                 if ($vector1->distance($vector2) < 50) {

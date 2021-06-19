@@ -139,7 +139,7 @@ class BossBar extends Component
         $packet->entityRuntimeId = $fakeEntityId;
         $packet->type = AddActorPacket::LEGACY_ID_MAP_BC[Entity::SLIME];
         $packet->metadata = $this->getHiddenEntityMetadata();
-        $packet->position = $player->asVector3()->add(0, 10, 0);
+        $packet->position = $player->getPosition()->asVector3()->add(0, 10, 0);
 
         $player->getNetworkSession()->sendDataPacket($packet);
 

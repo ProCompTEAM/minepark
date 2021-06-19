@@ -87,11 +87,12 @@ class PermissionsSwitch extends Component
 
         if($toggleOp) {
             $this->removeOperator($player->getName());
+            $this->getServer()->removeOp($player->getName());
         } else {
             $this->addOperator($player->getName());
+            $this->getServer()->addOp($player->getName());
         }
 
-        $player->setOp($toggleOp);
         $player->getProfile()->administrator = $toggleAdmin;
         $player->getProfile()->builder = $toggleBuilder;
         $player->getProfile()->realtor = $toggleRealtor;

@@ -56,14 +56,14 @@ class InvseeCommand
                 
                 $chestBlock = new \pocketmine\block\Chest();
                 
-                $player->getWorld()->setBlock(new Vector3($player->getX(), $player->getY() - 4, $player->getZ()), $chestBlock, true, true);
+                $player->getWorld()->setBlock(new Vector3($player->getLocation()->getX(), $player->getLocation()->getY() - 4, $player->getLocation()->getZ()), $chestBlock, true, true);
                 
                 $nbt = new CompoundTag("", [
                     new CompoundTag("Items", array()),
                     new StringTag("id", Tile::CHEST),
-                    new IntTag("x", (int) floor($player->getX())),
-                    new IntTag("y", (int) floor($player->getY() - 4)),
-                    new IntTag("z", (int) floor($player->getZ()))
+                    new IntTag("x", (int) floor($player->getLocation()->getX())),
+                    new IntTag("y", (int) floor($player->getLocation()->getY() - 4)),
+                    new IntTag("z", (int) floor($player->getLocation()->getZ()))
                 ]);
                     
                 $tile = Tile::createTile("Chest", $player->getWorld(), $nbt);

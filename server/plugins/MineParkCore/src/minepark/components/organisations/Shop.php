@@ -2,7 +2,6 @@
 namespace minepark\components\organisations;
 
 use minepark\Events;
-use pocketmine\item\Item;
 use pocketmine\item\ItemFactory;
 use pocketmine\tile\Sign;
 use pocketmine\utils\Config;

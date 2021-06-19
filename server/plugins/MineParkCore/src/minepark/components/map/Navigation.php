@@ -27,8 +27,8 @@ class Navigation extends Component
     {
         foreach($this->getServer()->getOnlinePlayers() as $player) {
             if($player->getStatesMap()->gps != null) {
-                $x = round($player->getStatesMap()->gps->getX() - $player->getX());
-                $y = round($player->getStatesMap()->gps->getZ() - $player->getZ());
+                $x = round($player->getStatesMap()->gps->getX() - $player->getLocation()->getX());
+                $y = round($player->getStatesMap()->gps->getZ() - $player->getLocation()->getZ());
                 
                 $label = "";
                 
@@ -42,7 +42,7 @@ class Navigation extends Component
                 }
                 
                 //head direction
-                $yaw = $player->getYaw();
+                $yaw = $player->getLocation()->getYaw();
                 
                 if(($yaw <= 45 and $yaw >= 0) or ($yaw >= 315 and $yaw <= 359)) {
                     $x = -$x;
@@ -100,7 +100,7 @@ class Navigation extends Component
                     }
                 }
                 
-                $player->getStatesMap()->bar = "§7(§9Smart§6Navi§7) §8[" . $this->getL($player->getX(), $player->getZ(), $player->getStatesMap()->gps->getX(), $player->getStatesMap()->gps->getZ()) ."m] §a" . $label;
+                $player->getStatesMap()->bar = "§7(§9Smart§6Navi§7) §8[" . $this->getL($player->getLocation()->getX(), $player->getLocation()->getZ(), $player->getStatesMap()->gps->getX(), $player->getStatesMap()->gps->getZ()) ."m] §a" . $label;
             }
         }	
     }

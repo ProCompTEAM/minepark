@@ -3,8 +3,6 @@ namespace minepark\components;
 
 use minepark\Providers;
 use minepark\Components;
-use pocketmine\item\Item;
-use pocketmine\event\Event;
 use minepark\defaults\MapConstants;
 use minepark\providers\MapProvider;
 use minepark\components\chat\Chat;

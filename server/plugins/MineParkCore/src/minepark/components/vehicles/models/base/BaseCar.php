@@ -3,6 +3,8 @@ namespace minepark\components\vehicles\models\base;
 
 use minepark\Providers;
 use pocketmine\block\Block;
+use pocketmine\block\BlockFactory;
+use pocketmine\block\BlockLegacyIds;
 use pocketmine\world\World;
 use pocketmine\math\Vector3;
 use pocketmine\entity\Entity as Vehicle; //TODO: Сделать отдельный класс
@@ -314,7 +316,7 @@ abstract class BaseCar extends Vehicle
         foreach($vectors as $vector) {
             $block = $this->getWorld()->getBlockAt($vector->getX(), $vector->getY(), $vector->getZ(), false, false);
 
-            if ($block->getId() !== Block::AIR) {
+            if ($block->getId() !== BlockFactory::getInstance()->get(BlockLegacyIds::AIR)) {
                 $blocks[] = $block;
             }
         }

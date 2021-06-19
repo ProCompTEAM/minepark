@@ -78,7 +78,7 @@ class Phone extends Component
                 continue;
             }
 
-            if(!$this->hasStream($player->getStatesMap()->phoneCompanion->asPosition())) {
+            if(!$this->hasStream($player->getStatesMap()->phoneCompanion->getPosition())) {
                 $this->breakCallForNoStream($player);
             } elseif(!$this->reduceBalance($player, 20)) {
                 $this->breakCallForNoMoney($player);
@@ -135,7 +135,7 @@ class Phone extends Component
             return;
         }
 
-        if(!$this->hasStream($initializer->asPosition())) {
+        if(!$this->hasStream($initializer->getPosition())) {
             $initializer->sendMessage("PhoneSmsNoNet2");
             return;
         }
@@ -180,7 +180,7 @@ class Phone extends Component
 
     public function sendSms(MineParkPlayer $sender, int $targetNumber, string $text)
     {
-        if(!$this->hasStream($sender->asPosition())) {
+        if(!$this->hasStream($sender->getPosition())) {
             $sender->sendMessage("PhoneSmsError");
             return;
         }
@@ -355,7 +355,7 @@ class Phone extends Component
 
     private function generateEmergencyMessages(MineParkPlayer $player) : array
     {
-        $nearPoints = $this->mapProvider->getNearPoints($player->asPosition(), 15);
+        $nearPoints = $this->mapProvider->getNearPoints($player->getPosition(), 15);
 
         $messages = [];
 

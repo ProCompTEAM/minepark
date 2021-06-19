@@ -89,7 +89,7 @@ class Chat extends Component
         $randomPrefix = "§7" . $this->getRandomUserPrefix();
 
         foreach ($this->getServer()->getOnlinePlayers() as $onlinePlayer) {
-            if ($onlinePlayer->distance($player) <= $radius) {
+            if ($onlinePlayer->getLocation()->distance($player->getLocation()) <= $radius) {
                 $this->sendMessage($onlinePlayer, $message, $player->getLowerCaseName(), $senderFullName, $isFriendRequest, $randomPrefix, $prefix);
             }
         }

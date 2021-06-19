@@ -4,6 +4,8 @@ namespace minepark\components\settings;
 use minepark\Events;
 use minepark\Providers;
 use minepark\Components;
+use pocketmine\entity\effect\EffectInstance;
+use pocketmine\entity\effect\VanillaEffects;
 use pocketmine\item\Item;
 use pocketmine\item\ItemIds;
 use pocketmine\utils\Config;
@@ -13,7 +15,6 @@ use minepark\utils\MathUtility;
 use minepark\defaults\EventList;
 use minepark\components\chat\Chat;
 use minepark\defaults\MapConstants;
-use pocketmine\entity\EffectInstance;
 use minepark\components\base\Component;
 use minepark\defaults\PlayerAttributes;
 use minepark\common\player\MineParkPlayer;
@@ -91,10 +92,17 @@ class EntitySettings extends Component
         }
 
         Providers::getMapProvider()->teleportPoint($victim, MapConstants::POINT_NAME_HOSPITAL);
-
-        $victim->addEffect(new EffectInstance(Effect::getEffect(2), 5000, 1));
-        $victim->addEffect(new EffectInstance(Effect::getEffect(18), 5000, 1));
-        $victim->addEffect(new EffectInstance(Effect::getEffect(19), 5000, 1));
+        $effects = [
+            "slowness",
+            "weakness",
+            "poison"
+        ];
+        $effectManager = $victim->getEffects();
+        foreach($effects as $effectName) {
+            $effect = VanillaEffects::fromString($effectName);
+            $instance = new EffectInstance($effect, 5000, 1, true);
+            $effectManager->add($instance);
+        }
         $victim->setHealth(4);
 
         $victim->sendMessage("§6Вы очнулись после ". $this->getRandomDeathReason() . ".");
@@ -134,6 +142,7 @@ class EntitySettings extends Component
         }
     }
 
+    //TODO: Move it to MDC
     private function canPlayerHurt(MineParkPlayer $player, MineParkPlayer $damager) : bool
     {
         if ($damager->getStatesMap()->damageDisabled) {

@@ -77,7 +77,7 @@ class FloatingTexts extends Component
 
     public function save(string $text, Position $position)
     {
-        $levelName = $position->getWorld()->getName();
+        $levelName = $position->getWorld()->getDisplayName();
 
         $floatingText = $this->getFloatingText($levelName, $position->getX(), $position->getY(), $position->getZ());
 
@@ -99,7 +99,7 @@ class FloatingTexts extends Component
 
     public function remove(Position $position) : bool
     {
-        $levelName = $position->getWorld()->getName();
+        $levelName = $position->getWorld()->getDisplayName();
 
         $floatingText = $this->getFloatingText($levelName, $position->getX(), $position->getY(), $position->getZ());
 
@@ -169,14 +169,14 @@ class FloatingTexts extends Component
             return;
         }
 
-        $this->save($input, $player->asPosition());
+        $this->save($input, $player->getPosition());
 
         $player->sendMessage("§eНадпись успешно создана!");
     }
 
     private function tryToRemove(MineParkPlayer $player)
     {
-        $removedStatus = $this->remove($player->asPosition());
+        $removedStatus = $this->remove($player->getPosition());
 
         if(!$removedStatus) {
             $player->sendMessage("§eУдаление надписи прошло неуспешно.");
@@ -211,7 +211,7 @@ class FloatingTexts extends Component
     {
         $dto = new LocalFloatingTextDto;
         $dto->text = $text;
-        $dto->level = $position->getWorld()->getName();
+        $dto->level = $position->getWorld()->getDisplayName();
         $dto->x = $position->getX();
         $dto->y = $position->getY();
         $dto->z = $position->getZ();

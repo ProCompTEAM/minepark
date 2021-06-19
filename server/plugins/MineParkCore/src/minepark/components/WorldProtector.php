@@ -2,10 +2,8 @@
 namespace minepark\components;
 
 use minepark\Events;
-use minepark\defaults\Files;
 use pocketmine\utils\Config;
 use pocketmine\world\Position;
-use minepark\defaults\Defaults;
 use minepark\defaults\EventList;
 use minepark\components\base\Component;
 use pocketmine\event\block\BlockBreakEvent;
