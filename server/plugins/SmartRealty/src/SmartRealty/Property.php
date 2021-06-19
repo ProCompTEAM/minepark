@@ -6,9 +6,7 @@ use pocketmine\math\Vector3;
 use pocketmine\utils\Config;
 use pocketmine\player\Player;
 
-use pocketmine\tile\Sign;
-use pocketmine\block\SignPost;
-use pocketmine\block\WallSign;
+use pocketmine\block\BaseSign;
 
 class Property
 {
@@ -190,7 +188,7 @@ class Property
         $block = $event->getBlock();
         $player = $event->getPlayer();
         
-        if($block instanceof Sign or $block instanceof SignPost or $block instanceof WallSign)
+        if($block instanceof BaseSign)
         {
             $c = $this->getConfig($player->getPosition());
             if($c === null) {
@@ -203,8 +201,8 @@ class Property
                 $x = $c->getNested("$name.sign.x");
                 $y = $c->getNested("$name.sign.y");
                 $z = $c->getNested("$name.sign.z");
-                if($x == floor($block->getX()) and $y == floor($block->getY()) 
-                    and $z == floor($block->getZ())) 
+                if($x == floor($block->getPos()->getX()) and $y == floor($block->getPos()->getY())
+                    and $z == floor($block->getPos()->getZ()))
                     {
                         $this->checkRented($name);
                         
@@ -268,7 +266,7 @@ class Property
         
         $block = $event->getBlock();
         
-        if(($block instanceof WallSign or $block instanceof SignPost or $block instanceof Sign) and $event->getPlayer()->getProfile()->realtor) {
+        if($block instanceof BaseSign and $event->getPlayer()->getProfile()->realtor) {
             $event->setCancelled(false);
             return;
         }
@@ -402,7 +400,7 @@ class Property
         return null;
     }
     
-    public function getConfig(Vector3 $pos)
+    public function getConfig(Position $pos)
     {
         $a = $this->getArea($pos);
         if($a === null) return $a;
@@ -426,7 +424,7 @@ class Property
                     
                     $this->checkRented($name);
                     
-                    if(count($p->property) > 1 and !$p->isOp()) return;
+                    if(count($p->property) > 1 and !$p->getServer()->isOp($p->getName())) return;
                 }
             }
         }
