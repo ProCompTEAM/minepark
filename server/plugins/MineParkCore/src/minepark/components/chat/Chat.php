@@ -101,7 +101,7 @@ class Chat extends Component
             return $player->sendMessage("ChatRestrictBeginner");
         }
 
-        if (!$this->phone->hasStream($player)) {
+        if (!$this->phone->hasStream($player->getPosition())) {
             return $player->sendMessage("ChatNoStream");
         }
 
@@ -110,7 +110,7 @@ class Chat extends Component
         foreach ($this->getServer()->getOnlinePlayers() as $onlinePlayer) {
             $onlinePlayer = MineParkPlayer::cast($onlinePlayer);
 
-            if ($this->phone->hasStream($onlinePlayer)) {
+            if ($this->phone->hasStream($onlinePlayer->getPosition())) {
                 $onlinePlayer->sendLocalizedMessage($generatedMessage);
             }
         }
