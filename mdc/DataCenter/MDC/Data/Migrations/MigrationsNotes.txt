@@ -27,3 +27,9 @@ Create the first migration:
 And next migration:
 > Add-Migration <name> -Project MDC
 > Update-Database -Project MDC
+
+
+PROTOCOL:
+MDC and the remote target must understand each other;
+To avoid situations where the MDC code is outdated, the Protocol is used.
+For each major update, please update the protocol version in the Common/Protocol.cs file;

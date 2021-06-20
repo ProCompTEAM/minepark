@@ -5,7 +5,6 @@ use minepark\Tasks;
 use minepark\Components;
 use pocketmine\event\Event;
 use minepark\defaults\Sounds;
-use pocketmine\scheduler\Task;
 use minepark\defaults\Permissions;
 use minepark\commands\base\Command;
 use minepark\defaults\TimeConstants;

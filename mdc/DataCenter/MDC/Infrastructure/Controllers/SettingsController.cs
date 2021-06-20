@@ -1,4 +1,5 @@
-﻿using MDC.Common.Network.HttpWeb;
+﻿using MDC.Common;
+using MDC.Common.Network.HttpWeb;
 using MDC.Data.Dtos;
 using MDC.Infrastructure.Controllers.Interfaces;
 using MDC.Infrastructure.Providers;
@@ -27,6 +28,11 @@ namespace MDC.Infrastructure.Controllers
             bankingService = Store.GetService<BankingService>();
 
             tokenService = Store.GetService<TokenService>();
+        }
+
+        public int GetProtocolVersion()
+        {
+            return Protocol.Version;
         }
 
         public async Task UpgradeUnitId(string unitId, RequestContext requestContext)
