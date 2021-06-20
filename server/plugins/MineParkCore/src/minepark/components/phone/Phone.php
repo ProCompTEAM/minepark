@@ -230,7 +230,8 @@ class Phone extends Component
         $message .= "§9☏ Мед. помощь: §e/c 03\n";
         $message .= "§9☏ Сообщения: §e/sms <н.телефона> <текст>\n";
         $message .= "§1> Цены: §aСМС 20р, Звонок 20р минута\n";
-        $message .= "§1> Ваш телефонный номер: §3" . $player->getProfile()->phoneNumber;
+        $message .= "§1> Ваш телефонный номер: §3" . $player->getProfile()->phoneNumber . "\n";
+        $message .= "§1> Ваш баланс: §3" . $this->getBalance($player) . "р";
 
         $player->sendWindowMessage($message, "§9❖======*Смартфон*=======❖");
     }
