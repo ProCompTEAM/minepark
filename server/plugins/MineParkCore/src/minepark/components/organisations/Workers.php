@@ -66,11 +66,11 @@ class Workers extends Component
     public function sign(SignChangeEvent $event)
     {
         $player = $event->getPlayer();
-        $lns = $event->getNewText()->getLines();
+        $lines = $event->getNewText()->getLines();
 
-        if ($lns[0] == "[workers1]" and $player->isOperator()) {
+        if ($lines[0] == "[workers1]" and $player->isOperator()) {
             $this->handleWorker1($event);
-        } elseif ($lns[0] == "[workers2]" and $player->isOperator()) {
+        } elseif ($lines[0] == "[workers2]" and $player->isOperator()) {
             $this->handleWorker2($event);
         }
     }

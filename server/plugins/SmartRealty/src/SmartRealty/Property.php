@@ -231,11 +231,11 @@ class Property
     
     public function sign($event)
     {
-        $lns = $event->getLines();
-        if(($lns[0] == "[property]" or $lns[0] == "[realty]" or $lns[0] == "realt") and $event->getPlayer()->getProfile()->realtor) 
+        $lines = $event->getLines();
+        if(($lines[0] == "[property]" or $lines[0] == "[realty]" or $lines[0] == "realt") and $event->getPlayer()->getProfile()->realtor) 
         {
             $player = $event->getPlayer();
-            $name = $lns[1];
+            $name = $lines[1];
             $c = $this->getConfig($player->getPosition());
             
             if($c->exists($name)) 

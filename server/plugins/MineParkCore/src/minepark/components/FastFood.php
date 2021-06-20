@@ -98,9 +98,9 @@ class FastFood extends Component
     public function sign(SignChangeEvent $event)
     {
         $p = $event->getPlayer();
-        $lns = $event->getNewText()->getLines();
+        $lines = $event->getNewText()->getLines();
 
-        if($lns[0] == "[eat]" and $p->isOperator()) {
+        if($lines[0] == "[eat]" and $p->isOperator()) {
             $event->setLine(0, "§eТорговый автомат"); 
             $event->setLine(1, "§f[=1=2=3=4=5=6=]");
             $event->setLine(2, "§f[=BUY==CANCEL=]");

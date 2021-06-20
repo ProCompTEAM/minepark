@@ -53,29 +53,29 @@ class Shop extends Component
     {
         $player = $event->getPlayer();
 
-        $lns = $event->getNewText()->getLines();
+        $lines = $event->getNewText()->getLines();
 
-        if ($lns[0] == "[shop]" and $player->isOperator()) {
+        if ($lines[0] == "[shop]" and $player->isOperator()) {
             /*
                 ||  [shop]  ||
                 ||    gId   ||
                 ||   price  ||
                 ||CustomName||
             */
-            if(self::areNormalLines($lns)) {
-                $this->handleCreateSign($event, $lns, $player);
+            if(self::areNormalLines($lines)) {
+                $this->handleCreateSign($event, $lines, $player);
                 return;
             }
 
             $player->sendMessage("§cНекорректный формат данных при создании магазина!");
-        } elseif($lns[0] == "[shophelp]" and $player->isOperator()) {
+        } elseif($lines[0] == "[shophelp]" and $player->isOperator()) {
             $this->showSignHelp($event);
         }
     }
     
-    public static function areNormalLines(array $lns) : bool
+    public static function areNormalLines(array $lines) : bool
     {
-        return isset($lns[1]) and isset($lns[2]) and isset($lns[3]) and is_numeric($lns[1]) and is_numeric($lns[2]);
+        return isset($lines[1]) and isset($lines[2]) and isset($lines[3]) and is_numeric($lines[1]) and is_numeric($lines[2]);
     }
 
     public static function priceInvalid(int $price)
@@ -96,17 +96,17 @@ class Shop extends Component
         $event->getPlayer()->sendMessage("§7[§6!§7] §aВы положили §b$label §aза §b$price §aв корзину.");
     }
 
-    private function handleCreateSign(BlockEvent $event, array $lns, MineParkPlayer $player)
+    private function handleCreateSign(BlockEvent $event, array $lines, MineParkPlayer $player)
     {
-        if(self::priceInvalid($lns[2])) {
+        if(self::priceInvalid($lines[2])) {
             $player->sendMessage("§cЦена товара должна быть в интервале от 0 до 20000");
             return;
         }
 
-        $id = $lns[1]; 
-        $price = $lns[2];
+        $id = $lines[1]; 
+        $price = $lines[2];
 
-        $name = $this->handleItemName(1, $lns[3]);
+        $name = $this->handleItemName(1, $lines[3]);
         
         $this->createSign($event, $name, $price, $id, $player);
     }
