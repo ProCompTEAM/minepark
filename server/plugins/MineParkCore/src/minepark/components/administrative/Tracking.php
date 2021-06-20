@@ -105,7 +105,7 @@ class Tracking extends Component
         ], $player);
     }
 
-    private function broadcastAdmins(array $messages=[], MineParkPlayer $sender = null, $distance = 7)
+    private function broadcastAdmins(array $messages=[], MineParkPlayer $sender = null, int $distance = 7)
     {
         $admins = $this->getCore()->getAdministration();
 
