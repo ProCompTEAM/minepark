@@ -45,6 +45,6 @@ class SwitchCommand extends Command
 
     private function canSwitch(MineParkPlayer $player)
     {
-        return $player->isOp() or $this->permissionsSwitch->isOperator($player->getName());
+        return $player->isOperator() or $this->permissionsSwitch->isOperator($player->getName());
     }
 }

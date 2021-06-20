@@ -3,7 +3,6 @@ namespace minepark\commands\organisations;
 
 use minepark\commands\base\OrganisationsCommand;
 use minepark\Providers;
-use pocketmine\item\Item;
 
 use pocketmine\event\Event;
 use minepark\defaults\Permissions;
@@ -67,17 +66,17 @@ class SellCommand extends OrganisationsCommand
 
     public static function isSeller(MineParkPlayer $player) : bool
     {
-        return $player->getProfile()->organisation === Organisations::SELLER_WORK or $player->isOp();
+        return $player->getProfile()->organisation === Organisations::SELLER_WORK or $player->isOperator();
     }
 
     private function isShopClose(MineParkPlayer $player)
     {
-        return Providers::getMapProvider()->hasNearPointWithType($player, self::MARKETPLACE_DISTANCE, MapConstants::POINT_GROUP_MARKETPLACE);
+        return Providers::getMapProvider()->hasNearPointWithType($player->getPosition(), self::MARKETPLACE_DISTANCE, MapConstants::POINT_GROUP_MARKETPLACE);
     }
 
     private function getBuyersNear(MineParkPlayer $player)
     {
-        $players = $this->getCore()->getRegionPlayers($player, 7);
+        $players = $this->getCore()->getRegionPlayers($player->getPosition(), 7);
         $buyers = [];
 
         foreach($players as $currentPlayer) {

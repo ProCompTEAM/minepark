@@ -44,7 +44,7 @@ class InvseeCommand
                     return true;
                 }
                 
-                $p = $this->main->getServer()->getPlayer($args[0]);
+                $p = $this->main->getServer()->getPlayerExact($args[0]);
                 $name = ($p == null ? $args[0] : $p->getName());
                 
                 if($p === null) 
@@ -89,7 +89,7 @@ class InvseeCommand
         $sender = $transaction->getPlayer();
         $target = $transaction->getInventories()[1]->invsee_player;
         
-        if($this->main->getServer()->getPlayer($target->getName()) !== null)
+        if($this->main->getServer()->getPlayerExact($target->getName()) !== null)
         {
             $target->getInventory()->clearAll();
             

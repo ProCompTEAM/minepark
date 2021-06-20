@@ -2,11 +2,11 @@
 namespace minepark\commands;
 
 use pocketmine\event\Event;
-use pocketmine\world\World;
 
 use minepark\defaults\Permissions;
 use minepark\commands\base\Command;
 use minepark\common\player\MineParkPlayer;
+use pocketmine\world\World;
 
 class NightCommand extends Command
 {
@@ -29,7 +29,7 @@ class NightCommand extends Command
 
     public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
-        $player->getWorld()->setTime(Level::TIME_NIGHT);
+        $player->getWorld()->setTime(World::TIME_NIGHT);
         $player->sendMessage("§9⌚ Вы включили §1ночь §9в игровом мире §e" . $player->getWorld()->getDisplayName());
     }
 }

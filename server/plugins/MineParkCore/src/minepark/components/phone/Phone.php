@@ -113,7 +113,7 @@ class Phone extends Component
         $userName = $this->phonesDataProvider->getUserNameByNumber($number);
 
         if(isset($userName)) {
-            return $nameOnly ? $userName : $this->getServer()->getPlayer($userName);
+            return $nameOnly ? $userName : $this->getServer()->getPlayerExact($userName);
         }
 
         return null;

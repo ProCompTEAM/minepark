@@ -51,7 +51,7 @@ class Vehicles extends Component
         }
     }
 
-    public function createVehicle(string $vehicleName, Level $level, Vector3 $pos, float $yaw) : bool
+    public function createVehicle(string $vehicleName, World $level, Vector3 $pos, float $yaw) : bool
     {
         $vehicleClassName = $this->getVehicle($vehicleName);
 

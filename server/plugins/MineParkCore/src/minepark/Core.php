@@ -150,7 +150,7 @@ class Core extends PluginBase implements Listener
         $players = array();
 
         foreach($this->getServer()->getOnlinePlayers() as $onlinePlayer) {
-            if($onlinePlayer->distance($position) < $distance) {
+            if($onlinePlayer->getPosition()->distance($position) < $distance) {
                 array_push($players, $onlinePlayer);
             }
         }

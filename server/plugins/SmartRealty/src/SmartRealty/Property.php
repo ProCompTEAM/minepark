@@ -53,7 +53,7 @@ class Property
                 return;
             }
             
-            $p = $this->main->getServer()->getPlayer($args[1]);
+            $p = $this->main->getServer()->getPlayerExact($args[1]);
             if($p !== null)
             {
                 $p->getProfile()->realtor = true;

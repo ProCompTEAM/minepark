@@ -141,7 +141,7 @@ class GPSCommand extends Command
             $point = $this->castToMapPointDto($point);
 
             if(strtolower($player->getWorld()->getDisplayName()) === $point->level) {
-                $level = $this->getServer()->getWorldByName($point->level);
+                $level = $this->getServer()->getWorldManager()->getWorldByName($point->level);
                 $position = new Position($point->x, $point->y, $point->z, $level);
                 $player->setFloatingText($position, $prefix . $point->name, self::FLOATING_TEXT_TAG);
             }
