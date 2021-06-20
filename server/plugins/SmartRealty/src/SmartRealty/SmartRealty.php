@@ -7,10 +7,7 @@
 namespace SmartRealty;
 
 use pocketmine\plugin\PluginBase;
-use pocketmine\Player;
-use pocketmine\block\SignPost;
-use pocketmine\block\WallSign;
-use pocketmine\tile\Sign;
+use pocketmine\player\Player;
 use pocketmine\command\CommandSender;
 use pocketmine\command\Command; 
 
@@ -31,7 +28,7 @@ class SmartRealty extends PluginBase implements Listener
 
     public $signev;
     
-    public function onEnable()
+    public function onEnable() : void
     {
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
         
@@ -40,7 +37,7 @@ class SmartRealty extends PluginBase implements Listener
         }
         
         if(!file_exists($this->getDirectory() . "levels.txt")) {
-            file_put_contents($this->getDirectory() . "levels.txt", strtolower($this->getServer()->getDefaultLevel()->getName()));
+            file_put_contents($this->getDirectory() . "levels.txt", strtolower($this->getServer()->getWorldManager()->getDefaultWorld()->getDisplayName()));
         }
                 
         foreach(explode(", ", file_get_contents($this->getDirectory() . "levels.txt")) as $l) {
@@ -73,28 +70,29 @@ class SmartRealty extends PluginBase implements Listener
     {
         $this->getProperty()->updatePlayerProperty($e->getPlayer());
     }
-    
+
+    //TODO: In PM4 you can't get Player from this event
     public function preloginEvent(PlayerPreLoginEvent $e)
     {
-        $e->getPlayer()->property = array();
+        /*$e->getPlayer()->property = array();
         $e->getPlayer()->propPos1 = null; 
-        $e->getPlayer()->propPos2 = null;
+        $e->getPlayer()->propPos2 = null;*/
     }
     
     public function tapEvent(PlayerInteractEvent $e)
     {	
-        if(!isset($this->levels[strtolower($e->getPlayer()->getLevel()->getName())])) {
+        if(!isset($this->levels[strtolower($e->getPlayer()->getWorld()->getDisplayName())])) {
             return;
         }
     
         $this->getProperty()->tap($e);
 
-        if($this->signev) { //fix of SignChangeEvent bug
+        /*if($this->signev) { //fix of SignChangeEvent bug
             if($e->getBlock() instanceof Sign or $e->getBlock() instanceof SignPost or $e->getBlock() instanceof WallSign) {
                 $ev = new FixSignEvent($e);
                 $this->signChangeEvent($ev->getEvent());
             }
-        }
+        }*/
     }
     
     public function signChangeEvent($ev)
@@ -108,11 +106,11 @@ class SmartRealty extends PluginBase implements Listener
             return;
         }
         
-        if(!isset($this->levels[strtolower($e->getPlayer()->getLevel()->getName())])) {
+        if(!isset($this->levels[strtolower($e->getPlayer()->getWorld()->getDisplayName())])) {
             return;
         }
         
-        $this->getProperty()->block($e, "place");
+        $this->getProperty()->block($e);
     }
     
     public function blockBreakEvent(BlockBreakEvent $e)
@@ -121,16 +119,16 @@ class SmartRealty extends PluginBase implements Listener
             return;
         }
 
-        if(!isset($this->levels[strtolower($e->getPlayer()->getLevel()->getName())])) {
+        if(!isset($this->levels[strtolower($e->getPlayer()->getWorld()->getDisplayName())])) {
             return;
         }
         
-        $this->getProperty()->block($e, "break");
+        $this->getProperty()->block($e);
     }
     
     public function onCommand(CommandSender $sender, Command $cmd, $label, array $cmds) : bool
     {
-        if($sender instanceof Player and !isset($this->levels[strtolower($sender->getLevel()->getName())])) {
+        if($sender instanceof Player and !isset($this->levels[strtolower($sender->getWorld()->getDisplayName())])) {
             return false;
         }
         

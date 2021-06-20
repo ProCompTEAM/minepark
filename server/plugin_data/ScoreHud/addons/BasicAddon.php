@@ -10,7 +10,7 @@ declare(strict_types = 1);
 namespace JackMD\ScoreHud\Addons
 {
 	use JackMD\ScoreHud\addon\AddonBase;
-	use pocketmine\Player;
+	use pocketmine\player\Player;
 	use minepark\Providers;
 
 	class BasicAddon extends AddonBase{

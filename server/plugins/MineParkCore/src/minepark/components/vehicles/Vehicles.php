@@ -2,7 +2,7 @@
 namespace minepark\components\vehicles;
 
 use minepark\Events;
-use pocketmine\level\Level;
+use pocketmine\world\World;
 use pocketmine\math\Vector3;
 use minepark\defaults\EventList;
 use minepark\components\base\Component;
@@ -51,7 +51,7 @@ class Vehicles extends Component
         }
     }
 
-    public function createVehicle(string $vehicleName, Level $level, Vector3 $pos, float $yaw) : bool
+    public function createVehicle(string $vehicleName, World $level, Vector3 $pos, float $yaw) : bool
     {
         $vehicleClassName = $this->getVehicle($vehicleName);
 
@@ -85,17 +85,17 @@ class Vehicles extends Component
                 return;
             }
 
-            $event->setCancelled();
+            $event->cancel();
             $this->handleVehicleMove($event);
         } else if ($event->getPacket() instanceof InteractPacket) {
             if ($event->getPacket()->action !== InteractPacket::ACTION_LEAVE_VEHICLE) {
                 return;
             }
 
-            $vehicle = $event->getPlayer()->getLevel()->getEntity($event->getPacket()->target);
+            $vehicle = $event->getPlayer()->getWorld()->getEntity($event->getPacket()->target);
             if ($vehicle instanceof BaseCar) {
                 $vehicle->tryToRemovePlayer($event->getPlayer());
-                $event->setCancelled();
+                $event->cancel();
             }
         }
     }

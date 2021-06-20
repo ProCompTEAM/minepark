@@ -2,10 +2,10 @@
 namespace minepark\components\organisations;
 
 use minepark\Providers;
-use pocketmine\entity\Effect;
-use pocketmine\level\Position;
+use pocketmine\entity\effect\VanillaEffects;
+use pocketmine\world\Position;
 
-use pocketmine\entity\EffectInstance;
+use pocketmine\entity\effect\EffectInstance;
 use minepark\components\base\Component;
 use minepark\common\player\MineParkPlayer;
 use minepark\Components;
@@ -43,7 +43,10 @@ class Farm extends Component
     public function from($player)
     {
         if ($this->playerIsNearWheat($player)) {
-            $player->addEffect(new EffectInstance(Effect::getEffect(2), 20 * 9999, 1));
+            $effectManager = $player->getEffects();
+            $effect = VanillaEffects::fromString("slowness");
+            $instance = new EffectInstance($effect, 20 * 9999, 1, true);
+            $effectManager->add($instance);
 
             $this->chat->sendLocalMessage($player, "§8(§dв корзине собранный урожай |§8)", "§d : ", 12);
             $player->getStatesMap()->bar = "§eДонесите корзину на пункт сбора около фермы"; 
@@ -74,7 +77,7 @@ class Farm extends Component
     
     private function handleDrop(MineParkPlayer $player)
     {
-        $player->removeAllEffects();
+        $player->getEffects()->clear();
 
         $this->chat->sendLocalMessage($player, "высыпал из корзины урожай", "§d ", 12);
         $this->bankingProvider->givePlayerMoney($player, 150);
@@ -85,6 +88,6 @@ class Farm extends Component
 
     private function playerIsNearWheat(MineParkPlayer $player)
     {
-        return $player->getLevel()->getBlockIdAt($player->getX(), $player->getY() - 1, $player->getZ()) == 255;
+        return $player->getWorld()->getBlockAt($player->getLocation()->getX(), $player->getLocation()->getY() - 1, $player->getLocation()->getZ())->getId() == 255;
     }
 }

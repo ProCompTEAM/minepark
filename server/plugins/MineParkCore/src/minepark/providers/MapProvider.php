@@ -1,7 +1,7 @@
 <?php
 namespace minepark\providers;
 
-use pocketmine\level\Position;
+use pocketmine\world\Position;
 use minepark\defaults\MapConstants;
 use minepark\models\dtos\MapPointDto;
 use minepark\providers\base\Provider;
@@ -41,7 +41,7 @@ class MapProvider extends Provider
             return null;
         }
 
-        $level = $this->getServer()->getLevelByName($pointData->level);
+        $level = $this->getServer()->getWorldByName($pointData->level);
 
         return new Position($pointData->x, $pointData->y, $pointData->z, $level);
     }
@@ -106,7 +106,7 @@ class MapProvider extends Provider
     {
         $localMapPointDto = new LocalMapPointDto;
 
-        $localMapPointDto->level = $position->getLevel()->getName();
+        $localMapPointDto->level = $position->getWorld()->getDisplayName();
         $localMapPointDto->x = $position->getX();
         $localMapPointDto->y = $position->getY();
         $localMapPointDto->z = $position->getZ();
@@ -120,7 +120,7 @@ class MapProvider extends Provider
         $dto = new MapPointDto;
 
         $dto->name = $pointName;
-        $dto->level = $position->getLevel()->getName();
+        $dto->level = $position->getWorld()->getDisplayName();
         $dto->x = $position->getX();
         $dto->y = $position->getY();
         $dto->z = $position->getZ();

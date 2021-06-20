@@ -1,7 +1,7 @@
 This snapshot was automatically generated on
-Fri, 12 Feb 2021 21:38:56 +0000
+Sat, 05 Jun 2021 18:10:29 +0000
 
-Version: 8.0.2
+Version: 8.0.7
 Branch: HEAD
 Build: D:\a\1\s\pocketmine-php-sdk\php-src\x64\Release_TS
 
@@ -61,9 +61,17 @@ Module: libssh2.dll
 ===========================
 	libcrypto-1_1-x64.dll
 
+Module: php_chunkutils2.dll
+===========================
+	vcruntime140_1.dll
+
 Module: php_leveldb.dll
 ===========================
 	leveldb.dll
+
+Module: php_libdeflate.dll
+===========================
+	libdeflate.dll
 
 Module: php_openssl.dll
 ===========================

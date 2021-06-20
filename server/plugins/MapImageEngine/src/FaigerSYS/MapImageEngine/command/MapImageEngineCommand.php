@@ -3,7 +3,7 @@ namespace FaigerSYS\MapImageEngine\command;
 
 use pocketmine\utils\TextFormat as CLR;
 
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\command\CommandSender;
 use pocketmine\command\ConsoleCommandSender;
 
@@ -126,7 +126,7 @@ class MapImageEngineCommand extends Command implements PluginIdentifiableCommand
 		
 		if (isset($this->cache[$name])) {
 			$block = $e->getBlock();
-			$level = $block->getLevel();
+			$level = $block->getWorld();
 			
 			$frame = $level->getTile($block);
 			if (!($frame instanceof ItemFrame)) {
@@ -216,7 +216,7 @@ class MapImageEngineCommand extends Command implements PluginIdentifiableCommand
 				}
 			}
 			
-			$e->setCancelled(true);
+			$e->cancel();
 		}
 	}
 	

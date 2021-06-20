@@ -1,5 +1,5 @@
 ﻿name: lifts
-api: [3.10.1]
+api: 4.0.0
 version: 1.3
 author: Kirill Poroh
 main: lifts\Control

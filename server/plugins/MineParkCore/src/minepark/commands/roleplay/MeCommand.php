@@ -45,7 +45,7 @@ class MeCommand extends Command
 
     public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
-        $event->setCancelled();
+        $event->cancel();
 
         if(self::argumentsNo($args)) {
             $player->sendMessage("CommandRolePlayMeUse");

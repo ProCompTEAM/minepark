@@ -1,9 +1,10 @@
 <?php
 namespace lifts;
 
-use pocketmine\level\Position;
+use pocketmine\block\BlockFactory;
+use pocketmine\block\BlockLegacyIds;
+use pocketmine\world\Position;
 use pocketmine\math\Vector3;
-use pocketmine\block\Block;
 
 class Run { 
     public function __construct($control_class) 
@@ -22,10 +23,10 @@ class Run {
         $y = floor($pos->getY());
         $z = floor($pos->getZ());
 
-        $wname = $pos->getLevel()->getName();
+        $wname = $pos->getWorld()->getDisplayName();
         file_put_contents($file, "$x $y $z $wname");
         $this->loadAll();
-        $this->cs->move($pos, Block::get(Block::IRON_BLOCK));
+        $this->cs->move($pos, BlockFactory::getInstance()->get(BlockLegacyIds::IRON_BLOCK));
     }
     
     public function remove($id) 
@@ -47,20 +48,20 @@ class Run {
             $data = file_get_contents($dir.$file);
             if(!Empty(explode(" ", $data)[3])) { 
                 $my = explode(" ", $data);
-                array_push($this->all, new Position($my[0], $my[1], $my[2], $this->cs->getServer()->getLevelByName($my[3])));
+                array_push($this->all, new Position($my[0], $my[1], $my[2], $this->cs->getServer()->getWorldManager()->getWorldByName($my[3])));
             } 
         } 
     } 
     
     public function getItems() { 
         if(!Empty($this->all)) return $this->all;
-        else return \null;
+        else return null;
     } 
     
     public function scndr($dir, $sort = 0) 
     { 
         $list = scandir($dir, $sort);
-        if (!$list) return \false;
+        if (!$list) return false;
         if ($sort == 0) unset($list[0],$list[1]);
         else unset($list[count($list)-1], $list[count($list)-1]);
         return $list;
@@ -70,24 +71,24 @@ class Run {
     { 
         if($get_str == "down") {
             for ($i=0; $i < 124; $i++) { 
-                $block = $pos->getLevel()->getBlock(new Vector3($pos->getX(), $pos->getY()-$i-2, $pos->getZ()));
+                $block = $pos->getWorld()->getBlock(new Vector3($pos->getX(), $pos->getY()-$i-2, $pos->getZ()));
                 if($block->getName() != "Air") break;
             } 
             
-            $endpos = new Position($block->getX(), $block->getY(), $block->getZ(), $pos->getLevel());
+            $endpos = new Position($block->getPos()->getX(), $block->getPos()->getY(), $block->getPos()->getZ(), $pos->getWorld());
 
-            array_push($this->cs->lifts, array($pos, $endpos, 0, \false, 1));
+            array_push($this->cs->lifts, array($pos, $endpos, 0, false, 1));
             
             $this->cs->work->reload();
         } 
         else {  
             for ($i=0; $i < 124; $i++) { 
-                $block = $pos->getLevel()->getBlock(new Vector3($pos->getX(), $pos->getY()-$i-2, $pos->getZ()));
+                $block = $pos->getWorld()->getBlock(new Vector3($pos->getX(), $pos->getY()-$i-2, $pos->getZ()));
                 if($block->getName() != "Air") break;
             } 
 
-            $endpos = new Position($block->getX(), $block->getY(), $block->getZ(), $pos->getLevel());
-            array_push($this->cs->lifts, array($pos, $endpos, 0, \false, 2));
+            $endpos = new Position($block->getPos()->getX(), $block->getPos()->getX(), $block->getPos()->getX(), $pos->getWorld());
+            array_push($this->cs->lifts, array($pos, $endpos, 0, false, 2));
             $this->cs->work->reload();
         }
     } 

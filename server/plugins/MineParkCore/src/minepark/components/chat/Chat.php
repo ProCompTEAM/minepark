@@ -41,7 +41,7 @@ class Chat extends Component
 
     public function executeInputData(PlayerChatEvent $event)
     {
-        $event->setCancelled();
+        $event->cancel();
 
         $player = MineParkPlayer::cast($event->getPlayer());
 
@@ -89,8 +89,8 @@ class Chat extends Component
         $randomPrefix = "§7" . $this->getRandomUserPrefix();
 
         foreach ($this->getServer()->getOnlinePlayers() as $onlinePlayer) {
-            if ($onlinePlayer->distance($player) <= $radius) {
-                $this->sendMessage($onlinePlayer, $message, $player->getLowerCaseName(), $senderFullName, $isFriendRequest, $randomPrefix, $prefix);
+            if ($onlinePlayer->getLocation()->distance($player->getLocation()) <= $radius) {
+                $this->sendMessage($onlinePlayer, $message, strtolower($player->getName()), $senderFullName, $isFriendRequest, $randomPrefix, $prefix);
             }
         }
     }
@@ -144,7 +144,7 @@ class Chat extends Component
 
     private function sendMessage(MineParkPlayer $targetPlayer, string $message, string $senderName, string $senderFullName, bool $haveToBeFriends, string $userPrefix, string $chatPrefix)
     {
-        if ($targetPlayer->getLowerCaseName() === $senderName) {
+        if (strtolower($targetPlayer->getName()) === $senderName) {
             $userPrefix = self::SELF_CHAT_PREFIX;
         } else if (str_contains($targetPlayer->getProfile()->people, $senderName)) {
             $userPrefix = "§7" . $senderFullName;

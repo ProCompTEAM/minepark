@@ -15,8 +15,8 @@ use minepark\models\dtos\PositionDto;
 use minepark\Providers;
 use minepark\providers\data\FloatingTextsDataProvider;
 use pocketmine\event\player\PlayerJoinEvent;
-use pocketmine\level\Level;
-use pocketmine\level\Position;
+use pocketmine\world\World;
+use pocketmine\world\Position;
 
 class FloatingTexts extends Component
 {
@@ -77,7 +77,7 @@ class FloatingTexts extends Component
 
     public function save(string $text, Position $position)
     {
-        $levelName = $position->getLevel()->getName();
+        $levelName = $position->getWorld()->getDisplayName();
 
         $floatingText = $this->getFloatingText($levelName, $position->getX(), $position->getY(), $position->getZ());
 
@@ -99,7 +99,7 @@ class FloatingTexts extends Component
 
     public function remove(Position $position) : bool
     {
-        $levelName = $position->getLevel()->getName();
+        $levelName = $position->getWorld()->getDisplayName();
 
         $floatingText = $this->getFloatingText($levelName, $position->getX(), $position->getY(), $position->getZ());
 
@@ -169,14 +169,14 @@ class FloatingTexts extends Component
             return;
         }
 
-        $this->save($input, $player->asPosition());
+        $this->save($input, $player->getPosition());
 
         $player->sendMessage("§eНадпись успешно создана!");
     }
 
     private function tryToRemove(MineParkPlayer $player)
     {
-        $removedStatus = $this->remove($player->asPosition());
+        $removedStatus = $this->remove($player->getPosition());
 
         if(!$removedStatus) {
             $player->sendMessage("§eУдаление надписи прошло неуспешно.");
@@ -211,7 +211,7 @@ class FloatingTexts extends Component
     {
         $dto = new LocalFloatingTextDto;
         $dto->text = $text;
-        $dto->level = $position->getLevel()->getName();
+        $dto->level = $position->getWorld()->getDisplayName();
         $dto->x = $position->getX();
         $dto->y = $position->getY();
         $dto->z = $position->getZ();
@@ -237,7 +237,7 @@ class FloatingTexts extends Component
     private function initializeAllFloatingTexts(MineParkPlayer $player)
     {
         foreach($this->getFloatingTexts() as $floatingText) {
-            $level = $this->getServer()->getLevelByName($floatingText->level);
+            $level = $this->getServer()->getWorldByName($floatingText->level);
 
             if(!isset($level)) {
                 return;
@@ -253,7 +253,7 @@ class FloatingTexts extends Component
 
     private function showFloatingText(FloatingTextDto $floatingText)
     {
-        $level = $this->getServer()->getLevelByName($floatingText->level);
+        $level = $this->getServer()->getWorldByName($floatingText->level);
 
         if(!isset($level)) {
             return;
@@ -268,7 +268,7 @@ class FloatingTexts extends Component
 
     private function showFloatingTextForPlayer(MineParkPlayer $player, string $text, Level $level, Position $position)
     {
-        if($level != $player->getLevel()) {
+        if($level != $player->getWorld()) {
             return;
         }
 
@@ -287,7 +287,7 @@ class FloatingTexts extends Component
 
     private function hideFloatingText(FloatingTextDto $dto)
     {
-        $level = $this->getServer()->getLevelByName($dto->level);
+        $level = $this->getServer()->getWorldByName($dto->level);
 
         if(!isset($level)) {
             return;

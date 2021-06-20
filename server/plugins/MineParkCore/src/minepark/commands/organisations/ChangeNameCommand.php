@@ -122,7 +122,7 @@ class ChangeNameCommand extends OrganisationsCommand
 
     private function getPlayersNear(MineParkPlayer $player) : array
     {
-        $allPlayers = $this->getCore()->getRegionPlayers($player, 5);
+        $allPlayers = $this->getCore()->getRegionPlayers($player->getPosition(), 5);
 
         $players = array();
         foreach ($allPlayers as $currp) {

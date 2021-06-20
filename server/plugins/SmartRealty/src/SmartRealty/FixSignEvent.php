@@ -5,7 +5,7 @@ namespace SmartRealty;
 
 use pocketmine\block\Block;
 use pocketmine\event\Cancellable;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\tile\Sign;
 use pocketmine\event\block\SignChangeEvent;
 
@@ -28,12 +28,12 @@ class FixSignEvent
     public function getLines()
     {
         $pos = $this->position;
-        foreach($pos->getLevel()->getTiles() as $tile)
+        foreach($pos->getWorld()->getTiles() as $tile)
         {
             if($tile instanceof Sign)
             {
                 if(floor($tile->getX()) == floor($pos->getX()) and floor($tile->getY()) == floor($pos->getY())
-                    and floor($tile->getZ()) == floor($pos->getZ()) and $tile->getLevel() == $pos->getLevel())
+                    and floor($tile->getZ()) == floor($pos->getZ()) and $tile->getWorld() == $pos->getWorld())
                 {
                     return $tile->getText();
                 }
@@ -47,12 +47,12 @@ class FixSignChangeEvent extends SignChangeEvent
     public function setLine(int $index, string $text) : void
     {
         $pos = $this->getBlock();
-        foreach($pos->getLevel()->getTiles() as $tile)
+        foreach($pos->getWorld()->getTiles() as $tile)
         {
             if($tile instanceof Sign)
             {
                 if(floor($tile->getX()) == floor($pos->getX()) and floor($tile->getY()) == floor($pos->getY())
-                    and floor($tile->getZ()) == floor($pos->getZ()) and $tile->getLevel() == $pos->getLevel())
+                    and floor($tile->getZ()) == floor($pos->getZ()) and $tile->getWorld() == $pos->getWorld())
                 {
                     $l = $tile->getText();
                     $l[$index] = $text;

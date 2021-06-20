@@ -2,7 +2,7 @@
 name: PocketRadio
 main: xenialdan\PocketRadio\Loader
 version: 4.2.1
-api: 3.0.0
+api: 4.0.0
 authors:
 - XenialDan
 prefix: "Radio"
@@ -10,12 +10,10 @@ softdepend: [DEVirion]
 permissions:
   pocketradio.command:
     default: true
-    children:
-      pocketradio.command.radio:
-        default: true
-        children:
-          pocketradio.command.radio.next:
-            default: op
-          pocketradio.command.radio.volume:
-            default: true
+  pocketradio.command.radio:
+    default: true
+  pocketradio.command.radio.next:
+    default: op
+  pocketradio.command.radio.volume:
+    default: true
 ...

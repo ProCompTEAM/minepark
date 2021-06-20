@@ -72,14 +72,14 @@ class Auth extends Component
     public function handleInteract(PlayerInteractEvent $event)
     {
         if (!$event->getPlayer()->isAuthorized()) {
-            $event->setCancelled();
+            $event->cancel();
         }
     }
 
     public function handleBlockBreak(BlockBreakEvent $event)
     {
         if (!$event->getPlayer()->isAuthorized()) {
-            $event->setCancelled();
+            $event->cancel();
         }
     }
 
@@ -88,7 +88,7 @@ class Auth extends Component
         foreach($event->getTransaction()->getInventories() as $inventory) {
             $holder = $inventory->getHolder();
             if($holder instanceof MineParkPlayer and !$holder->getStatesMap()->authorized) {
-                $event->setCancelled();
+                $event->cancel();
             }
         }
     }
@@ -96,7 +96,7 @@ class Auth extends Component
     public function handleBlockPlace(BlockPlaceEvent $event)
     {
         if (!$event->getPlayer()->isAuthorized()) {
-            $event->setCancelled();
+            $event->cancel();
         }
     }
 
@@ -106,7 +106,7 @@ class Auth extends Component
 
         if(!$player->isAuthorized()) {
             $this->login($player, $event->getMessage());
-            $event->setCancelled();
+            $event->cancel();
             return;
         }
     }
@@ -116,7 +116,7 @@ class Auth extends Component
         if(!$this->usersDataProvider->isUserPasswordExist($player->getName())) {
             return self::STATE_REGISTER;
         } else {
-            if(isset($this->ips[$player->getName()]) and $this->ips[$player->getName()] == $player->getAddress()) {
+            if(isset($this->ips[$player->getName()]) and $this->ips[$player->getName()] == $player->getNetworkSession()->getIp()) {
                 return self::STATE_AUTO;
             }
             else {
@@ -171,7 +171,7 @@ class Auth extends Component
         $player->getStatesMap()->authorized = true;
         $player->getStatesMap()->bar = null;
 
-        $this->ips[$player->getName()] = $player->getAddress();
+        $this->ips[$player->getName()] = $player->getNetworkSession()->getIp();
         
         $this->sendWelcomeText($player);
         
@@ -181,7 +181,7 @@ class Auth extends Component
     private function registerUser(MineParkPlayer $player, string $password)
     {
         $this->updatePassword($player, $password);
-        $this->ips[$player->getName()] = $player->getAddress();
+        $this->ips[$player->getName()] = $player->getNetworkSession()->getIp();
 
         $player->getStatesMap()->authorized = true;
         $player->getStatesMap()->bar = null; 

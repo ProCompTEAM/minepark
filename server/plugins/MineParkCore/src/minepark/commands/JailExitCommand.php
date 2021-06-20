@@ -4,7 +4,7 @@ namespace minepark\commands;
 use minepark\Providers;
 use minepark\Components;
 use pocketmine\event\Event;
-use pocketmine\level\Position;
+use pocketmine\world\Position;
 use minepark\components\chat\Chat;
 use minepark\defaults\Permissions;
 use minepark\commands\base\Command;

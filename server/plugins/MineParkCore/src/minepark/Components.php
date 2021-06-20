@@ -44,7 +44,7 @@ class Components
             new Organisations,
             new Phone,
             new Auth,
-            new BossBar,
+            #new BossBar,
             new Broadcasting,
             new FastFood,
             new Navigation,
@@ -53,7 +53,7 @@ class Components
             new Reports,
             new StatusBar,
             new Tracking,
-            new Vehicles,
+            #new Vehicles,
             new TrafficLights,
             new WorldProtector,
             new PermissionsSwitch,
@@ -79,6 +79,6 @@ class Components
             }
         }
 
-        throw new Exception("Component '" . get_class($component) . "' does not exist");
+        throw new Exception("Component '" . $componentName . "' does not exist");
     }
 }
