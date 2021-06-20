@@ -50,7 +50,9 @@ class Core extends PluginBase implements Listener
 
     public function onDisable(): void
     {
-        $this->transferPlayersToLobby();
+        if(Defaults::LOBBY_TRANSFER_ENABLED) {
+            $this->transferPlayersToLobby();
+        }
     }
 
     public function initializeEvents()

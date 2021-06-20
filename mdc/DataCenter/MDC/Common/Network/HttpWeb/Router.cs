@@ -120,7 +120,7 @@ namespace MDC.Common.Network.HttpWeb
 
             object data = null;
 
-            if(!JsonDataIsNullOrEmpty(jsonData))
+            if(!JsonDataIsEmpty(jsonData))
             {
                 data = JsonSerializer.Deserialize(jsonData, GetMethodArgumentType(method), jsonDeserializeOptions);
             }
@@ -150,9 +150,9 @@ namespace MDC.Common.Network.HttpWeb
             return method.GetParameters()[argumentIndex].ParameterType;
         }
 
-        private static bool JsonDataIsNullOrEmpty(string jsonData)
+        private static bool JsonDataIsEmpty(string jsonData)
         {
-            return jsonData == "null" || jsonData == null || jsonData.Trim() == string.Empty;
+            return jsonData.Trim() == "[]";
         }
 
         private static object[] PrepareArguments(object data, RequestContext requestInfo)
