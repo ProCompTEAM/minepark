@@ -10,6 +10,8 @@ use minepark\providers\MapProvider;
 
 class PlayersLocation extends Component
 {
+    private const PLAYER_NEAR_PLACE_DISTANCE = 50;
+
     private MapProvider $mapProvider;
 
     public function initialize()
@@ -37,17 +39,16 @@ class PlayersLocation extends Component
             $pointName = $point;
             $pointsCount[$pointName] = 0;
             
-            foreach($this->getServer()->getOnlinePlayers() as $plr) {
-                if (!empty($playerCounted[$plr->getName()])) {
+            foreach($this->getServer()->getOnlinePlayers() as $player) {
+                if (!empty($playerCounted[$player->getName()])) {
                     continue;
                 }
 
-                $vector1 = $plr->asVector3();
-                $vector2 = $this->mapProvider->getPointPosition($pointName)->asVector3();
+                $pointPosition = $this->mapProvider->getPointPosition($pointName)->asVector3();
                 
-                if ($vector1->distance($vector2) < 50) {
+                if ($player->distance($pointPosition) < self::PLAYER_NEAR_PLACE_DISTANCE) {
                     $evenOnePlayer = true;
-                    $playerCounted[$plr->getName()] = true;
+                    $playerCounted[$player->getName()] = true;
                     
                     $pointsCount[$pointName]++;
                 }
