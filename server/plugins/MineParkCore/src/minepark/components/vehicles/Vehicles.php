@@ -92,9 +92,9 @@ class Vehicles extends Component
                 return;
             }
 
-            $vehicle = $event->getPlayer()->getWorld()->getEntity($event->getPacket()->target);
+            $vehicle = $event->getOrigin()->getPlayer()->getWorld()->getEntity($event->getPacket()->target);
             if ($vehicle instanceof BaseCar) {
-                $vehicle->tryToRemovePlayer($event->getPlayer());
+                $vehicle->tryToRemovePlayer($event->getOrigin()->getPlayer());
                 $event->cancel();
             }
         }
@@ -102,11 +102,11 @@ class Vehicles extends Component
 
     protected function handleVehicleMove(DataPacketReceiveEvent $event)
     {
-        if ($event->getPlayer()->getStatesMap()->ridingVehicle?->getDriver()?->getName() !== $event->getPlayer()->getName()) {
+        if ($event->getOrigin()->getPlayer()->getStatesMap()->ridingVehicle?->getDriver()?->getName() !== $event->getOrigin()->getPlayer()->getName()) {
             return;
         }
 
-        $vehicle = $event->getPlayer()->getStatesMap()->ridingVehicle;
+        $vehicle = $event->getOrigin()->getPlayer()->getStatesMap()->ridingVehicle;
 
         $vehicle->updateSpeed($event->getPacket()->motionX, $event->getPacket()->motionY);
     }
