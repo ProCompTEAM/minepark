@@ -2,6 +2,7 @@
 namespace minepark\components\phone;
 
 use Exception;
+use jojoe77777\FormAPI\SimpleForm;
 use minepark\common\player\MineParkPlayer;
 use minepark\Components;
 use minepark\components\base\Component;
@@ -233,7 +234,19 @@ class Phone extends Component
         $message .= "§1> Ваш телефонный номер: §3" . $player->getProfile()->phoneNumber . "\n";
         $message .= "§1> Ваш баланс: §3" . $this->getBalance($player) . "р";
 
-        $player->sendWindowMessage($message, "§9❖======*Смартфон*=======❖");
+        $form = new SimpleForm([$this, "phoneMenuForm"]);
+        $form->setTitle("§9❖======*Смартфон*=======❖");
+        $form->setContent($message);
+        $form->addButton("Интернет-банкинг", -1, "", "banking");
+
+        $player->sendForm($form);
+    }
+
+    public function phoneMenuForm(MineParkPlayer $player, $data = null)
+    {
+        if($data == "banking") {
+            $player->sendCommand("/money");
+        }
     }
 
     public function handleMessage(MineParkPlayer $player, string $message)
