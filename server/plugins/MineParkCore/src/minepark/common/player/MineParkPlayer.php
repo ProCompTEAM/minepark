@@ -20,7 +20,6 @@ use pocketmine\world\particle\FloatingTextParticle;
 use pocketmine\network\mcpe\protocol\PlaySoundPacket;
 use pocketmine\event\player\PlayerCommandPreprocessEvent;
 use pocketmine\network\mcpe\protocol\ModalFormRequestPacket;
-use pocketmine\world\World;
 
 class MineParkPlayer extends Player
 {	
@@ -225,7 +224,7 @@ class MineParkPlayer extends Player
         $floatingText->position = $position;
         $floatingText->text = $text;
         $floatingText->tag = $tag;
-        $floatingText->particle = new FloatingTextParticle($position, $text, "");
+        $floatingText->particle = new FloatingTextParticle($text, "");
 
         array_push($this->floatingTexts, $floatingText);
 
@@ -274,7 +273,7 @@ class MineParkPlayer extends Player
         $level = $floatingText->position->getWorld();
 
         $floatingText->particle->setInvisible(true);
-        $level->addParticle($floatingText->particle, [$this]);
+        $level->addParticle($floatingText->position->asVector3(), $floatingText->particle, [$this]);
         
         foreach($this->floatingTexts as $key => $value) {
             if($floatingText == $value) {
@@ -288,7 +287,7 @@ class MineParkPlayer extends Player
     {
         $level = $floatingText->position->getWorld();
         $floatingText->particle->setText($floatingText->text);
-        $level->addParticle($floatingText->particle, [$this]);
+        $level->addParticle($floatingText->position->asVector3(), $floatingText->particle, [$this]);
     }
 
     public function showFloatingTexts()
