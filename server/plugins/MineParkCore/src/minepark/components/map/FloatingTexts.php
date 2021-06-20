@@ -15,8 +15,8 @@ use minepark\models\dtos\PositionDto;
 use minepark\Providers;
 use minepark\providers\data\FloatingTextsDataProvider;
 use pocketmine\event\player\PlayerJoinEvent;
-use pocketmine\world\World;
 use pocketmine\world\Position;
+use pocketmine\world\World;
 
 class FloatingTexts extends Component
 {
@@ -237,7 +237,7 @@ class FloatingTexts extends Component
     private function initializeAllFloatingTexts(MineParkPlayer $player)
     {
         foreach($this->getFloatingTexts() as $floatingText) {
-            $level = $this->getServer()->getWorldByName($floatingText->level);
+            $level = $this->getServer()->getWorldManager()->getWorldByName($floatingText->level);
 
             if(!isset($level)) {
                 return;
@@ -253,7 +253,7 @@ class FloatingTexts extends Component
 
     private function showFloatingText(FloatingTextDto $floatingText)
     {
-        $level = $this->getServer()->getWorldByName($floatingText->level);
+        $level = $this->getServer()->getWorldManager()->getWorldByName($floatingText->level);
 
         if(!isset($level)) {
             return;
@@ -266,7 +266,7 @@ class FloatingTexts extends Component
         }
     }
 
-    private function showFloatingTextForPlayer(MineParkPlayer $player, string $text, Level $level, Position $position)
+    private function showFloatingTextForPlayer(MineParkPlayer $player, string $text, World $level, Position $position)
     {
         if($level != $player->getWorld()) {
             return;
@@ -287,7 +287,7 @@ class FloatingTexts extends Component
 
     private function hideFloatingText(FloatingTextDto $dto)
     {
-        $level = $this->getServer()->getWorldByName($dto->level);
+        $level = $this->getServer()->getWorldManager()->getWorldByName($dto->level);
 
         if(!isset($level)) {
             return;
