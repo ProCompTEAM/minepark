@@ -7,6 +7,7 @@ use minepark\common\player\MineParkPlayer;
 use minepark\Components;
 use minepark\components\base\Component;
 use minepark\components\chat\Chat;
+use minepark\components\map\ATM;
 use minepark\components\organisations\Organisations;
 use minepark\defaults\ComponentAttributes;
 use minepark\defaults\EventList;
@@ -34,6 +35,8 @@ class Phone extends Component
 
     private Chat $chat;
 
+    private ATM $atm;
+
     public function initialize()
     {
         $this->phonesDataProvider = Providers::getPhonesDataProvider();
@@ -41,6 +44,8 @@ class Phone extends Component
         $this->mapProvider = Providers::getMapProvider();
 
         $this->chat = Components::getComponent(Chat::class);
+
+        $this->atm = Components::getComponent(ATM::class);
 
         Events::registerEvent(EventList::PLAYER_QUIT_EVENT, [$this, "playerQuitEvent"]);
         Tasks::registerRepeatingAction(TimeConstants::PHONE_TAKE_FEE_INTERVAL, [$this, "takeFee"]);
@@ -232,7 +237,7 @@ class Phone extends Component
         $message .= "§9☏ Сообщения: §e/sms <н.телефона> <текст>\n";
         $message .= "§1> Цены: §aСМС 20р, Звонок 20р минута\n";
         $message .= "§1> Ваш телефонный номер: §3" . $player->getProfile()->phoneNumber . "\n";
-        $message .= "§1> Ваш баланс: §3" . $this->getBalance($player) . "р";
+        $message .= "§1> Ваш баланс: §3" . $this->getBalance($player) . "р\n\n";
 
         $form = new SimpleForm([$this, "phoneMenuForm"]);
         $form->setTitle("§9❖======*Смартфон*=======❖");
@@ -245,7 +250,7 @@ class Phone extends Component
     public function phoneMenuForm(MineParkPlayer $player, $data = null)
     {
         if($data == "banking") {
-            $player->sendCommand("/money");
+            $this->atm->sendMoneyInfo($player);
         }
     }
 

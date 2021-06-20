@@ -59,6 +59,16 @@ class ATM extends Component
         $player->sendForm($form);
     }
 
+    public function sendMoneyInfo($player){
+        $cash = $this->bankingProvider->getCash($player);
+        $debit = $this->bankingProvider->getDebit($player);
+        $credit = $this->bankingProvider->getCredit($player);
+
+        $player->sendMessage("§2→ Наличные§e $cash §3рублей.");
+        $player->sendMessage("§3→ На карте§e $debit §3рублей.");
+        $player->sendMessage("§4→ В кредит§e $credit §3рублей.");
+    }
+
     public function answerMenu(MineParkPlayer $player, ?int $choice = null)
     {
         if(!isset($choice)) {
