@@ -5,7 +5,7 @@ ____
 
 ## Environment & Tools:
 - Minecraft BE Client support 1.17
-- PocketMine-MP API 3
+- PocketMine-MP API 4
 - PHP 8.x, .NET 5.0
 - MySQL (10.5.8-MariaDB) > dbo.minepark
 - Use Postman for MDC requests
@@ -30,6 +30,11 @@ ____
 - UpperCamelCase: classes
 - lowerCamelCase: functions, fields, variables
 - UPPERCASE: constants
+
+## How to build PocketMine-MP API 4.0:
+- ```git clone --recursive --branch master https://github.com/pmmp/PocketMine-MP.git```
+- ```composer install --no-dev```
+- ```php build/server-phar.php```
 
 ## Links:
 - GitLab Issues: https://gitlab.com/mcperp/public/-/issues
