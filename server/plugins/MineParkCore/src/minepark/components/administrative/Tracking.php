@@ -105,7 +105,7 @@ class Tracking extends Component
         ], $player);
     }
 
-    private function broadcastAdmins(array $messages=[], MineParkPlayer $sender = null, $rad = 7)
+    private function broadcastAdmins(array $messages=[], MineParkPlayer $sender = null, $distance = 7)
     {
         $admins = $this->getCore()->getAdministration();
 
@@ -115,7 +115,7 @@ class Tracking extends Component
             }
         } else {
             foreach($admins as $admin) {
-                if ($sender->getLocation()->distance($admin->getLocation()) > $rad) {
+                if ($sender->getLocation()->distance($admin->getLocation()) > $distance) {
                     continue;
                 }
     

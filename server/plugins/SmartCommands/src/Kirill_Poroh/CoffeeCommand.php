@@ -31,7 +31,7 @@ class CoffeeCommand
             if($player->hasPermission("sc.command.coffee")) 
             {
                 $effectManager = $player->getEffects();
-                
+
                 foreach($this->effects as $effectName) {
                     $effect = VanillaEffects::fromString($effectName);
                     $instance = new EffectInstance($effect, 20 * 60, 3, true);
