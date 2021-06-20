@@ -38,7 +38,7 @@ class GetFarmCommand extends Command
 
     public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
-        $this->organisations->farm->from($player);
+        $this->organisations->getFarm()->from($player);
 
         $player->sendSound(Sounds::ROLEPLAY);
     }

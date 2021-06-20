@@ -88,6 +88,6 @@ class Farm extends Component
 
     private function playerIsNearWheat(MineParkPlayer $player)
     {
-        return $player->getWorld()->getBlockAt($player->getLocation()->getX(), $player->getLocation()->getY() - 1, $player->getLocation()->getZ())->getId() == 255;
+        return $player->getWorld()->getBlockAt($player->getLocation()->getX(), $player->getLocation()->getY() - 1, $player->getLocation()->getZ())->getId() == 60;
     }
 }
