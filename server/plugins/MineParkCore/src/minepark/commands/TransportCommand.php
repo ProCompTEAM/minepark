@@ -83,7 +83,7 @@ class TransportCommand extends Command
 
     public function broadcastTrainStationSound(MineParkPlayer $driver, string $sound)
     {
-        foreach($this->getCore()->getRegionPlayers($driver, VehicleConstants::PLAYER_NEAR_STATION_DISTANCE) as $player) {
+        foreach($this->getCore()->getRegionPlayers($driver->getPosition(), VehicleConstants::PLAYER_NEAR_STATION_DISTANCE) as $player) {
             $player = MineParkPlayer::cast($player);
             $player->sendSound($sound);
         }

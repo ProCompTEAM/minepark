@@ -53,7 +53,7 @@ class Shop extends Component
     {
         $player = $event->getPlayer();
 
-        $lns = $event->getLines();
+        $lns = $event->getNewText()->getLines();
 
         if ($lns[0] == "[shop]" and $player->isOperator()) {
             /*

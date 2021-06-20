@@ -325,16 +325,6 @@ class MineParkPlayer extends Player
         parent::sendTip(Providers::getLocalizationProvider()->translateFrom($this->locale, $message));
     }
 
-    public function sendWhisper(string $sender, string $message)
-    {
-        parent::sendWhisper($sender, Providers::getLocalizationProvider()->take($this->locale, $message) ?? $message);
-    }
-
-    public function sendLocalizedWhisper(string $sender, string $message)
-    {
-        parent::sendWhisper($sender, Providers::getLocalizationProvider()->translateFrom($this->locale, $message));
-    }
-
     public function sendPopup(string $message, string $subtitle = ""): void
     {
         parent::sendPopup(Providers::getLocalizationProvider()->take($this->locale, $message) ?? $message);

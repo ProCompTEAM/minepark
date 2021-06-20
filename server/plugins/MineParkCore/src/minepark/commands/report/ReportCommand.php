@@ -4,7 +4,6 @@ namespace minepark\commands\report;
 use minepark\Components;
 use pocketmine\event\Event;
 
-use minepark\utils\CallbackTask;
 use minepark\components\administrative\Reports;
 
 use minepark\defaults\Permissions;

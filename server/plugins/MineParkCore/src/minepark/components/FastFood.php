@@ -41,7 +41,7 @@ class FastFood extends Component
     {
         $core = $this->getCore();
 
-        if($this->mapProvider->hasNearPointWithType($player, 5, MapConstants::POINT_GROUP_FASTFOOD)) {
+        if($this->mapProvider->hasNearPointWithType($player->getPosition(), 5, MapConstants::POINT_GROUP_FASTFOOD)) {
             $this->chat->sendLocalMessage($player, "{FastFoodNear}", "§d : ", 10);
 
             if(Providers::getBankingProvider()->getPlayerMoney($player) >= 50) {
@@ -98,7 +98,7 @@ class FastFood extends Component
     public function sign(SignChangeEvent $event)
     {
         $p = $event->getPlayer();
-        $lns = $event->getLines();
+        $lns = $event->getNewText()->getLines();
 
         if($lns[0] == "[eat]" and $p->isOperator()) {
             $event->setLine(0, "§eТорговый автомат"); 

@@ -113,7 +113,7 @@ class HealCommand extends OrganisationsCommand
 
     private function healPlayer(MineParkPlayer $healer, MineParkPlayer $playerToHeal)
     {
-        $playerToHeal->removeAllEffects();
+        $playerToHeal->getEffects()->clear();
         $playerToHeal->setHealth($playerToHeal->getMaxHealth());
 
         $this->g->sendLocalMessage($healer, "{CommandHealDo}");

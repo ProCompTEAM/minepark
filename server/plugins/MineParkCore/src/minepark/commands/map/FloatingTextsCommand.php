@@ -1,14 +1,12 @@
 <?php
 namespace minepark\commands\map;
 
-use jojoe77777\FormAPI\SimpleForm;
 use minepark\commands\base\Command;
 use minepark\common\player\MineParkPlayer;
 use minepark\Components;
 use minepark\components\map\FloatingTexts;
 use minepark\defaults\Permissions;
 use pocketmine\event\Event;
-use pocketmine\form\Form;
 
 class FloatingTextsCommand extends Command
 {
