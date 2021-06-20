@@ -1,11 +1,9 @@
 <?php  
 namespace lifts; 
 
-use lifts\Run;
 use pocketmine\block\BlockFactory;
 use pocketmine\block\BlockLegacyIds;
 use pocketmine\player\Player;
-use pocketmine\block\Block;
 use pocketmine\math\Vector3; 
 use pocketmine\event\Listener;
 use pocketmine\scheduler\Task;
@@ -18,6 +16,8 @@ use pocketmine\event\player\PlayerInteractEvent;
 
 class Control extends PluginBase implements Listener 
 {
+    private $run;
+
     public function onEnable() : void
     { 
         if(!file_exists($this->getDefaultDir())) mkdir($this->getDefaultDir()); 

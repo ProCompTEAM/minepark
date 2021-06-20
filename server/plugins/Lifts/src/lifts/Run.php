@@ -5,7 +5,6 @@ use pocketmine\block\BlockFactory;
 use pocketmine\block\BlockLegacyIds;
 use pocketmine\world\Position;
 use pocketmine\math\Vector3;
-use pocketmine\block\Block;
 
 class Run { 
     public function __construct($control_class) 
@@ -49,20 +48,20 @@ class Run {
             $data = file_get_contents($dir.$file);
             if(!Empty(explode(" ", $data)[3])) { 
                 $my = explode(" ", $data);
-                array_push($this->all, new Position($my[0], $my[1], $my[2], $this->cs->getServer()->getWorldByName($my[3])));
+                array_push($this->all, new Position($my[0], $my[1], $my[2], $this->cs->getServer()->getWorldManager()->getWorldByName($my[3])));
             } 
         } 
     } 
     
     public function getItems() { 
         if(!Empty($this->all)) return $this->all;
-        else return \null;
+        else return null;
     } 
     
     public function scndr($dir, $sort = 0) 
     { 
         $list = scandir($dir, $sort);
-        if (!$list) return \false;
+        if (!$list) return false;
         if ($sort == 0) unset($list[0],$list[1]);
         else unset($list[count($list)-1], $list[count($list)-1]);
         return $list;
@@ -78,7 +77,7 @@ class Run {
             
             $endpos = new Position($block->getPos()->getX(), $block->getPos()->getY(), $block->getPos()->getZ(), $pos->getWorld());
 
-            array_push($this->cs->lifts, array($pos, $endpos, 0, \false, 1));
+            array_push($this->cs->lifts, array($pos, $endpos, 0, false, 1));
             
             $this->cs->work->reload();
         } 
@@ -89,7 +88,7 @@ class Run {
             } 
 
             $endpos = new Position($block->getPos()->getX(), $block->getPos()->getX(), $block->getPos()->getX(), $pos->getWorld());
-            array_push($this->cs->lifts, array($pos, $endpos, 0, \false, 2));
+            array_push($this->cs->lifts, array($pos, $endpos, 0, false, 2));
             $this->cs->work->reload();
         }
     } 
