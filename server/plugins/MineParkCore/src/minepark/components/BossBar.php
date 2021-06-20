@@ -2,6 +2,7 @@
 namespace minepark\components;
 
 use minepark\Events;
+use pocketmine\entity\AttributeFactory;
 use pocketmine\entity\Entity;
 use minepark\defaults\EventList;
 use pocketmine\entity\Attribute;
@@ -11,6 +12,10 @@ use minepark\models\player\BossBarSession;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\network\mcpe\protocol\AddActorPacket;
 use pocketmine\network\mcpe\protocol\BossEventPacket;
+use pocketmine\network\mcpe\protocol\types\entity\EntityIds;
+use pocketmine\network\mcpe\protocol\types\entity\EntityMetadataFlags;
+use pocketmine\network\mcpe\protocol\types\entity\EntityMetadataProperties;
+use pocketmine\network\mcpe\protocol\types\entity\EntityMetadataTypes;
 use pocketmine\network\mcpe\protocol\UpdateAttributesPacket;
 
 class BossBar extends Component
@@ -127,7 +132,7 @@ class BossBar extends Component
         $packet = new UpdateAttributesPacket;
 
         $packet->entityRuntimeId = $fakeEntityId;
-        $packet->entries[] = Attribute::getAttribute(Attribute::HEALTH)->setMinValue(0)->setMaxValue(100)->setDefaultValue(0);
+        $packet->entries[] = AttributeFactory::getInstance()->get(Attribute::HEALTH)->setMinValue(0)->setMaxValue(100)->setDefaultValue(0);
 
         $player->getNetworkSession()->sendDataPacket($packet);
     }
@@ -137,7 +142,7 @@ class BossBar extends Component
         $packet = new AddActorPacket;
         
         $packet->entityRuntimeId = $fakeEntityId;
-        $packet->type = AddActorPacket::LEGACY_ID_MAP_BC[Entity::SLIME];
+        $packet->type = EntityIds::SLIME;
         $packet->metadata = $this->getHiddenEntityMetadata();
         $packet->position = $player->getPosition()->asVector3()->add(0, 10, 0);
 
@@ -179,12 +184,12 @@ class BossBar extends Component
     private function getHiddenEntityMetadata() : array
     {
         return [
-            Entity::DATA_LEAD_HOLDER_EID => [Entity::DATA_TYPE_LONG, -1],
-            Entity::DATA_FLAGS => [Entity::DATA_TYPE_LONG, 0 ^ 1 << Entity::DATA_FLAG_SILENT ^ 1 << Entity::DATA_FLAG_INVISIBLE ^ 1 << Entity::DATA_FLAG_NO_AI], 
-            Entity::DATA_SCALE => [Entity::DATA_TYPE_FLOAT, 0],
-            Entity::DATA_NAMETAG => [Entity::DATA_TYPE_STRING, ""], 
-            Entity::DATA_BOUNDING_BOX_WIDTH => [Entity::DATA_TYPE_FLOAT, 0], 
-            Entity::DATA_BOUNDING_BOX_HEIGHT => [Entity::DATA_TYPE_FLOAT, 0]
+            EntityMetadataProperties::LEAD_HOLDER_EID => [EntityMetadataTypes::LONG, -1],
+            EntityMetadataProperties::FLAGS => [EntityMetadataTypes::LONG, 0 ^ 1 << EntityMetadataFlags::SILENT ^ 1 << EntityMetadataFlags::INVISIBLE ^ 1 << EntityMetadataFlags::NO_AI],
+            EntityMetadataProperties::SCALE => [EntityMetadataTypes::FLOAT, 0],
+            EntityMetadataProperties::NAMETAG => [EntityMetadataTypes::STRING, ""],
+            EntityMetadataProperties::BOUNDING_BOX_WIDTH => [EntityMetadataTypes::FLOAT, 0],
+            EntityMetadataProperties::BOUNDING_BOX_HEIGHT => [EntityMetadataTypes::FLOAT, 0]
         ];
     }
 }
