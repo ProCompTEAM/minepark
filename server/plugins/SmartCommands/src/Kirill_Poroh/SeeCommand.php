@@ -24,10 +24,12 @@ class SeeCommand
             {
                 $effect = VanillaEffects::fromString("night_vision");
                 $effectInstance = new EffectInstance($effect, 20 * 9999, 3, false);
-                if($player->getEffects()->has($effect))
+
+                if($player->getEffects()->has($effect)) {
                     $player->getEffects()->remove($effect);
-                else
+                } else {
                     $player->getEffects()->add($effectInstance);
+                }
             }
             else return false;
         }

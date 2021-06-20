@@ -11,6 +11,7 @@ use pocketmine\entity\effect\EffectInstance;
 class CoffeeCommand
 {	
     private $main;
+
     public array $effects = [
         "speed",
         "resistance",

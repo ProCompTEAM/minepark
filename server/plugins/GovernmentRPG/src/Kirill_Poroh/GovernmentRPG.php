@@ -75,6 +75,7 @@ class GovernmentRPG extends PluginBase implements Listener
                     $sender->sendMessage("Команда недоступна из консоли");
                     return false;
                 }
+
                 if($this->getServer()->isOp($sender->getName()) or $sender->hasPermission("mcrpg.gov.creator"))
                 {
                     $players = $this->getPlayers($sender->getPosition(), 8);
@@ -117,6 +118,7 @@ class GovernmentRPG extends PluginBase implements Listener
                     $sender->sendMessage("Команда недоступна из консоли");
                     return false;
                 }
+
                 if($this->isJoined($sender))
                 {
                     $players = $this->getPlayers($sender->getPosition());
@@ -164,6 +166,7 @@ class GovernmentRPG extends PluginBase implements Listener
                     $sender->sendMessage("Команда недоступна из консоли");
                     return false;
                 }
+
                 if($this->isJoined($sender))
                 {
                     if($this->current_law["text"] != null)
@@ -185,6 +188,7 @@ class GovernmentRPG extends PluginBase implements Listener
                     $sender->sendMessage("Команда недоступна из консоли");
                     return false;
                 }
+
                 if($this->isJoined($sender))
                 {
                     if($this->current_law["text"] != null)
