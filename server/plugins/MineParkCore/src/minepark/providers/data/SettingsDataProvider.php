@@ -12,9 +12,13 @@ class SettingsDataProvider extends DataProvider
         return self::ROUTE;
     }
 
+    public function getProtocolVersion() : int
+    {
+        return (int) $this->createRequest("get-protocol-version");
+    }
+
     public function upgradeUnitId(string $unitId)
     {
         $this->createRequest("upgrade-unit-id", $unitId);
     }
 }
-?>

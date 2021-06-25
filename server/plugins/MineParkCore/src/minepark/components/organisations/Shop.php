@@ -2,7 +2,7 @@
 namespace minepark\components\organisations;
 
 use minepark\Events;
-use pocketmine\item\Item;
+use pocketmine\item\ItemFactory;
 use pocketmine\tile\Sign;
 use pocketmine\utils\Config;
 use pocketmine\block\SignPost;
@@ -55,7 +55,7 @@ class Shop extends Component
 
         $lns = $event->getLines();
 
-        if ($lns[0] == "[shop]" and $player->isOp()) {
+        if ($lns[0] == "[shop]" and $player->isOperator()) {
             /*
                 ||  [shop]  ||
                 ||    gId   ||
@@ -68,7 +68,7 @@ class Shop extends Component
             }
 
             $player->sendMessage("§cНекорректный формат данных при создании магазина!");
-        } elseif($lns[0] == "[shophelp]" and $player->isOp()) {
+        } elseif($lns[0] == "[shophelp]" and $player->isOperator()) {
             $this->showSignHelp($event);
         }
     }
@@ -142,7 +142,7 @@ class Shop extends Component
 
     private function handleItemName(int $itemId, string $line) : string
     {
-        $item = Item::get($itemId, 0, 1);
+        $item = ItemFactory::getInstance()->get($itemId);
         return $line == "?" ? $item->getName() : $line;
     }
 

@@ -82,4 +82,3 @@ class BankCommand extends Command
         $player->sendMessage("CommandBankError1");
     }
 }
-?>

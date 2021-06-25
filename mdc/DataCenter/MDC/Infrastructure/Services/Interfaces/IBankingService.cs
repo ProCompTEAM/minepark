@@ -27,6 +27,10 @@ namespace MDC.Infrastructure.Services.Interfaces
 
         Task<bool> CreateEmptyBankAccount(string unitId, string userName);
 
+        Task<bool> Exists(string unitId, string userName);
+
+        Task<bool> TransferDebit(string unitId, string userName, string target, double amount);
+
         Task<PaymentMethod> GetPaymentMethod(string unitId, string userName);
 
         Task<bool> SwitchPaymentMethod(string unitId, string userName, PaymentMethod method);

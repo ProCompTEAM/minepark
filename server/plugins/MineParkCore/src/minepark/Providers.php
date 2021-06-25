@@ -6,6 +6,7 @@ use minepark\providers\BankingProvider;
 use minepark\providers\LocalizationProvider;
 use minepark\providers\data\UsersDataProvider;
 use minepark\providers\data\BankingDataProvider;
+use minepark\providers\data\FloatingTextsDataProvider;
 use minepark\providers\data\MapDataProvider;
 use minepark\providers\data\PhonesDataProvider;
 use minepark\providers\data\SettingsDataProvider;
@@ -31,6 +32,8 @@ class Providers
 
     private static ProfileProvider $profileProvider;
 
+    private static FloatingTextsDataProvider $floatingTextsDataProvider;
+
     public static function initializeAll()
     {
         //Data Providers
@@ -39,6 +42,7 @@ class Providers
         self::$phonesDataProvider = new PhonesDataProvider;
         self::$settingsDataProvider = new SettingsDataProvider;
         self::$usersDataProvider = new UsersDataProvider;
+        self::$floatingTextsDataProvider = new FloatingTextsDataProvider;
 
         //Generic Providers
         self::$bankingProvider = new BankingProvider;
@@ -91,5 +95,9 @@ class Providers
     {
         return self::$usersDataProvider;
     }
+
+    public static function getFloatingTextsDataProvider()
+    {
+        return self::$floatingTextsDataProvider;
+    }
 }
-?>

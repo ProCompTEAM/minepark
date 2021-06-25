@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace Kirill_Poroh;
 
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 class FreezeCommand
 {	
@@ -27,7 +27,7 @@ class FreezeCommand
                     return true;
                 }
                 
-                $p = $this->main->getServer()->getPlayer($args[0]);
+                $p = $this->main->getServer()->getPlayerExact($args[0]);
                 $name = ($p == null ? $args[0] : $p->getName());
                 
                 if($p === null) 
@@ -56,7 +56,7 @@ class FreezeCommand
                     return true;
                 }
                 
-                $p = $this->main->getServer()->getPlayer($args[0]);
+                $p = $this->main->getServer()->getPlayerExact($args[0]);
                 $name = ($p == null ? $args[0] : $p->getName());
                 
                 if($p === null) 

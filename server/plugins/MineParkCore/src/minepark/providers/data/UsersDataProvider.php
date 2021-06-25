@@ -1,6 +1,8 @@
 <?php
 namespace minepark\providers\data;
 
+use minepark\models\dtos\ChatMessageDto;
+use minepark\models\dtos\ExecutedCommandDto;
 use minepark\models\dtos\PasswordDto;
 use minepark\models\dtos\UserDto;
 use minepark\providers\base\DataProvider;
@@ -22,7 +24,6 @@ class UsersDataProvider extends DataProvider
     public function getUser(string $userName) : ?UserDto
     {
         $requestResult = $this->createRequest("get-user", $userName);
-
         return $requestResult ? $this->createDto($requestResult) : null;
     }
 
@@ -73,6 +74,34 @@ class UsersDataProvider extends DataProvider
         $this->createRequest("update-quit-status", $userName);
     }
 
+    public function saveExecutedCommand(string $userName, string $command)
+    {
+        $dto = $this->createExecutedCommandDto($userName, $command);
+        $this->createRequest("save-executed-command", $dto);
+    }
+
+    public function saveChatMessage(string $userName, string $message)
+    {
+        $dto = $this->createChatMessageDto($userName, $message);
+        $this->createRequest("save-chat-message", $dto);
+    }
+
+    private function createExecutedCommandDto(string $userName, string $command) : ExecutedCommandDto
+    {
+        $dto = new ExecutedCommandDto;
+        $dto->sender = $userName;
+        $dto->command = $command;
+        return $dto;
+    }
+
+    private function createChatMessageDto(string $userName, string $message) : ChatMessageDto
+    {
+        $dto = new ChatMessageDto;
+        $dto->sender = $userName;
+        $dto->message = $message;
+        return $dto;
+    }
+
     protected function createDto(array $data) : UserDto
     {
         $dto = new UserDto();
@@ -80,4 +109,3 @@ class UsersDataProvider extends DataProvider
         return $dto;
     }
 }
-?>

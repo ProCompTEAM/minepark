@@ -17,6 +17,114 @@ namespace MDC.Data.Migrations
                 .HasAnnotation("ProductVersion", "3.1.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
+            modelBuilder.Entity("MDC.Data.Models.Audit.ChatMessageAuditRecord", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("Subject")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("UnitId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(128)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ChatMessageAuditRecords");
+                });
+
+            modelBuilder.Entity("MDC.Data.Models.Audit.ExecutedCommandAuditRecord", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Command")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("Subject")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("UnitId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(128)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ExecutedCommandAuditRecords");
+                });
+
+            modelBuilder.Entity("MDC.Data.Models.Audit.MoneyTransactionAuditRecord", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<double>("Amount")
+                        .HasColumnType("double");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("Subject")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<int>("TargetAccount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TransactionType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UnitId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(128)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("MoneyTransactionAuditRecords");
+                });
+
+            modelBuilder.Entity("MDC.Data.Models.Audit.UserTrafficAuditRecord", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("Subject")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("UnitId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<int>("UserTrafficType")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserTrafficAuditRecords");
+                });
+
             modelBuilder.Entity("MDC.Data.Models.BankAccount", b =>
                 {
                     b.Property<int>("Id")
@@ -72,6 +180,41 @@ namespace MDC.Data.Migrations
                     b.ToTable("Credentials");
                 });
 
+            modelBuilder.Entity("MDC.Data.Models.FloatingText", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("Level")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(4096)");
+
+                    b.Property<string>("UnitId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<double>("X")
+                        .HasColumnType("double");
+
+                    b.Property<double>("Y")
+                        .HasColumnType("double");
+
+                    b.Property<double>("Z")
+                        .HasColumnType("double");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FloatingTexts");
+                });
+
             modelBuilder.Entity("MDC.Data.Models.MapPoint", b =>
                 {
                     b.Property<int>("Id")
@@ -110,42 +253,14 @@ namespace MDC.Data.Migrations
                     b.ToTable("MapPoints");
                 });
 
-            modelBuilder.Entity("MDC.Data.Models.MoneyTransactionAuditRecord", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<double>("Amount")
-                        .HasColumnType("double");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime");
-
-                    b.Property<string>("Subject")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<int>("TargetAccount")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TransactionType")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UnitId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(128)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("MoneyTransactionAuditRecords");
-                });
-
             modelBuilder.Entity("MDC.Data.Models.Phone", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    b.Property<double>("Balance")
+                        .HasColumnType("double");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime");

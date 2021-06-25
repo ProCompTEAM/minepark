@@ -6,7 +6,7 @@ use minepark\Components;
 use pocketmine\event\Event;
 use minepark\defaults\Sounds;
 
-use minepark\components\chat\GameChat;
+use minepark\components\chat\Chat;
 use minepark\components\administrative\Tracking;
 use minepark\defaults\Permissions;
 use minepark\commands\base\Command;
@@ -20,13 +20,13 @@ class ShoutCommand extends Command
 
     private Tracking $tracking;
 
-    private GameChat $gameChat;
+    private Chat $chat;
 
     public function __construct()
     {
         $this->tracking = Components::getComponent(Tracking::class);
 
-        $this->gameChat = Components::getComponent(GameChat::class);
+        $this->chat = Components::getComponent(Chat::class);
     }
 
     public function getCommand() : array
@@ -52,10 +52,9 @@ class ShoutCommand extends Command
 
         $message = implode(self::ARGUMENTS_SEPERATOR, $args);
         
-        $this->gameChat->sendLocalMessage($player, $message, " §3крикнул(а) §7>", self::DISTANCE);
+        $this->chat->sendLocalMessage($player, $message, " §3крикнул(а) §7>", self::DISTANCE);
         $player->sendSound(Sounds::ROLEPLAY);
 
         $this->tracking->actionRP($player, $message, self::DISTANCE, "[SHOUT]");
     }
 }
-?>

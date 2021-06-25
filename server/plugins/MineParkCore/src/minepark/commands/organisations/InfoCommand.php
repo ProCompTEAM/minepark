@@ -7,18 +7,18 @@ use minepark\defaults\Permissions;
 
 use minepark\common\player\MineParkPlayer;
 use minepark\Components;
-use minepark\components\chat\GameChat;
+use minepark\components\chat\Chat;
 use minepark\components\organisations\Organisations;
 
 class InfoCommand extends OrganisationsCommand
 {
     public const CURRENT_COMMAND = "info";
 
-    private GameChat $gameChat;
+    private Chat $chat;
 
     public function __construct()
     {
-        $this->gameChat = Components::getComponent(GameChat::class);
+        $this->chat = Components::getComponent(Chat::class);
     }
 
     public function getCommand() : array
@@ -42,7 +42,7 @@ class InfoCommand extends OrganisationsCommand
             return;
         }
 
-        $this->gameChat->sendLocalMessage($player, "{CommandInfoPrint}", "§d : ", 10);
+        $this->chat->sendLocalMessage($player, "{CommandInfoPrint}", "§d : ", 10);
 
         $plrs = $this->getPlayersNear($player);
 
@@ -65,7 +65,7 @@ class InfoCommand extends OrganisationsCommand
 
     private function getPlayersNear(MineParkPlayer $player) : array
     {
-        $allplayers = $this->getCore()->getRegionPlayers($player, 5);
+        $allplayers = $this->getCore()->getRegionPlayers($player->getPosition(), 5);
 
         $players = array();
         foreach ($allplayers as $currp) {
@@ -88,4 +88,3 @@ class InfoCommand extends OrganisationsCommand
         $requestor->sendMessage($f);
     }
 }
-?>

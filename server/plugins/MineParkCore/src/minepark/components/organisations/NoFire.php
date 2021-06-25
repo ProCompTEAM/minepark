@@ -3,14 +3,13 @@ namespace minepark\components\organisations;
 
 use minepark\Tasks;
 use minepark\Providers;
-use pocketmine\block\Block;
 
-use pocketmine\level\Position;
+use pocketmine\block\BlockFactory;
+use pocketmine\world\Position;
 use minepark\defaults\TimeConstants;
 use minepark\components\base\Component;
 use minepark\common\player\MineParkPlayer;
 use minepark\defaults\ComponentAttributes;
-use minepark\components\organisations\Organisations;
 use minepark\providers\BankingProvider;
 use minepark\providers\MapProvider;
 
@@ -128,10 +127,10 @@ class NoFire extends Component
 
             $cpos = $this->mapProvider->getPointPosition($point);
 
-            $pos = new Position($cpos->getX() + $offsetX, $cpos->getY(), $cpos->getZ() + $offsetZ, $cpos->getLevel());
+            $pos = new Position($cpos->getX() + $offsetX, $cpos->getY(), $cpos->getZ() + $offsetZ, $cpos->getWorld());
             
-            if($pos->getLevel()->getBlock($pos)->getId() == 0) {
-                $pos->getLevel()->setBlock($pos, Block::get(51), true, true);
+            if($pos->getWorld()->getBlock($pos)->getId() == 0) {
+                $pos->getWorld()->setBlock($pos, BlockFactory::getInstance()->get(51), true);
                 
                 if($fire_created == null) {
                     $fire_created = $point;
@@ -151,7 +150,7 @@ class NoFire extends Component
         }
             
         foreach($this->getServer()->getOnlinePlayers() as $p) {
-            if($p->isOp()) {
+            if($p->isOperator()) {
                 $p->sendMessage("§7[§6!§7] Fire : На территории $fire_created начался пожар!");
             }
         }
@@ -165,14 +164,13 @@ class NoFire extends Component
 
     private function tryToClearPlace(Position $pos, float $x, float $y, float $z) : bool
     {
-        $newpos = new Position($x, $y, $z, $pos->getLevel());
+        $newpos = new Position($x, $y, $z, $pos->getWorld());
 
-        if($pos->getLevel()->getBlock($newpos)->getId() == 51) {
-            $newpos->getLevel()->setBlock($newpos, Block::get(0), true, true);
+        if($pos->getWorld()->getBlock($newpos)->getId() == 51) {
+            $newpos->getWorld()->setBlock($newpos, BlockFactory::getInstance()->get(0), true);
             return true;
         }
 
         return false;
     }
 }
-?>

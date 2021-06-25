@@ -1,6 +1,8 @@
 <?php
 namespace minepark\commands;
 
+use minepark\Components;
+use minepark\components\map\ATM;
 use minepark\Providers;
 use pocketmine\event\Event;
 
@@ -16,9 +18,13 @@ class MoneyCommand extends Command
 
     private BankingProvider $bankingProvider;
 
+    private ATM $atm;
+
     public function __construct()
     {
         $this->bankingProvider = Providers::getBankingProvider();
+
+        $this->atm = Components::getComponent(ATM::class);
     }
 
     public function getCommand() : array
@@ -38,13 +44,6 @@ class MoneyCommand extends Command
 
     public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
-        $cash = $this->bankingProvider->getCash($player);
-        $debit = $this->bankingProvider->getDebit($player);
-        $credit = $this->bankingProvider->getCredit($player);
-
-        $player->sendMessage("§2→ Наличные§e $cash §3рублей.");
-        $player->sendMessage("§3→ На карте§e $debit §3рублей.");
-        $player->sendMessage("§4→ В кредит§e $credit §3рублей.");
+        $this->atm->sendMoneyInfo($player);
     }
 }
-?>

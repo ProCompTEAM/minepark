@@ -9,7 +9,7 @@ use minepark\defaults\Permissions;
 use minepark\commands\base\Command;
 use minepark\common\player\MineParkPlayer;
 use minepark\Components;
-use minepark\components\chat\GameChat;
+use minepark\components\chat\Chat;
 use minepark\components\organisations\Organisations;
 use minepark\defaults\PlayerAttributes;
 use minepark\providers\ProfileProvider;
@@ -22,7 +22,7 @@ class PassportCommand extends Command
 
     private ProfileProvider $profileProvider;
 
-    private GameChat $gameChat;
+    private Chat $chat;
 
     private Organisations $organisations;
 
@@ -30,7 +30,7 @@ class PassportCommand extends Command
     {
         $this->profileProvider = Providers::getProfileProvider();
 
-        $this->gameChat = Components::getComponent(GameChat::class);
+        $this->chat = Components::getComponent(Chat::class);
 
         $this->organisations = Components::getComponent(Organisations::class);
     }
@@ -59,7 +59,7 @@ class PassportCommand extends Command
         
         $this->showPassportForm($player, $form);
         
-        $this->gameChat->sendLocalMessage($player, "{CommandPassportTake}", "§d", 10);
+        $this->chat->sendLocalMessage($player, "{CommandPassportTake}", "§d", 10);
     }
 
     private function getPassportForm(MineParkPlayer $player) : string
@@ -84,7 +84,7 @@ class PassportCommand extends Command
 
     private function showPassportForm(MineParkPlayer $player, string $form)
     {
-        foreach($this->getCore()->getRegionPlayers($player, 4) as $p) {
+        foreach($this->getCore()->getRegionPlayers($player->getPosition(), 4) as $p) {
             $p->sendWindowMessage($form, "Паспорт " . $player->getName());
                 
             if(strpos($p->getProfile()->people, strtolower($player->getName())) === false and $p !== $player) {
@@ -94,4 +94,3 @@ class PassportCommand extends Command
         }
     }
 }
-?>

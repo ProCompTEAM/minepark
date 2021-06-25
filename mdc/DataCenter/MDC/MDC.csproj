@@ -2,13 +2,13 @@
 
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <Product>MDC</Product>
     <Company>minepark.ru</Company>
     <Authors>minepark.ru</Authors>
     <Version>1.0</Version>
     <PackageId>MDC</PackageId>
-    <AssemblyVersion>0.0.0.1</AssemblyVersion>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
     <FileVersion>0.0.0.0</FileVersion>
     <AssemblyName>MinePark Data Center</AssemblyName>
     <ApplicationIcon />
@@ -22,6 +22,8 @@
   <ItemGroup>
     <Compile Remove="Data\Migrations\20200704154429_AddUserIdForeignKey.cs" />
     <Compile Remove="Data\Migrations\20200704154429_AddUserIdForeignKey.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210526170743_AddExecutedCommandsAuditRecord.cs" />
+    <Compile Remove="Data\Migrations\20210526170743_AddExecutedCommandsAuditRecord.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

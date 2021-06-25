@@ -7,4 +7,3 @@ class PasswordDto extends BaseDto
 
     public string $password;
 }
-?>

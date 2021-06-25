@@ -50,4 +50,3 @@ class DonateCommand extends Command
         return implode("\n", $result);
     }
 }
-?>

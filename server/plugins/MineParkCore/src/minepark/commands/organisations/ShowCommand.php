@@ -7,7 +7,7 @@ use minepark\defaults\Permissions;
 
 use minepark\common\player\MineParkPlayer;
 use minepark\Components;
-use minepark\components\chat\GameChat;
+use minepark\components\chat\Chat;
 use minepark\components\organisations\Organisations;
 
 class ShowCommand extends OrganisationsCommand
@@ -16,13 +16,13 @@ class ShowCommand extends OrganisationsCommand
 
     private Organisations $organisations;
     
-    private GameChat $gameChat;
+    private Chat $chat;
 
     public function __construct()
     {
         $this->organisations = Components::getComponent(Organisations::class);
 
-        $this->gameChat = Components::getComponent(GameChat::class);
+        $this->chat = Components::getComponent(Chat::class);
     }
 
     public function getCommand() : array
@@ -50,7 +50,6 @@ class ShowCommand extends OrganisationsCommand
 
         $organisationName = $this->organisations->getName($organisationId, false);
 
-        $this->gameChat->sendLocalMessage($player, "{CommandShowHandLic}" . $organisationName . "*§8)", "§d : ", 10);
+        $this->chat->sendLocalMessage($player, "{CommandShowHandLic}" . $organisationName . "*§8)", "§d : ", 10);
     }
 }
-?>

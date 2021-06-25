@@ -3,8 +3,7 @@ namespace minepark\components\settings;
 
 use minepark\Events;
 use minepark\Providers;
-use pocketmine\item\Item;
-use pocketmine\block\Block;
+use pocketmine\event\player\PlayerLoginEvent;
 use minepark\defaults\EventList;
 use minepark\defaults\Permissions;
 use minepark\defaults\ItemConstants;
@@ -14,16 +13,14 @@ use minepark\defaults\PlayerConstants;
 use minepark\components\base\Component;
 use minepark\common\player\MineParkPlayer;
 use minepark\Components;
-use pocketmine\event\block\BlockBreakEvent;
-use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\event\player\PlayerCreationEvent;
 use pocketmine\event\player\PlayerInteractEvent;
-use pocketmine\event\player\PlayerPreLoginEvent;
 use minepark\components\organisations\Organisations;
 use minepark\components\administrative\Tracking;
 use minepark\providers\ProfileProvider;
+use pocketmine\item\ItemFactory;
 
 class PlayerSettings extends Component
 {
@@ -32,7 +29,7 @@ class PlayerSettings extends Component
     public function initialize()
     {
         Events::registerEvent(EventList::PLAYER_CREATION_EVENT, [$this, "setDefaultPlayerClass"]);
-        Events::registerEvent(EventList::PLAYER_PRE_LOGIN_EVENT, [$this, "initializePlayer"]);
+        Events::registerEvent(EventList::PLAYER_LOGIN_EVENT, [$this, "initializePlayer"]);
         Events::registerEvent(EventList::PLAYER_JOIN_EVENT, [$this, "applyJoinSettings"]);
         Events::registerEvent(EventList::PLAYER_QUIT_EVENT, [$this, "applyQuitSettings"]);
         Events::registerEvent(EventList::PLAYER_INTERACT_EVENT, [$this, "applyInteractSettings"]);
@@ -56,7 +53,7 @@ class PlayerSettings extends Component
         $event->setPlayerClass(MineParkPlayer::class);
     }
     
-    public function initializePlayer(PlayerPreLoginEvent $event)
+    public function initializePlayer(PlayerLoginEvent $event)
     {
         $player = MineParkPlayer::cast($event->getPlayer());
 
@@ -79,7 +76,7 @@ class PlayerSettings extends Component
 
         $event->setJoinMessage(null);
 
-        $player->removeAllEffects();
+        $player->getEffects()->clear();
         $player->setNameTag("");
 
         if($player->getStatesMap()->isNew) {
@@ -93,8 +90,6 @@ class PlayerSettings extends Component
         $this->addInventoryItems($player);
 
         Providers::getUsersDataProvider()->updateUserJoinStatus($player->getName());
-
-        $this->getCore()->sendToMessagesLog($player->getName(), "Вход осуществлен ***");
     }
 
     public function applyQuitSettings(PlayerQuitEvent $event)
@@ -104,8 +99,6 @@ class PlayerSettings extends Component
         $event->setQuitMessage(null);
 
         Providers::getUsersDataProvider()->updateUserQuitStatus($player->getName());
-
-        $this->getCore()->sendToMessagesLog($player->getName(), "*** Выход из игры");
     }
 
     public function applyInteractSettings(PlayerInteractEvent $event)
@@ -113,7 +106,7 @@ class PlayerSettings extends Component
         $player = $event->getPlayer();
 
         if($this->filterItemsAndBlocks($player)) {
-            $event->setCancelled();
+            $event->cancel();
         }
 
         if (!$this->isCanActivate($player)) {
@@ -142,13 +135,13 @@ class PlayerSettings extends Component
     private function addInventoryItems(MineParkPlayer $player)
     {
         //GIVING ITEMS > DEFAULT KIT
-        $phone = Item::get(336, 0, 1);
+        $phone = ItemFactory::getInstance()->get(336);
         $phone->setCustomName("Телефон");
         
-        $passport = Item::get(340, 0, 1);
+        $passport = ItemFactory::getInstance()->get(340);
         $passport->setCustomName("Паспорт");
         
-        $gps = Item::get(405, 0, 1);
+        $gps = ItemFactory::getInstance()->get(405);
         $gps->setCustomName("Навигатор");
         
         if(!$player->getInventory()->contains($phone)) {
@@ -164,7 +157,7 @@ class PlayerSettings extends Component
         }
 
         if($player->getProfile()->organisation == Organisations::SECURITY_WORK) {
-            $item = Item::get(280, 0, 1);
+            $item = ItemFactory::getInstance()->get(280);
             $player->getInventory()->addItem($item);
         }
     }
@@ -173,7 +166,7 @@ class PlayerSettings extends Component
     {
         $statesMap = new StatesMap();
 
-        $statesMap->auth = false;
+        $statesMap->authorized = false;
 
         $statesMap->isNew = false;
         $statesMap->isBeginner = false;
@@ -183,8 +176,9 @@ class PlayerSettings extends Component
         $statesMap->gps = null;
         $statesMap->bar = null;
 
-        $statesMap->phoneRcv = null;
-        $statesMap->phoneReq = null;
+        $statesMap->phoneCompanion = null;
+        $statesMap->phoneIncomingCall = null;
+        $statesMap->phoneOutcomingCall = null;
 
         $statesMap->goods = array();
 
@@ -219,7 +213,7 @@ class PlayerSettings extends Component
     
     private function showLang(MineParkPlayer $player)
     {
-        $message = "Selected locale: " . $player->locale;
+        $message = "Selected locale: " . $player->getLocale();
         $this->getServer()->getLogger()->info($message);
     }
 
@@ -287,7 +281,7 @@ class PlayerSettings extends Component
     
     private function getDonaterLabel(MineParkPlayer $donater)
     {
-        if($donater->isOp()) {
+        if($donater->isOperator()) {
             return "§7⚑РУКОВОДСТВО ПАРКА";
         }
 
@@ -348,7 +342,7 @@ class PlayerSettings extends Component
             $hasCustomPermissions = true;
         }
 
-        if($player->isOp()) {
+        if($player->isOperator()) {
             $player->addAttachment($this->getCore(), Permissions::OPERATOR, true);
             $hasCustomPermissions = true;
         }
@@ -389,5 +383,3 @@ class PlayerSettings extends Component
         }
     }
 }
-
-?>

@@ -1,22 +1,28 @@
 <?php
 namespace minepark\components\administrative;
 
-use minepark\common\player\MineParkPlayer;
-use minepark\components\base\Component;
-use minepark\defaults\ComponentAttributes;
-use minepark\defaults\EventList;
 use minepark\Events;
+use minepark\Providers;
+use minepark\defaults\EventList;
+use minepark\components\base\Component;
+use minepark\common\player\MineParkPlayer;
+use minepark\defaults\ComponentAttributes;
 use pocketmine\event\player\PlayerQuitEvent;
+use minepark\providers\data\UsersDataProvider;
 
 class Tracking extends Component
 {
-    public const CHAT_PREFIX = "§b[Track]";
+    private const CHAT_PREFIX = "§b[Track]";
 
-    public $tracked;
+    private UsersDataProvider $usersProvider;
+
+    public array $tracked = [];
 
     public function initialize()
     {
         Events::registerEvent(EventList::PLAYER_QUIT_EVENT, [$this, "processPlayerQuitEvent"]);
+
+        $this->usersProvider = Providers::getUsersDataProvider();
 
         $this->tracked = [];
     }
@@ -92,8 +98,10 @@ class Tracking extends Component
         ], $player);
     }
 
-    public function actionRP(MineParkPlayer $player, string $action, $rad=7, string $prefix = "[UndefinedRP]")
+    public function actionRP(MineParkPlayer $player, string $action, int $distance = 7, string $prefix = "[UndefinedRP]")
     {
+        $this->saveMessage($player, $prefix, $action);
+
         if (!$this->isTracked($player)) {
             return;
         }
@@ -102,10 +110,10 @@ class Tracking extends Component
 
         $this->broadcastAdmins([
             "$prefix §8 $playerName $action"
-        ], $player);
+        ], $player, $distance);
     }
 
-    private function broadcastAdmins(array $messages=[], MineParkPlayer $sender = null, $rad = 7)
+    private function broadcastAdmins(array $messages = [], MineParkPlayer $sender = null, int $distance = 7)
     {
         $admins = $this->getCore()->getAdministration();
 
@@ -115,7 +123,7 @@ class Tracking extends Component
             }
         } else {
             foreach($admins as $admin) {
-                if ($sender->distance($admin) > $rad) {
+                if ($sender->getLocation()->distance($admin->getLocation()) > $distance) {
                     continue;
                 }
     
@@ -130,5 +138,9 @@ class Tracking extends Component
             $player->sendLocalizedMessage(self::CHAT_PREFIX . $message);
         }
     }
+
+    private function saveMessage(MineParkPlayer $player, string $prefix, string $message)
+    {
+        $this->usersProvider->saveChatMessage($player->getName(), $prefix . " " . $message);
+    }
 }
-?>

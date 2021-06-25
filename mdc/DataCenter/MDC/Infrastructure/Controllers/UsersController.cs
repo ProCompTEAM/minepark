@@ -1,5 +1,6 @@
 ﻿using MDC.Common.Network.HttpWeb;
 using MDC.Data.Dtos;
+using MDC.Data.Dtos.Audit;
 using MDC.Infrastructure.Controllers.Interfaces;
 using MDC.Infrastructure.Providers;
 using MDC.Infrastructure.Providers.Interfaces;
@@ -70,14 +71,28 @@ namespace MDC.Infrastructure.Controllers
             await usersService.Update(user);
         }
 
-        public async Task UpdateJoinStatus(string userName)
+        public async Task UpdateJoinStatus(string userName, RequestContext requestContext)
         {
-            await usersService.UpdateJoinStatus(userName);
+            string unitId = unitProvider.GetCurrentUnitId(requestContext.AccessToken);
+            await usersService.UpdateJoinStatus(unitId, userName);
         }
 
-        public async Task UpdateQuitStatus(string userName)
+        public async Task UpdateQuitStatus(string userName, RequestContext requestContext)
         {
-            await usersService.UpdateQuitStatus(userName);
+            string unitId = unitProvider.GetCurrentUnitId(requestContext.AccessToken);
+            await usersService.UpdateQuitStatus(unitId, userName);
+        }
+
+        public async Task SaveExecutedCommand(ExecutedCommandDto commandDto, RequestContext requestContext)
+        {
+            string unitId = unitProvider.GetCurrentUnitId(requestContext.AccessToken);
+            await usersService.SaveExecutedCommandAuditRecord(unitId, commandDto.Sender, commandDto.Command);
+        }
+
+        public async Task SaveChatMessage(ChatMessageDto messageDto, RequestContext requestContext)
+        {
+            string unitId = unitProvider.GetCurrentUnitId(requestContext.AccessToken);
+            await usersService.SaveChatMessageAuditRecord(unitId, messageDto.Sender, messageDto.Message);
         }
     }
 }

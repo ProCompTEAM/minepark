@@ -1,7 +1,7 @@
 <?php
 namespace minepark\components\vehicles\models;
 
-use pocketmine\level\Level;
+use pocketmine\world\World;
 use pocketmine\math\Vector3;
 use pocketmine\nbt\tag\CompoundTag;
 use minepark\components\vehicles\models\base\BaseCar;
@@ -74,4 +74,3 @@ class GuestCar4 extends BaseCar
         return new Vector3(-0.5, 1.4, 0.2);
     }
 }
-?>

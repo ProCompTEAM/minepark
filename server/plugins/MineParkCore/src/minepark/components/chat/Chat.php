@@ -13,7 +13,7 @@ use minepark\common\player\MineParkPlayer;
 use minepark\defaults\ComponentAttributes;
 use pocketmine\event\player\PlayerChatEvent;
 
-class GameChat extends Component
+class Chat extends Component
 {
     private const CHAT_MESSAGE_PREFIX = "{ChatSaid}";
 
@@ -41,9 +41,13 @@ class GameChat extends Component
 
     public function executeInputData(PlayerChatEvent $event)
     {
-        $event->setCancelled();
+        $event->cancel();
 
         $player = MineParkPlayer::cast($event->getPlayer());
+
+        if(!$player->isAuthorized()) {
+            return;
+        }
 
         if ($player->muted) {
             $player->sendMessage("ChatMute");
@@ -52,8 +56,9 @@ class GameChat extends Component
 
         $message = $event->getMessage();
 
-        if (isset($player->getStatesMap()->phoneRcv)) {
-            return $this->handleInCallMessage($player, $message);
+        if (isset($player->getStatesMap()->phoneCompanion)) {
+            $this->handleInCallMessage($player, $message);
+            return;
         }
 
         $signature = $message[0];
@@ -65,8 +70,6 @@ class GameChat extends Component
         } else {
             $this->sendLocalMessage($player, $message, self::CHAT_MESSAGE_PREFIX, ChatConstants::LOCAL_CHAT_HEAR_RADIUS, true);
         }
-
-        $this->getCore()->sendToMessagesLog($player->getName(), $message);
     }
 
     public function sendLocalMessage(MineParkPlayer $player, string $message, string $prefix = self::CHAT_MESSAGE_PREFIX, int $radius = ChatConstants::LOCAL_CHAT_HEAR_RADIUS, bool $checkForEmotions = false)
@@ -86,8 +89,8 @@ class GameChat extends Component
         $randomPrefix = "§7" . $this->getRandomUserPrefix();
 
         foreach ($this->getServer()->getOnlinePlayers() as $onlinePlayer) {
-            if ($onlinePlayer->distance($player) <= $radius) {
-                $this->sendMessage($onlinePlayer, $message, $player->getLowerCaseName(), $senderFullName, $isFriendRequest, $randomPrefix, $prefix);
+            if ($onlinePlayer->getLocation()->distance($player->getLocation()) <= $radius) {
+                $this->sendMessage($onlinePlayer, $message, strtolower($player->getName()), $senderFullName, $isFriendRequest, $randomPrefix, $prefix);
             }
         }
     }
@@ -98,16 +101,16 @@ class GameChat extends Component
             return $player->sendMessage("ChatRestrictBeginner");
         }
 
-        if (!$this->phone->hasStream($player)) {
+        if (!$this->phone->hasStream($player->getPosition())) {
             return $player->sendMessage("ChatNoStream");
         }
 
-        $generatedMessage = "{GlobalMessagePart1}" . $player->getProfile()->fullName . "{GlobalMessagePart2}$message";
+        $generatedMessage = "{GlobalMessagePart1}" . $player->getProfile()->fullName . " {GlobalMessagePart2}$message";
 
         foreach ($this->getServer()->getOnlinePlayers() as $onlinePlayer) {
             $onlinePlayer = MineParkPlayer::cast($onlinePlayer);
 
-            if ($this->phone->hasStream($onlinePlayer)) {
+            if ($this->phone->hasStream($onlinePlayer->getPosition())) {
                 $onlinePlayer->sendLocalizedMessage($generatedMessage);
             }
         }
@@ -119,7 +122,7 @@ class GameChat extends Component
             return $player->sendMessage("ChatRestrictAdmin");
         }
 
-        $generatedMessage = "{AdminChatPart1} " . $player->getProfile()->fullName . "{AdminChatPart2}$message";
+        $generatedMessage = "{AdminChatPart1}" . $player->getProfile()->fullName . " {AdminChatPart2}$message";
 
         foreach ($this->getServer()->getOnlinePlayers() as $onlinePlayer) {
             $onlinePlayer = MineParkPlayer::cast($onlinePlayer);
@@ -132,14 +135,16 @@ class GameChat extends Component
 
     private function handleInCallMessage(MineParkPlayer $player, string $message)
     {
-        $this->phone->handleInCall($player, $message);
+        $this->phone->handleMessage($player, $message);
+
         $this->sendLocalMessage($player, $message, "{ChatSpeakPhone}");
+        
         $this->tracking->message($player, $message, 7, "[PHONE]");
     }
 
     private function sendMessage(MineParkPlayer $targetPlayer, string $message, string $senderName, string $senderFullName, bool $haveToBeFriends, string $userPrefix, string $chatPrefix)
     {
-        if ($targetPlayer->getLowerCaseName() === $senderName) {
+        if (strtolower($targetPlayer->getName()) === $senderName) {
             $userPrefix = self::SELF_CHAT_PREFIX;
         } else if (str_contains($targetPlayer->getProfile()->people, $senderName)) {
             $userPrefix = "§7" . $senderFullName;
@@ -231,4 +236,3 @@ class GameChat extends Component
         ];
     }
 }
-?>

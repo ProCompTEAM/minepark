@@ -3,12 +3,16 @@ declare(strict_types = 1);
 
 namespace Lolya;
 
+use Lolya\creature\BulletEntity;
+use pocketmine\data\bedrock\EntityLegacyIds;
+use pocketmine\entity\EntityFactory;
+use pocketmine\item\ItemFactory;
+use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\plugin\PluginBase;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\item\Item;
-use pocketmine\entity\Entity;
 use pocketmine\event\Listener;
 
 use Lolya\Loader;
@@ -19,6 +23,8 @@ use minepark\Core;
 use minepark\components\organisations\Organisations;
 use minepark\Providers;
 use minepark\providers\MapProvider;
+use pocketmine\world\World;
+use pocketmine\entity\EntityDataHelper;
 
 class MainClass extends PluginBase implements Listener 
 {
@@ -31,7 +37,7 @@ class MainClass extends PluginBase implements Listener
     public $listener;
     public $loader;
 
-    public function onEnable()
+    public function onEnable() : void
     {
         $this->logger = $this->getServer()->getLogger();
         $this->shoot = new Shoot($this);
@@ -43,7 +49,9 @@ class MainClass extends PluginBase implements Listener
         
         $this->getServer()->getPluginManager()->registerEvents($this->listener, $this);
 
-        Entity::registerEntity("Lolya\creature\BulletEntity");
+        EntityFactory::getInstance()->register(BulletEntity::class, function(World $world, CompoundTag $nbt) : BulletEntity{
+            return new BulletEntity(EntityDataHelper::parseLocation($nbt, $world), null, $nbt);
+        }, ['Bullet', 'minecraft:snowball'], EntityLegacyIds::SNOWBALL);
     }
 
     public function getCore() : Core
@@ -141,12 +149,12 @@ class MainClass extends PluginBase implements Listener
 
     private function checkPlayer(Player $player) : bool
     {
-        if ($player->isOp()) {
+        if ($this->getServer()->isOp($player->getName())) {
             return true;
         }
 
         if ($player->org == Organisations::SECURITY_WORK) {
-            if ($player->distance($this->getMapProvider()->getPointPosition(self::POINT_NAME)) <= self::POINT_DISTANCE) {
+            if ($player->getLocation()->distance($this->getMapProvider()->getPointPosition(self::POINT_NAME)) <= self::POINT_DISTANCE) {
                 return true;
             }
 
@@ -198,7 +206,7 @@ class MainClass extends PluginBase implements Listener
             return false;
         }
 
-        $generateditem = Item::get($weaponId, 0);
+        $generateditem = ItemFactory::getInstance()->get($weaponId);
         $weapon['id'] = intval($weaponId);
         $generateditem->setCustomName($weapon['name']);
         return $generateditem;
@@ -206,7 +214,7 @@ class MainClass extends PluginBase implements Listener
     
     public function getAmmo($gunId)
     {
-        $theAmmo = Item::get(262, 0);
+        $theAmmo = ItemFactory::getInstance()->get(262);
         $gunConfig = $this->getGunData()->getGun(intval($gunId));
 
         if (!$gunConfig) {

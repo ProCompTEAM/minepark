@@ -1,13 +1,13 @@
 <?php
 namespace minepark\models\player;
 
-use pocketmine\level\Position;
+use pocketmine\world\Position;
 use minepark\common\player\MineParkPlayer;
 use minepark\components\vehicles\models\base\BaseCar;
 
 class StatesMap
 {
-    public bool $auth;
+    public bool $authorized;
 
     public bool $isNew;
 
@@ -17,9 +17,11 @@ class StatesMap
 
     public ?string $bar;
 
-    public ?MineParkPlayer $phoneRcv;
+    public ?MineParkPlayer $phoneCompanion;
 
-    public ?MineParkPlayer $phoneReq;
+    public ?MineParkPlayer $phoneIncomingCall;
+
+    public ?MineParkPlayer $phoneOutcomingCall;
 
     public array $goods;
 
@@ -39,4 +41,3 @@ class StatesMap
 
     public ?BossBarSession $bossBarSession;
 }
-?>

@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace Kirill_Poroh;
 
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\utils\Config;
 
 class TBCommand
@@ -48,7 +48,7 @@ class TBCommand
                 
                 else
                 {
-                    $p = $this->main->getServer()->getPlayer($args[0]);
+                    $p = $this->main->getServer()->getPlayerExact($args[0]);
                     $name = ($p == null ? $args[0] : $p->getName());
                     $per = $args[1];
                     
@@ -57,7 +57,7 @@ class TBCommand
                     
                     if(is_numeric($per) and $per > 0)
                     {
-                        if($p !== null) $player->close("", "§cБан выдан от " . $player->getName());
+                        if($p !== null) $player->kick("§cБан выдан от " . $player->getName(), "§cБан выдан от " . $player->getName());
                         
                         $this->config->set(strtolower($name), $this->format($per));
                         $this->config->save();
@@ -95,7 +95,7 @@ class TBCommand
                 
                 $this->config->save();
             }
-            else $player->close("", "§3Вы заблокированы на этом сервере. Установленный период: $per минут.");
+            else $player->kick("§3Вы заблокированы на этом сервере. Установленный период: $per минут.", "§3Вы заблокированы на этом сервере. Установленный период: $per минут.");
         }
     }
 }

@@ -3,7 +3,7 @@ namespace minepark\commands;
 
 use pocketmine\event\Event;
 use minepark\defaults\Sounds;
-use pocketmine\level\Position;
+use pocketmine\world\Position;
 use minepark\defaults\Permissions;
 
 use minepark\commands\base\Command;
@@ -74,4 +74,3 @@ class GetSellerCommand extends Command
         return null;
     }
 }
-?>

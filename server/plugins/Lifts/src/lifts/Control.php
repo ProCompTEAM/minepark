@@ -1,13 +1,13 @@
 <?php  
 namespace lifts; 
 
-use lifts\Run; 
-use pocketmine\Player; 
-use pocketmine\block\Block;
+use pocketmine\block\BlockFactory;
+use pocketmine\block\BlockLegacyIds;
+use pocketmine\player\Player;
 use pocketmine\math\Vector3; 
 use pocketmine\event\Listener;
 use pocketmine\scheduler\Task;
-use pocketmine\level\Position; 
+use pocketmine\world\Position;
 use pocketmine\command\Command; 
 use pocketmine\utils\TextFormat;
 use pocketmine\plugin\PluginBase; 
@@ -16,7 +16,9 @@ use pocketmine\event\player\PlayerInteractEvent;
 
 class Control extends PluginBase implements Listener 
 {
-    public function onEnable()
+    private $run;
+
+    public function onEnable() : void
     { 
         if(!file_exists($this->getDefaultDir())) mkdir($this->getDefaultDir()); 
         if(!file_exists($this->getDefaultDir()."speed.txt")) file_put_contents($this->getDefaultDir()."speed.txt", "2"); 
@@ -43,7 +45,7 @@ class Control extends PluginBase implements Listener
         $x = $pos->getX();
         $y = $pos->getY()-1;
         $z = $pos->getZ();
-        $w = $pos->getLevel(); 
+        $w = $pos->getWorld();
 
         $allpos = array( 
             new Position($x, $y, $z, $w), 
@@ -57,12 +59,12 @@ class Control extends PluginBase implements Listener
             new Position($x+1, $y, $z-1, $w)); 
 
         foreach($allpos as $i) { 
-            $w->setBlock(new Vector3($i->getX(), $i->getY(), $i->getZ()), Block::get(Block::QUARTZ_BLOCK)); 
+            $w->setBlock(new Vector3($i->getX(), $i->getY(), $i->getZ()), BlockFactory::getInstance()->get(BlockLegacyIds::QUARTZ_BLOCK));
         }
-        $w->setBlock(new Vector3($x, $y, $z), Block::get(Block::IRON_BLOCK)); 
+        $w->setBlock(new Vector3($x, $y, $z), BlockFactory::getInstance()->get(BlockLegacyIds::IRON_BLOCK));
         
-        foreach($allpos as $i) { $w->setBlock(new Vector3($i->getX(), $i->getY()+1, $i->getZ()), Block::get(Block::AIR)); } 
-        foreach($allpos as $i) { $w->setBlock(new Vector3($i->getX(), $i->getY()-1, $i->getZ()), Block::get(Block::AIR)); } 
+        foreach($allpos as $i) { $w->setBlock(new Vector3($i->getX(), $i->getY()+1, $i->getZ()), BlockFactory::getInstance()->get(BlockLegacyIds::AIR)); }
+        foreach($allpos as $i) { $w->setBlock(new Vector3($i->getX(), $i->getY()-1, $i->getZ()), BlockFactory::getInstance()->get(BlockLegacyIds::AIR)); }
     } 
     
     public function clear(Position $pos) 
@@ -70,7 +72,7 @@ class Control extends PluginBase implements Listener
         $x = $pos->getX();
         $y = $pos->getY()-1;
         $z = $pos->getZ();
-        $w = $pos->getLevel(); 
+        $w = $pos->getWorld();
 
         $allpos = array( 
             new Position($x, $y, $z, $w), 
@@ -85,7 +87,7 @@ class Control extends PluginBase implements Listener
         );
 
         foreach($allpos as $i){
-            $w->setBlock(new Vector3($i->getX(), $i->getY(), $i->getZ()), Block::get(Block::AIR));
+            $w->setBlock(new Vector3($i->getX(), $i->getY(), $i->getZ()), BlockFactory::getInstance()->get(BlockLegacyIds::AIR));
         }
     } 
     
@@ -95,56 +97,57 @@ class Control extends PluginBase implements Listener
             if(!isset($cmds[0])) return false;
 
             switch($cmds[0]) { 
-                case "set": 
-                if(!Empty($cmds[1])) { 
-                $this->run->create($cmds[1], $sender->getPosition()); $sender->sendMessage("LiftsSet"); 
-                } 
-                else $this->showError($sender, 1); 
-                break; 
-                
-                case "unset": 
-                if(!Empty($cmds[1])) { 
-                $this->run->remove($cmds[1]); 
-                $sender->sendMessage("LiftsUnset"); 
-                } 
-                else $this->showError($sender, 1); 
-                break; 
-                
-                case "reload": 
-                $this->run->loadAll(); 
-                $sender->sendMessage("LiftsReload"); 
-                break; 
-                
-                case "list": 
-                $list = $this->run->scndr($this->getDefaultDir()."db/"); 
-                $text = null; 
-                foreach($list as $item) { 
-                    $text .= substr($item, 0, -4)." ; "; 
-                } 
-                $sender->sendMessage("LiftsList"); 
-                break; 
-                
-                case "speed": 
-                if($cmds[1] > 0 and $cmds[1] < 5) { 
-                    $sender->sendMessage("LiftsSpeed1"); 
-                    $sender->sendMessage("LiftsSpeed2"); 
-                    $dir = $this->getDefaultDir()."speed.txt"; file_put_contents($dir, $cmds[1]); 
-                } 
+                case "set":
+
+                if(!Empty($cmds[1])) {
+                $this->run->create($cmds[1], $sender->getPosition()); $sender->sendMessage("LiftsSet");
+                }
+                else $this->showError($sender, 1);
+                break;
+
+                case "unset":
+                if(!Empty($cmds[1])) {
+                $this->run->remove($cmds[1]);
+                $sender->sendMessage("LiftsUnset");
+                }
+                else $this->showError($sender, 1);
+                break;
+
+                case "reload":
+                $this->run->loadAll();
+                $sender->sendMessage("LiftsReload");
+                break;
+
+                case "list":
+                $list = $this->run->scndr($this->getDefaultDir()."db/");
+                $text = null;
+                foreach($list as $item) {
+                    $text .= substr($item, 0, -4)." ; ";
+                }
+                $sender->sendMessage("LiftsList");
+                break;
+
+                case "speed":
+                if($cmds[1] > 0 and $cmds[1] < 5) {
+                    $sender->sendMessage("LiftsSpeed1");
+                    $sender->sendMessage("LiftsSpeed2");
+                    $dir = $this->getDefaultDir()."speed.txt"; file_put_contents($dir, $cmds[1]);
+                }
                 else $this->showError($sender, 3);
-                break; 
-                
-                case "help": 
-                $menu = "LiftsHelp1"; 
-                $menu .= "LiftsHelp2"; 
-                $menu .= "LiftsHelp3"; 
-                $menu .= "LiftsHelp4"; 
-                $menu .= "LiftsHelp5"; 
-                $menu .= "LiftsHelp6"; 
-                $menu .= "LiftsHelp7"; 
-                $menu .= "LiftsHelp8"; 
-                $menu .= "LiftsHelp9"; 
-                $sender->sendMessage($menu); 
-                break; 
+                break;
+
+                case "help":
+                $menu = "LiftsHelp1";
+                $menu .= "LiftsHelp2";
+                $menu .= "LiftsHelp3";
+                $menu .= "LiftsHelp4";
+                $menu .= "LiftsHelp5";
+                $menu .= "LiftsHelp6";
+                $menu .= "LiftsHelp7";
+                $menu .= "LiftsHelp8";
+                $menu .= "LiftsHelp9";
+                $sender->sendMessage($menu);
+                break;
             } 
         }
 
@@ -158,17 +161,17 @@ class Control extends PluginBase implements Listener
         $p = $e->getPlayer(); 
         $b = $e->getBlock(); 
 
-        $x = floor($b->getX()); 
-        $y = floor($b->getY()); 
-        $z = floor($b->getZ());
-        $wname = $p->getLevel()->getName(); 
+        $x = floor($b->getPos()->getX());
+        $y = floor($b->getPos()->getY());
+        $z = floor($b->getPos()->getZ());
+        $wname = $p->getWorld()->getDisplayName();
 
         $form1 = "$x:$y:$z:$wname";
 
         if($e->getBlock()->getId() == 42 and is_array($list)) { 
             foreach($list as $i) { 
                 $x = $i->getX(); $y = $i->getY()-1; $z = $i->getZ(); 
-                $wname = $i->getLevel()->getName(); $form2 = "$x:$y:$z:$wname"; 
+                $wname = $i->getWorld()->getDisplayName(); $form2 = "$x:$y:$z:$wname";
                 if($form1 == $form2) { 
                     $this->run->start($i, "down"); 
                     $p->sendMessage("LiftsDown"); 
@@ -176,18 +179,18 @@ class Control extends PluginBase implements Listener
                 } 
             }
             
-            $pos = new Position($b->getX(), $b->getY(), $b->getZ(), $p->getLevel()); 
+            $pos = new Position($b->getPos()->getX(), $b->getPos()->getY(), $b->getPos()->getZ(), $p->getWorld());
             
             for ($a=0; $a < 124; $a++) { 
-                $block = $pos->getLevel()->getBlock(new Vector3($pos->getX(), $pos->getY()+$a+1, $pos->getZ())); 
+                $block = $pos->getWorld()->getBlock(new Vector3($pos->getX(), $pos->getY()+$a+1, $pos->getZ()));
                 if($block->getName() != "Air") break; 
             }
 
-            $mpos = new Position($block->getX(), $block->getY()+1, $block->getZ(), $p->getLevel());
+            $mpos = new Position($block->getPos()->getX(), $block->getPos()->getY()+1, $block->getPos()->getZ(), $p->getWorld());
 
             foreach($list as $i) { 
                 if($i->getX() == $mpos->getX() and $i->getY() == $mpos->getY() and $i->getZ() == $mpos->getZ() 
-                    and $i->getLevel()->getName() == $mpos->getLevel()->getName()) 
+                    and $i->getWorld()->getDisplayName() == $mpos->getWorld()->getDisplayName())
                 { 
                     $this->run->start($mpos, "up"); $p->sendMessage("LiftsUp"); 
                 } 
@@ -210,21 +213,23 @@ class Control extends PluginBase implements Listener
     { 
         $plist = array(); 
         foreach($this->getServer()->getOnlinePlayers() as $p) {
-            if($p->distance($pos) < 2) array_push($plist, $p); 
+            if($p->getPosition()->distance($pos) < 2) array_push($plist, $p);
         } 
         return $plist; 
     } 
 } 
 
 class Work extends Task 
-{ 
+{
+    private Control $p;
+
     public function __construct(Control $plugin)
     {
         $this->p = $plugin; 
         $this->p->work = $this; 
     } 
     
-    public function onRun($currentTick) 
+    public function onRun() : void
     { 
         foreach($this->p->lifts as $key => $i) 
         { 
@@ -237,7 +242,7 @@ class Work extends Task
                     unset($this->p->lifts[$key]); 
                     return; 
                 } 
-                $pos = new Position($i[0]->getX(), $y,$i[0]->getZ(), $i[0]->getLevel()); 
+                $pos = new Position($i[0]->getX(), $y,$i[0]->getZ(), $i[0]->getWorld());
                 $this->p->move($pos); 
                 $this->p->lifts[$key][2]--;
             } else { 
@@ -245,13 +250,13 @@ class Work extends Task
 
                 if($this->p->lifts[$key][2] == 1) $this->p->clear($i[0]); 
                 if($this->p->lifts[$key][2] == $i[4]) { 
-                    $posend = new Position($i[1]->getX(), $i[1]->getY()+1,$i[1]->getZ(), $i[1]->getLevel()); 
+                    $posend = new Position($i[1]->getX(), $i[1]->getY()+1,$i[1]->getZ(), $i[1]->getWorld());
                     $this->p->move($posend); 
                     unset($this->p->lifts[$key]); 
                     return; 
                 }
 
-                $pos = new Position($i[0]->getX(), $y,$i[0]->getZ(), $i[0]->getLevel()); 
+                $pos = new Position($i[0]->getX(), $y,$i[0]->getZ(), $i[0]->getWorld());
                 $this->p->move($pos);  
                 $this->liftControl($pos); 
                 $this->p->lifts[$key][2]++;  

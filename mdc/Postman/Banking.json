@@ -1,0 +1,422 @@
+{
+	"info": {
+		"_postman_id": "aa71c26c-cec6-4242-b709-4c0b2e8d13c7",
+		"name": "POST Banking",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get cash",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\"Ivan_Ivanov\""
+				},
+				"url": {
+					"raw": "http://127.0.0.1:19000/banking/get-cash",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "19000",
+					"path": [
+						"banking",
+						"get-cash"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get debit",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\"Ivan_Ivanov\""
+				},
+				"url": {
+					"raw": "http://127.0.0.1:19000/banking/get-debit",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "19000",
+					"path": [
+						"banking",
+						"get-debit"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get credit",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\"Ivan_Ivanov\""
+				},
+				"url": {
+					"raw": "http://127.0.0.1:19000/banking/get-credit",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "19000",
+					"path": [
+						"banking",
+						"get-credit"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all money",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\"Ivan_Ivanov\""
+				},
+				"url": {
+					"raw": "http://127.0.0.1:19000/banking/get-all-money",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "19000",
+					"path": [
+						"banking",
+						"get-all-money"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Reduce cash",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Ivan_Ivanov\",\r\n    \"amount\": 1000\r\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:19000/banking/reduce-cash",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "19000",
+					"path": [
+						"banking",
+						"reduce-cash"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Reduce debit",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Ivan_Ivanov\",\r\n    \"amount\": 1000\r\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:19000/banking/reduce-debit",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "19000",
+					"path": [
+						"banking",
+						"reduce-debit"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Reduce credit",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Ivan_Ivanov\",\r\n    \"amount\": 1000\r\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:19000/banking/reduce-credit",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "19000",
+					"path": [
+						"banking",
+						"reduce-credit"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Give cash",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Ivan_Ivanov\",\r\n    \"amount\": 1000\r\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:19000/banking/give-cash",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "19000",
+					"path": [
+						"banking",
+						"give-cash"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Give debit",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Ivan_Ivanov\",\r\n    \"amount\": 1000\r\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:19000/banking/give-debit",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "19000",
+					"path": [
+						"banking",
+						"give-debit"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Give credit",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Ivan_Ivanov\",\r\n    \"amount\": 1000\r\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:19000/banking/give-credit",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "19000",
+					"path": [
+						"banking",
+						"give-credit"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Account exists",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\"Ivan_Ivanov\""
+				},
+				"url": {
+					"raw": "http://127.0.0.1:19000/banking/exists",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "19000",
+					"path": [
+						"banking",
+						"exists"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get payment method",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\"Ivan_Ivanov\""
+				},
+				"url": {
+					"raw": "http://127.0.0.1:19000/banking/get-payment-method",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "19000",
+					"path": [
+						"banking",
+						"get-payment-method"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Switch payment method",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Ivan_Ivanov\",\r\n    \"method\": 1\r\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:19000/banking/switch-payment-method",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "19000",
+					"path": [
+						"banking",
+						"switch-payment-method"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get unit balance",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://127.0.0.1:19000/banking/get-unit-balance",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "19000",
+					"path": [
+						"banking",
+						"get-unit-balance"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "value",
+				"value": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+				"type": "string"
+			},
+			{
+				"key": "key",
+				"value": "Authorization",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

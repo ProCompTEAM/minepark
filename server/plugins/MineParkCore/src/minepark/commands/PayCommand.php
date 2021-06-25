@@ -9,7 +9,7 @@ use minepark\defaults\Permissions;
 use minepark\commands\base\Command;
 use minepark\common\player\MineParkPlayer;
 use minepark\Components;
-use minepark\components\chat\GameChat;
+use minepark\components\chat\Chat;
 use minepark\providers\BankingProvider;
 
 class PayCommand extends Command
@@ -20,13 +20,13 @@ class PayCommand extends Command
 
     private BankingProvider $bankingProvider;
 
-    private GameChat $gameChat;
+    private Chat $chat;
 
     public function __construct()
     {
         $this->bankingProvider = Providers::getBankingProvider();
 
-        $this->gameChat = Components::getComponent(GameChat::class);
+        $this->chat = Components::getComponent(Chat::class);
     }
 
     public function getCommand() : array
@@ -52,20 +52,20 @@ class PayCommand extends Command
             return;
         }
 
-        $players = $this->getCore()->getRegionPlayers($player, self::DISTANCE);
+        $players = $this->getCore()->getRegionPlayers($player->getPosition(), self::DISTANCE);
 
         if(count($players) > 2) {
             $player->sendMessage("CommandPayCountPlayer");
             return;
         }
 
-        $this->gameChat->sendLocalMessage($player, "{CommandPayTake}", "§d : ", self::DISTANCE);
+        $this->chat->sendLocalMessage($player, "{CommandPayTake}", "§d : ", self::DISTANCE);
         foreach($players as $p) {
             if($p === $player) {
                 continue;
             } else {
                 if($this->bankingProvider->reduceCash($player, $args[0])) {
-                    $this->gameChat->sendLocalMessage($player, "{CommandPayPay}", "§d", self::DISTANCE);
+                    $this->chat->sendLocalMessage($player, "{CommandPayPay}", "§d", self::DISTANCE);
                     $this->bankingProvider->giveCash($p, $args[0]);
                 } else {
                     $player->sendMessage("CommandPayNoMoney");
@@ -73,9 +73,8 @@ class PayCommand extends Command
             }
         }
         
-        $this->gameChat->sendLocalMessage($player, "{CommandPayPut}", "§d", self::DISTANCE);
+        $this->chat->sendLocalMessage($player, "{CommandPayPut}", "§d", self::DISTANCE);
         
-        $event->setCancelled();
+        $event->cancel();
     }
 }
-?>

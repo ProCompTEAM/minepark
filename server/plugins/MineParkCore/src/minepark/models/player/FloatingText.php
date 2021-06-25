@@ -1,8 +1,8 @@
 <?php
 namespace minepark\models\player;
 
-use pocketmine\level\Position;
-use pocketmine\level\particle\FloatingTextParticle;
+use pocketmine\world\Position;
+use pocketmine\world\particle\FloatingTextParticle;
 
 class FloatingText
 {
@@ -16,4 +16,3 @@ class FloatingText
 
     public FloatingTextParticle $particle;
 }
-?>

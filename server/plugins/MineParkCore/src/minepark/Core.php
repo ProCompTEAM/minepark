@@ -6,7 +6,7 @@ use minepark\Providers;
 use minepark\common\MDC;
 use minepark\defaults\Files;
 use pocketmine\event\Listener;
-use pocketmine\level\Position;
+use pocketmine\world\Position;
 use jojoe77777\FormAPI\FormAPI;
 use minepark\defaults\Defaults;
 use pocketmine\command\Command;
@@ -30,7 +30,7 @@ class Core extends PluginBase implements Listener
         return self::$_instance;
     }
 
-    public function onEnable()
+    public function onEnable(): void
     {
         Core::$_instance = $this;
 
@@ -48,9 +48,11 @@ class Core extends PluginBase implements Listener
         $this->initializeServiceModule();
     }
 
-    public function onDisable()
+    public function onDisable(): void
     {
-        $this->transferPlayersToLobby();
+        if(Defaults::LOBBY_TRANSFER_ENABLED) {
+            $this->transferPlayersToLobby();
+        }
     }
 
     public function initializeEvents()
@@ -131,18 +133,12 @@ class Core extends PluginBase implements Listener
         return false;
     }
 
-    public function sendToMessagesLog(string $prefix, string $message)
-    {
-        //TODO: replace to MDC Audit
-        file_put_contents(Files::MESSAGES_LOG_FILE, (PHP_EOL . "(" . $prefix . ") - " . $message), FILE_APPEND);
-    }
-
     public function getAdministration(bool $namesOnly = false) : array
     {
         $list = [];
 
         foreach($this->getServer()->getOnlinePlayers() as $player) {
-            if ($player->hasPermission(Permissions::ADMINISTRATOR) or $player->isOp()) {
+            if ($player->hasPermission(Permissions::ADMINISTRATOR) or $player->getServer()->isOp($player)) {
                 $namesOnly ? array_push($list, $player->getName()) : array_push($list, $player);
             }
         }
@@ -156,7 +152,7 @@ class Core extends PluginBase implements Listener
         $players = array();
 
         foreach($this->getServer()->getOnlinePlayers() as $onlinePlayer) {
-            if($onlinePlayer->distance($position) < $distance) {
+            if($onlinePlayer->getPosition()->distance($position) < $distance) {
                 array_push($players, $onlinePlayer);
             }
         }
@@ -205,4 +201,3 @@ class Core extends PluginBase implements Listener
         }
     }
 }
-?>

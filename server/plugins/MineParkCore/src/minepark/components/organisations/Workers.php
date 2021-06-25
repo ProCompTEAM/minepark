@@ -2,15 +2,14 @@
 namespace minepark\components\organisations;
 
 use minepark\Providers;
-use pocketmine\event\Event;
-use pocketmine\entity\Effect;
 
-use pocketmine\level\Position;
-use pocketmine\entity\EffectInstance;
+use pocketmine\entity\effect\VanillaEffects;
+use pocketmine\world\Position;
+use pocketmine\entity\effect\EffectInstance;
 use minepark\common\player\MineParkPlayer;
 use minepark\Components;
 use minepark\components\base\Component;
-use minepark\components\chat\GameChat;
+use minepark\components\chat\Chat;
 use minepark\defaults\ComponentAttributes;
 use minepark\defaults\EventList;
 use minepark\defaults\MapConstants;
@@ -27,7 +26,7 @@ class Workers extends Component
 
     private BankingProvider $bankingProvider;
 
-    private GameChat $gameChat;
+    private Chat $chat;
     
     public function initialize()
     {
@@ -54,7 +53,7 @@ class Workers extends Component
 
         $this->bankingProvider = Providers::getBankingProvider();
 
-        $this->gameChat = Components::getComponent(GameChat::class);
+        $this->chat = Components::getComponent(Chat::class);
     }
 
     public function getAttributes() : array
@@ -67,11 +66,11 @@ class Workers extends Component
     public function sign(SignChangeEvent $event)
     {
         $player = $event->getPlayer();
-        $lns = $event->getLines();
+        $lns = $event->getNewText();
 
-        if ($lns[0] == "[workers1]" and $player->isOp()) {
+        if ($lns[0] == "[workers1]" and $player->isOperator()) {
             $this->handleWorker1($event);
-        } elseif ($lns[0] == "[workers2]" and $player->isOp()) {
+        } elseif ($lns[0] == "[workers2]" and $player->isOperator()) {
             $this->handleWorker2($event);
         }
     }
@@ -124,14 +123,16 @@ class Workers extends Component
     
     private function handleBoxTake(MineParkPlayer $player)
     {
-        $player->addEffect(new EffectInstance(Effect::getEffect(2), 20 * 9999, 3));
-
+        $effectManager = $player->getEffects();
+        $effect = VanillaEffects::fromString("slowness");
+        $instance = new EffectInstance($effect, 20 * 9999, 3, true);
+        $effectManager->add($instance);
         $box = $this->words[mt_rand(0, count($this->words))]; 
         $player->getStatesMap()->loadWeight = mt_rand(1, 12); 
         
         $player->sendMessage("§7Найдите точку разгрузки и положите ящик!");
         
-        $this->gameChat->sendLocalMessage($player, "§8(§dв руках ящик с надписью | $box |§8)", "§d : ", 12);
+        $this->chat->sendLocalMessage($player, "§8(§dв руках ящик с надписью | $box |§8)", "§d : ", 12);
     
         $player->getStatesMap()->bar = "§aВ руках ящик около " . $player->getStatesMap()->loadWeight . " кг";
     }
@@ -155,13 +156,12 @@ class Workers extends Component
     
     private function handlePutBox(MineParkPlayer $player)
     {
-        $player->removeAllEffects();
+        $player->getEffects()->clear();
 
-        $this->gameChat->sendLocalMessage($player, "§8(§dЯщик расположился на складе§8)", "§d : ", 12);
+        $this->chat->sendLocalMessage($player, "§8(§dЯщик расположился на складе§8)", "§d : ", 12);
         $this->bankingProvider->givePlayerMoney($player, 20 * $player->getStatesMap()->loadWeight);
 
         $player->getStatesMap()->loadWeight = null; 
         $player->getStatesMap()->bar = null;
     }
 }
-?>

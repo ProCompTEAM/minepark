@@ -11,6 +11,10 @@ namespace MDC.Common.Mapping
             CreateMap<User, UserDto>().ReverseMap();
 
             CreateMap<MapPoint, MapPointDto>().ReverseMap();
+
+            CreateMap<FloatingText, FloatingTextDto>().ReverseMap();
+
+            CreateMap<Credentials, CredentialsDto>().ReverseMap();
         }
     }
 }

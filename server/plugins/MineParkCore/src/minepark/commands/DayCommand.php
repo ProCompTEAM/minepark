@@ -2,11 +2,11 @@
 namespace minepark\commands;
 
 use pocketmine\event\Event;
-use pocketmine\level\Level;
 
 use minepark\defaults\Permissions;
 use minepark\commands\base\Command;
 use minepark\common\player\MineParkPlayer;
+use pocketmine\world\World;
 
 class DayCommand extends Command
 {
@@ -29,8 +29,7 @@ class DayCommand extends Command
 
     public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
-        $player->getLevel()->setTime(Level::TIME_DAY);
-        $player->sendMessage("§9⌚ Вы включили §dдень §9в игровом мире §e" . $player->getLevel()->getName());
+        $player->getWorld()->setTime(World::TIME_DAY);
+        $player->sendMessage("§9⌚ Вы включили §dдень §9в игровом мире §e" . $player->getWorld()->getDisplayName());
     }
 }
-?>

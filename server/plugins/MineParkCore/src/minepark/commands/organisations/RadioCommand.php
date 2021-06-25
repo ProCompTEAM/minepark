@@ -51,4 +51,3 @@ class RadioCommand extends OrganisationsCommand
         }
     }
 }
-?>

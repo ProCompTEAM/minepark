@@ -4,6 +4,7 @@ namespace minepark\components\organisations;
 use minepark\Tasks;
 use minepark\Providers;
 use minepark\defaults\TimeConstants;
+use minepark\defaults\PayDayConstants;
 use minepark\components\base\Component;
 use minepark\common\player\MineParkPlayer;
 use minepark\defaults\ComponentAttributes;
@@ -38,11 +39,15 @@ class PayDay extends Component
             $special = 0;
 
             if(!$player->getStatesMap()->isNew) {
-                $special += 200;
+                $special += PayDayConstants::NEW_PLAYER_SPECIAL;
             }
 
             if($player->getProfile()->organisation == Organisations::NO_WORK) {
-                $special += 100;
+                $special += PayDayConstants::WORKLESS_SPECIAL;
+            }
+
+            if($player->isAdministrator()) {
+                $special += PayDayConstants::ADMINISTRATOR_SPECIAL;
             }
 
             if($player->existsAttribute(PlayerAttributes::BOSS)) {
@@ -71,7 +76,7 @@ class PayDay extends Component
         $form .= "\n§8- - - -== -==- ==- - - -";
         $form .= "\n §3☛ §fИтого: §2" . $summ;
 
-        if($player->getStatesMap()->auth) {
+        if($player->isAuthorized()) {
             $player->sendMessage($form);
         }
     }
@@ -81,22 +86,21 @@ class PayDay extends Component
         switch($player->getProfile()->organisation)
         {
             case Organisations::TAXI_WORK: 
-                return 200;
+                return PayDayConstants::TAXI_WORK_SALARY;
             case Organisations::DOCTOR_WORK: 
-                return 600;
+                return PayDayConstants::DOCTOR_WORK_SALARY;
             case Organisations::LAWYER_WORK: 
-                return 500;
+                return PayDayConstants::LAWYER_WORK_SALARY;
             case Organisations::SECURITY_WORK: 
-                return 300;
+                return PayDayConstants::SECURITY_WORK_SALARY;
             case Organisations::SELLER_WORK: 
-                return 400;
+                return PayDayConstants::SELLER_WORK_SALARY;
             case Organisations::GOVERNMENT_WORK:
-                return 2000;
+                return PayDayConstants::GOVERNMENT_WORK_SALARY;
             case Organisations::EMERGENCY_WORK: 
-                return 500;
+                return PayDayConstants::EMERGENCY_WORK_SALARY;
         }
 
         return 0;
     }
 }
-?>

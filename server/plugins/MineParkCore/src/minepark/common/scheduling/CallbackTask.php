@@ -21,9 +21,8 @@ class CallbackTask extends Task
         return $this->callable;
     }
 
-    public function onRun($currentTicks)
+    public function onRun(): void
     {
         call_user_func_array($this->callable, $this->arguments);
     }
 }
-?>

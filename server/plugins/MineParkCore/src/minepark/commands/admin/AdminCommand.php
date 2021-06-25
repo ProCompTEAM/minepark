@@ -130,7 +130,7 @@ class AdminCommand extends Command
         }
 
         $oid = $args[2];
-        $targetPlayer = MineParkPlayer::cast($this->getServer()->getPlayer($args[1]));
+        $targetPlayer = MineParkPlayer::cast($this->getServer()->getPlayerExact($args[1]));
         
         if($targetPlayer === null) {
             return;
@@ -147,7 +147,7 @@ class AdminCommand extends Command
     {
         $rad = 7;
         
-        $list = $this->getCore()->getRegionPlayers($player, $rad);
+        $list = $this->getCore()->getRegionPlayers($player->getPosition(), $rad);
 
         $f = "AdminCmdPlayerNear";
         foreach($list as $p) {
@@ -162,7 +162,7 @@ class AdminCommand extends Command
             return;
         }
 
-        $targetPlayer = MineParkPlayer::cast($this->getServer()->getPlayer($args[1]));
+        $targetPlayer = MineParkPlayer::cast($this->getServer()->getPlayerExact($args[1]));
 
         if($targetPlayer === null) {
             return;
@@ -179,7 +179,7 @@ class AdminCommand extends Command
             return;
         }
 
-        $targetPlayer = MineParkPlayer::cast($this->getServer()->getPlayer($args[1]));
+        $targetPlayer = MineParkPlayer::cast($this->getServer()->getPlayerExact($args[1]));
 
         if($targetPlayer === null) {
             return;
@@ -194,7 +194,7 @@ class AdminCommand extends Command
             return;
         }
 
-        $targetPlayer = $this->getServer()->getPlayer($args[1]);
+        $targetPlayer = $this->getServer()->getPlayerExact($args[1]);
         $targetPlayer = MineParkPlayer::cast($targetPlayer);
 
         if($targetPlayer === null or !isset($args[2])) {
@@ -212,7 +212,7 @@ class AdminCommand extends Command
             return;
         }
 
-        $targetPlayer = $this->getServer()->getPlayer($args[1]);
+        $targetPlayer = $this->getServer()->getPlayerExact($args[1]);
         $targetPlayer = MineParkPlayer::cast($targetPlayer);
         
         if($targetPlayer === null or !isset($args[2])) {
@@ -248,7 +248,7 @@ class AdminCommand extends Command
             return;
         }
 
-        $target = $this->getServer()->getPlayer($args[1]);
+        $target = $this->getServer()->getPlayerExact($args[1]);
 
         if ($target === null) {
             $player->sendMessage("TrackerPlayerNotExists");
@@ -269,7 +269,7 @@ class AdminCommand extends Command
             return;
         }
 
-        $target = $this->getServer()->getPlayer($args[1]);
+        $target = $this->getServer()->getPlayerExact($args[1]);
 
         if ($target === null) {
             $player->sendMessage("TrackerPlayerNotExists");
@@ -302,4 +302,3 @@ class AdminCommand extends Command
         return true;
     }
 }
-?>

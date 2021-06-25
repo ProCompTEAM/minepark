@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MDC.Data.Models;
 using MDCDatabase = MDC.Data.Database;
+using MDC.Data.Models.Audit;
 
 namespace MDC.Data
 {
@@ -18,7 +19,15 @@ namespace MDC.Data
 
         public DbSet<UnitBalance> UnitBalances { get; set; }
 
+        public DbSet<FloatingText> FloatingTexts { get; set; }
+
         public DbSet<MoneyTransactionAuditRecord> MoneyTransactionAuditRecords { get; set; }
+
+        public DbSet<ExecutedCommandAuditRecord> ExecutedCommandAuditRecords { get; set; }
+
+        public DbSet<ChatMessageAuditRecord> ChatMessageAuditRecords { get; set; }
+
+        public DbSet<UserTrafficAuditRecord> UserTrafficAuditRecords { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

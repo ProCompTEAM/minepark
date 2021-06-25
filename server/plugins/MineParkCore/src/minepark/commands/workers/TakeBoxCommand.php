@@ -38,9 +38,8 @@ class TakeBoxCommand extends Command
 
     public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
-        $this->organisations->workers->takebox($player);
+        $this->organisations->getWorkers()->takebox($player);
         
         $player->sendSound(Sounds::ROLEPLAY);
     }
 }
-?>

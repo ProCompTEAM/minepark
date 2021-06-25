@@ -1,10 +1,10 @@
 using MDC.Data.Enums;
-using MDC.Data.Models;
 using MDC.Infrastructure.Services.Audit.Interfaces;
 using MDC.Infrastructure.Services.Interfaces;
 using MDC.Infrastructure.Providers;
 using MDC.Infrastructure.Providers.Interfaces;
 using System.Threading.Tasks;
+using MDC.Data.Models.Audit;
 
 namespace MDC.Infrastructure.Services.Audit
 {
@@ -17,17 +17,17 @@ namespace MDC.Infrastructure.Services.Audit
             databaseProvider = Store.GetProvider<DatabaseProvider>();
         }
 
-        public async Task ProcessGiveOperation(string userName, string unitId, double amount, PaymentMethod paymentMethod)
+        public async Task ProcessGiveOperation(string unitId, string userName, double amount, PaymentMethod paymentMethod)
         {
             await CreateTransaction(userName, unitId, amount, paymentMethod, TransactionType.Give);
         }
 
-        public async Task ProcessReduceOperation(string userName, string unitId, double amount, PaymentMethod paymentMethod)
+        public async Task ProcessReduceOperation(string unitId, string userName, double amount, PaymentMethod paymentMethod)
         {
-            await CreateTransaction(userName, unitId, amount, paymentMethod, TransactionType.Reduce);
+            await CreateTransaction(unitId, userName, amount, paymentMethod, TransactionType.Reduce);
         }
 
-        private async Task CreateTransaction(string userName, string unitId, double amount, PaymentMethod targetAccount, TransactionType transactionType)
+        private async Task CreateTransaction(string unitId, string userName, double amount, PaymentMethod targetAccount, TransactionType transactionType)
         {
             MoneyTransactionAuditRecord moneyTransactionAuditRecord = new MoneyTransactionAuditRecord
             {

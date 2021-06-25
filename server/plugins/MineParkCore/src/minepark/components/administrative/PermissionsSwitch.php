@@ -66,7 +66,7 @@ class PermissionsSwitch extends Component
         $profile = $player->getProfile();
 
         $form->setTitle("§eНастройка разрешений");
-        $form->addToggle("§eOP", $player->isOp());
+        $form->addToggle("§eOP", $player->isOperator());
         $form->addToggle("§eАдминистратор", $profile->administrator);
         $form->addToggle("§eСтроитель", $profile->builder);
         $form->addToggle("§eРиэлтор", $profile->realtor);
@@ -87,11 +87,12 @@ class PermissionsSwitch extends Component
 
         if($toggleOp) {
             $this->removeOperator($player->getName());
+            $this->getServer()->removeOp($player->getName());
         } else {
             $this->addOperator($player->getName());
+            $this->getServer()->addOp($player->getName());
         }
 
-        $player->setOp($toggleOp);
         $player->getProfile()->administrator = $toggleAdmin;
         $player->getProfile()->builder = $toggleBuilder;
         $player->getProfile()->realtor = $toggleRealtor;
@@ -101,4 +102,3 @@ class PermissionsSwitch extends Component
         $player->kick("§eИзменения применены.");
     }
 }
-?>

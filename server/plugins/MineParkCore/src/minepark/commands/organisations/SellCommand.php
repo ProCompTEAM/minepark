@@ -3,15 +3,15 @@ namespace minepark\commands\organisations;
 
 use minepark\commands\base\OrganisationsCommand;
 use minepark\Providers;
-use pocketmine\item\Item;
 
 use pocketmine\event\Event;
 use minepark\defaults\Permissions;
 use minepark\common\player\MineParkPlayer;
 use minepark\Components;
-use minepark\components\chat\GameChat;
+use minepark\components\chat\Chat;
 use minepark\components\organisations\Organisations;
 use minepark\defaults\MapConstants;
+use pocketmine\item\ItemFactory;
 
 class SellCommand extends OrganisationsCommand
 {
@@ -19,11 +19,11 @@ class SellCommand extends OrganisationsCommand
 
     private const MARKETPLACE_DISTANCE = 15;
 
-    private GameChat $gameChat;
+    private Chat $chat;
 
     public function __construct()
     {
-        $this->gameChat = Components::getComponent(GameChat::class);
+        $this->chat = Components::getComponent(Chat::class);
     }
 
     public function getCommand() : array
@@ -47,7 +47,7 @@ class SellCommand extends OrganisationsCommand
             return;
         }
 
-        $this->gameChat->sendLocalMessage($player, "{CommandSellKey}", "§d : ", 10);
+        $this->chat->sendLocalMessage($player, "{CommandSellKey}", "§d : ", 10);
 
         if (!$this->isShopClose($player)) {
             $player->sendMessage("CommandSellNoShop");
@@ -66,17 +66,17 @@ class SellCommand extends OrganisationsCommand
 
     public static function isSeller(MineParkPlayer $player) : bool
     {
-        return $player->getProfile()->organisation === Organisations::SELLER_WORK or $player->isOp();
+        return $player->getProfile()->organisation === Organisations::SELLER_WORK or $player->isOperator();
     }
 
     private function isShopClose(MineParkPlayer $player)
     {
-        return Providers::getMapProvider()->hasNearPointWithType($player, self::MARKETPLACE_DISTANCE, MapConstants::POINT_GROUP_MARKETPLACE);
+        return Providers::getMapProvider()->hasNearPointWithType($player->getPosition(), self::MARKETPLACE_DISTANCE, MapConstants::POINT_GROUP_MARKETPLACE);
     }
 
     private function getBuyersNear(MineParkPlayer $player)
     {
-        $players = $this->getCore()->getRegionPlayers($player, 7);
+        $players = $this->getCore()->getRegionPlayers($player->getPosition(), 7);
         $buyers = [];
 
         foreach($players as $currentPlayer) {
@@ -118,7 +118,7 @@ class SellCommand extends OrganisationsCommand
         $receipt = "§e--==========ЧЕК==========--\n";
 
         foreach($buyer->getStatesMap()->goods as $good) {
-            $item = Item::get($good[0], 0, 1);
+            $item = ItemFactory::getInstance()->get($good[0]);
             $item->setCustomName($good[2]);
             $buyer->getInventory()->addItem($item);
             $receipt .= "§a".$good[2]." §eза §3".$good[1]." руб\n";
@@ -133,4 +133,3 @@ class SellCommand extends OrganisationsCommand
         $seller->sendLocalizedMessage("{CommandSellDo}" . ($buyerId + 1));
     }
 }
-?>

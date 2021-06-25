@@ -11,6 +11,7 @@ use minepark\components\base\Component;
 use minepark\common\player\MineParkPlayer;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockPlaceEvent;
+use pocketmine\event\inventory\InventoryTransactionEvent;
 use pocketmine\event\player\PlayerJoinEvent;
 use minepark\providers\data\UsersDataProvider;
 use pocketmine\event\player\PlayerInteractEvent;
@@ -32,6 +33,7 @@ class Auth extends Component
         Events::registerEvent(EventList::PLAYER_INTERACT_EVENT, [$this, "handleInteract"]);
         Events::registerEvent(EventList::BLOCK_BREAK_EVENT, [$this, "handleBlockBreak"]);
         Events::registerEvent(EventList::BLOCK_PLACE_EVENT, [$this, "handleBlockPlace"]);
+        Events::registerEvent(EventList::INVENTORY_TRANSACTION_EVENT, [$this, "handleInventoryTransaction"]);
         Events::registerEvent(EventList::PLAYER_COMMAND_PREPROCESS_EVENT, [$this, "executeInputData"]);
 
         $this->usersDataProvider = Providers::getUsersDataProvider();
@@ -69,24 +71,32 @@ class Auth extends Component
 
     public function handleInteract(PlayerInteractEvent $event)
     {
-        $player = MineParkPlayer::cast($event->getPlayer());
-
-        if (!$player->getStatesMap()->auth) {
-            return $event->setCancelled();
+        if (!$event->getPlayer()->isAuthorized()) {
+            $event->cancel();
         }
     }
 
     public function handleBlockBreak(BlockBreakEvent $event)
     {
-        if (!$event->getPlayer()->getStatesMap()->auth) {
-            $event->setCancelled();
+        if (!$event->getPlayer()->isAuthorized()) {
+            $event->cancel();
+        }
+    }
+
+    public function handleInventoryTransaction(InventoryTransactionEvent $event)
+    {
+        foreach($event->getTransaction()->getInventories() as $inventory) {
+            $holder = $inventory->getHolder();
+            if($holder instanceof MineParkPlayer and !$holder->getStatesMap()->authorized) {
+                $event->cancel();
+            }
         }
     }
 
     public function handleBlockPlace(BlockPlaceEvent $event)
     {
-        if (!$event->getPlayer()->getStatesMap()->auth) {
-            $event->setCancelled();
+        if (!$event->getPlayer()->isAuthorized()) {
+            $event->cancel();
         }
     }
 
@@ -94,9 +104,9 @@ class Auth extends Component
     {
         $player = MineParkPlayer::cast($event->getPlayer());
 
-        if(!$player->getStatesMap()->auth) {
+        if(!$player->isAuthorized()) {
             $this->login($player, $event->getMessage());
-            $event->setCancelled();
+            $event->cancel();
             return;
         }
     }
@@ -106,7 +116,7 @@ class Auth extends Component
         if(!$this->usersDataProvider->isUserPasswordExist($player->getName())) {
             return self::STATE_REGISTER;
         } else {
-            if(isset($this->ips[$player->getName()]) and $this->ips[$player->getName()] == $player->getAddress()) {
+            if(isset($this->ips[$player->getName()]) and $this->ips[$player->getName()] == $player->getNetworkSession()->getIp()) {
                 return self::STATE_AUTO;
             }
             else {
@@ -158,10 +168,10 @@ class Auth extends Component
 
     private function logInUser(MineParkPlayer $player)
     {
-        $player->getStatesMap()->auth = true;
+        $player->getStatesMap()->authorized = true;
         $player->getStatesMap()->bar = null;
 
-        $this->ips[$player->getName()] = $player->getAddress();
+        $this->ips[$player->getName()] = $player->getNetworkSession()->getIp();
         
         $this->sendWelcomeText($player);
         
@@ -171,9 +181,9 @@ class Auth extends Component
     private function registerUser(MineParkPlayer $player, string $password)
     {
         $this->updatePassword($player, $password);
-        $this->ips[$player->getName()] = $player->getAddress();
+        $this->ips[$player->getName()] = $player->getNetworkSession()->getIp();
 
-        $player->getStatesMap()->auth = true;
+        $player->getStatesMap()->authorized = true;
         $player->getStatesMap()->bar = null; 
 
         $this->sendWelcomeText($player);
@@ -193,7 +203,7 @@ class Auth extends Component
 
     private function autoLogInUser(MineParkPlayer $player)
     {
-        $player->getStatesMap()->auth = true; 
+        $player->getStatesMap()->authorized = true; 
         $player->getStatesMap()->bar = null;
 
         $this->setMovement($player, true);
@@ -202,4 +212,3 @@ class Auth extends Component
         Tasks::registerDelayedAction($timeoutTicks, [$this, "sendWelcomeText"], [$player]);
     }
 }
-?>

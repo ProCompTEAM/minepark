@@ -1,6 +1,6 @@
 ﻿namespace MDC.Data.Enums
 {
-    public enum PhoneSubjectType
+    public enum PhoneSubjectType : int
     {
         User = 1,
 

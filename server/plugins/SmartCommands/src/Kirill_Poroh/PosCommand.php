@@ -3,7 +3,7 @@ declare(strict_types = 1);
 
 namespace Kirill_Poroh;
 
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 class PosCommand
 {	
@@ -23,9 +23,9 @@ class PosCommand
                 $player->sendMessage
                 (
                     "§a☸ Ваша позиция: §3" . 
-                    floor($player->getX()) . " " .
-                    floor($player->getY()) . " " .
-                    floor($player->getZ())
+                    floor($player->getPosition()->getX()) . " " .
+                    floor($player->getPosition()->getY()) . " " .
+                    floor($player->getPosition()->getZ())
                 );
                 
                 return true;
@@ -44,7 +44,7 @@ class PosCommand
                     return true;
                 }
                 
-                $p = $this->main->getServer()->getPlayer($args[0]);
+                $p = $this->main->getServer()->getPlayerExact($args[0]);
                 $name = ($p == null ? $args[0] : $p->getName());
                 
                 if($p === null) 

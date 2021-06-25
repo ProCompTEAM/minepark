@@ -7,7 +7,7 @@ use minepark\Providers;
 use pocketmine\event\Event;
 use minepark\defaults\Sounds;
 
-use pocketmine\level\Position;
+use pocketmine\world\Position;
 use minepark\defaults\Permissions;
 use minepark\commands\base\Command;
 use minepark\defaults\MapConstants;
@@ -69,7 +69,7 @@ class GPSCommand extends Command
             return;
         }
 
-        $player->getStatesMap()->gps = new Position($args[0], $player->getY(), $args[1], $player->getLevel());
+        $player->getStatesMap()->gps = new Position($args[0], $player->getLocation()->getY(), $args[1], $player->getWorld());
 
         $player->sendMessage("CommandGPSPath1");
         $player->sendMessage("CommandGPSPath2");
@@ -105,8 +105,8 @@ class GPSCommand extends Command
 
     private function sendInformationWindow(MineParkPlayer $player) 
     {
-        $x = floor($player->getX()); 
-        $z = floor($player->getZ());
+        $x = floor($player->getLocation()->getX()); 
+        $z = floor($player->getLocation()->getZ());
 
         $form  = "§4(§7gps§4) §7Места рядом: §d/gpsnear\n";
         $form .= "§4(§7gps§4) §7Подсветить точки: §d/gps lights\n";
@@ -140,8 +140,8 @@ class GPSCommand extends Command
         foreach($points as $point) {
             $point = $this->castToMapPointDto($point);
 
-            if(strtolower($player->getLevel()->getName()) === $point->level) {
-                $level = $this->getServer()->getLevelByName($point->level);
+            if(strtolower($player->getWorld()->getDisplayName()) === $point->level) {
+                $level = $this->getServer()->getWorldManager()->getWorldByName($point->level);
                 $position = new Position($point->x, $point->y, $point->z, $level);
                 $player->setFloatingText($position, $prefix . $point->name, self::FLOATING_TEXT_TAG);
             }
@@ -170,4 +170,3 @@ class GPSCommand extends Command
         }
     }
 }
-?>

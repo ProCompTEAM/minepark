@@ -1,0 +1,127 @@
+{
+	"info": {
+		"_postman_id": "bc15139c-7c6d-45d3-8f39-929b86d6d191",
+		"name": "POST FloatingTexts",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Save Floating Text",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"level\": \"minepark\",\r\n    \"text\": \"Я отсосал отчиму\",\r\n    \"x\": 41.2,\r\n    \"y\": 12.4,\r\n    \"z\": 103.1\r\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:19000/floating-texts/save",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "19000",
+					"path": [
+						"floating-texts",
+						"save"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Remove Floating Text",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"x\": 41.2,\r\n    \"y\": 12.4,\r\n    \"z\": 103.1\r\n}"
+				},
+				"url": {
+					"raw": "http://127.0.0.1:19000/floating-texts/remove",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "19000",
+					"path": [
+						"floating-texts",
+						"remove"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all floating texts",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:19000/floating-texts/get-all",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "19000",
+					"path": [
+						"floating-texts",
+						"get-all"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "value",
+				"value": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+				"type": "string"
+			},
+			{
+				"key": "key",
+				"value": "Authorization",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "Authorization",
+			"value": ""
+		}
+	]
+}

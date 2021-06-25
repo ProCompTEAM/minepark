@@ -10,7 +10,7 @@ use minepark\defaults\ComponentAttributes;
 
 class Reports extends Component
 {
-    public $playerReports;
+    public $playerReports = [];
 
     public $autoIncrement = 1;
     
@@ -18,7 +18,6 @@ class Reports extends Component
 
     public function initialize()
     {
-        $this->playerReports = [];
     }
 
     public function getAttributes() : array
@@ -36,11 +35,12 @@ class Reports extends Component
     
     public static function getHelpers() : ?array
     {
-        $list = array();
+        $list = [];
         $server = Server::getInstance();
-        foreach($server->getOnlinePlayers() as $plr) {
-            if (self::isHelper($plr)) {
-                $list[] = $plr;
+
+        foreach($server->getOnlinePlayers() as $player) {
+            if (self::isHelper($player)) {
+                array_push($list, $player);
             }
         }
         
@@ -63,6 +63,7 @@ class Reports extends Component
         if ($allHelpers == null) {
             return null;
         }
+        
         $helperCount = count($allHelpers) - 1;
 
         return $allHelpers[rand(0, $helperCount)]->getName();
@@ -99,23 +100,23 @@ class Reports extends Component
 
     public function replyReport(MineParkPlayer $replier, $reportId, $content) : bool
     {
-        if (!$this->reportExists($reportId)) {
+        if(!$this->reportExists($reportId)) {
             $replier->sendMessage("ReporterNoTicket");
             return false;
         }
 
-        if (self::symbolsMax($content)) {
+        if(self::symbolsMax($content)) {
             $replier->sendMessage("ReporterMaxChars");
             return false;
         }
 
-        if (self::getHelpers() == null) {
+        if(self::getHelpers() == null) {
             $replier->sendMessage("ReporterNoAdmins");
             $this->closeReport($reportId);
             return false;
         }
 
-        if (self::isHelper($replier)) {
+        if(self::isHelper($replier)) {
             $this->helperReply($replier, $this->playerReports[$reportId], $content, $reportId);
         } else {
             $this->playerReply($replier, $this->playerReports[$reportId], $content, $reportId);
@@ -128,7 +129,7 @@ class Reports extends Component
     {
         $reporter = $reportInfo['reporter'];
 
-        if ($replier->getName() != $reporter->getName()) {
+        if($replier->getName() != $reporter->getName()) {
             $replier->sendMessage("ReporterNoAccess");
             return true;
         }
@@ -145,12 +146,12 @@ class Reports extends Component
     {
         $reporter = $reportInfo['reporter'];
 
-        if ($replier->getName() == $reporter->getName()) {
+        if($replier->getName() == $reporter->getName()) {
             $replier->sendMessage("ReporterSelf");
             return false;
         }
             
-        if (!$reporter->isOnline()) {
+        if(!$reporter->isOnline()) {
             $this->closeReport($reportId);
             $replier->sendMessage("ReporterOffline");
             return false;
@@ -172,6 +173,7 @@ class Reports extends Component
             $helper->sendLocalizedMessage("{ReporterAnswerHelper4Part1}".$replier->getName()."{ReporterAnswerHelper4Part2}".$reportId."{ReporterAnswerHelper4Part3}");
             $helper->sendMessage("§b $reportContent");
         }
+
         return true;
     }
 
@@ -187,28 +189,29 @@ class Reports extends Component
         
         $this->playerReports[$reportId] = null;
         
-        if ($allHelpers !== null) {
+        if($allHelpers !== null) {
             foreach($allHelpers as $helper) {
                 $helper->sendLocalizedMessage("{ReporterTicketClosePart1}$reportId{ReporterTicketClosePart2}");
             }
         }
 
-        if (!$reporter->isOnline()) {
+        if(!$reporter->isOnline()) {
             return true;
         }
 
         $reporter->sendLocalizedMessage("{ReporterTicketClosePart1}$reportId{ReporterTicketClosePart2}");
+
         return true;
     }
 
     public function playerReport(MineParkPlayer $player, $reportContent)
     {
-        if (self::getHelpers() == null) {
+        if(self::getHelpers() == null) {
             $player->sendMessage("ReporterNoHelpers");
             return;
         }
         
-        if (self::symbolsMax($reportContent)) {
+        if(self::symbolsMax($reportContent)) {
             $player->sendMessage("ReporterManyWord");
             return;
         }
@@ -234,4 +237,3 @@ class Reports extends Component
         }
     }
 }
-?>

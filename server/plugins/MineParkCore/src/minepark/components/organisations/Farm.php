@@ -2,14 +2,14 @@
 namespace minepark\components\organisations;
 
 use minepark\Providers;
-use pocketmine\entity\Effect;
-use pocketmine\level\Position;
+use pocketmine\entity\effect\VanillaEffects;
+use pocketmine\world\Position;
 
-use pocketmine\entity\EffectInstance;
+use pocketmine\entity\effect\EffectInstance;
 use minepark\components\base\Component;
 use minepark\common\player\MineParkPlayer;
 use minepark\Components;
-use minepark\components\chat\GameChat;
+use minepark\components\chat\Chat;
 use minepark\defaults\ComponentAttributes;
 use minepark\providers\BankingProvider;
 use minepark\providers\MapProvider;
@@ -22,7 +22,7 @@ class Farm extends Component
 
     private MapProvider $mapProvider;
 
-    private GameChat $gameChat;
+    private Chat $chat;
 
     public function initialize()
     {
@@ -30,7 +30,7 @@ class Farm extends Component
 
         $this->mapProvider = Providers::getMapProvider();
 
-        $this->gameChat = Components::getComponent(GameChat::class);
+        $this->chat = Components::getComponent(Chat::class);
     }
 
     public function getAttributes() : array
@@ -43,9 +43,12 @@ class Farm extends Component
     public function from($player)
     {
         if ($this->playerIsNearWheat($player)) {
-            $player->addEffect(new EffectInstance(Effect::getEffect(2), 20 * 9999, 1));
+            $effectManager = $player->getEffects();
+            $effect = VanillaEffects::fromString("slowness");
+            $instance = new EffectInstance($effect, 20 * 9999, 1, true);
+            $effectManager->add($instance);
 
-            $this->gameChat->sendLocalMessage($player, "§8(§dв корзине собранный урожай |§8)", "§d : ", 12);
+            $this->chat->sendLocalMessage($player, "§8(§dв корзине собранный урожай |§8)", "§d : ", 12);
             $player->getStatesMap()->bar = "§eДонесите корзину на пункт сбора около фермы"; 
             $player->getStatesMap()->loadWeight = 1; 
         } else {
@@ -74,9 +77,9 @@ class Farm extends Component
     
     private function handleDrop(MineParkPlayer $player)
     {
-        $player->removeAllEffects();
+        $player->getEffects()->clear();
 
-        $this->gameChat->sendLocalMessage($player, "высыпал из корзины урожай", "§d ", 12);
+        $this->chat->sendLocalMessage($player, "высыпал из корзины урожай", "§d ", 12);
         $this->bankingProvider->givePlayerMoney($player, 150);
 
         $player->getStatesMap()->loadWeight = null; 
@@ -85,7 +88,6 @@ class Farm extends Component
 
     private function playerIsNearWheat(MineParkPlayer $player)
     {
-        return $player->getLevel()->getBlockIdAt($player->getX(), $player->getY() - 1, $player->getZ()) == 255;
+        return $player->getWorld()->getBlockAt($player->getLocation()->getX(), $player->getLocation()->getY() - 1, $player->getLocation()->getZ())->getId() == 60;
     }
 }
-?>

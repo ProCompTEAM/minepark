@@ -1,5 +1,5 @@
 @echo off
-cd /d "..\mdc\Build\netcoreapp3.1\"
+cd /d "..\mdc\Build\net5.0\"
 start "" "MDC Loader.exe"
 
 timeout 2 > NUL

@@ -40,7 +40,7 @@ class BossBar extends Component
             return false;
         }
 
-        $fakeEntityId = Entity::$entityCount++;
+        $fakeEntityId = Entity::nextRuntimeId();
 
         $this->createBossEntity($player, $fakeEntityId);
 
@@ -64,7 +64,7 @@ class BossBar extends Component
         if (!$session->loaded) {
             $session->loaded = true;
 
-            $player->dataPacket($this->getBossEventPacket($session->fakeEntityId, $title, $percents));
+            $player->getNetworkSession()->sendDataPacket($this->getBossEventPacket($session->fakeEntityId, $title, $percents));
         } else {
             $this->setTitle($player, $session->fakeEntityId, $title);
             $this->setPercentage($player, $session->fakeEntityId, $percents);
@@ -88,7 +88,7 @@ class BossBar extends Component
         $packet->bossEid = $fakeEntityId;
         $packet->title = $title;
 
-        $player->dataPacket($packet);
+        $player->getNetworkSession()->sendDataPacket($packet);
 
         $player->getStatesMap()->bossBarSession->title = $title;
     }
@@ -107,7 +107,7 @@ class BossBar extends Component
         $packet->bossEid = $fakeEntityId;
         $packet->healthPercent = $percentage;
 
-        $player->dataPacket($packet);
+        $player->getNetworkSession()->sendDataPacket($packet);
 
         $player->getStatesMap()->bossBarSession->percents = $percents;
     }
@@ -119,7 +119,7 @@ class BossBar extends Component
         $packet->bossEid = $player->getStatesMap()->bossBarSession->fakeEntityId;
         $packet->eventType = BossEventPacket::TYPE_HIDE;
 
-        $player->dataPacket($packet);
+        $player->getNetworkSession()->sendDataPacket($packet);
     }
 
     private function initializeHealthAttribute(MineParkPlayer $player, int $fakeEntityId)
@@ -129,7 +129,7 @@ class BossBar extends Component
         $packet->entityRuntimeId = $fakeEntityId;
         $packet->entries[] = Attribute::getAttribute(Attribute::HEALTH)->setMinValue(0)->setMaxValue(100)->setDefaultValue(0);
 
-        $player->dataPacket($packet);
+        $player->getNetworkSession()->sendDataPacket($packet);
     }
 
     private function createBossEntity(MineParkPlayer $player, int $fakeEntityId) : int
@@ -139,9 +139,9 @@ class BossBar extends Component
         $packet->entityRuntimeId = $fakeEntityId;
         $packet->type = AddActorPacket::LEGACY_ID_MAP_BC[Entity::SLIME];
         $packet->metadata = $this->getHiddenEntityMetadata();
-        $packet->position = $player->asVector3()->add(0, 10, 0);
+        $packet->position = $player->getPosition()->asVector3()->add(0, 10, 0);
 
-        $player->dataPacket($packet);
+        $player->getNetworkSession()->sendDataPacket($packet);
 
         $this->initializeHealthAttribute($player, $fakeEntityId);
 
@@ -188,4 +188,3 @@ class BossBar extends Component
         ];
     }
 }
-?>

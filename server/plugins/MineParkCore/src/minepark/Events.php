@@ -3,13 +3,14 @@ namespace minepark;
 
 use minepark\defaults\EventList;
 use pocketmine\event\Event;
+use pocketmine\event\inventory\InventoryTransactionEvent;
 use pocketmine\event\Listener;
 use pocketmine\event\block\BlockBurnEvent;
-use pocketmine\event\level\ChunkLoadEvent;
+use pocketmine\event\player\PlayerLoginEvent;
+use pocketmine\event\world\ChunkLoadEvent;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\block\SignChangeEvent;
-use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\player\PlayerChatEvent;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerQuitEvent;
@@ -40,7 +41,9 @@ class Events implements Listener
             EventList::BLOCK_BREAK_EVENT,
             EventList::BLOCK_BURN_EVENT,
             EventList::ENTITY_DAMAGE_EVENT,
-            EventList::CHUNK_LOAD_EVENT
+            EventList::CHUNK_LOAD_EVENT,
+            EventList::INVENTORY_TRANSACTION_EVENT,
+            EventList::PLAYER_LOGIN_EVENT
         ];
 
         foreach($eventsList as $listEventId) {
@@ -133,5 +136,14 @@ class Events implements Listener
     {
         self::callEvent(EventList::BLOCK_BURN_EVENT, $event);
     }
+
+    public function callInventoryTransactionEvent(InventoryTransactionEvent $event)
+    {
+        self::callEvent(EventList::INVENTORY_TRANSACTION_EVENT, $event);
+    }
+
+    public function callPlayerLoginEvent(PlayerLoginEvent $event)
+    {
+        self::callEvent(EventList::PLAYER_LOGIN_EVENT, $event);
+    }
 }
-?>

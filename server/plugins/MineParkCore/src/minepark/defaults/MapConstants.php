@@ -18,5 +18,5 @@ class MapConstants
     public const POINT_GROUP_ATM = 8;
     public const POINT_GROUP_TRAFFIC_LIGHT1 = 9;
     public const POINT_GROUP_TRAFFIC_LIGHT2 = 10;
+    public const POINT_TRAIN_STATION = 11;
 }
-?>

@@ -194,7 +194,29 @@ namespace MDC.Infrastructure.Services
 
             return true;
         }
+        public async Task<bool> TransferDebit(string unitId, string userName, string target, double amount)
+        {
+            if (!await Exists(unitId, userName))
+            {
+                return false;
+            }
 
+            if (!await ReduceDebit(unitId, userName, amount))
+            {
+                return false;
+            }
+
+            await GiveDebit(unitId, userName, amount);
+
+            return true;
+        }
+        
+        public async Task<bool> Exists(string unitId, string userName)
+        {
+            return await databaseProvider.AnyAsync<BankAccount>(
+                bank => bank.UnitId == unitId && bank.Name == userName
+            );
+        }
         public async Task<PaymentMethod> GetPaymentMethod(string unitId, string userName)
         {
             BankAccount bankAccount = await GetBankAccount(unitId, userName);

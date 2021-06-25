@@ -1,13 +1,13 @@
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using MDC.Common;
-using MDC.Data.Enums;
 using MDC.Data.Attributes;
 using MDC.Data.Base;
+using MDC.Data.Enums;
 
-namespace MDC.Data.Models
+namespace MDC.Data.Models.Audit
 {
-    public class MoneyTransactionAuditRecord : BaseEntity, IUnited, ICreatedDate
+    public class UserTrafficAuditRecord : BaseEntity, IUnited, ICreatedDate
     {
         [Required, Unicode(Defaults.DefaultStringLength)]
         public string Subject { get; set; }
@@ -16,13 +16,7 @@ namespace MDC.Data.Models
         public string UnitId { get; set; }
 
         [Required]
-        public double Amount { get; set; }
-
-        [Required]
-        public TransactionType TransactionType { get; set; }
-
-        [Required]
-        public PaymentMethod TargetAccount { get; set; }
+        public UserTrafficType UserTrafficType { get; set; }
 
         public DateTime CreatedDate { get; set; }
     }

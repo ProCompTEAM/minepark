@@ -3,9 +3,11 @@ namespace minepark\components\vehicles\models\base;
 
 use minepark\Providers;
 use pocketmine\block\Block;
-use pocketmine\level\Level;
+use pocketmine\block\BlockFactory;
+use pocketmine\block\BlockLegacyIds;
+use pocketmine\world\World;
 use pocketmine\math\Vector3;
-use pocketmine\entity\Vehicle;
+use pocketmine\entity\Entity as Vehicle; //TODO: Сделать отдельный класс
 use jojoe77777\FormAPI\ModalForm;
 use jojoe77777\FormAPI\SimpleForm;
 use pocketmine\nbt\tag\CompoundTag;
@@ -13,7 +15,7 @@ use minepark\defaults\VehicleConstants;
 use minepark\common\player\MineParkPlayer;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
-use pocketmine\network\mcpe\protocol\types\EntityLink;
+use pocketmine\network\mcpe\protocol\types\entity\EntityLink;
 use pocketmine\network\mcpe\protocol\SetActorLinkPacket;
 
 abstract class BaseCar extends Vehicle
@@ -34,7 +36,7 @@ abstract class BaseCar extends Vehicle
 
     private float $speed;
 
-    public function __construct(Level $level, CompoundTag $nbt)
+    public function __construct(World $level, CompoundTag $nbt)
     {
         parent::__construct($level, $nbt);
 
@@ -98,10 +100,7 @@ abstract class BaseCar extends Vehicle
             $this->passenger->getStatesMap()->ridingVehicle = null;
         }
 
-        // we need this check for some reasons(bad pmmp code)
-        if (isset($this->health)) {
-            $this->health = 0;
-        }
+        $this->setHealth(0);
 
         $this->scheduleUpdate();
     }
@@ -315,9 +314,9 @@ abstract class BaseCar extends Vehicle
         $blocks = [];
         
         foreach($vectors as $vector) {
-            $block = $this->getLevel()->getBlockAt($vector->getX(), $vector->getY(), $vector->getZ(), false, false);
+            $block = $this->getWorld()->getBlockAt($vector->getX(), $vector->getY(), $vector->getZ(), false, false);
 
-            if ($block->getId() !== Block::AIR) {
+            if ($block->getId() !== BlockFactory::getInstance()->get(BlockLegacyIds::AIR)) {
                 $blocks[] = $block;
             }
         }
@@ -553,4 +552,3 @@ abstract class BaseCar extends Vehicle
         $player->sendForm($form);
     }
 }
-?>

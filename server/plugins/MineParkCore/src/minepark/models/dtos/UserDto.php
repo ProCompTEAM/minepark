@@ -43,4 +43,3 @@ class UserDto extends BaseDto
 
     public string $updatedDate;
 }
-?>

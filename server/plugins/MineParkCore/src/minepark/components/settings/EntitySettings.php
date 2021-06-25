@@ -4,15 +4,17 @@ namespace minepark\components\settings;
 use minepark\Events;
 use minepark\Providers;
 use minepark\Components;
+use pocketmine\entity\effect\EffectInstance;
+use pocketmine\entity\effect\VanillaEffects;
 use pocketmine\item\Item;
+use pocketmine\item\ItemIds;
 use pocketmine\utils\Config;
 use pocketmine\entity\Effect;
 use pocketmine\entity\Entity;
 use minepark\utils\MathUtility;
 use minepark\defaults\EventList;
-use minepark\components\chat\GameChat;
+use minepark\components\chat\Chat;
 use minepark\defaults\MapConstants;
-use pocketmine\entity\EffectInstance;
 use minepark\components\base\Component;
 use minepark\defaults\PlayerAttributes;
 use minepark\common\player\MineParkPlayer;
@@ -26,11 +28,11 @@ class EntitySettings extends Component
 
     private array $reasons;
 
-    private GameChat $gameChat;
+    private Chat $chat;
 
     public function initialize()
     {
-        $this->gameChat = Components::getComponent(GameChat::class);
+        $this->chat = Components::getComponent(Chat::class);
 
         Events::registerEvent(EventList::ENTITY_DAMAGE_EVENT, [$this, "processEntityDamageEvent"]);
 
@@ -74,11 +76,13 @@ class EntitySettings extends Component
         $damager = MineParkPlayer::cast($event->getDamager());
         $player = MineParkPlayer::cast($event->getEntity());
 
-        if ($damager->getProfile()->organisation === Organisations::SECURITY_WORK and $damager->getInventory()->getItemInHand()->getId() === Item::STICK) {
+        if ($damager->getProfile()->organisation === Organisations::SECURITY_WORK and $damager->getInventory()->getItemInHand()->getId() === ItemIds::STICK) {
             $this->processStunAction($player, $damager);
         }
-        
-        $event->setCancelled($this->canPlayerHurt($player, $damager));
+
+        if(!$this->canPlayerHurt($player, $damager)) {
+            $event->cancel();
+        }
     }
 
     private function checkForPlayerKilling(int $finalDamage, MineParkPlayer $victim, ?Entity $damager)
@@ -88,10 +92,17 @@ class EntitySettings extends Component
         }
 
         Providers::getMapProvider()->teleportPoint($victim, MapConstants::POINT_NAME_HOSPITAL);
-
-        $victim->addEffect(new EffectInstance(Effect::getEffect(2), 5000, 1));
-        $victim->addEffect(new EffectInstance(Effect::getEffect(18), 5000, 1));
-        $victim->addEffect(new EffectInstance(Effect::getEffect(19), 5000, 1));
+        $effects = [
+            "slowness",
+            "weakness",
+            "poison"
+        ];
+        $effectManager = $victim->getEffects();
+        foreach($effects as $effectName) {
+            $effect = VanillaEffects::fromString($effectName);
+            $instance = new EffectInstance($effect, 5000, 1, true);
+            $effectManager->add($instance);
+        }
         $victim->setHealth(4);
 
         $victim->sendMessage("§6Вы очнулись после ". $this->getRandomDeathReason() . ".");
@@ -105,8 +116,8 @@ class EntitySettings extends Component
 
     private function processStunAction(MineParkPlayer $victim, MineParkPlayer $policeMan)
     {
-        $this->gameChat->sendLocalMessage($policeMan, "§8(§dв руках дубинка-электрошокер§8)", "§d : ", 10);
-        $this->gameChat->sendLocalMessage($victim, "§8(§dлежит на полу | ослеплен§8)", "§d : ", 12);
+        $this->chat->sendLocalMessage($policeMan, "§8(§dв руках дубинка-электрошокер§8)", "§d : ", 10);
+        $this->chat->sendLocalMessage($victim, "§8(§dлежит на полу | ослеплен§8)", "§d : ", 12);
         
         $victim->changeAttribute(PlayerAttributes::WANTED);
 
@@ -131,11 +142,12 @@ class EntitySettings extends Component
         }
     }
 
+    //TODO: Move it to MDC
     private function canPlayerHurt(MineParkPlayer $player, MineParkPlayer $damager) : bool
     {
         if ($damager->getStatesMap()->damageDisabled) {
             $damager->sendMessage("§6PvP режим недоступен!");
-            return true;
+            return false;
         }
         
         foreach($this->config->getAll() as $name) {
@@ -146,19 +158,19 @@ class EntitySettings extends Component
             $y2 = $this->config->getNested("$name.pos2.y");
             $z2 = $this->config->getNested("$name.pos2.z");
 
-            $x = floor($player->getX());
-            $y = floor($player->getY());
-            $z = floor($player->getZ());
+            $x = floor($player->getLocation()->getX());
+            $y = floor($player->getLocation()->getY());
+            $z = floor($player->getLocation()->getZ());
 
             if(MathUtility::interval($x ,$x1, $x2) 
                 and MathUtility::interval($y, $y1, $y2) 
                     and MathUtility::interval($z, $z1 , $z2)) {
                 $damager->sendMessage("§aВы находитесь в зеленой зоне! Здесь запрещено драться!");
-                return true;
+                return false;
             }
         }
 
-        return false;
+        return true;
     }
 
     private function getRandomDeathReason() : string
@@ -166,4 +178,3 @@ class EntitySettings extends Component
         return $this->reasons[mt_rand(0, count($this->reasons) - 1)];
     }
 }
-?>

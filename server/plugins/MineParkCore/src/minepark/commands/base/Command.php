@@ -47,4 +47,3 @@ abstract class Command
         return Server::getInstance();
     }
 }
-?>

@@ -9,4 +9,3 @@ class PlayerConstants
 
     public const MINIMAL_SKILL_MINUTES_PLAYED = 60;
 }
-?>

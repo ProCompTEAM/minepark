@@ -1,7 +1,7 @@
 name: GunsPlugin
 main: Lolya\MainClass
 version: 1.0
-api: 3.1.16
+api: 4.0.0
 author: MCRPG Team
 
 commands:

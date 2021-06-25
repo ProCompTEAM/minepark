@@ -7,9 +7,8 @@ abstract class DataProvider extends Provider
 
     protected function createDto(array $data) {}
 
-    public function createRequest(string $remoteMethod, $data)
+    public function createRequest(string $remoteMethod, $data = [])
     {
         return $this->getCore()->getMDC()->createRequest($this->getRoute(), $remoteMethod, $data);
     }
 }
-?>

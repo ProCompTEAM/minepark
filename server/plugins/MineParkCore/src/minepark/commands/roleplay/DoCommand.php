@@ -5,7 +5,7 @@ use minepark\common\player\MineParkPlayer;
 
 use minepark\commands\base\Command;
 use minepark\Components;
-use minepark\components\chat\GameChat;
+use minepark\components\chat\Chat;
 use minepark\components\administrative\Tracking;
 use pocketmine\event\Event;
 
@@ -20,13 +20,13 @@ class DoCommand extends Command
 
     private Tracking $tracking;
 
-    private GameChat $gameChat;
+    private Chat $chat;
 
     public function __construct()
     {
         $this->tracking = Components::getComponent(Tracking::class);
 
-        $this->gameChat = Components::getComponent(GameChat::class);
+        $this->chat = Components::getComponent(Chat::class);
     }
 
     public function getCommand() : array
@@ -52,10 +52,9 @@ class DoCommand extends Command
 
         $message = implode(self::ARGUMENTS_SEPERATOR, $args);
 
-        $this->gameChat->sendLocalMessage($player, $message, "§d : ", self::DISTANCE);
+        $this->chat->sendLocalMessage($player, $message, "§d : ", self::DISTANCE);
         $player->sendSound(Sounds::ROLEPLAY);
 
         $this->tracking->actionRP($player, $message, self::DISTANCE, "[DO]");
     }
 }
-?>
