@@ -44,3 +44,4 @@ ____
 - MBE Docs: http://bedrock.dev/
 - Minecraft Wiki-VG: https://wiki.vg/
 - MCPEDL: https://mcpedl.com/
+- [bedrock-unicode-characters](https://github.com/TwistedAsylumMC/bedrock-unicode-characters)
