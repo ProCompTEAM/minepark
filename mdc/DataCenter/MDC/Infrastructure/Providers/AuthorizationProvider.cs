@@ -1,19 +1,16 @@
 ﻿using MDC.Data.Models;
 using MDC.Infrastructure.Providers.Interfaces;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace MDC.Infrastructure.Providers
 {
-    public class UnitProvider : IUnitProvider, IProvider
+    public class AuthorizationProvider : IAuthorizationProvider, IProvider
     {
         private readonly IDatabaseProvider databaseProvider;
 
         private List<string> tokens = new List<string>();
 
-        private static readonly Dictionary<string, string> tokenUnitIdPairs = new Dictionary<string, string>();
-
-        public UnitProvider()
+        public AuthorizationProvider()
         {
             databaseProvider = Store.GetProvider<DatabaseProvider>();
         }
@@ -26,21 +23,6 @@ namespace MDC.Infrastructure.Providers
         public bool Authorize(string accessToken)
         {
             return tokens.Contains(accessToken);
-        }
-
-        public string GetCurrentUnitId(string accessToken)
-        {
-            if(tokenUnitIdPairs.ContainsKey(accessToken))
-            {
-                return tokenUnitIdPairs[accessToken];
-            }
-
-            return null;
-        }
-
-        public void SetCurrentUnitId(string accessToken, string unitId)
-        {
-            tokenUnitIdPairs[accessToken] = unitId;
         }
 
         public void AddAccessToken(string accessToken)

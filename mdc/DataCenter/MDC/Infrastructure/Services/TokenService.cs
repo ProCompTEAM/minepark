@@ -12,7 +12,7 @@ namespace MDC.Infrastructure.Services
     {
         private readonly TokenProvider tokenProvider;
 
-        private readonly UnitProvider unitProvider;
+        private readonly AuthorizationProvider unitProvider;
 
         private readonly DatabaseProvider databaseProvider;
 
@@ -22,7 +22,7 @@ namespace MDC.Infrastructure.Services
         {
             tokenProvider = Store.GetProvider<TokenProvider>();
 
-            unitProvider = Store.GetProvider<UnitProvider>();
+            unitProvider = Store.GetProvider<AuthorizationProvider>();
 
             databaseProvider = Store.GetProvider<DatabaseProvider>();
 
