@@ -2,8 +2,6 @@
 using MDC.Data.Dtos;
 using MDC.Data.Dtos.Audit;
 using MDC.Infrastructure.Controllers.Interfaces;
-using MDC.Infrastructure.Providers;
-using MDC.Infrastructure.Providers.Interfaces;
 using MDC.Infrastructure.Services;
 using MDC.Infrastructure.Services.Interfaces;
 using System.Threading.Tasks;
@@ -14,13 +12,10 @@ namespace MDC.Infrastructure.Controllers
     {
         public string Route { get; set; } = "users";
 
-        private readonly IUnitProvider unitProvider;
-
         private readonly IUsersService usersService;
 
         public UsersController()
         {
-            unitProvider = Store.GetProvider<UnitProvider>();
             usersService = Store.GetService<UsersService>();
         }
 
@@ -56,13 +51,13 @@ namespace MDC.Infrastructure.Controllers
 
         public async Task Create(UserDto user, RequestContext requestContext)
         {
-            string unitId = unitProvider.GetCurrentUnitId(requestContext.AccessToken);
+            string unitId = requestContext.UnitId;
             await usersService.Create(unitId, user);
         }
 
         public async Task<UserDto> CreateInternal(string userName, RequestContext requestContext)
         {
-            string unitId = unitProvider.GetCurrentUnitId(requestContext.AccessToken);
+            string unitId = requestContext.UnitId;
             return await usersService.CreateInternal(unitId, userName);
         }
 
@@ -73,25 +68,25 @@ namespace MDC.Infrastructure.Controllers
 
         public async Task UpdateJoinStatus(string userName, RequestContext requestContext)
         {
-            string unitId = unitProvider.GetCurrentUnitId(requestContext.AccessToken);
+            string unitId = requestContext.UnitId;
             await usersService.UpdateJoinStatus(unitId, userName);
         }
 
         public async Task UpdateQuitStatus(string userName, RequestContext requestContext)
         {
-            string unitId = unitProvider.GetCurrentUnitId(requestContext.AccessToken);
+            string unitId = requestContext.UnitId;
             await usersService.UpdateQuitStatus(unitId, userName);
         }
 
         public async Task SaveExecutedCommand(ExecutedCommandDto commandDto, RequestContext requestContext)
         {
-            string unitId = unitProvider.GetCurrentUnitId(requestContext.AccessToken);
+            string unitId = requestContext.UnitId;
             await usersService.SaveExecutedCommandAuditRecord(unitId, commandDto.Sender, commandDto.Command);
         }
 
         public async Task SaveChatMessage(ChatMessageDto messageDto, RequestContext requestContext)
         {
-            string unitId = unitProvider.GetCurrentUnitId(requestContext.AccessToken);
+            string unitId = requestContext.UnitId;
             await usersService.SaveChatMessageAuditRecord(unitId, messageDto.Sender, messageDto.Message);
         }
     }

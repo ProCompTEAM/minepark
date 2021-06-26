@@ -34,7 +34,6 @@ class MDC
     {
         $this->initializeConfig();
         $this->checkProtocolVersion();
-        $this->sendUnitId();
     }
 
     public function createRequest(string $remoteController, string $remoteMethod, $data)
@@ -49,7 +48,8 @@ class MDC
         curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data->scalar ?? $data));
         curl_setopt($curl, CURLOPT_HTTPHEADER, [
             "Content-type: application/json",
-            "Authorization: " . $this->token
+            "Authorization: " . $this->token,
+            "UnitId:" . $this->unitId
         ]);
 
         $result = curl_exec($curl);
@@ -88,11 +88,5 @@ class MDC
 
             $server->forceShutdown();
         }
-    }
-
-    private function sendUnitId()
-    {
-        $unitId = $this->getUnitId();
-        Providers::getSettingsDataProvider()->upgradeUnitId($unitId);
     }
 }
