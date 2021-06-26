@@ -49,7 +49,7 @@ class MDC
         curl_setopt($curl, CURLOPT_HTTPHEADER, [
             "Content-type: application/json",
             "Authorization: " . $this->token,
-            "UnitId:" . $this->unitId
+            "UnitId: " . $this->unitId
         ]);
 
         $result = curl_exec($curl);
