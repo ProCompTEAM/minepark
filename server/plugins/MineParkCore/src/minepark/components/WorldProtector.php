@@ -2,10 +2,8 @@
 namespace minepark\components;
 
 use minepark\Events;
-use minepark\defaults\Files;
 use pocketmine\utils\Config;
-use pocketmine\level\Position;
-use minepark\defaults\Defaults;
+use pocketmine\world\Position;
 use minepark\defaults\EventList;
 use minepark\components\base\Component;
 use pocketmine\event\block\BlockBreakEvent;
@@ -40,19 +38,19 @@ class WorldProtector extends Component
     public function applyBlockUpdateSettings(BlockBreakEvent | BlockPlaceEvent $event)
     {
         if($event->getPlayer()->canBuild()) {
-            $event->setCancelled(false);
+            $event->uncancel();
             return;
         }
 
-        if($this->isInRange($event->getBlock())) {
-            $event->setCancelled();
+        if($this->isInRange($event->getBlock()->getPos())) {
+            $event->cancel();
         }
     }
 
     public function isInRange(Position $position) : bool
     {
         return (
-            $position->getLevel()->getName() == $this->getLevelName() and
+            $position->getWorld()->getDisplayName() == $this->getWorldName() and
             $position->getX() >= $this->getMinimumX() and
             $position->getZ() >= $this->getMinimumZ() and
             $position->getX() <= $this->getMaximumX() and
@@ -63,7 +61,7 @@ class WorldProtector extends Component
     private function loadConfiguration()
     {
         $file = $this->getCore()->getTargetDirectory() . "world-protector.yml";
-        $defaultLevelName = $this->getServer()->getDefaultLevel()->getName();
+        $defaultLevelName = $this->getServer()->getWorldManager()->getDefaultWorld()->getDisplayName();
 
         $config = new Config($file, Config::YAML, [
             "Level" => $defaultLevelName,
@@ -100,7 +98,7 @@ class WorldProtector extends Component
         return $this->maximumZ;
     }
 
-    private function getLevelName() : string
+    private function getWorldName() : string
     {
         return $this->level;
     }

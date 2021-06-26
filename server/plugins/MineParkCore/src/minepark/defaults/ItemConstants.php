@@ -2,30 +2,31 @@
 namespace minepark\defaults;
 
 use pocketmine\item\Item;
+use pocketmine\item\ItemIds;
 
 class ItemConstants 
 {
     public static function getRestrictedItemsNonBuilder() : array
     {
         return [
-            Item::ITEM_FRAME,
-            Item::FILLED_MAP,
-            Item::TNT
+            ItemIds::ITEM_FRAME,
+            ItemIds::FILLED_MAP,
+            ItemIds::TNT
         ];
     }
 
     public static function getGunItemIds() : array
     {
         return [
-            Item::WOODEN_SHOVEL,
-            Item::STONE_SHOVEL,
-            Item::GOLDEN_SHOVEL,
-            Item::IRON_SHOVEL,
-            Item::DIAMOND_SHOVEL,
-            Item::WOODEN_HOE,
-            Item::STONE_HOE,
-            Item::IRON_HOE,
-            Item::DIAMOND_HOE
+            ItemIds::WOODEN_SHOVEL,
+            ItemIds::STONE_SHOVEL,
+            ItemIds::GOLDEN_SHOVEL,
+            ItemIds::IRON_SHOVEL,
+            ItemIds::DIAMOND_SHOVEL,
+            ItemIds::WOODEN_HOE,
+            ItemIds::STONE_HOE,
+            ItemIds::IRON_HOE,
+            ItemIds::DIAMOND_HOE
         ];
     }
 }

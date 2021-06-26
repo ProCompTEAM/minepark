@@ -1,11 +1,11 @@
-# MinePark Software - Release v1.1
+# MinePark Software - Release v1.2
 
 __Copyright http://vk.com/mcperp__
 ____
 
 ## Environment & Tools:
 - Minecraft BE Client support 1.17
-- PocketMine-MP API 3
+- PocketMine-MP API 4
 - PHP 8.x, .NET 5.0
 - MySQL (10.5.8-MariaDB) > dbo.minepark
 - Use Postman for MDC requests
@@ -31,6 +31,11 @@ ____
 - lowerCamelCase: functions, fields, variables
 - UPPERCASE: constants
 
+## How to build PocketMine-MP API 4.0:
+- ```git clone --recursive --branch master https://github.com/pmmp/PocketMine-MP.git```
+- ```composer install --no-dev```
+- ```php build/server-phar.php```
+
 ## Links:
 - GitLab Issues: https://gitlab.com/mcperp/public/-/issues
 - Project Wiki: https://gitlab.com/mcperp/public/-/wikis/
@@ -38,3 +43,5 @@ ____
 - PM Api Documentation: http://apidoc.pmmp.io/
 - MBE Docs: http://bedrock.dev/
 - Minecraft Wiki-VG: https://wiki.vg/
+- MCPEDL: https://mcpedl.com/
+- Unicode Characters: [click :)](https://github.com/TwistedAsylumMC/bedrock-unicode-characters)

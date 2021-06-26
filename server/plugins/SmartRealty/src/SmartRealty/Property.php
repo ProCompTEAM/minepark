@@ -1,14 +1,12 @@
 <?php
 namespace SmartRealty;
 
-use pocketmine\level\Position;
+use pocketmine\world\Position;
 use pocketmine\math\Vector3;
 use pocketmine\utils\Config;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
-use pocketmine\tile\Sign;
-use pocketmine\block\SignPost;
-use pocketmine\block\WallSign;
+use pocketmine\block\BaseSign;
 
 class Property
 {
@@ -55,7 +53,7 @@ class Property
                 return;
             }
             
-            $p = $this->main->getServer()->getPlayer($args[1]);
+            $p = $this->main->getServer()->getPlayerExact($args[1]);
             if($p !== null)
             {
                 $p->getProfile()->realtor = true;
@@ -151,7 +149,7 @@ class Property
                 return;
             }
             
-            if(count($player->property) == 3 and !$player->isOp()) {
+            if(count($player->property) == 3 and !$player->isOperator()) {
                 $player->sendMessage("§6Дабы все жилье не скупили, государство ограничило количество квартир на человека до трех.");
                 $player->sendMessage("§eВы можете дождаться окончания аренды одного из купленного жилья, а затем вновь вернуться сюда!");
                 return;
@@ -190,7 +188,7 @@ class Property
         $block = $event->getBlock();
         $player = $event->getPlayer();
         
-        if($block instanceof Sign or $block instanceof SignPost or $block instanceof WallSign)
+        if($block instanceof BaseSign)
         {
             $c = $this->getConfig($player->getPosition());
             if($c === null) {
@@ -203,8 +201,8 @@ class Property
                 $x = $c->getNested("$name.sign.x");
                 $y = $c->getNested("$name.sign.y");
                 $z = $c->getNested("$name.sign.z");
-                if($x == floor($block->getX()) and $y == floor($block->getY()) 
-                    and $z == floor($block->getZ())) 
+                if($x == floor($block->getPos()->getX()) and $y == floor($block->getPos()->getY())
+                    and $z == floor($block->getPos()->getZ()))
                     {
                         $this->checkRented($name);
                         
@@ -214,7 +212,7 @@ class Property
                         $f = "§f### §3Паспорт жилого объекта §a$name §f###\n";
                         $f .= "§f=> Микрорайон/Регион: §3".$this->getArea($player->getPosition())."\n";
                         if($c->getNested("$name.owners")) {
-                            if(!$player->isOp()) $f .= "§f=> Это помещение §6уже арендовано§f!\n";
+                            if(!$player->isOperator()) $f .= "§f=> Это помещение §6уже арендовано§f!\n";
                             else $f .= "§f=> Квартирант: §c".$c->getNested("$name.owners")."\n";
                             $f .= "§f=> До конца аренды осталось: §3$days суток\n";
                         }
@@ -233,11 +231,11 @@ class Property
     
     public function sign($event)
     {
-        $lns = $event->getLines();
-        if(($lns[0] == "[property]" or $lns[0] == "[realty]" or $lns[0] == "realt") and $event->getPlayer()->getProfile()->realtor) 
+        $lines = $event->getLines();
+        if(($lines[0] == "[property]" or $lines[0] == "[realty]" or $lines[0] == "realt") and $event->getPlayer()->getProfile()->realtor) 
         {
             $player = $event->getPlayer();
-            $name = $lns[1];
+            $name = $lines[1];
             $c = $this->getConfig($player->getPosition());
             
             if($c->exists($name)) 
@@ -264,12 +262,12 @@ class Property
     
     public function block($event)
     {
-        if($event->getPlayer()->isOp()) return;
+        if($event->getPlayer()->isOperator()) return;
         
         $block = $event->getBlock();
         
-        if(($block instanceof WallSign or $block instanceof SignPost or $block instanceof Sign) and $event->getPlayer()->getProfile()->realtor) {
-            $event->setCancelled(false);
+        if($block instanceof BaseSign and $event->getPlayer()->getProfile()->realtor) {
+            $event->uncancel();
             return;
         }
     
@@ -277,7 +275,7 @@ class Property
         $list = $player->property;
         $c = $this->getConfig($player->getPosition());
         
-        if($c === null) $event->setCancelled();
+        if($c === null) $event->cancel();
         else
         {
             foreach($list as $name)
@@ -294,12 +292,12 @@ class Property
                 $z = floor($block->getZ());
                 
                 if($this->interval($x,$x1,$x2) and $this->interval($y,$y1,$y2) and $this->interval($z,$z1,$z2)) {
-                        $event->setCancelled(false);
+                        $event->uncancel();
                         return;
                 }
             }
 
-            $event->setCancelled();
+            $event->cancel();
         }
     }
     
@@ -402,7 +400,7 @@ class Property
         return null;
     }
     
-    public function getConfig(Vector3 $pos)
+    public function getConfig(Position $pos)
     {
         $a = $this->getArea($pos);
         if($a === null) return $a;
@@ -426,7 +424,7 @@ class Property
                     
                     $this->checkRented($name);
                     
-                    if(count($p->property) > 1 and !$p->isOp()) return;
+                    if(count($p->property) > 1 and !$p->isOperator()) return;
                 }
             }
         }

@@ -6,7 +6,7 @@ namespace Kirill_Poroh;
 
 use pocketmine\event\Listener;
 use pocketmine\plugin\PluginBase;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 
@@ -19,7 +19,7 @@ class SmartCommands extends PluginBase implements Listener
 {	
     private $command;
 
-    public function onEnable()
+    public function onEnable() : void
     {
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
         
@@ -111,7 +111,7 @@ class SmartCommands extends PluginBase implements Listener
         if($e->getPlayer()->muted) {
             $e->getPlayer()->sendMessage("§6Ваш чат заблокирован администрацией ;(");
             
-            $e->setCancelled(true);
+            $e->cancel();
         }
     }
     

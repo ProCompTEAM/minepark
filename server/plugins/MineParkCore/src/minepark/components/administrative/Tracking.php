@@ -123,7 +123,7 @@ class Tracking extends Component
             }
         } else {
             foreach($admins as $admin) {
-                if ($sender->distance($admin) > $distance) {
+                if ($sender->getLocation()->distance($admin->getLocation()) > $distance) {
                     continue;
                 }
     

@@ -59,6 +59,16 @@ class ATM extends Component
         $player->sendForm($form);
     }
 
+    public function sendMoneyInfo($player){
+        $cash = $this->bankingProvider->getCash($player);
+        $debit = $this->bankingProvider->getDebit($player);
+        $credit = $this->bankingProvider->getCredit($player);
+
+        $player->sendMessage("§2→ Наличные§e $cash §3рублей.");
+        $player->sendMessage("§3→ На карте§e $debit §3рублей.");
+        $player->sendMessage("§4→ В кредит§e $credit §3рублей.");
+    }
+
     public function answerMenu(MineParkPlayer $player, ?int $choice = null)
     {
         if(!isset($choice)) {
@@ -189,7 +199,7 @@ class ATM extends Component
 
         $target = strtolower($data[0]);
 
-        if($target === $player->getLowerCaseName()) {
+        if($target === strtolower($player->getName())) {
             $player->sendMessage("§eПереводить деньги самому себе запрещено");
             return;
         }
@@ -201,9 +211,9 @@ class ATM extends Component
 
         $player->sendMessage("§bВы успешно перевели игроку §e" . $target . " $amount §bденег!");
 
-        $targetPlayer = $this->getServer()->getPlayer($target);
+        $targetPlayer = $this->getServer()->getPlayerExact($target);
 
-        if(isset($targetPlayer) and $this->phone->hasStream($targetPlayer->asPosition())) {
+        if(isset($targetPlayer) and $this->phone->hasStream($targetPlayer->getPosition())) {
             $targetPlayer->sendMessage("§e[SMS] §bЧеловек §e" . $player->getName() . " §bперевёл вам §e$amount");
         }
     }

@@ -2,16 +2,30 @@
 namespace minepark\components;
 
 use minepark\Events;
+use pocketmine\entity\AttributeFactory;
 use pocketmine\entity\Entity;
 use minepark\defaults\EventList;
-use pocketmine\entity\Attribute;
 use minepark\components\base\Component;
 use minepark\common\player\MineParkPlayer;
+use minepark\defaults\ComponentAttributes;
+use minepark\defaults\TimeConstants;
+use minepark\models\entities\BossBarEntity;
 use minepark\models\player\BossBarSession;
+use minepark\Tasks;
+use pocketmine\entity\Location;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\network\mcpe\protocol\AddActorPacket;
+use pocketmine\network\mcpe\protocol\AddEntityPacket;
 use pocketmine\network\mcpe\protocol\BossEventPacket;
+use pocketmine\network\mcpe\protocol\types\entity\EntityIds;
+use pocketmine\network\mcpe\protocol\types\entity\EntityMetadataCollection;
+use pocketmine\network\mcpe\protocol\types\entity\EntityMetadataFlags;
+use pocketmine\network\mcpe\protocol\types\entity\EntityMetadataProperties;
+use pocketmine\network\mcpe\protocol\types\entity\EntityMetadataTypes;
+use pocketmine\network\mcpe\protocol\types\entity\LongMetadataProperty;
 use pocketmine\network\mcpe\protocol\UpdateAttributesPacket;
+use pocketmine\network\mcpe\protocol\types\entity\Attribute;
+use pocketmine\entity\Attribute as AttributeIds;
 
 class BossBar extends Component
 {
@@ -26,12 +40,16 @@ class BossBar extends Component
     public function getAttributes(): array
     {
         return [
+            ComponentAttributes::SHARED,
+            ComponentAttributes::STANDALONE
         ];
     }
 
     public function joinControl(PlayerJoinEvent $event)
     {
         $this->initializePlayerSession($event->getPlayer());
+
+        $player = MineParkPlayer::cast($event->getPlayer());
     }
 
     public function initializePlayerSession(MineParkPlayer $player) : bool
@@ -40,7 +58,7 @@ class BossBar extends Component
             return false;
         }
 
-        $fakeEntityId = Entity::$entityCount++;
+        $fakeEntityId = Entity::nextRuntimeId();
 
         $this->createBossEntity($player, $fakeEntityId);
 
@@ -64,7 +82,7 @@ class BossBar extends Component
         if (!$session->loaded) {
             $session->loaded = true;
 
-            $player->dataPacket($this->getBossEventPacket($session->fakeEntityId, $title, $percents));
+            $player->getNetworkSession()->sendDataPacket($this->getBossEventPacket($session->fakeEntityId, $title, $percents));
         } else {
             $this->setTitle($player, $session->fakeEntityId, $title);
             $this->setPercentage($player, $session->fakeEntityId, $percents);
@@ -82,13 +100,9 @@ class BossBar extends Component
             return;
         }
 
-        $packet = new BossEventPacket;
+        $packet = BossEventPacket::title($fakeEntityId, $title);
 
-        $packet->eventType = BossEventPacket::TYPE_TITLE;
-        $packet->bossEid = $fakeEntityId;
-        $packet->title = $title;
-
-        $player->dataPacket($packet);
+        $player->getNetworkSession()->sendDataPacket($packet);
 
         $player->getStatesMap()->bossBarSession->title = $title;
     }
@@ -101,13 +115,9 @@ class BossBar extends Component
 
         $percentage = $percents / 100;
 
-        $packet = new BossEventPacket;
+        $packet = BossEventPacket::healthPercent($fakeEntityId, $percentage);
 
-        $packet->eventType = BossEventPacket::TYPE_HEALTH_PERCENT;
-        $packet->bossEid = $fakeEntityId;
-        $packet->healthPercent = $percentage;
-
-        $player->dataPacket($packet);
+        $player->getNetworkSession()->sendDataPacket($packet);
 
         $player->getStatesMap()->bossBarSession->percents = $percents;
     }
@@ -119,17 +129,19 @@ class BossBar extends Component
         $packet->bossEid = $player->getStatesMap()->bossBarSession->fakeEntityId;
         $packet->eventType = BossEventPacket::TYPE_HIDE;
 
-        $player->dataPacket($packet);
+        $player->getNetworkSession()->sendDataPacket($packet);
     }
 
     private function initializeHealthAttribute(MineParkPlayer $player, int $fakeEntityId)
     {
         $packet = new UpdateAttributesPacket;
 
-        $packet->entityRuntimeId = $fakeEntityId;
-        $packet->entries[] = Attribute::getAttribute(Attribute::HEALTH)->setMinValue(0)->setMaxValue(100)->setDefaultValue(0);
+        $attribute = new Attribute(AttributeIds::HEALTH, 0, 100, 30, 30);
 
-        $player->dataPacket($packet);
+        $packet->entityRuntimeId = $fakeEntityId;
+        $packet->entries[] = $attribute;
+
+        $player->getNetworkSession()->sendDataPacket($packet);
     }
 
     private function createBossEntity(MineParkPlayer $player, int $fakeEntityId) : int
@@ -137,11 +149,12 @@ class BossBar extends Component
         $packet = new AddActorPacket;
         
         $packet->entityRuntimeId = $fakeEntityId;
-        $packet->type = AddActorPacket::LEGACY_ID_MAP_BC[Entity::SLIME];
+        $packet->type = EntityIds::SLIME;
         $packet->metadata = $this->getHiddenEntityMetadata();
-        $packet->position = $player->asVector3()->add(0, 10, 0);
+        $packet->position = $player->getPosition()->asVector3()->add(0, 10, 0);
+        $packet->motion = null;
 
-        $player->dataPacket($packet);
+        $player->getNetworkSession()->sendDataPacket($packet);
 
         $this->initializeHealthAttribute($player, $fakeEntityId);
 
@@ -162,29 +175,34 @@ class BossBar extends Component
 
     private function getBossEventPacket(int $fakeEntityId, string $title, int $percents) : BossEventPacket
     {
-        $packet = new BossEventPacket;
-
-        $packet->bossEid = $fakeEntityId;
-        $packet->eventType = BossEventPacket::TYPE_SHOW;
-        $packet->title = $title;
-        $packet->healthPercent = $percents / 100;
-        $packet->unknownShort = 0;
-        $packet->color = 0;
-        $packet->overlay = 0;
-        $packet->playerEid = 0;
+        $packet = BossEventPacket::show($fakeEntityId, $title, $percents);
 
         return $packet;
     }
 
     private function getHiddenEntityMetadata() : array
     {
-        return [
-            Entity::DATA_LEAD_HOLDER_EID => [Entity::DATA_TYPE_LONG, -1],
-            Entity::DATA_FLAGS => [Entity::DATA_TYPE_LONG, 0 ^ 1 << Entity::DATA_FLAG_SILENT ^ 1 << Entity::DATA_FLAG_INVISIBLE ^ 1 << Entity::DATA_FLAG_NO_AI], 
-            Entity::DATA_SCALE => [Entity::DATA_TYPE_FLOAT, 0],
-            Entity::DATA_NAMETAG => [Entity::DATA_TYPE_STRING, ""], 
-            Entity::DATA_BOUNDING_BOX_WIDTH => [Entity::DATA_TYPE_FLOAT, 0], 
-            Entity::DATA_BOUNDING_BOX_HEIGHT => [Entity::DATA_TYPE_FLOAT, 0]
-        ];
+        /*return [
+            EntityMetadataProperties::LEAD_HOLDER_EID => [EntityMetadataTypes::LONG, -1],
+            EntityMetadataProperties::FLAGS => [EntityMetadataTypes::LONG, 0 ^ 1 << EntityMetadataFlags::SILENT ^ 1 << EntityMetadataFlags::INVISIBLE ^ 1 << EntityMetadataFlags::NO_AI],
+            EntityMetadataProperties::SCALE => [EntityMetadataTypes::FLOAT, 0],
+            EntityMetadataProperties::NAMETAG => [EntityMetadataTypes::STRING, ""],
+            EntityMetadataProperties::BOUNDING_BOX_WIDTH => [EntityMetadataTypes::FLOAT, 0],
+            EntityMetadataProperties::BOUNDING_BOX_HEIGHT => [EntityMetadataTypes::FLOAT, 0]
+        ];*/
+
+        $properties = new EntityMetadataCollection;
+
+        $properties->setGenericFlag(EntityMetadataFlags::SILENT, true);
+        $properties->setGenericFlag(EntityMetadataFlags::INVISIBLE, true);
+        $properties->setGenericFlag(EntityMetadataFlags::NO_AI, true);
+
+        $properties->setLong(EntityMetadataProperties::LEAD_HOLDER_EID, -1);
+        $properties->setFloat(EntityMetadataProperties::SCALE, 0);
+        $properties->setString(EntityMetadataProperties::NAMETAG, "");
+        $properties->setFloat(EntityMetadataProperties::BOUNDING_BOX_WIDTH, 0);
+        $properties->setFloat(EntityMetadataProperties::BOUNDING_BOX_HEIGHT, 0);
+
+        return $properties->getAll();
     }
 }

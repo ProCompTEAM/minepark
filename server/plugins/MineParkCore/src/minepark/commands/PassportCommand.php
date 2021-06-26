@@ -84,7 +84,7 @@ class PassportCommand extends Command
 
     private function showPassportForm(MineParkPlayer $player, string $form)
     {
-        foreach($this->getCore()->getRegionPlayers($player, 4) as $p) {
+        foreach($this->getCore()->getRegionPlayers($player->getPosition(), 4) as $p) {
             $p->sendWindowMessage($form, "Паспорт " . $player->getName());
                 
             if(strpos($p->getProfile()->people, strtolower($player->getName())) === false and $p !== $player) {

@@ -1,7 +1,7 @@
 <?php
 namespace minepark\models\player;
 
-use pocketmine\level\Position;
+use pocketmine\world\Position;
 use minepark\common\player\MineParkPlayer;
 use minepark\components\vehicles\models\base\BaseCar;
 

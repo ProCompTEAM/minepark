@@ -98,7 +98,7 @@ class HealCommand extends OrganisationsCommand
 
     private function getPlayersNear(MineParkPlayer $player) : array
     {
-        $allplayers = $this->getCore()->getRegionPlayers($player, 5);
+        $allplayers = $this->getCore()->getRegionPlayers($player->getPosition(), 5);
 
         $players = array();
 
@@ -113,7 +113,7 @@ class HealCommand extends OrganisationsCommand
 
     private function healPlayer(MineParkPlayer $healer, MineParkPlayer $playerToHeal)
     {
-        $playerToHeal->removeAllEffects();
+        $playerToHeal->getEffects()->clear();
         $playerToHeal->setHealth($playerToHeal->getMaxHealth());
 
         $this->g->sendLocalMessage($healer, "{CommandHealDo}");

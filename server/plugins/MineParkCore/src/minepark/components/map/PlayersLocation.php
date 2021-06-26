@@ -46,7 +46,7 @@ class PlayersLocation extends Component
 
                 $pointPosition = $this->mapProvider->getPointPosition($pointName)->asVector3();
                 
-                if ($player->distance($pointPosition) < self::PLAYER_NEAR_PLACE_DISTANCE) {
+                if ($player->getPosition()->distance($pointPosition) < self::PLAYER_NEAR_PLACE_DISTANCE) {
                     $evenOnePlayer = true;
                     $playerCounted[$player->getName()] = true;
                     

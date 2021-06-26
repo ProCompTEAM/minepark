@@ -32,4 +32,6 @@ class EventList
     public const CHUNK_LOAD_EVENT = 14;
 
     public const INVENTORY_TRANSACTION_EVENT = 15;
+
+    public const PLAYER_LOGIN_EVENT = 16;
 }

@@ -3,7 +3,7 @@ namespace minepark\components\map;
 
 use minepark\Tasks;
 use minepark\Providers;
-use pocketmine\level\Position;
+use pocketmine\world\Position;
 use minepark\defaults\MapConstants;
 use minepark\providers\MapProvider;
 use minepark\defaults\TimeConstants;
@@ -53,7 +53,7 @@ class TrafficLights extends Component
         $lightPoints = $this->mapProvider->getPointsByGroup(MapConstants::POINT_GROUP_TRAFFIC_LIGHT1, false);
 
         foreach($lightPoints as $point) {
-            $level = $this->getServer()->getLevelByName($point->level);
+            $level = $this->getServer()->getWorldManager()->getWorldByName($point->level);
             array_push($this->lightPositionsVariation1, new Position($point->x, $point->y, $point->z, $level));
         }
     }
@@ -63,7 +63,7 @@ class TrafficLights extends Component
         $lightPoints = $this->mapProvider->getPointsByGroup(MapConstants::POINT_GROUP_TRAFFIC_LIGHT2, false);
 
         foreach($lightPoints as $point) {
-            $level = $this->getServer()->getLevelByName($point->level);
+            $level = $this->getServer()->getWorldManager()->getWorldByName($point->level);
             array_push($this->lightPositionsVariation2, new Position($point->x, $point->y, $point->z, $level));
         }
     }

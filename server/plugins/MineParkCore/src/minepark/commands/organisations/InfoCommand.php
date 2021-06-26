@@ -65,7 +65,7 @@ class InfoCommand extends OrganisationsCommand
 
     private function getPlayersNear(MineParkPlayer $player) : array
     {
-        $allplayers = $this->getCore()->getRegionPlayers($player, 5);
+        $allplayers = $this->getCore()->getRegionPlayers($player->getPosition(), 5);
 
         $players = array();
         foreach ($allplayers as $currp) {

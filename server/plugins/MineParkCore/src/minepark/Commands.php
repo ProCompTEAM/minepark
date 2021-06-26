@@ -156,26 +156,26 @@ class Commands
             return;
         }
 
-        if ($event->getMessage()[0] !== ChatConstants::COMMAND_PREFIX) {
+        if($event->getMessage()[0] !== ChatConstants::COMMAND_PREFIX) {
             return;
         }
 
         $rawCommand = substr($event->getMessage(), 1);
         $arguments = explode(Command::ARGUMENTS_SEPERATOR, $rawCommand);
 
-        if ($arguments[0] === ChatConstants::ORGANISATIONS_COMMANDS_PREFIX) {
+        if($arguments[0] === ChatConstants::ORGANISATIONS_COMMANDS_PREFIX) {
             return $this->executeOrganisationsCommand($player, array_slice($arguments, 1), $event);
         }
 
         $command = $this->getCommand($arguments[0]);
 
-        if ($command === null) {
+        if($command === null) {
             return;
         }
 
         $arguments = array_slice($arguments, 1);
 
-        if (!$this->checkPermissions($player, $command, $event)) {
+        if(!$this->checkPermissions($player, $command, $event)) {
             return;
         }
 
@@ -184,19 +184,19 @@ class Commands
 
     private function executeOrganisationsCommand(MineParkPlayer $player, array $arguments, ?Event $event = null)
     {
-        if (!isset($commands[0])) {
+        if(!isset($commands[0])) {
             return;
         }
 
         $command = $this->getOrganisationsCommand($arguments[0]);
 
-        if (!isset($command)) {
+        if(!isset($command)) {
             return;
         }
 
         $arguments = array_slice($arguments, 1);
 
-        if (!$this->checkPermissions($player, $command, $event)) {
+        if(!$this->checkPermissions($player, $command, $event)) {
             return;
         }
 
@@ -205,8 +205,8 @@ class Commands
 
     private function getCommand(string $commandName) : ?Command
     {
-        foreach ($this->commands as $command) {
-            if (in_array($commandName, $command->getCommand())) {
+        foreach($this->commands as $command) {
+            if(in_array($commandName, $command->getCommand())) {
                 return $command;
             }
         }
@@ -216,8 +216,8 @@ class Commands
 
     private function getOrganisationsCommand(string $commandName) : ?OrganisationsCommand
     {
-        foreach ($this->organisationsCommands as $command) {
-            if (in_array($commandName, $command->getCommand())) {
+        foreach($this->organisationsCommands as $command) {
+            if(in_array($commandName, $command->getCommand())) {
                 return $command;
             }
         }
@@ -227,15 +227,15 @@ class Commands
 
     private function checkPermissions(MineParkPlayer $player, Command $command, ?Event $event = null) : bool
     {
-        if ($this->hasPermissions($player, $command)) {
+        if($this->hasPermissions($player, $command)) {
             return true;
         }
 
         $player->sendMessage("§cУ вас нет прав на эту команду :(");
         $player->sendMessage("§6Возможно она станет доступна после покупки: /donate");
 
-        if (isset($event)) {
-            $event->setCancelled();
+        if(isset($event)) {
+            $event->cancel();
         }
 
         return false;
@@ -245,16 +245,16 @@ class Commands
     {
         $permissions = $command->getPermissions();
 
-        if (in_array(Permissions::ANYBODY, $permissions)) {
+        if(in_array(Permissions::ANYBODY, $permissions)) {
             return true;
         }
 
-        if (in_array(Permissions::OPERATOR, $permissions) and $player->isOp()) {
+        if(in_array(Permissions::OPERATOR, $permissions) and $player->isOperator()) {
             return true;
         }
 
-        foreach ($permissions as $permission) {
-            if ($player->hasPermission($permission)) {
+        foreach($permissions as $permission) {
+            if($player->hasPermission($permission)) {
                 return true;
             }
         }

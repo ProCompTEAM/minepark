@@ -2,10 +2,12 @@
 namespace minepark\components\phone;
 
 use Exception;
+use jojoe77777\FormAPI\SimpleForm;
 use minepark\common\player\MineParkPlayer;
 use minepark\Components;
 use minepark\components\base\Component;
 use minepark\components\chat\Chat;
+use minepark\components\map\ATM;
 use minepark\components\organisations\Organisations;
 use minepark\defaults\ComponentAttributes;
 use minepark\defaults\EventList;
@@ -17,7 +19,7 @@ use minepark\providers\data\PhonesDataProvider;
 use minepark\providers\MapProvider;
 use minepark\Tasks;
 use pocketmine\event\player\PlayerQuitEvent;
-use pocketmine\level\Position;
+use pocketmine\world\Position;
 
 class Phone extends Component
 {
@@ -33,6 +35,8 @@ class Phone extends Component
 
     private Chat $chat;
 
+    private ATM $atm;
+
     public function initialize()
     {
         $this->phonesDataProvider = Providers::getPhonesDataProvider();
@@ -40,6 +44,8 @@ class Phone extends Component
         $this->mapProvider = Providers::getMapProvider();
 
         $this->chat = Components::getComponent(Chat::class);
+
+        $this->atm = Components::getComponent(ATM::class);
 
         Events::registerEvent(EventList::PLAYER_QUIT_EVENT, [$this, "playerQuitEvent"]);
         Tasks::registerRepeatingAction(TimeConstants::PHONE_TAKE_FEE_INTERVAL, [$this, "takeFee"]);
@@ -78,7 +84,7 @@ class Phone extends Component
                 continue;
             }
 
-            if(!$this->hasStream($player->getStatesMap()->phoneCompanion->asPosition())) {
+            if(!$this->hasStream($player->getStatesMap()->phoneCompanion->getPosition())) {
                 $this->breakCallForNoStream($player);
             } elseif(!$this->reduceBalance($player, 20)) {
                 $this->breakCallForNoMoney($player);
@@ -113,7 +119,7 @@ class Phone extends Component
         $userName = $this->phonesDataProvider->getUserNameByNumber($number);
 
         if(isset($userName)) {
-            return $nameOnly ? $userName : $this->getServer()->getPlayer($userName);
+            return $nameOnly ? $userName : $this->getServer()->getPlayerExact($userName);
         }
 
         return null;
@@ -135,7 +141,7 @@ class Phone extends Component
             return;
         }
 
-        if(!$this->hasStream($initializer->asPosition())) {
+        if(!$this->hasStream($initializer->getPosition())) {
             $initializer->sendMessage("PhoneSmsNoNet2");
             return;
         }
@@ -180,7 +186,7 @@ class Phone extends Component
 
     public function sendSms(MineParkPlayer $sender, int $targetNumber, string $text)
     {
-        if(!$this->hasStream($sender->asPosition())) {
+        if(!$this->hasStream($sender->getPosition())) {
             $sender->sendMessage("PhoneSmsError");
             return;
         }
@@ -230,9 +236,22 @@ class Phone extends Component
         $message .= "§9☏ Мед. помощь: §e/c 03\n";
         $message .= "§9☏ Сообщения: §e/sms <н.телефона> <текст>\n";
         $message .= "§1> Цены: §aСМС 20р, Звонок 20р минута\n";
-        $message .= "§1> Ваш телефонный номер: §3" . $player->getProfile()->phoneNumber;
+        $message .= "§1> Ваш телефонный номер: §3" . $player->getProfile()->phoneNumber . "\n";
+        $message .= "§1> Ваш баланс: §3" . $this->getBalance($player) . "р\n\n";
 
-        $player->sendWindowMessage($message, "§9❖======*Смартфон*=======❖");
+        $form = new SimpleForm([$this, "phoneMenuForm"]);
+        $form->setTitle("§9❖======*Смартфон*=======❖");
+        $form->setContent($message);
+        $form->addButton("Интернет-банкинг", -1, "", "banking");
+
+        $player->sendForm($form);
+    }
+
+    public function phoneMenuForm(MineParkPlayer $player, $data = null)
+    {
+        if($data == "banking") {
+            $this->atm->sendMoneyInfo($player);
+        }
     }
 
     public function handleMessage(MineParkPlayer $player, string $message)
@@ -355,7 +374,7 @@ class Phone extends Component
 
     private function generateEmergencyMessages(MineParkPlayer $player) : array
     {
-        $nearPoints = $this->mapProvider->getNearPoints($player->asPosition(), 15);
+        $nearPoints = $this->mapProvider->getNearPoints($player->getPosition(), 15);
 
         $messages = [];
 

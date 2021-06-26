@@ -54,7 +54,7 @@ class ATMCommand extends Command
 
     private function isNearATM(MineParkPlayer $player) : bool
     {
-        $points = $this->mapProvider->getNearPoints($player->asPosition(), self::ATM_DISTANCE, false);
+        $points = $this->mapProvider->getNearPoints($player->getPosition(), self::ATM_DISTANCE, false);
 
         foreach($points as $point) {
             if($point->groupId === MapConstants::POINT_GROUP_ATM) {

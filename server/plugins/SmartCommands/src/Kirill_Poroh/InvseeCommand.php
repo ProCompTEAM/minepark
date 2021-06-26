@@ -3,9 +3,9 @@ declare(strict_types = 1);
 
 namespace Kirill_Poroh;
 
-use pocketmine\Player;
+use pocketmine\player\Player;
 
-use pocketmine\level\Position;
+use pocketmine\world\Position;
 use pocketmine\math\Vector3;
 use pocketmine\entity\Entity;
 use pocketmine\block\Block;
@@ -44,7 +44,7 @@ class InvseeCommand
                     return true;
                 }
                 
-                $p = $this->main->getServer()->getPlayer($args[0]);
+                $p = $this->main->getServer()->getPlayerExact($args[0]);
                 $name = ($p == null ? $args[0] : $p->getName());
                 
                 if($p === null) 
@@ -56,17 +56,17 @@ class InvseeCommand
                 
                 $chestBlock = new \pocketmine\block\Chest();
                 
-                $player->getLevel()->setBlock(new Vector3($player->getX(), $player->getY() - 4, $player->getZ()), $chestBlock, true, true);
+                $player->getWorld()->setBlock(new Vector3($player->getLocation()->getX(), $player->getLocation()->getY() - 4, $player->getLocation()->getZ()), $chestBlock, true, true);
                 
                 $nbt = new CompoundTag("", [
                     new CompoundTag("Items", array()),
                     new StringTag("id", Tile::CHEST),
-                    new IntTag("x", (int) floor($player->getX())),
-                    new IntTag("y", (int) floor($player->getY() - 4)),
-                    new IntTag("z", (int) floor($player->getZ()))
+                    new IntTag("x", (int) floor($player->getLocation()->getX())),
+                    new IntTag("y", (int) floor($player->getLocation()->getY() - 4)),
+                    new IntTag("z", (int) floor($player->getLocation()->getZ()))
                 ]);
                     
-                $tile = Tile::createTile("Chest", $player->getLevel(), $nbt);
+                $tile = Tile::createTile("Chest", $player->getWorld(), $nbt);
                 
                 foreach($player->getInventory()->getContents() as $item) 
                 {
@@ -89,7 +89,7 @@ class InvseeCommand
         $sender = $transaction->getPlayer();
         $target = $transaction->getInventories()[1]->invsee_player;
         
-        if($this->main->getServer()->getPlayer($target->getName()) !== null)
+        if($this->main->getServer()->getPlayerExact($target->getName()) !== null)
         {
             $target->getInventory()->clearAll();
             

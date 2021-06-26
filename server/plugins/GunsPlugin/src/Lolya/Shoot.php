@@ -7,7 +7,7 @@ use pocketmine\nbt\tag\DoubleTag;
 use pocketmine\nbt\tag\FloatTag;
 
 use Lolya\creature\BulletEntity;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 class Shoot
 {
@@ -22,7 +22,7 @@ class Shoot
     {
         $nbt = $this->generateNbt($player);
 
-        $bullet = new BulletEntity($player->getLevel(), $nbt, $player );
+        $bullet = new BulletEntity($player->getLocation(), $nbt, $player );
         $bullet->setAmmoDamage($damage);
 
         $bullet->setMotion ($bullet->getMotion()->multiply(5.0));

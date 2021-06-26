@@ -83,7 +83,7 @@ class TransportCommand extends Command
 
     public function broadcastTrainStationSound(MineParkPlayer $driver, string $sound)
     {
-        foreach($this->getCore()->getRegionPlayers($driver, VehicleConstants::PLAYER_NEAR_STATION_DISTANCE) as $player) {
+        foreach($this->getCore()->getRegionPlayers($driver->getPosition(), VehicleConstants::PLAYER_NEAR_STATION_DISTANCE) as $player) {
             $player = MineParkPlayer::cast($player);
             $player->sendSound($sound);
         }
@@ -105,6 +105,6 @@ class TransportCommand extends Command
 
     private function spawnCar(MineParkPlayer $player, string $model) : bool
     {
-        return $this->vehicles->createVehicle($model, $player->getLevel(), $player->asVector3(), $player->getYaw());
+        return $this->vehicles->createVehicle($model, $player->getWorld(), $player->getLocation(), $player->getLocation()->getYaw());
     }
 }

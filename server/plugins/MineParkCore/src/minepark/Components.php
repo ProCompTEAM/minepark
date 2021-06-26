@@ -79,6 +79,6 @@ class Components
             }
         }
 
-        throw new Exception("Component '" . get_class($component) . "' does not exist");
+        throw new Exception("Component '" . $componentName . "' does not exist");
     }
 }

@@ -71,7 +71,7 @@ class NBSFile
 
         ### HEADER ###
         try {
-            $path = Utils::cleanPath(realpath($path));
+            $path = realpath($path);
             $file = new SplFileObject($path);
             $file->rewind();
             //TODO test

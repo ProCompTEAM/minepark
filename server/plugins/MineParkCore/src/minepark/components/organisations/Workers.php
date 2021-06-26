@@ -2,11 +2,10 @@
 namespace minepark\components\organisations;
 
 use minepark\Providers;
-use pocketmine\event\Event;
-use pocketmine\entity\Effect;
 
-use pocketmine\level\Position;
-use pocketmine\entity\EffectInstance;
+use pocketmine\entity\effect\VanillaEffects;
+use pocketmine\world\Position;
+use pocketmine\entity\effect\EffectInstance;
 use minepark\common\player\MineParkPlayer;
 use minepark\Components;
 use minepark\components\base\Component;
@@ -67,11 +66,11 @@ class Workers extends Component
     public function sign(SignChangeEvent $event)
     {
         $player = $event->getPlayer();
-        $lns = $event->getLines();
+        $lines = $event->getNewText()->getLines();
 
-        if ($lns[0] == "[workers1]" and $player->isOp()) {
+        if ($lines[0] == "[workers1]" and $player->isOperator()) {
             $this->handleWorker1($event);
-        } elseif ($lns[0] == "[workers2]" and $player->isOp()) {
+        } elseif ($lines[0] == "[workers2]" and $player->isOperator()) {
             $this->handleWorker2($event);
         }
     }
@@ -124,8 +123,10 @@ class Workers extends Component
     
     private function handleBoxTake(MineParkPlayer $player)
     {
-        $player->addEffect(new EffectInstance(Effect::getEffect(2), 20 * 9999, 3));
-
+        $effectManager = $player->getEffects();
+        $effect = VanillaEffects::fromString("slowness");
+        $instance = new EffectInstance($effect, 20 * 9999, 3, true);
+        $effectManager->add($instance);
         $box = $this->words[mt_rand(0, count($this->words))]; 
         $player->getStatesMap()->loadWeight = mt_rand(1, 12); 
         
@@ -155,7 +156,7 @@ class Workers extends Component
     
     private function handlePutBox(MineParkPlayer $player)
     {
-        $player->removeAllEffects();
+        $player->getEffects()->clear();
 
         $this->chat->sendLocalMessage($player, "§8(§dЯщик расположился на складе§8)", "§d : ", 12);
         $this->bankingProvider->givePlayerMoney($player, 20 * $player->getStatesMap()->loadWeight);

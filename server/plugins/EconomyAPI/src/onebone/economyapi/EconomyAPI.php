@@ -2,7 +2,7 @@
 namespace onebone\economyapi;
 
 use minepark\Core;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use minepark\Providers;
 use pocketmine\plugin\PluginBase;
 
@@ -10,7 +10,7 @@ class EconomyAPI extends PluginBase
 {
     public static $_instance;
 
-    public function onEnable()
+    public function onEnable() : void
     {
         self::$_instance = $this;
     }
@@ -28,7 +28,7 @@ class EconomyAPI extends PluginBase
     public function addMoney($player, $amount, bool $force = false, string $issued = "") : int
     {
         if (is_string($player)) {
-            $player = $this->getServer()->getPlayer($player);
+            $player = $this->getServer()->getPlayerExact($player);
         }
 
         return Providers::getBankingProvider()->givePlayerMoney($player, $amount);
@@ -37,7 +37,7 @@ class EconomyAPI extends PluginBase
     public function reduceMoney($player, $amount, bool $force = false, string $issued = "") : int
     {
         if (is_string($player)) {
-            $player = $this->getServer()->getPlayer($player);
+            $player = $this->getServer()->getPlayerExact($player);
         }
 
         return Providers::getBankingProvider()->takePlayerMoney($player, $amount);
