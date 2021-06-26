@@ -146,15 +146,17 @@ class PlayerSettings extends Component
         $gps->setCustomName("Навигатор");
         
         if(!$player->getInventory()->contains($phone)) {
-            $player->getInventory()->setItem(0, $phone);
+            $player->getInventory()->setItem(2, $phone);
         }
+
+        $player->getInventory()->setHeldItemIndex(3);
         
         if(!$player->getInventory()->contains($passport)) {
-            $player->getInventory()->setItem(1, $passport);
+            $player->getInventory()->setItem(3, $passport);
         }
         
         if(!$player->getInventory()->contains($gps)) {
-            $player->getInventory()->setItem(2, $gps);
+            $player->getInventory()->setItem(4, $gps);
         }
 
         if($player->getProfile()->organisation == Organisations::SECURITY_WORK) {
