@@ -3,20 +3,23 @@ namespace minepark\components\vehicles;
 
 use minepark\Events;
 use pocketmine\world\World;
-use pocketmine\math\Vector3;
+use pocketmine\entity\Location;
 use minepark\defaults\EventList;
+use pocketmine\nbt\tag\CompoundTag;
+use pocketmine\entity\EntityFactory;
 use minepark\components\base\Component;
+use pocketmine\entity\EntityDataHelper;
 use minepark\common\player\MineParkPlayer;
 use minepark\defaults\ComponentAttributes;
 use pocketmine\event\player\PlayerQuitEvent;
-use pocketmine\event\server\DataPacketReceiveEvent;
-use pocketmine\network\mcpe\protocol\InteractPacket;
-use minepark\components\vehicles\models\base\BaseCar;
+use minepark\components\vehicles\models\TaxiCar;
 use minepark\components\vehicles\models\GuestCar1;
 use minepark\components\vehicles\models\GuestCar2;
 use minepark\components\vehicles\models\GuestCar3;
 use minepark\components\vehicles\models\GuestCar4;
-use minepark\components\vehicles\models\TaxiCar;
+use pocketmine\event\server\DataPacketReceiveEvent;
+use pocketmine\network\mcpe\protocol\InteractPacket;
+use minepark\components\vehicles\models\base\BaseCar;
 use pocketmine\network\mcpe\protocol\PlayerInputPacket;
 
 class Vehicles extends Component
@@ -51,7 +54,7 @@ class Vehicles extends Component
         }
     }
 
-    public function createVehicle(string $vehicleName, World $level, Vector3 $pos, float $yaw) : bool
+    public function createVehicle(string $vehicleName, World $world, Location $location, float $yaw) : bool
     {
         $vehicleClassName = $this->getVehicle($vehicleName);
 
@@ -59,7 +62,10 @@ class Vehicles extends Component
             return false;
         }
 
-        (new $vehicleClassName($level, BaseCar::createBaseNBT($pos, null, $yaw)))->spawnToAll();
+        $nbt = EntityDataHelper::createBaseNBT($location->asPosition(), null, $yaw);
+
+        $vehicle = new $vehicleClassName($location, $nbt);
+        $vehicle->spawnToAll();
 
         return true;
     }
@@ -121,8 +127,10 @@ class Vehicles extends Component
             "taxi" => TaxiCar::class
         ];
 
-        foreach ($this->getVehicles() as $name => $class) {
-            BaseCar::registerEntity($class);
+        foreach($this->getVehicles() as $name => $class) {
+            EntityFactory::getInstance()->register($class, function(World $world, CompoundTag $nbt) use($class) : BaseCar {
+                return new $class(EntityDataHelper::parseLocation($nbt, $world), $nbt);
+            }, [$name]);
         }
     }
 }

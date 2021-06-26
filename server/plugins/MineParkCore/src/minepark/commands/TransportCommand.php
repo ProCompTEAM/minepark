@@ -105,6 +105,6 @@ class TransportCommand extends Command
 
     private function spawnCar(MineParkPlayer $player, string $model) : bool
     {
-        return $this->vehicles->createVehicle($model, $player->getWorld(), $player->getPosition()->asVector3(), $player->getLocation()->getYaw());
+        return $this->vehicles->createVehicle($model, $player->getWorld(), $player->getLocation(), $player->getLocation()->getYaw());
     }
 }
