@@ -43,3 +43,4 @@ ____
 - PM Api Documentation: http://apidoc.pmmp.io/
 - MBE Docs: http://bedrock.dev/
 - Minecraft Wiki-VG: https://wiki.vg/
+- MCPEDL: https://mcpedl.com/
