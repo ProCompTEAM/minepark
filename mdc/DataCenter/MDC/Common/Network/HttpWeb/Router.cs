@@ -43,6 +43,13 @@ namespace MDC.Common.Network.HttpWeb
                 return CreateExecutionResult(HttpStatusCode.Forbidden);
             }
 
+            if (string.IsNullOrWhiteSpace(requestContext.UnitId))
+            {
+                General.Error("Declined request from ", requestContext.Address);
+                General.Error("Invalid UnitId value = {0}", requestContext.UnitId);
+                return CreateExecutionResult(HttpStatusCode.BadRequest);
+            }
+
             try
             {
                 return TryToExecute(routes, requestContext, jsonData);
