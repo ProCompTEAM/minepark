@@ -46,8 +46,6 @@ class Organisations extends Component
 
     public function getName(int $organizationId, bool $withColor = true)
     {
-        $form = null;
-
         switch($organizationId)
         {
             case self::NO_WORK:         $form = "§0Безработный" ; break;

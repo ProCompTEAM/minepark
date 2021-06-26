@@ -19,6 +19,7 @@ use pocketmine\event\player\PlayerCreationEvent;
 use pocketmine\event\player\PlayerInteractEvent;
 use minepark\components\organisations\Organisations;
 use minepark\components\administrative\Tracking;
+use minepark\components\BossBar;
 use minepark\providers\ProfileProvider;
 use pocketmine\item\ItemFactory;
 

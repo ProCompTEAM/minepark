@@ -20,6 +20,7 @@ use pocketmine\world\particle\FloatingTextParticle;
 use pocketmine\network\mcpe\protocol\PlaySoundPacket;
 use pocketmine\event\player\PlayerCommandPreprocessEvent;
 use pocketmine\network\mcpe\protocol\ModalFormRequestPacket;
+use pocketmine\network\mcpe\protocol\types\entity\EntityMetadataCollection;
 
 class MineParkPlayer extends Player
 {	
@@ -86,7 +87,6 @@ class MineParkPlayer extends Player
     {
         return $this->statesMap->authorized;
     }
-
     /*
         Permissions API
     */
@@ -323,16 +323,6 @@ class MineParkPlayer extends Player
     public function sendLocalizedTip(string $message)
     {
         parent::sendTip(Providers::getLocalizationProvider()->translateFrom($this->locale, $message));
-    }
-
-    public function sendWhisper(string $sender, string $message)
-    {
-        parent::sendWhisper($sender, Providers::getLocalizationProvider()->take($this->locale, $message) ?? $message);
-    }
-
-    public function sendLocalizedWhisper(string $sender, string $message)
-    {
-        parent::sendWhisper($sender, Providers::getLocalizationProvider()->translateFrom($this->locale, $message));
     }
 
     public function sendPopup(string $message, string $subtitle = ""): void

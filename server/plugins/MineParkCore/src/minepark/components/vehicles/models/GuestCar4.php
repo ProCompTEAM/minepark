@@ -1,22 +1,21 @@
 <?php
 namespace minepark\components\vehicles\models;
 
-use pocketmine\world\World;
 use pocketmine\math\Vector3;
+use pocketmine\entity\Location;
 use pocketmine\nbt\tag\CompoundTag;
-use minepark\components\vehicles\models\base\BaseCar;
+use minepark\components\vehicles\models\base\VillagerCar;
+use pocketmine\network\mcpe\protocol\types\entity\EntityIds;
 
-class GuestCar4 extends BaseCar
+class GuestCar4 extends VillagerCar
 {
-    public const NETWORK_ID = self::VILLAGER;
-
     public $height = 1.5;
 
-    public function __construct(Level $level, CompoundTag $nbt)
+    public function __construct(Location $location, CompoundTag $nbt = null)
     {
-        parent::__construct($level, $nbt);
+        parent::__construct($location, $nbt);
 
-        $this->setVillagerProfession(4);
+        $this->setProfession(4);
     }
 
     public function getLeftSpeed() : float

@@ -268,7 +268,7 @@ class FloatingTexts extends Component
 
     private function showFloatingTextForPlayer(MineParkPlayer $player, string $text, World $level, Position $position)
     {
-        if($level != $player->getWorld()) {
+        if($level !== $player->getWorld()) {
             return;
         }
 

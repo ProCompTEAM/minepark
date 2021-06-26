@@ -21,6 +21,7 @@ use pocketmine\event\player\PlayerPreLoginEvent;
 use pocketmine\event\server\DataPacketReceiveEvent;
 use pocketmine\event\player\PlayerCommandPreprocessEvent;
 
+
 class Events implements Listener
 {
     private static array $eventsRegistry = [];
