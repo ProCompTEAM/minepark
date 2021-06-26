@@ -1,17 +1,25 @@
 {
-   "format_version" : 1,
-   "header" : {
-      "description" : "vk.com/mcperp",
-      "name" : "MineParkRU",
-      "uuid" : "b68714f1-4ecc-4bb3-ac0b-2656bef84a06",
-      "version" : [ 6, 4, 5 ]
-   },
-   "modules" : [
-      {
-         "description" : "MineParkRU",
-         "type" : "resources",
-         "uuid" : "2e8651b1-8550-433a-85dd-b235518367a8",
-         "version" : [ 6, 4, 5 ]
-      }
-   ]
+    "format_version":  1,
+    "header":  {
+                   "description":  "vk.com/mcperp",
+                   "name":  "MineParkRU",
+                   "uuid":  "b39f883f-f8e4-4b65-b6dd-4a77b0cdfe99",
+                   "version":  [
+                                   2021,
+                                   6,
+                                   26
+                               ]
+               },
+    "modules":  [
+                    {
+                        "description":  "MineParkRU",
+                        "type":  "resources",
+                        "uuid":  "c0d7541d-875f-464d-b58a-38bb7b786c2c",
+                        "version":  [
+                                        2021,
+                                        6,
+                                        26
+                                    ]
+                    }
+                ]
 }
