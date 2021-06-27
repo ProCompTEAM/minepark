@@ -9,6 +9,8 @@ class UserDto extends BaseDto
 
     public string $fullName;
 
+    public ?string $email;
+
     public ?string $group;
 
     public ?string $people;
