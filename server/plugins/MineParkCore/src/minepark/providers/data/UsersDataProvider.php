@@ -5,6 +5,7 @@ use minepark\models\dtos\ChatMessageDto;
 use minepark\models\dtos\ExecutedCommandDto;
 use minepark\models\dtos\PasswordDto;
 use minepark\models\dtos\UserDto;
+use minepark\models\dtos\UserSettingsDto;
 use minepark\providers\base\DataProvider;
 
 class UsersDataProvider extends DataProvider
@@ -27,6 +28,12 @@ class UsersDataProvider extends DataProvider
         return $requestResult ? $this->createDto($requestResult) : null;
     }
 
+    public function getUserSettings(string $userName) : ?UserSettingsDto
+    {
+        $requestResult = $this->createRequest("get-user-settings", $userName);
+        return $requestResult ? $this->createSettingsDto($requestResult) : null;
+    }
+
     public function getUserPassword(string $userName) : string
     {
         return (string) $this->createRequest("get-password", $userName);
@@ -47,11 +54,6 @@ class UsersDataProvider extends DataProvider
         $this->createRequest("reset-password", $userName);
     }
 
-    public function createUserWithDto(UserDto $userDto)
-    {
-        $this->createRequest("create", $userDto);
-    }
-
     public function createUserInternal(string $userName) : UserDto
     {
         $requestResult = $this->createRequest("create-internal", $userName);
@@ -62,6 +64,11 @@ class UsersDataProvider extends DataProvider
     public function updateUserData(UserDto $userDto)
     {
         $this->createRequest("update", $userDto);
+    }
+
+    public function updateUserSettings(UserSettingsDto $settingsDto)
+    {
+        $this->createRequest("update-settings", $settingsDto);
     }
 
     public function updateUserJoinStatus(string $userName)
@@ -86,6 +93,20 @@ class UsersDataProvider extends DataProvider
         $this->createRequest("save-chat-message", $dto);
     }
 
+    protected function createDto(array $data) : UserDto
+    {
+        $dto = new UserDto();
+        $dto->set($data);
+        return $dto;
+    }
+
+    private function createSettingsDto(array $data) : UserSettingsDto
+    {
+        $dto = new UserSettingsDto();
+        $dto->set($data);
+        return $dto;
+    }
+
     private function createExecutedCommandDto(string $userName, string $command) : ExecutedCommandDto
     {
         $dto = new ExecutedCommandDto;
@@ -99,13 +120,6 @@ class UsersDataProvider extends DataProvider
         $dto = new ChatMessageDto;
         $dto->sender = $userName;
         $dto->message = $message;
-        return $dto;
-    }
-
-    protected function createDto(array $data) : UserDto
-    {
-        $dto = new UserDto();
-        $dto->set($data);
         return $dto;
     }
 }

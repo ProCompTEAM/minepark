@@ -42,7 +42,7 @@ class PayDay extends Component
                 $special += PayDayConstants::NEW_PLAYER_SPECIAL;
             }
 
-            if($player->getProfile()->organisation == Organisations::NO_WORK) {
+            if($player->getSettings()->organisation == Organisations::NO_WORK) {
                 $special += PayDayConstants::WORKLESS_SPECIAL;
             }
 
@@ -83,7 +83,7 @@ class PayDay extends Component
 
     private function getSalaryValue(MineParkPlayer $player) : int
     {
-        switch($player->getProfile()->organisation)
+        switch($player->getSettings()->organisation)
         {
             case Organisations::TAXI_WORK: 
                 return PayDayConstants::TAXI_WORK_SALARY;

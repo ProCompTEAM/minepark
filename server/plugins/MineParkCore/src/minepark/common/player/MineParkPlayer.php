@@ -2,31 +2,33 @@
 namespace minepark\common\player;
 
 use Exception;
-use pocketmine\entity\Location;
-use pocketmine\nbt\tag\CompoundTag;
-use pocketmine\network\mcpe\NetworkSession;
-use pocketmine\player\Player;
+use pocketmine\Server;
 use minepark\Providers;
 use pocketmine\math\Vector3;
-use pocketmine\player\PlayerInfo;
-use pocketmine\Server;
+use pocketmine\player\Player;
 use pocketmine\world\Position;
+use pocketmine\entity\Location;
 use minepark\models\dtos\UserDto;
+use pocketmine\player\PlayerInfo;
 use minepark\defaults\MapConstants;
+use pocketmine\nbt\tag\CompoundTag;
 use minepark\models\player\StatesMap;
 use minepark\defaults\PlayerAttributes;
 use minepark\models\player\FloatingText;
+use minepark\models\dtos\UserSettingsDto;
+use pocketmine\network\mcpe\NetworkSession;
 use pocketmine\world\particle\FloatingTextParticle;
 use pocketmine\network\mcpe\protocol\PlaySoundPacket;
 use pocketmine\event\player\PlayerCommandPreprocessEvent;
 use pocketmine\network\mcpe\protocol\ModalFormRequestPacket;
-use pocketmine\network\mcpe\protocol\types\entity\EntityMetadataCollection;
 
 class MineParkPlayer extends Player
 {	
     private StatesMap $statesMap;
 
     private UserDto $profile;
+
+    private UserSettingsDto $settings;
 
     private array $floatingTexts = [];
 
@@ -71,6 +73,16 @@ class MineParkPlayer extends Player
     public function setProfile(UserDto $profile)
     {
         $this->profile = $profile;
+    }
+
+    public function getSettings() : UserSettingsDto
+    {
+        return $this->settings;
+    }
+
+    public function setSettings(UserSettingsDto $settings)
+    {
+        $this->settings = $settings;
     }
 
     public function getStatesMap() : StatesMap
@@ -179,18 +191,18 @@ class MineParkPlayer extends Player
 
     public function existsAttribute(string $key) : bool
     {
-        return preg_match('/'.strtoupper($key).'/', $this->getProfile()->attributes);
+        return preg_match('/'.strtoupper($key).'/', $this->getSettings()->attributes);
     }
 
     public function changeAttribute(string $key, bool $status = true)
     {
         if(!$status) {
-            $this->getProfile()->attributes = str_replace(strtoupper($key), '', $this->getProfile()->attributes);
+            $this->getSettings()->attributes = str_replace(strtoupper($key), '', $this->getSettings()->attributes);
         } elseif(!$this->existsAttribute(strtoupper($key))) {
-            $this->getProfile()->attributes .= strtoupper($key);
+            $this->getSettings()->attributes .= strtoupper($key);
         }
 
-        Providers::getProfileProvider()->saveProfile($this);
+        Providers::getProfileProvider()->saveSettings($this);
     }
 
     /*
@@ -270,10 +282,10 @@ class MineParkPlayer extends Player
 
     public function unsetFloatingText(FloatingText $floatingText)
     {
-        $level = $floatingText->position->getWorld();
+        $world = $floatingText->position->getWorld();
 
         $floatingText->particle->setInvisible(true);
-        $level->addParticle($floatingText->position->asVector3(), $floatingText->particle, [$this]);
+        $world->addParticle($floatingText->position->asVector3(), $floatingText->particle, [$this]);
         
         foreach($this->floatingTexts as $key => $value) {
             if($floatingText == $value) {
@@ -285,17 +297,17 @@ class MineParkPlayer extends Player
 
     public function updateFloatingText(FloatingText $floatingText)
     {
-        $level = $floatingText->position->getWorld();
+        $world = $floatingText->position->getWorld();
         $floatingText->particle->setText($floatingText->text);
-        $level->addParticle($floatingText->position->asVector3(), $floatingText->particle, [$this]);
+        $world->addParticle($floatingText->position->asVector3(), $floatingText->particle, [$this]);
     }
 
     public function showFloatingTexts()
     {
         foreach($this->floatingTexts as $floatingText) {
             if(!$floatingText->delivered) {
-                $level = $floatingText->position->getWorld();
-                $level->addParticle($floatingText->position->asVector3(), $floatingText->particle, [$this]);
+                $world = $floatingText->position->getWorld();
+                $world->addParticle($floatingText->position->asVector3(), $floatingText->particle, [$this]);
                 $floatingText->delivered = true;
             }
         }

@@ -4,7 +4,7 @@ namespace MDC.Data.Dtos
     {
         public string Text { get; set; }
 
-        public string Level { get; set; }
+        public string World { get; set; }
 
         public double X { get; set; }
 

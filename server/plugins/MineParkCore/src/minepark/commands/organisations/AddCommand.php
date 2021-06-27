@@ -59,11 +59,11 @@ class AddCommand extends OrganisationsCommand
 
     private function tryChangeOrganisation(MineParkPlayer $player, MineParkPlayer $boss)
     {
-        $player->getProfile()->organisation = $boss->getProfile()->organisation;
+        $player->getSettings()->organisation = $boss->getSettings()->organisation;
         $this->profileProvider->saveProfile($player);
 
         $boss->sendLocalizedMessage("{CommandAdd}" . $player->getProfile()->fullName);
-        $player->sendLocalizedMessage("{GroupYou}".$this->core->getOrganisationsModule()->getName($player->getProfile()->organisation));
+        $player->sendLocalizedMessage("{GroupYou}".$this->core->getOrganisationsModule()->getName($player->getSettings()->organisation));
     }
 
     private function getPlayersNear(MineParkPlayer $player) : array

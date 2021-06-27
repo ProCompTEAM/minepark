@@ -1,11 +1,17 @@
 <?php
 namespace minepark\models\dtos;
 
-class MapPointDto extends BaseDto
+class UserSettingsDto extends BaseDto
 {
+    public int $id;
+
     public string $name;
 
-    public int $groupId;
+    public ?string $licenses;
+
+    public ?string $attributes;
+    
+    public int $organisation;
 
     public string $world;
 
@@ -14,6 +20,4 @@ class MapPointDto extends BaseDto
     public float $y;
 
     public float $z;
-
-    public string $createdDate;
 }

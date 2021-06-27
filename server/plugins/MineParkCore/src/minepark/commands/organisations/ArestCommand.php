@@ -58,7 +58,7 @@ class ArestCommand extends OrganisationsCommand
 
     private function canArrest(MineParkPlayer $player) : bool
     {
-        return $player->getProfile()->organisation === Organisations::GOVERNMENT_WORK or $player->getProfile()->organisation === Organisations::SECURITY_WORK;
+        return $player->getSettings()->organisation === Organisations::GOVERNMENT_WORK or $player->getSettings()->organisation === Organisations::SECURITY_WORK;
     }
 
     private function getPlayersNear(MineParkPlayer $player) : array

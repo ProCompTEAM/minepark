@@ -29,6 +29,11 @@ namespace MDC.Infrastructure.Controllers
             return await usersService.GetUserDto(userName);
         }
 
+        public async Task<UserSettingsDto> GetUserSettings(string userName, RequestContext requestContext)
+        {
+            return await usersService.GetUserSettingsDto(requestContext.UnitId, userName);
+        }
+
         public async Task<string> GetPassword(string userName)
         {
             return await usersService.GetPassword(userName);
@@ -49,12 +54,6 @@ namespace MDC.Infrastructure.Controllers
             await usersService.ResetPassword(userName);
         }
 
-        public async Task Create(UserDto user, RequestContext requestContext)
-        {
-            string unitId = requestContext.UnitId;
-            await usersService.Create(unitId, user);
-        }
-
         public async Task<UserDto> CreateInternal(string userName, RequestContext requestContext)
         {
             string unitId = requestContext.UnitId;
@@ -64,6 +63,12 @@ namespace MDC.Infrastructure.Controllers
         public async Task Update(UserDto user)
         {
             await usersService.Update(user);
+        }
+
+        public async Task UpdateSettings(UserSettingsDto settingsDto, RequestContext requestContext)
+        {
+            string unitId = requestContext.UnitId;
+            await usersService.UpdateSettings(unitId, settingsDto);
         }
 
         public async Task UpdateJoinStatus(string userName, RequestContext requestContext)

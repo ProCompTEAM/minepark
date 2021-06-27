@@ -8,12 +8,12 @@ use minepark\defaults\ComponentAttributes;
 
 class Navigation extends Component
 {
-    public $level;
+    public $world;
     
     public function initialize()
     {
         Tasks::registerRepeatingAction(TimeConstants::NAVIGATION_ROUTES_UPDATE_INTERVAL, [$this, "updateRoutes"]);
-        $this->level = $this->getServer()->getWorldManager()->getDefaultWorld();
+        $this->world = $this->getServer()->getWorldManager()->getDefaultWorld();
     }
 
     public function getAttributes() : array

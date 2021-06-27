@@ -18,23 +18,17 @@ namespace MDC.Data.Models
         [Unicode(Defaults.DefaultLongStringLength)]
         public string Password { get; set; }
 
+        [Unicode(Defaults.DefaultLongStringLength)]
+        public string Email { get; set; }
+
         [Unicode(Defaults.DefaultStringLength)]
         public string Group { get; set; }
-
-        [Unicode(Defaults.DefaultStringLength)]
-        public string Licenses { get; set; }
-
-        [Unicode(Defaults.DefaultStringLength)]
-        public string Attributes { get; set; }
 
         [Unicode(Defaults.DefaultLongStringLength)]
         public string People { get; set; }
 
         [Unicode(Defaults.DefaultLongStringLength)]
         public string Tag { get; set; }
-
-        [Required]
-        public int Organisation { get; set; }
 
         [Required]
         public int Bonus { get; set; }

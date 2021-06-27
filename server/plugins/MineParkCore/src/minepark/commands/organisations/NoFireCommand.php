@@ -41,9 +41,9 @@ class NoFireCommand extends OrganisationsCommand
 
     public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
-        $oid = $player->getProfile()->organisation;
+        $oid = $player->getSettings()->organisation;
 
-        if ($player->getProfile()->organisation !== Organisations::EMERGENCY_WORK) {
+        if ($player->getSettings()->organisation !== Organisations::EMERGENCY_WORK) {
             $player->sendMessage("§cВы не являетесь работником службы спасения!");
             return;
         }

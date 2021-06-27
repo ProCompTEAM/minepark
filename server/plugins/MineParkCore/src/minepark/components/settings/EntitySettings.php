@@ -74,7 +74,7 @@ class EntitySettings extends Component
         $damager = MineParkPlayer::cast($event->getDamager());
         $player = MineParkPlayer::cast($event->getEntity());
 
-        if ($damager->getProfile()->organisation === Organisations::SECURITY_WORK and $damager->getInventory()->getItemInHand()->getId() === ItemIds::STICK) {
+        if ($damager->getSettings()->organisation === Organisations::SECURITY_WORK and $damager->getInventory()->getItemInHand()->getId() === ItemIds::STICK) {
             $this->processStunAction($player, $damager);
         }
 

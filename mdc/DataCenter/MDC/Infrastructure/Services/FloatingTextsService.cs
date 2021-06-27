@@ -30,11 +30,11 @@ namespace MDC.Infrastructure.Services
 
         public async Task<FloatingTextDto> Save(string unitId, LocalFloatingTextDto dto)
         {
-            FloatingText floatingText = await GetFloatingText(unitId, dto.Level, dto.X, dto.Y, dto.Z);
+            FloatingText floatingText = await GetFloatingText(unitId, dto.World, dto.X, dto.Y, dto.Z);
 
             if (floatingText == null)
             {
-                floatingText = await Create(unitId, dto.Text, dto.Level, dto.X, dto.Y, dto.Z);
+                floatingText = await Create(unitId, dto.Text, dto.World, dto.X, dto.Y, dto.Z);
                 return mapper.Map<FloatingTextDto>(floatingText);
             }
 
@@ -66,7 +66,7 @@ namespace MDC.Infrastructure.Services
             {
                 UnitId = unitId,
                 Text = text,
-                Level = level,
+                World = level,
                 X = x,
                 Y = y,
                 Z = z
@@ -76,7 +76,7 @@ namespace MDC.Infrastructure.Services
         private async Task<FloatingText> GetFloatingText(string unitId, string level, double x, double y, double z)
         {
             return await databaseProvider.SingleOrDefaultAsync<FloatingText>(text =>
-                text.X == x &&  text.Y == y && text.Z == z && text.Level == level 
+                text.X == x &&  text.Y == y && text.Z == z && text.World == level 
                     && text.UnitId == unitId);
         }
 

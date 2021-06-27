@@ -34,7 +34,7 @@ namespace MDC.Infrastructure.Controllers
         public async Task<bool> Remove(PositionDto position, RequestContext context)
         {
             string unitId = context.UnitId;
-            return await floatingTextsService.Remove(unitId, position.Level, position.X, position.Y, position.Z);
+            return await floatingTextsService.Remove(unitId, position.World, position.X, position.Y, position.Z);
         }
     }
 }

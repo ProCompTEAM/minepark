@@ -2,6 +2,6 @@
 {
     public static class Protocol
     {
-        public static readonly int Version = 2;
+        public static readonly int Version = 3;
     }
 }
