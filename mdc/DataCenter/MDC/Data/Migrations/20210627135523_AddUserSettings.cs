@@ -1,39 +1,41 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 using MySql.Data.EntityFrameworkCore.Metadata;
+using System;
 
 namespace MDC.Data.Migrations
 {
-    public partial class AddWorldMappingLogic : Migration
+    public partial class AddUserSettings : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<string>(
-                name: "UnitId",
-                table: "Bank",
+                name: "Email",
+                table: "Users",
                 type: "nvarchar(128)",
-                nullable: false,
+                nullable: true,
                 oldClrType: typeof(string),
-                oldType: "text");
+                oldType: "nvarchar(4096)",
+                oldNullable: true);
 
             migrationBuilder.CreateTable(
-                name: "MapPoints",
+                name: "UserSettings",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "nvarchar(128)", nullable: false),
                     UnitId = table.Column<string>(type: "nvarchar(128)", nullable: false),
-                    Level = table.Column<string>(type: "nvarchar(128)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(128)", nullable: false),
+                    Licenses = table.Column<string>(type: "nvarchar(128)", nullable: true),
+                    Attributes = table.Column<string>(type: "nvarchar(128)", nullable: true),
+                    Organisation = table.Column<int>(nullable: false),
+                    World = table.Column<string>(type: "nvarchar(128)", nullable: true),
                     X = table.Column<double>(nullable: false),
                     Y = table.Column<double>(nullable: false),
-                    Z = table.Column<double>(nullable: false),
-                    GroupId = table.Column<int>(nullable: false),
-                    CreatedDate = table.Column<DateTime>(nullable: false)
+                    Z = table.Column<double>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MapPoints", x => x.Id);
+                    table.PrimaryKey("PK_UserSettings", x => x.Id);
                 });
         }
 

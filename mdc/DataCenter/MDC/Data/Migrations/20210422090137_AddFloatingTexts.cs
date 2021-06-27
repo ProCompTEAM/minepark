@@ -36,12 +36,7 @@ namespace MDC.Data.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "FloatingTexts");
-
-            migrationBuilder.DropColumn(
-                name: "Balance",
-                table: "Phones");
+            throw new NotImplementedException();
         }
     }
 }

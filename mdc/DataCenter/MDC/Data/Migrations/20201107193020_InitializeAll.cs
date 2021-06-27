@@ -79,14 +79,7 @@ namespace MDC.Data.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Bank");
-
-            migrationBuilder.DropTable(
-                name: "Credentials");
-
-            migrationBuilder.DropTable(
-                name: "Users");
+            throw new NotImplementedException();
         }
     }
 }

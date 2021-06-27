@@ -18,7 +18,7 @@ namespace MDC.Data.Models
         [Unicode(Defaults.DefaultLongStringLength)]
         public string Password { get; set; }
 
-        [Unicode(Defaults.DefaultLongStringLength)]
+        [Unicode(Defaults.DefaultStringLength)]
         public string Email { get; set; }
 
         [Unicode(Defaults.DefaultStringLength)]

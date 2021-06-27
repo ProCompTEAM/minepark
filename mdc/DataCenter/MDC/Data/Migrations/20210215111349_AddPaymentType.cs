@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
+using System;
 
 namespace MDC.Data.Migrations
 {
@@ -15,9 +16,7 @@ namespace MDC.Data.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "PaymentMethod",
-                table: "Bank");
+            throw new NotImplementedException();
         }
     }
 }
