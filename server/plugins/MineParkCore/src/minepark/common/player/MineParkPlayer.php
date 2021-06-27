@@ -191,7 +191,7 @@ class MineParkPlayer extends Player
 
     public function existsAttribute(string $key) : bool
     {
-        return preg_match('/'.strtoupper($key).'/', $this->getSettings()->attributes);
+        return preg_match('/' . strtoupper($key) . '/', $this->getSettings()->attributes);
     }
 
     public function changeAttribute(string $key, bool $status = true)
