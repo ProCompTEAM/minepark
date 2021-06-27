@@ -1,5 +1,7 @@
-﻿INSERT 
-  INTO usersettings (UnitId, Name, Licenses, Attributes, Organisation, World, X, Y, Z)  
+﻿DELETE FROM usersettings;
+
+INSERT 
+  INTO usersettings (Name, UnitId, Licenses, Attributes, Organisation, World, X, Y, Z)
        SELECT Name,
        "MilkyWay",
        NULL,

@@ -13,7 +13,7 @@ class UserSettingsDto extends BaseDto
     
     public int $organisation;
 
-    public string $world;
+    public ?string $world;
 
     public float $x;
 
