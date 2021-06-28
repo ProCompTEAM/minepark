@@ -3,14 +3,16 @@ using System;
 using MDC.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MDC.Data.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20210627132210_UpdateModelProperties")]
+    partial class UpdateModelProperties
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -320,7 +322,7 @@ namespace MDC.Data.Migrations
                         .HasColumnType("datetime");
 
                     b.Property<string>("Email")
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(4096)");
 
                     b.Property<string>("FullName")
                         .IsRequired()
@@ -363,46 +365,6 @@ namespace MDC.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("MDC.Data.Models.UserSettings", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Attributes")
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<string>("Licenses")
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<int>("Organisation")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UnitId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<string>("World")
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<double>("X")
-                        .HasColumnType("double");
-
-                    b.Property<double>("Y")
-                        .HasColumnType("double");
-
-                    b.Property<double>("Z")
-                        .HasColumnType("double");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("UserSettings");
                 });
 #pragma warning restore 612, 618
         }

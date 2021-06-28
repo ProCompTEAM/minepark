@@ -28,6 +28,8 @@ class ProfileProvider extends Provider
         } else {
             $this->loadProfile($player);
         }
+
+        $this->loadSettings($player);
     }
     
     public function loadProfile(MineParkPlayer $player)
@@ -35,9 +37,20 @@ class ProfileProvider extends Provider
         $profile = $this->usersDataProvider->getUser($player->getName());
         $player->setProfile($profile);
     }
+
+    public function loadSettings(MineParkPlayer $player)
+    {
+        $settings = $this->usersDataProvider->getUserSettings($player->getName());
+        $player->setSettings($settings);
+    }
     
     public function saveProfile(MineParkPlayer $player)
     {
         $this->usersDataProvider->updateUserData($player->getProfile());
+    }
+
+    public function saveSettings(MineParkPlayer $player)
+    {
+        $this->usersDataProvider->updateUserSettings($player->getSettings());
     }
 }

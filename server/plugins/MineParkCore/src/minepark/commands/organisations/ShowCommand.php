@@ -41,7 +41,7 @@ class ShowCommand extends OrganisationsCommand
 
     public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
-        $organisationId = $player->getProfile()->organisation;
+        $organisationId = $player->getSettings()->organisation;
 
         if ($organisationId === Organisations::NO_WORK) {
             $player->sendMessage("CommandShowNoWork");

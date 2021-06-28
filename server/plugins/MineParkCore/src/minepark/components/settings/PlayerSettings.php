@@ -159,7 +159,7 @@ class PlayerSettings extends Component
             $player->getInventory()->setItem(4, $gps);
         }
 
-        if($player->getProfile()->organisation == Organisations::SECURITY_WORK) {
+        if($player->getSettings()->organisation == Organisations::SECURITY_WORK) {
             $item = ItemFactory::getInstance()->get(280);
             $player->getInventory()->addItem($item);
         }

@@ -1,12 +1,14 @@
-﻿using System;
-
-namespace MDC.Data.Dtos
+﻿namespace MDC.Data.Dtos
 {
-    public class MapPointDto
+    public class UserSettingsDto : IdentifiedDto
     {
         public string Name { get; set; }
 
-        public int GroupId { get; set; }
+        public string Licenses { get; set; }
+
+        public string Attributes { get; set; }
+
+        public int Organisation { get; set; }
 
         public string World { get; set; }
 
@@ -15,7 +17,5 @@ namespace MDC.Data.Dtos
         public double Y { get; set; }
 
         public double Z { get; set; }
-
-        public DateTime CreatedDate { get; set; }
     }
 }

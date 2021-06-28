@@ -56,7 +56,7 @@ class FloatingTexts extends Component
         return $this->floatingTexts;
     }
 
-    public function getFloatingText(string $level, float $x, float $y, float $z) : ?FloatingTextDto
+    public function getFloatingText(string $world, float $x, float $y, float $z) : ?FloatingTextDto
     {
         $x = floor($x);
         $y = floor($y);
@@ -67,7 +67,7 @@ class FloatingTexts extends Component
             $textY = floor($floatingText->y);
             $textZ = floor($floatingText->z);
 
-            if($textX === $x and $textY === $y and $textZ === $z and $floatingText->level === $level) {
+            if($textX === $x and $textY === $y and $textZ === $z and $floatingText->world === $world) {
                 return $floatingText;
             }
         }
@@ -77,9 +77,9 @@ class FloatingTexts extends Component
 
     public function save(string $text, Position $position)
     {
-        $levelName = $position->getWorld()->getDisplayName();
+        $worldName = $position->getWorld()->getDisplayName();
 
-        $floatingText = $this->getFloatingText($levelName, $position->getX(), $position->getY(), $position->getZ());
+        $floatingText = $this->getFloatingText($worldName, $position->getX(), $position->getY(), $position->getZ());
 
         if(is_null($floatingText)) {
             $dto = $this->createLocalFloatingTextDto($text, $position);
@@ -99,15 +99,15 @@ class FloatingTexts extends Component
 
     public function remove(Position $position) : bool
     {
-        $levelName = $position->getWorld()->getDisplayName();
+        $worldName = $position->getWorld()->getDisplayName();
 
-        $floatingText = $this->getFloatingText($levelName, $position->getX(), $position->getY(), $position->getZ());
+        $floatingText = $this->getFloatingText($worldName, $position->getX(), $position->getY(), $position->getZ());
 
         if(is_null($floatingText)) {
             return false;
         }
 
-        $dto = $this->getPositionDto($floatingText->level, $floatingText->x, $floatingText->y, $floatingText->z);
+        $dto = $this->getPositionDto($floatingText->world, $floatingText->x, $floatingText->y, $floatingText->z);
 
         $this->floatingTextsDataProvider->remove($dto);
 
@@ -189,7 +189,7 @@ class FloatingTexts extends Component
     private function getLocalFloatingTextDto(FloatingTextDto $floatingText) : LocalFloatingTextDto
     {
         $dto = new LocalFloatingTextDto;
-        $dto->level = $floatingText->level;
+        $dto->world = $floatingText->world;
         $dto->text = $floatingText->text;
         $dto->x = $floatingText->x;
         $dto->y = $floatingText->y;
@@ -197,10 +197,10 @@ class FloatingTexts extends Component
         return $dto;
     }
 
-    private function getPositionDto(string $level, float $x, float $y, float $z) : PositionDto
+    private function getPositionDto(string $world, float $x, float $y, float $z) : PositionDto
     {
         $dto = new PositionDto;
-        $dto->level = $level;
+        $dto->world = $world;
         $dto->x = $x;
         $dto->y = $y;
         $dto->z = $z;
@@ -211,7 +211,7 @@ class FloatingTexts extends Component
     {
         $dto = new LocalFloatingTextDto;
         $dto->text = $text;
-        $dto->level = $position->getWorld()->getDisplayName();
+        $dto->world = $position->getWorld()->getDisplayName();
         $dto->x = $position->getX();
         $dto->y = $position->getY();
         $dto->z = $position->getZ();
@@ -237,13 +237,13 @@ class FloatingTexts extends Component
     private function initializeAllFloatingTexts(MineParkPlayer $player)
     {
         foreach($this->getFloatingTexts() as $floatingText) {
-            $level = $this->getServer()->getWorldManager()->getWorldByName($floatingText->level);
+            $world = $this->getServer()->getWorldManager()->getWorldByName($floatingText->world);
 
-            if(!isset($level)) {
+            if(!isset($world)) {
                 return;
             }
 
-            $position = new Position($floatingText->x, $floatingText->y + 0.5, $floatingText->z, $level);
+            $position = new Position($floatingText->x, $floatingText->y + 0.5, $floatingText->z, $world);
 
             $player->setFloatingText($position, $floatingText->text, self::FLOATING_TEXT_TAG);
         }
@@ -253,22 +253,22 @@ class FloatingTexts extends Component
 
     private function showFloatingText(FloatingTextDto $floatingText)
     {
-        $level = $this->getServer()->getWorldManager()->getWorldByName($floatingText->level);
+        $world = $this->getServer()->getWorldManager()->getWorldByName($floatingText->world);
 
-        if(!isset($level)) {
+        if(!isset($world)) {
             return;
         }
 
-        $position = new Position($floatingText->x, $floatingText->y + 0.5, $floatingText->z, $level);
+        $position = new Position($floatingText->x, $floatingText->y + 0.5, $floatingText->z, $world);
 
         foreach($this->getServer()->getOnlinePlayers() as $player) {
-            $this->showFloatingTextForPlayer($player, $floatingText->text, $level, $position);
+            $this->showFloatingTextForPlayer($player, $floatingText->text, $world, $position);
         }
     }
 
-    private function showFloatingTextForPlayer(MineParkPlayer $player, string $text, World $level, Position $position)
+    private function showFloatingTextForPlayer(MineParkPlayer $player, string $text, World $world, Position $position)
     {
-        if($level !== $player->getWorld()) {
+        if($world !== $player->getWorld()) {
             return;
         }
 
@@ -287,13 +287,13 @@ class FloatingTexts extends Component
 
     private function hideFloatingText(FloatingTextDto $dto)
     {
-        $level = $this->getServer()->getWorldManager()->getWorldByName($dto->level);
+        $world = $this->getServer()->getWorldManager()->getWorldByName($dto->world);
 
-        if(!isset($level)) {
+        if(!isset($world)) {
             return;
         }
 
-        $position = new Position($dto->x, $dto->y + 0.5, $dto->z, $level);
+        $position = new Position($dto->x, $dto->y + 0.5, $dto->z, $world);
 
         foreach($this->getServer()->getOnlinePlayers() as $player) {
             $this->hideFloatingTextForPlayer($player, $position);

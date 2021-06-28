@@ -2,7 +2,7 @@
 {
     public class LocalMapPointDto
     {
-        public string Level { get; set; }
+        public string World { get; set; }
 
         public double X { get; set; }
 

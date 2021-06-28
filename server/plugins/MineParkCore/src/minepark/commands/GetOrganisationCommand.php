@@ -111,8 +111,8 @@ class GetOrganisationCommand extends Command
 
     private function setOrg(MineParkPlayer $player, string $orgId)
     {
-        $player->getProfile()->organisation = $orgId; 
-        $this->profileProvider->saveProfile($player);
+        $player->getSettings()->organisation = $orgId; 
+        $this->profileProvider->saveSettings($player);
 
         $player->sendMessage("CommandGetOrgGet");
     }

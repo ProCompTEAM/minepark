@@ -57,7 +57,7 @@ class NoFire extends Component
 
     public function clean($player)
     {
-        if($player->getProfile()->organisation == Organisations::EMERGENCY_WORK) {
+        if($player->getSettings()->organisation == Organisations::EMERGENCY_WORK) {
             $this->core->getChatter()->sendLocalMessage($player, "§8(§dв руках огнетушитель§8)", "§d : ", 10);
             
             if($this->clearPlace($player->getPosition(), 5)) {
@@ -92,7 +92,7 @@ class NoFire extends Component
 
         foreach ($this->getServer()->getOnlinePlayers() as $player) {
             $player = MineParkPlayer::cast($player);
-            if ($player->getProfile()->organisation == Organisations::EMERGENCY_WORK) {
+            if ($player->getSettings()->organisation == Organisations::EMERGENCY_WORK) {
                 $list[] = $player;
             }
         }

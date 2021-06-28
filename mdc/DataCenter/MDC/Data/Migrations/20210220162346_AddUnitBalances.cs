@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 using MySql.Data.EntityFrameworkCore.Metadata;
+using System;
 
 namespace MDC.Data.Migrations
 {
@@ -24,8 +25,7 @@ namespace MDC.Data.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "UnitBalances");
+            throw new NotImplementedException();
         }
     }
 }

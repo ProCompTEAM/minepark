@@ -22,8 +22,8 @@ class ClearLagg extends Component
 
     public function clearItems()
     {
-        foreach ($this->getServer()->getWorldManager()->getWorlds() as $level) {
-            foreach ($level->getEntities() as $entity) {
+        foreach ($this->getServer()->getWorldManager()->getWorlds() as $world) {
+            foreach ($world->getEntities() as $entity) {
 
                 if ($entity instanceof ItemEntity) {
                     $entity->close();

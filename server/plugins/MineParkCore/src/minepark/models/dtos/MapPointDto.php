@@ -7,7 +7,7 @@ class MapPointDto extends BaseDto
 
     public int $groupId;
 
-    public string $level;
+    public string $world;
 
     public float $x;
 

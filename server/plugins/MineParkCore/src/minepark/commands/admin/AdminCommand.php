@@ -136,8 +136,8 @@ class AdminCommand extends Command
             return;
         }
 
-        $targetPlayer->getProfile()->organisation = $oid; 
-        $this->profileProvider->saveProfile($targetPlayer);
+        $targetPlayer->getSettings()->organisation = $oid; 
+        $this->profileProvider->saveSettings($targetPlayer);
 
         $player->sendMessage("AdminCmdSetOrg1");
         $targetPlayer->sendLocalizedMessage("{GroupYou}". $this->organisations->getName($oid));
@@ -185,7 +185,7 @@ class AdminCommand extends Command
             return;
         }
 
-        $player->sendMessage($targetPlayer->getProfile()->attributes);
+        $player->sendMessage($targetPlayer->getSettings()->attributes);
     }
 
     public function commandAddTag(MineParkPlayer $player, array $args)

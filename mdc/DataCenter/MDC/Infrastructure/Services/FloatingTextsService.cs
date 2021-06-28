@@ -30,11 +30,11 @@ namespace MDC.Infrastructure.Services
 
         public async Task<FloatingTextDto> Save(string unitId, LocalFloatingTextDto dto)
         {
-            FloatingText floatingText = await GetFloatingText(unitId, dto.Level, dto.X, dto.Y, dto.Z);
+            FloatingText floatingText = await GetFloatingText(unitId, dto.World, dto.X, dto.Y, dto.Z);
 
             if (floatingText == null)
             {
-                floatingText = await Create(unitId, dto.Text, dto.Level, dto.X, dto.Y, dto.Z);
+                floatingText = await Create(unitId, dto.Text, dto.World, dto.X, dto.Y, dto.Z);
                 return mapper.Map<FloatingTextDto>(floatingText);
             }
 
@@ -45,9 +45,9 @@ namespace MDC.Infrastructure.Services
             return mapper.Map<FloatingTextDto>(floatingText);
         }
 
-        public async Task<bool> Remove(string unitId, string level, double x, double y, double z)
+        public async Task<bool> Remove(string unitId, string world, double x, double y, double z)
         {
-            FloatingText floatingText = await GetFloatingText(unitId, level, x, y, z);
+            FloatingText floatingText = await GetFloatingText(unitId, world, x, y, z);
 
             if (floatingText == null)
             {
@@ -60,23 +60,23 @@ namespace MDC.Infrastructure.Services
             return true;
         }
 
-        private FloatingText GetFloatingTextTemplate(string unitId, string text, string level, double x, double y, double z)
+        private FloatingText GetFloatingTextTemplate(string unitId, string text, string world, double x, double y, double z)
         {
             return new FloatingText
             {
                 UnitId = unitId,
                 Text = text,
-                Level = level,
+                World = world,
                 X = x,
                 Y = y,
                 Z = z
             };
         }
 
-        private async Task<FloatingText> GetFloatingText(string unitId, string level, double x, double y, double z)
+        private async Task<FloatingText> GetFloatingText(string unitId, string world, double x, double y, double z)
         {
             return await databaseProvider.SingleOrDefaultAsync<FloatingText>(text =>
-                text.X == x &&  text.Y == y && text.Z == z && text.Level == level 
+                text.X == x &&  text.Y == y && text.Z == z && text.World == world
                     && text.UnitId == unitId);
         }
 
@@ -86,9 +86,9 @@ namespace MDC.Infrastructure.Services
             await databaseProvider.CommitAsync();
         }
 
-        private async Task<FloatingText> Create(string unitId, string text, string level, double x, double y, double z)
+        private async Task<FloatingText> Create(string unitId, string text, string world, double x, double y, double z)
         {
-            FloatingText floatingText = GetFloatingTextTemplate(unitId, text, level, x, y, z);
+            FloatingText floatingText = GetFloatingTextTemplate(unitId, text, world, x, y, z);
 
             await databaseProvider.CreateAsync(floatingText);
             await databaseProvider.CommitAsync();

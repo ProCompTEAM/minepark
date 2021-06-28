@@ -47,7 +47,7 @@ namespace MDC.Infrastructure.Services
 
         public List<MapPointDto> GetNearPointsDtos(string unitId, LocalMapPointDto dto)
         {
-            List<MapPoint> points = databaseProvider.GetAll<MapPoint>(p => p.UnitId == unitId && p.Level == dto.Level);
+            List<MapPoint> points = databaseProvider.GetAll<MapPoint>(p => p.UnitId == unitId && p.World == dto.World);
             points = points.Where(p => MathAggregator.Distance(dto.X, dto.Y, dto.Z, p.X, p.Y, p.Z) <= dto.Distance).ToList();
 
             return mapper.Map<List<MapPointDto>>(points);

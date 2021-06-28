@@ -60,12 +60,26 @@ namespace MDC.Infrastructure.Services
             return await databaseProvider.FindPrimary<User>(userId);
         }
 
+        public async Task<UserSettings> GetUserSettings(string unitId, string userName)
+        {
+            return await databaseProvider.SingleOrDefaultAsync<UserSettings>(
+                settings => settings.UnitId == unitId &&
+                settings.Name.ToLower() == userName.ToLower());
+        }
+
         public async Task<UserDto> GetUserDto(string userName)
         {
             User user = await GetUser(userName);
             UserDto userDto = mapper.Map<UserDto>(user);
             userDto.PhoneNumber = (long)await phonesService.GetNumberForUser(userName);
             return userDto;
+        }
+
+        public async Task<UserSettingsDto> GetUserSettingsDto(string unitId, string userName)
+        {
+            UserSettings settings = await GetUserSettings(unitId, userName);
+            UserSettingsDto settingsDto = mapper.Map<UserSettingsDto>(settings);
+            return settingsDto;
         }
 
         public async Task<string> GetPassword(string userName)
@@ -93,24 +107,14 @@ namespace MDC.Infrastructure.Services
             await SetPassword(userName, null);
         }
 
-        public async Task Create(string unitId, UserDto userDto)
-        {
-            await ValidateIsUserExist(userDto.Name);
-
-            User user = mapper.Map<User>(userDto);
-            await databaseProvider.CreateAsync(user);
-            await databaseProvider.CommitAsync();
-
-            await phonesService.CreateNumberForUser(user.Name);
-            await bankingService.CreateEmptyBankAccount(unitId, user.Name);
-        }
-
         public async Task<UserDto> CreateInternal(string unitId, string userName)
         {
             await ValidateIsUserExist(userName);
 
             User user = GetDefaultUserTemplate(userName);
+            UserSettings settings = GetDefaultUserSettingsTemplate(unitId, userName);
             await databaseProvider.CreateAsync(user);
+            await databaseProvider.CreateAsync(settings);
             await databaseProvider.CommitAsync();
 
             await bankingService.CreateEmptyBankAccount(unitId, userName);
@@ -138,6 +142,19 @@ namespace MDC.Infrastructure.Services
                 );
             
             databaseProvider.Update(user);
+            await databaseProvider.CommitAsync();
+        }
+
+        public async Task UpdateSettings(string unitId, UserSettingsDto settingsDto)
+        {
+            UserSettings settings = await GetUserSettings(unitId, settingsDto.Name);
+
+            settings = ObjectComparer.Merge(settings, settingsDto,
+                    u => u.Id,
+                    u => u.Name
+                );
+
+            databaseProvider.Update(settings);
             await databaseProvider.CommitAsync();
         }
 
@@ -188,13 +205,22 @@ namespace MDC.Infrastructure.Services
             {
                 Name = userName,
                 FullName = CreateFullName(userName),
-                Organisation = 0,
                 Bonus = 3,
                 MinutesPlayed = 0,
                 Vip = false,
                 Administrator = false,
                 Builder = false,
                 Realtor = false
+            };
+        }
+
+        private UserSettings GetDefaultUserSettingsTemplate(string unitId, string userName)
+        {
+            return new UserSettings
+            {
+                UnitId = unitId,
+                Name = userName,
+                Organisation = 0
             };
         }
 

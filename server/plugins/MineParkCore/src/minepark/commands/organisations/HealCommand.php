@@ -73,7 +73,7 @@ class HealCommand extends OrganisationsCommand
 
     private function isHealer(MineParkPlayer $plr)
     {
-        return $plr->getProfile()->organisation === Organisations::DOCTOR_WORK;
+        return $plr->getSettings()->organisation === Organisations::DOCTOR_WORK;
     }
 
     private function isNearPoint(MineParkPlayer $player) : bool
