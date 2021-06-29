@@ -7,9 +7,8 @@ class BulletEntity extends Snowball
 {
     public $ammoDamage;
 
-    public function setAmmoDamage($int)
+    public function setAmmoDamage(int $int)
     {
-        if (!is_int($int)) return false;
         $this->ammoDamage = $int;
     }
     
