@@ -20,7 +20,6 @@ use minepark\components\vehicles\models\GuestCar4;
 use pocketmine\event\server\DataPacketReceiveEvent;
 use pocketmine\network\mcpe\protocol\InteractPacket;
 use minepark\components\vehicles\models\base\BaseCar;
-use minepark\utils\EntityUtility;
 use pocketmine\network\mcpe\protocol\PlayerInputPacket;
 
 class Vehicles extends Component
