@@ -43,77 +43,77 @@ use pocketmine\plugin\PluginOwned;
 
 class ScoreHudCommand extends Command implements PluginOwned {
 
-	/** @var ScoreHud */
-	private $plugin;
+    /** @var ScoreHud */
+    private $plugin;
 
-	/**
-	 * ScoreHudCommand constructor.
-	 *
-	 * @param ScoreHud $plugin
-	 */
-	public function __construct(ScoreHud $plugin){
-		parent::__construct("scorehud");
-		$this->setDescription("Shows ScoreHud Commands");
-		$this->setUsage("/scorehud <on|off|about|help>");
-		$this->setAliases(["sh"]);
-		$this->setPermission("sh.command.sh");
+    /**
+     * ScoreHudCommand constructor.
+     *
+     * @param ScoreHud $plugin
+     */
+    public function __construct(ScoreHud $plugin){
+        parent::__construct("scorehud");
+        $this->setDescription("Shows ScoreHud Commands");
+        $this->setUsage("/scorehud <on|off|about|help>");
+        $this->setAliases(["sh"]);
+        $this->setPermission("sh.command.sh");
 
-		$this->plugin = $plugin;
-	}
+        $this->plugin = $plugin;
+    }
 
-	/**
-	 * @param CommandSender $sender
-	 * @param string        $commandLabel
-	 * @param array         $args
-	 * @return bool|mixed
-	 */
-	public function execute(CommandSender $sender, string $commandLabel, array $args){
-		if(!$this->testPermission($sender)){
-			return true;
-		}
-		if(!$sender instanceof Player){
-			$sender->sendMessage(ScoreHud::PREFIX . "§cYou can only use this command in-game.");
+    /**
+     * @param CommandSender $sender
+     * @param string        $commandLabel
+     * @param array         $args
+     * @return bool|mixed
+     */
+    public function execute(CommandSender $sender, string $commandLabel, array $args){
+        if(!$this->testPermission($sender)){
+            return true;
+        }
+        if(!$sender instanceof Player){
+            $sender->sendMessage(ScoreHud::PREFIX . "§cYou can only use this command in-game.");
 
-			return false;
-		}
-		if(!isset($args[0])){
-			$sender->sendMessage(ScoreHud::PREFIX . "§cUsage: /scorehud <on|off|about|help>");
+            return false;
+        }
+        if(!isset($args[0])){
+            $sender->sendMessage(ScoreHud::PREFIX . "§cUsage: /scorehud <on|off|about|help>");
 
-			return false;
-		}
-		switch($args[0]){
-			case "about":
-				$sender->sendMessage(ScoreHud::PREFIX . "§6Score§eHud §av" . $this->plugin->getDescription()->getVersion() . "§a.Plugin by §dJackMD§a. Contact on §bTwitter: JackMTaylor_ §aor §bDiscord: JackMD#3717§a.");
-				break;
+            return false;
+        }
+        switch($args[0]){
+            case "about":
+                $sender->sendMessage(ScoreHud::PREFIX . "§6Score§eHud §av" . $this->plugin->getDescription()->getVersion() . "§a.Plugin by §dJackMD§a. Contact on §bTwitter: JackMTaylor_ §aor §bDiscord: JackMD#3717§a.");
+                break;
 
-			case "on":
-				if(isset($this->plugin->disabledScoreHudPlayers[strtolower($sender->getName())])){
-					unset($this->plugin->disabledScoreHudPlayers[strtolower($sender->getName())]);
-					$sender->sendMessage(ScoreHud::PREFIX . "§aSuccessfully enabled ScoreHud.");
-				}else{
-					$sender->sendMessage(ScoreHud::PREFIX . "§cScoreHud is already enabled for you.");
-				}
-				break;
+            case "on":
+                if(isset($this->plugin->disabledScoreHudPlayers[strtolower($sender->getName())])){
+                    unset($this->plugin->disabledScoreHudPlayers[strtolower($sender->getName())]);
+                    $sender->sendMessage(ScoreHud::PREFIX . "§aSuccessfully enabled ScoreHud.");
+                }else{
+                    $sender->sendMessage(ScoreHud::PREFIX . "§cScoreHud is already enabled for you.");
+                }
+                break;
 
-			case "off":
-				if(!isset($this->plugin->disabledScoreHudPlayers[strtolower($sender->getName())])){
-					ScoreFactory::removeScore($sender);
+            case "off":
+                if(!isset($this->plugin->disabledScoreHudPlayers[strtolower($sender->getName())])){
+                    ScoreFactory::removeScore($sender);
 
-					$this->plugin->disabledScoreHudPlayers[strtolower($sender->getName())] = 1;
-					$sender->sendMessage(ScoreHud::PREFIX . "§cSuccessfully disabled ScoreHud.");
-				}else{
-					$sender->sendMessage(ScoreHud::PREFIX . "§aScoreHud is already disabled for you.");
-				}
-				break;
+                    $this->plugin->disabledScoreHudPlayers[strtolower($sender->getName())] = 1;
+                    $sender->sendMessage(ScoreHud::PREFIX . "§cSuccessfully disabled ScoreHud.");
+                }else{
+                    $sender->sendMessage(ScoreHud::PREFIX . "§aScoreHud is already disabled for you.");
+                }
+                break;
 
-			case "help":
-			default:
-				$sender->sendMessage(ScoreHud::PREFIX . "§cUsage: /scorehud <on|off|about|help>");
-				break;
-		}
+            case "help":
+            default:
+                $sender->sendMessage(ScoreHud::PREFIX . "§cUsage: /scorehud <on|off|about|help>");
+                break;
+        }
 
-		return false;
-	}
+        return false;
+    }
 
     public function getOwningPlugin(): Plugin
     {
