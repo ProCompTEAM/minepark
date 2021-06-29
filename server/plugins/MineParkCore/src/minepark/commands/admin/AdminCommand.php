@@ -117,9 +117,10 @@ class AdminCommand extends Command
     {
         $text = ArraysUtility::getStringFromArray($args, 1);
 
-        foreach ($this->getServer()->getOnlinePlayers() as $p) {
-            $num = $this->phone->getNumber($p);
-            $this->phone->sendMessage($num, $text, Defaults::CONTEXT_NAME);
+        foreach($this->getServer()->getOnlinePlayers() as $player) {
+            $player = MineParkPlayer::cast($player);
+            $player->sendLocalizedMessage("{PhoneSend}" . Defaults::CONTEXT_NAME);
+            $player->sendMessage("§b[➪] " . $text);
         }
     }
 
