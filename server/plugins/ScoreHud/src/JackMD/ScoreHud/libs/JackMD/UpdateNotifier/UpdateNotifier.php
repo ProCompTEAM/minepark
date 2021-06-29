@@ -36,17 +36,17 @@ use JackMD\ScoreHud\libs\JackMD\UpdateNotifier\task\UpdateNotifyTask;
 use pocketmine\plugin\Plugin;
 
 class UpdateNotifier{
-	
-	/**
-	 * Submits an async task which then checks if a new version for the plugin is available.
-	 * If an update is available then it would print a message on the console.
-	 *
-	 * @param Plugin $plugin
-	 * @param string $pluginName
-	 * @param string $pluginVersion
-	 */
-	public static function checkUpdate(Plugin $plugin, string $pluginName, string $pluginVersion){
-		$plugin->getLogger()->info("Checking for updates...");
-		$plugin->getServer()->getAsyncPool()->submitTask(new UpdateNotifyTask($pluginName, $pluginVersion));
-	}
+    
+    /**
+     * Submits an async task which then checks if a new version for the plugin is available.
+     * If an update is available then it would print a message on the console.
+     *
+     * @param Plugin $plugin
+     * @param string $pluginName
+     * @param string $pluginVersion
+     */
+    public static function checkUpdate(Plugin $plugin, string $pluginName, string $pluginVersion){
+        $plugin->getLogger()->info("Checking for updates...");
+        $plugin->getServer()->getAsyncPool()->submitTask(new UpdateNotifyTask($pluginName, $pluginVersion));
+    }
 }

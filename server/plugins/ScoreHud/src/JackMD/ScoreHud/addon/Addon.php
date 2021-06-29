@@ -46,42 +46,42 @@ use pocketmine\player\Player;
  */
 interface Addon{
 
-	/**
-	 * Addon constructor.
-	 *
-	 * @param ScoreHud         $scoreHud
-	 * @param AddonDescription $description
-	 */
-	public function __construct(ScoreHud $scoreHud, AddonDescription $description);
+    /**
+     * Addon constructor.
+     *
+     * @param ScoreHud         $scoreHud
+     * @param AddonDescription $description
+     */
+    public function __construct(ScoreHud $scoreHud, AddonDescription $description);
 
-	/**
-	 * This is called whenever an Addon is successfully enabled. Depends on your use case.
-	 * Almost same as Plugin::onEnable().
-	 */
-	public function onEnable(): void;
+    /**
+     * This is called whenever an Addon is successfully enabled. Depends on your use case.
+     * Almost same as Plugin::onEnable().
+     */
+    public function onEnable(): void;
 
-	/**
-	 * Returns the ScoreHud plugin for whatever reason an addon would like to use it.
-	 *
-	 * @return ScoreHud
-	 */
-	public function getScoreHud(): ScoreHud;
+    /**
+     * Returns the ScoreHud plugin for whatever reason an addon would like to use it.
+     *
+     * @return ScoreHud
+     */
+    public function getScoreHud(): ScoreHud;
 
-	/**
-	 * Returns the description containing name, main etc of the addon.
-	 *
-	 * @return AddonDescription
-	 */
-	public function getDescription(): AddonDescription;
+    /**
+     * Returns the description containing name, main etc of the addon.
+     *
+     * @return AddonDescription
+     */
+    public function getDescription(): AddonDescription;
 
-	/**
-	 * After doing the edits in your script.
-	 * Return the final result to be used by ScoreHud using this.
-	 *
-	 * For example addons refer here: https://github.com/JackMD/ScoreHud-Addons
-	 *
-	 * @param Player $player
-	 * @return array
-	 */
-	public function getProcessedTags(Player $player): array;
+    /**
+     * After doing the edits in your script.
+     * Return the final result to be used by ScoreHud using this.
+     *
+     * For example addons refer here: https://github.com/JackMD/ScoreHud-Addons
+     *
+     * @param Player $player
+     * @return array
+     */
+    public function getProcessedTags(Player $player): array;
 }

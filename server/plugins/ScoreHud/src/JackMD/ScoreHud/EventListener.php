@@ -38,24 +38,24 @@ use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerQuitEvent;
 
 class EventListener implements Listener{
-	
-	/** @var ScoreHud */
-	private $plugin;
-	
-	/**
-	 * EventListener constructor.
-	 *
-	 * @param ScoreHud $plugin
-	 */
-	public function __construct(ScoreHud $plugin){
-		$this->plugin = $plugin;
-	}
-	
-	/**
-	 * @param PlayerQuitEvent $event
-	 */
-	public function onQuit(PlayerQuitEvent $event){
-		$player = $event->getPlayer();
-		ScoreFactory::removeScore($player);
-	}
+    
+    /** @var ScoreHud */
+    private $plugin;
+    
+    /**
+     * EventListener constructor.
+     *
+     * @param ScoreHud $plugin
+     */
+    public function __construct(ScoreHud $plugin){
+        $this->plugin = $plugin;
+    }
+    
+    /**
+     * @param PlayerQuitEvent $event
+     */
+    public function onQuit(PlayerQuitEvent $event){
+        $player = $event->getPlayer();
+        ScoreFactory::removeScore($player);
+    }
 }

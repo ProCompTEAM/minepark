@@ -39,237 +39,237 @@ use pocketmine\scheduler\ClosureTask;
 
 class AddonManager{
 
-	/** @var Addon[] */
-	protected $addons = [];
-	/** @var ScoreHud */
-	private $scoreHud;
+    /** @var Addon[] */
+    protected $addons = [];
+    /** @var ScoreHud */
+    private $scoreHud;
 
-	/**
-	 * AddonManager constructor.
-	 *
-	 * @param ScoreHud $scoreHud
-	 */
-	public function __construct(ScoreHud $scoreHud){
-		$this->scoreHud = $scoreHud;
+    /**
+     * AddonManager constructor.
+     *
+     * @param ScoreHud $scoreHud
+     */
+    public function __construct(ScoreHud $scoreHud){
+        $this->scoreHud = $scoreHud;
 
-		if(!is_dir(ScoreHud::$addonPath)){
-			mkdir(ScoreHud::$addonPath);
-		}
+        if(!is_dir(ScoreHud::$addonPath)){
+            mkdir(ScoreHud::$addonPath);
+        }
 
-		/* This task enables addons to only start loading after complete server load */
-		$task = new ClosureTask(function(): void{
-			$this->loadAddons();
-		});
+        /* This task enables addons to only start loading after complete server load */
+        $task = new ClosureTask(function(): void{
+            $this->loadAddons();
+        });
 
-		$scoreHud->getScheduler()->scheduleDelayedTask($task, 0);
+        $scoreHud->getScheduler()->scheduleDelayedTask($task, 0);
 
-	}
+    }
 
-	/**
-	 * @param string $file
-	 * @return AddonDescription|null
-	 */
-	private function getAddonDescription(string $file): ?AddonDescription{
-		$content = file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    /**
+     * @param string $file
+     * @return AddonDescription|null
+     */
+    private function getAddonDescription(string $file): ?AddonDescription{
+        $content = file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 
-		$data = [];
-		$insideHeader = false;
+        $data = [];
+        $insideHeader = false;
 
-		foreach($content as $line){
-			if(!$insideHeader and strpos($line, "/**") !== false){
-				$insideHeader = true;
-			}
+        foreach($content as $line){
+            if(!$insideHeader and strpos($line, "/**") !== false){
+                $insideHeader = true;
+            }
 
-			if(preg_match("/^[ \t]+\\*[ \t]+@([a-zA-Z]+)([ \t]+(.*))?$/", $line, $matches) > 0){
-				$key = $matches[1];
-				$content = trim($matches[3] ?? "");
-				$data[$key] = $content;
-			}
+            if(preg_match("/^[ \t]+\\*[ \t]+@([a-zA-Z]+)([ \t]+(.*))?$/", $line, $matches) > 0){
+                $key = $matches[1];
+                $content = trim($matches[3] ?? "");
+                $data[$key] = $content;
+            }
 
-			if($insideHeader and strpos($line, "*/") !== false){
-				break;
-			}
-		}
+            if($insideHeader and strpos($line, "*/") !== false){
+                break;
+            }
+        }
 
-		if($insideHeader){
-			return new AddonDescription($data);
-		}
+        if($insideHeader){
+            return new AddonDescription($data);
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	/**
-	 * @param string $name
-	 * @return Addon|null
-	 */
-	public function getAddon(string $name): ?Addon{
-		if(isset($this->addons[$name])){
-			return $this->addons[$name];
-		}
+    /**
+     * @param string $name
+     * @return Addon|null
+     */
+    public function getAddon(string $name): ?Addon{
+        if(isset($this->addons[$name])){
+            return $this->addons[$name];
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	/**
-	 * @return Addon[]
-	 */
-	public function getAddons(): array{
-		return $this->addons;
-	}
+    /**
+     * @return Addon[]
+     */
+    public function getAddons(): array{
+        return $this->addons;
+    }
 
-	/**
-	 * @return array
-	 */
-	private function loadAddons(): array{
-		$directory = ScoreHud::$addonPath;
+    /**
+     * @return array
+     */
+    private function loadAddons(): array{
+        $directory = ScoreHud::$addonPath;
 
-		$scoreHud = $this->scoreHud;
-		$server = $scoreHud->getServer();
+        $scoreHud = $this->scoreHud;
+        $server = $scoreHud->getServer();
 
-		if(!is_dir($directory)){
-			return [];
-		}
+        if(!is_dir($directory)){
+            return [];
+        }
 
-		$addons = [];
-		$loadedAddons = [];
-		$dependencies = [];
+        $addons = [];
+        $loadedAddons = [];
+        $dependencies = [];
 
-		foreach(glob($directory . "*.php") as $file){
-			$description = $this->getAddonDescription($file);
+        foreach(glob($directory . "*.php") as $file){
+            $description = $this->getAddonDescription($file);
 
-			if(is_null($description)){
-				continue;
-			}
+            if(is_null($description)){
+                continue;
+            }
 
-			$name = $description->getName();
+            $name = $description->getName();
 
-			if(strpos($name, " ") !== false){
-				throw new AddonException("§cCould not load $name addon since spaces found.");
-			}
+            if(strpos($name, " ") !== false){
+                throw new AddonException("§cCould not load $name addon since spaces found.");
+            }
 
-			if((isset($addons[$name]) )|| ($this->getAddon($name) instanceof Addon)){
-				$scoreHud->getLogger()->error("§cCould not load addon §4{$name}§c. Addon with the same name already exists.");
+            if((isset($addons[$name]) )|| ($this->getAddon($name) instanceof Addon)){
+                $scoreHud->getLogger()->error("§cCould not load addon §4{$name}§c. Addon with the same name already exists.");
 
-				continue;
-			}
+                continue;
+            }
 
-			$addons[$name] = $file;
-			$dependencies[$name] = $description->getDepend();
-		}
+            $addons[$name] = $file;
+            $dependencies[$name] = $description->getDepend();
+        }
 
-		$pluginManager = $server->getPluginManager();
-		$loadedPlugins = $pluginManager->getPlugins();
+        $pluginManager = $server->getPluginManager();
+        $loadedPlugins = $pluginManager->getPlugins();
 
-		while(count($addons) > 0){
-			$missingDependency = true;
+        while(count($addons) > 0){
+            $missingDependency = true;
 
-			foreach($addons as $name => $file){
-				if(isset($dependencies[$name])){
-					foreach($dependencies[$name] as $key => $dependency){
-						if(isset($loadedPlugins[$dependency]) || ($pluginManager->getPlugin($dependency) instanceof Plugin)){
+            foreach($addons as $name => $file){
+                if(isset($dependencies[$name])){
+                    foreach($dependencies[$name] as $key => $dependency){
+                        if(isset($loadedPlugins[$dependency]) || ($pluginManager->getPlugin($dependency) instanceof Plugin)){
 
-							unset($dependencies[$name][$key]);
-						}else{
-							$scoreHud->getLogger()->error("§cCould not load addon §4{$name}§c. Unknown dependency: §4$dependency");
+                            unset($dependencies[$name][$key]);
+                        }else{
+                            $scoreHud->getLogger()->error("§cCould not load addon §4{$name}§c. Unknown dependency: §4$dependency");
 
-							unset($addons[$name]);
-							continue 2;
-						}
-					}
+                            unset($addons[$name]);
+                            continue 2;
+                        }
+                    }
 
-					if(count($dependencies[$name]) === 0){
-						unset($dependencies[$name]);
-					}
-				}
+                    if(count($dependencies[$name]) === 0){
+                        unset($dependencies[$name]);
+                    }
+                }
 
-				if(!isset($dependencies[$name])){
-					unset($addons[$name]);
+                if(!isset($dependencies[$name])){
+                    unset($addons[$name]);
 
-					$missingDependency = false;
-					$addon = $this->loadAddon($file);
+                    $missingDependency = false;
+                    $addon = $this->loadAddon($file);
 
-					if($addon instanceof Addon){
-						$loadedAddons[$name] = $addon;
-					}else{
-						$scoreHud->getLogger()->error("§cCould not load addon §4{$name}§c.");
-					}
-				}
-			}
+                    if($addon instanceof Addon){
+                        $loadedAddons[$name] = $addon;
+                    }else{
+                        $scoreHud->getLogger()->error("§cCould not load addon §4{$name}§c.");
+                    }
+                }
+            }
 
-			if($missingDependency){
-				foreach($addons as $name => $file){
-					if(!isset($dependencies[$name])){
-						unset($addons[$name]);
+            if($missingDependency){
+                foreach($addons as $name => $file){
+                    if(!isset($dependencies[$name])){
+                        unset($addons[$name]);
 
-						$missingDependency = false;
-						$addon = $this->loadAddon($file);
+                        $missingDependency = false;
+                        $addon = $this->loadAddon($file);
 
-						if($addon instanceof Addon){
-							$loadedAddons[$name] = $addon;
-						}else{
-							$scoreHud->getLogger()->error("§cCould not load addon §4{$name}§c.");
-						}
-					}
-				}
+                        if($addon instanceof Addon){
+                            $loadedAddons[$name] = $addon;
+                        }else{
+                            $scoreHud->getLogger()->error("§cCould not load addon §4{$name}§c.");
+                        }
+                    }
+                }
 
-				if($missingDependency){
-					foreach($addons as $name => $file){
-						$scoreHud->getLogger()->error("§cCould not load addon §4{$name}§c. Circular dependency detected.");
-					}
+                if($missingDependency){
+                    foreach($addons as $name => $file){
+                        $scoreHud->getLogger()->error("§cCould not load addon §4{$name}§c. Circular dependency detected.");
+                    }
 
-					$addons = [];
-				}
-			}
-		}
+                    $addons = [];
+                }
+            }
+        }
 
-		return $loadedAddons;
-	}
+        return $loadedAddons;
+    }
 
-	/**
-	 * @param string $path
-	 * @return Addon|null
-	 */
-	private function loadAddon(string $path): ?Addon{
-		$description = $this->getAddonDescription($path);
+    /**
+     * @param string $path
+     * @return Addon|null
+     */
+    private function loadAddon(string $path): ?Addon{
+        $description = $this->getAddonDescription($path);
 
-		if($description instanceof AddonDescription){
-			include_once $path;
+        if($description instanceof AddonDescription){
+            include_once $path;
 
-			$mainClass = $description->getMain();
+            $mainClass = $description->getMain();
 
-			if(!class_exists($mainClass, true)){
-				$this->scoreHud->getLogger()->error("Main class for addon " . $description->getName() . " not found.");
+            if(!class_exists($mainClass, true)){
+                $this->scoreHud->getLogger()->error("Main class for addon " . $description->getName() . " not found.");
 
-				return null;
-			}
+                return null;
+            }
 
-			if(!is_a($mainClass, Addon::class, true)){
-				$this->scoreHud->getLogger()->error("Main class for addon " . $description->getName() . " is not an instance of " . Addon::class);
+            if(!is_a($mainClass, Addon::class, true)){
+                $this->scoreHud->getLogger()->error("Main class for addon " . $description->getName() . " is not an instance of " . Addon::class);
 
-				return null;
-			}
+                return null;
+            }
 
-			try{
-				$name = $description->getName();
+            try{
+                $name = $description->getName();
 
-				/** @var Addon $addon */
-				$addon = new $mainClass($this->scoreHud, $description);
-				$addon->onEnable();
+                /** @var Addon $addon */
+                $addon = new $mainClass($this->scoreHud, $description);
+                $addon->onEnable();
 
-				$this->addons[$name] = $addon;
+                $this->addons[$name] = $addon;
 
-				$this->scoreHud->getLogger()->notice("Addon §a$name §bsuccessfully enabled.");
-				$this->scoreHud->getAddonUpdater()->check($addon);
+                $this->scoreHud->getLogger()->notice("Addon §a$name §bsuccessfully enabled.");
+                $this->scoreHud->getAddonUpdater()->check($addon);
 
-				return $addon;
-			}
-			catch(\Throwable $e){
-				$this->scoreHud->getLogger()->logException($e);
+                return $addon;
+            }
+            catch(\Throwable $e){
+                $this->scoreHud->getLogger()->logException($e);
 
-				return null;
-			}
-		}
+                return null;
+            }
+        }
 
-		return null;
-	}
+        return null;
+    }
 }

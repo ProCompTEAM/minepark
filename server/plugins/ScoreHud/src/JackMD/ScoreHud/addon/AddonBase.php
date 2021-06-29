@@ -49,43 +49,43 @@ use pocketmine\Server;
  */
 abstract class AddonBase implements Addon{
 
-	/** @var ScoreHud */
-	private $scoreHud;
-	/** @var AddonDescription */
-	private $description;
+    /** @var ScoreHud */
+    private $scoreHud;
+    /** @var AddonDescription */
+    private $description;
 
-	/**
-	 * AddonBase constructor.
-	 *
-	 * @param ScoreHud         $scoreHud
-	 * @param AddonDescription $description
-	 */
-	public function __construct(ScoreHud $scoreHud, AddonDescription $description){
-		$this->scoreHud = $scoreHud;
-		$this->description = $description;
-	}
+    /**
+     * AddonBase constructor.
+     *
+     * @param ScoreHud         $scoreHud
+     * @param AddonDescription $description
+     */
+    public function __construct(ScoreHud $scoreHud, AddonDescription $description){
+        $this->scoreHud = $scoreHud;
+        $this->description = $description;
+    }
 
-	public function onEnable(): void{
-	}
+    public function onEnable(): void{
+    }
 
-	/**
-	 * @return ScoreHud
-	 */
-	public function getScoreHud(): ScoreHud{
-		return $this->scoreHud;
-	}
+    /**
+     * @return ScoreHud
+     */
+    public function getScoreHud(): ScoreHud{
+        return $this->scoreHud;
+    }
 
-	/**
-	 * @return AddonDescription
-	 */
-	final public function getDescription(): AddonDescription{
-		return $this->description;
-	}
+    /**
+     * @return AddonDescription
+     */
+    final public function getDescription(): AddonDescription{
+        return $this->description;
+    }
 
-	/**
-	 * @return Server
-	 */
-	public function getServer(): Server{
-		return $this->scoreHud->getServer();
-	}
+    /**
+     * @return Server
+     */
+    public function getServer(): Server{
+        return $this->scoreHud->getServer();
+    }
 }
