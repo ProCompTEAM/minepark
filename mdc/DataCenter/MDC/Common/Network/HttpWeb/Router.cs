@@ -20,11 +20,11 @@ namespace MDC.Common.Network.HttpWeb
 
         private static readonly JsonSerializerOptions jsonDeserializeOptions = GetJsonDeserializeOptions();
 
-        private static readonly IAuthorizationProvider unitProvider;
+        private static readonly IAuthorizationProvider authorizationProvider;
 
         static Router()
         {
-            unitProvider = Store.GetProvider<AuthorizationProvider>();
+            authorizationProvider = Store.GetProvider<AuthorizationProvider>();
         }
 
         public static ExecutionResult Execute(RequestContext requestContext, string jsonData, string target)
@@ -36,7 +36,7 @@ namespace MDC.Common.Network.HttpWeb
                 return CreateExecutionResult(HttpStatusCode.BadRequest);
             }
 
-            if (!unitProvider.Authorize(requestContext.AccessToken))
+            if (!authorizationProvider.Authorize(requestContext.AccessToken))
             {
                 General.Error("Declined request from ", requestContext.Address);
                 General.Error("Invalid access token = {0}", requestContext.AccessToken);
@@ -159,7 +159,7 @@ namespace MDC.Common.Network.HttpWeb
 
         private static bool JsonDataIsEmpty(string jsonData)
         {
-            return jsonData.Trim() == "[]";
+            return jsonData.Trim() == "[]" || jsonData == null || jsonData == "";
         }
 
         private static object[] PrepareArguments(object data, RequestContext requestInfo)

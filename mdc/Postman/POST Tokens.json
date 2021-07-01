@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "4e5c2964-9242-412a-bcc6-951ba25b50fb",
+		"_postman_id": "dbc37e03-06dd-442b-a147-0e391a756859",
 		"name": "POST Tokens",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -15,17 +15,11 @@
 					"raw": "\"CUM\""
 				},
 				"url": {
-					"raw": "http://127.0.0.1:19000/settings/generate-token",
-					"protocol": "http",
+					"raw": "settings/generate-token",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"settings"
 					],
-					"port": "19000",
 					"path": [
-						"settings",
 						"generate-token"
 					]
 				}
@@ -39,20 +33,14 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "\"inserttokenhere\""
+					"raw": "\"insertyourtokenhere\""
 				},
 				"url": {
-					"raw": "http://127.0.0.1:19000/settings/remove-token",
-					"protocol": "http",
+					"raw": "settings/remove-token",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"settings"
 					],
-					"port": "19000",
 					"path": [
-						"settings",
 						"remove-token"
 					]
 				}
@@ -65,17 +53,11 @@
 				"method": "POST",
 				"header": [],
 				"url": {
-					"raw": "http://127.0.0.1:19000/settings/get-tokens",
-					"protocol": "http",
+					"raw": "settings/get-tokens",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"settings"
 					],
-					"port": "19000",
 					"path": [
-						"settings",
 						"get-tokens"
 					]
 				}
@@ -83,28 +65,30 @@
 			"response": []
 		}
 	],
-	"auth": {
-		"type": "apikey",
-		"apikey": [
-			{
-				"key": "value",
-				"value": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
-				"type": "string"
-			},
-			{
-				"key": "key",
-				"value": "Authorization",
-				"type": "string"
-			}
-		]
-	},
 	"event": [
 		{
 			"listen": "prerequest",
 			"script": {
 				"type": "text/javascript",
 				"exec": [
-					""
+					"if(pm.environment.name != \"MinePark Environment\") {",
+					"    throw new Error(\"MinePark environment not found :(\");",
+					"}",
+					"const Header = require(\"postman-collection\").Header;",
+					"",
+					"function addHeader(name, value)",
+					"{",
+					"    pm.request.addHeader(new Header(name + \": \" + value));",
+					"}",
+					"",
+					"var accessToken = pm.environment.get(\"AccessToken\");",
+					"var unitId = pm.environment.get(\"UnitId\");",
+					"var url = pm.environment.get(\"Url\");",
+					"",
+					"addHeader(\"Authorization\", accessToken);",
+					"addHeader(\"UnitId\", unitId);",
+					"",
+					"pm.request.url = pm.environment.get(\"Host\") + pm.request.url;"
 				]
 			}
 		},

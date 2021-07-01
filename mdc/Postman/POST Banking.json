@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "aa71c26c-cec6-4242-b709-4c0b2e8d13c7",
+		"_postman_id": "aa07bc3b-a3da-472b-a59d-a25fe7bc5c6f",
 		"name": "POST Banking",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -15,17 +15,11 @@
 					"raw": "\"Ivan_Ivanov\""
 				},
 				"url": {
-					"raw": "http://127.0.0.1:19000/banking/get-cash",
-					"protocol": "http",
+					"raw": "banking/get-cash",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"banking"
 					],
-					"port": "19000",
 					"path": [
-						"banking",
 						"get-cash"
 					]
 				}
@@ -42,17 +36,11 @@
 					"raw": "\"Ivan_Ivanov\""
 				},
 				"url": {
-					"raw": "http://127.0.0.1:19000/banking/get-debit",
-					"protocol": "http",
+					"raw": "banking/get-debit",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"banking"
 					],
-					"port": "19000",
 					"path": [
-						"banking",
 						"get-debit"
 					]
 				}
@@ -69,17 +57,11 @@
 					"raw": "\"Ivan_Ivanov\""
 				},
 				"url": {
-					"raw": "http://127.0.0.1:19000/banking/get-credit",
-					"protocol": "http",
+					"raw": "banking/get-credit",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"banking"
 					],
-					"port": "19000",
 					"path": [
-						"banking",
 						"get-credit"
 					]
 				}
@@ -96,17 +78,11 @@
 					"raw": "\"Ivan_Ivanov\""
 				},
 				"url": {
-					"raw": "http://127.0.0.1:19000/banking/get-all-money",
-					"protocol": "http",
+					"raw": "banking/get-all-money",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"banking"
 					],
-					"port": "19000",
 					"path": [
-						"banking",
 						"get-all-money"
 					]
 				}
@@ -123,17 +99,11 @@
 					"raw": "{\r\n    \"name\": \"Ivan_Ivanov\",\r\n    \"amount\": 1000\r\n}"
 				},
 				"url": {
-					"raw": "http://127.0.0.1:19000/banking/reduce-cash",
-					"protocol": "http",
+					"raw": "banking/reduce-cash",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"banking"
 					],
-					"port": "19000",
 					"path": [
-						"banking",
 						"reduce-cash"
 					]
 				}
@@ -150,17 +120,11 @@
 					"raw": "{\r\n    \"name\": \"Ivan_Ivanov\",\r\n    \"amount\": 1000\r\n}"
 				},
 				"url": {
-					"raw": "http://127.0.0.1:19000/banking/reduce-debit",
-					"protocol": "http",
+					"raw": "banking/reduce-debit",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"banking"
 					],
-					"port": "19000",
 					"path": [
-						"banking",
 						"reduce-debit"
 					]
 				}
@@ -177,17 +141,11 @@
 					"raw": "{\r\n    \"name\": \"Ivan_Ivanov\",\r\n    \"amount\": 1000\r\n}"
 				},
 				"url": {
-					"raw": "http://127.0.0.1:19000/banking/reduce-credit",
-					"protocol": "http",
+					"raw": "banking/reduce-credit",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"banking"
 					],
-					"port": "19000",
 					"path": [
-						"banking",
 						"reduce-credit"
 					]
 				}
@@ -204,17 +162,11 @@
 					"raw": "{\r\n    \"name\": \"Ivan_Ivanov\",\r\n    \"amount\": 1000\r\n}"
 				},
 				"url": {
-					"raw": "http://127.0.0.1:19000/banking/give-cash",
-					"protocol": "http",
+					"raw": "banking/give-cash",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"banking"
 					],
-					"port": "19000",
 					"path": [
-						"banking",
 						"give-cash"
 					]
 				}
@@ -231,17 +183,11 @@
 					"raw": "{\r\n    \"name\": \"Ivan_Ivanov\",\r\n    \"amount\": 1000\r\n}"
 				},
 				"url": {
-					"raw": "http://127.0.0.1:19000/banking/give-debit",
-					"protocol": "http",
+					"raw": "banking/give-debit",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"banking"
 					],
-					"port": "19000",
 					"path": [
-						"banking",
 						"give-debit"
 					]
 				}
@@ -258,17 +204,11 @@
 					"raw": "{\r\n    \"name\": \"Ivan_Ivanov\",\r\n    \"amount\": 1000\r\n}"
 				},
 				"url": {
-					"raw": "http://127.0.0.1:19000/banking/give-credit",
-					"protocol": "http",
+					"raw": "banking/give-credit",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"banking"
 					],
-					"port": "19000",
 					"path": [
-						"banking",
 						"give-credit"
 					]
 				}
@@ -285,17 +225,11 @@
 					"raw": "\"Ivan_Ivanov\""
 				},
 				"url": {
-					"raw": "http://127.0.0.1:19000/banking/exists",
-					"protocol": "http",
+					"raw": "banking/exists",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"banking"
 					],
-					"port": "19000",
 					"path": [
-						"banking",
 						"exists"
 					]
 				}
@@ -312,17 +246,11 @@
 					"raw": "\"Ivan_Ivanov\""
 				},
 				"url": {
-					"raw": "http://127.0.0.1:19000/banking/get-payment-method",
-					"protocol": "http",
+					"raw": "banking/get-payment-method",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"banking"
 					],
-					"port": "19000",
 					"path": [
-						"banking",
 						"get-payment-method"
 					]
 				}
@@ -336,20 +264,14 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"Ivan_Ivanov\",\r\n    \"method\": 1\r\n}"
+					"raw": "{\r\n    \"name\": \"Ivan_Ivanov\",\r\n    \"method\": 2\r\n}"
 				},
 				"url": {
-					"raw": "http://127.0.0.1:19000/banking/switch-payment-method",
-					"protocol": "http",
+					"raw": "banking/switch-payment-method",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"banking"
 					],
-					"port": "19000",
 					"path": [
-						"banking",
 						"switch-payment-method"
 					]
 				}
@@ -366,46 +288,63 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://127.0.0.1:19000/banking/get-unit-balance",
-					"protocol": "http",
+					"raw": "banking/get-unit-balance",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"banking"
 					],
-					"port": "19000",
 					"path": [
-						"banking",
 						"get-unit-balance"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Transfer debit",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Ivan_Ivanov\",\r\n    \"target\": \"Ivan_Ivanov\",\r\n    \"amount\": 1000\r\n}"
+				},
+				"url": {
+					"raw": "banking/transfer-debit",
+					"host": [
+						"banking"
+					],
+					"path": [
+						"transfer-debit"
 					]
 				}
 			},
 			"response": []
 		}
 	],
-	"auth": {
-		"type": "apikey",
-		"apikey": [
-			{
-				"key": "value",
-				"value": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
-				"type": "string"
-			},
-			{
-				"key": "key",
-				"value": "Authorization",
-				"type": "string"
-			}
-		]
-	},
 	"event": [
 		{
 			"listen": "prerequest",
 			"script": {
 				"type": "text/javascript",
 				"exec": [
-					""
+					"if(pm.environment.name != \"MinePark Environment\") {",
+					"    throw new Error(\"MinePark environment not found :(\");",
+					"}",
+					"const Header = require(\"postman-collection\").Header;",
+					"",
+					"function addHeader(name, value)",
+					"{",
+					"    pm.request.addHeader(new Header(name + \": \" + value));",
+					"}",
+					"",
+					"var accessToken = pm.environment.get(\"AccessToken\");",
+					"var unitId = pm.environment.get(\"UnitId\");",
+					"var url = pm.environment.get(\"Url\");",
+					"",
+					"addHeader(\"Authorization\", accessToken);",
+					"addHeader(\"UnitId\", unitId);",
+					"",
+					"pm.request.url = pm.environment.get(\"Host\") + pm.request.url;"
 				]
 			}
 		},
