@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "aaa5622a-c4c9-4d4e-8061-c4320cae15ee",
+		"_postman_id": "08a936ba-ac20-4ac7-8d75-93cc5f17f020",
 		"name": "POST Phones",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -15,17 +15,11 @@
 					"raw": "\"Ivan_Ivanov\""
 				},
 				"url": {
-					"raw": "http://127.0.0.1:19000/phones/get-number-for-user",
-					"protocol": "http",
+					"raw": "phones/get-number-for-user",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"phones"
 					],
-					"port": "19000",
 					"path": [
-						"phones",
 						"get-number-for-user"
 					]
 				}
@@ -42,17 +36,11 @@
 					"raw": "\"Ivan_Ivanov\""
 				},
 				"url": {
-					"raw": "http://127.0.0.1:19000/phones/get-number-for-user",
-					"protocol": "http",
+					"raw": "phones/get-number-for-user",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"phones"
 					],
-					"port": "19000",
 					"path": [
-						"phones",
 						"get-number-for-user"
 					]
 				}
@@ -69,17 +57,11 @@
 					"raw": "\"Police\""
 				},
 				"url": {
-					"raw": "http://127.0.0.1:19000/phones/get-number-for-organization",
-					"protocol": "http",
+					"raw": "phones/get-number-for-organization",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"phones"
 					],
-					"port": "19000",
 					"path": [
-						"phones",
 						"get-number-for-organization"
 					]
 				}
@@ -91,18 +73,16 @@
 			"request": {
 				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\"Police\""
+				},
 				"url": {
-					"raw": "http://127.0.0.1:19000/phones/create-number-for-organization",
-					"protocol": "http",
+					"raw": "phones/create-number-for-organization",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"phones"
 					],
-					"port": "19000",
 					"path": [
-						"phones",
 						"create-number-for-organization"
 					]
 				}
@@ -119,17 +99,11 @@
 					"raw": "\"ivan_Ivanov\""
 				},
 				"url": {
-					"raw": "http://127.0.0.1:19000/phones/get-balance",
-					"protocol": "http",
+					"raw": "phones/get-balance",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"phones"
 					],
-					"port": "19000",
 					"path": [
-						"phones",
 						"get-balance"
 					]
 				}
@@ -146,17 +120,11 @@
 					"raw": "{\r\n    \"name\": \"Ivan_Ivanov\",\r\n    \"amount\": 1000\r\n}"
 				},
 				"url": {
-					"raw": "http://127.0.0.1:19000/phones/add-balance",
-					"protocol": "http",
+					"raw": "phones/add-balance",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"phones"
 					],
-					"port": "19000",
 					"path": [
-						"phones",
 						"add-balance"
 					]
 				}
@@ -173,17 +141,11 @@
 					"raw": "{\r\n    \"name\": \"Ivan_Ivanov\",\r\n    \"amount\": 1000\r\n}"
 				},
 				"url": {
-					"raw": "http://127.0.0.1:19000/phones/reduce-balance",
-					"protocol": "http",
+					"raw": "phones/reduce-balance",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"phones"
 					],
-					"port": "19000",
 					"path": [
-						"phones",
 						"reduce-balance"
 					]
 				}
@@ -212,7 +174,24 @@
 			"script": {
 				"type": "text/javascript",
 				"exec": [
-					""
+					"if(pm.environment.name != \"MinePark Environment\") {",
+					"    throw new Error(\"MinePark environment not found :(\");",
+					"}",
+					"const Header = require(\"postman-collection\").Header;",
+					"",
+					"function addHeader(name, value)",
+					"{",
+					"    pm.request.addHeader(new Header(name + \": \" + value));",
+					"}",
+					"",
+					"var accessToken = pm.environment.get(\"AccessToken\");",
+					"var unitId = pm.environment.get(\"UnitId\");",
+					"var url = pm.environment.get(\"Url\");",
+					"",
+					"addHeader(\"Authorization\", accessToken);",
+					"addHeader(\"UnitId\", unitId);",
+					"",
+					"pm.request.url = pm.environment.get(\"Host\") + pm.request.url;"
 				]
 			}
 		},
