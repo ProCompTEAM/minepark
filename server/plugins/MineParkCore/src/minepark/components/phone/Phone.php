@@ -2,24 +2,25 @@
 namespace minepark\components\phone;
 
 use Exception;
-use jojoe77777\FormAPI\SimpleForm;
-use minepark\common\player\MineParkPlayer;
-use minepark\Components;
-use minepark\components\base\Component;
-use minepark\components\chat\Chat;
-use minepark\components\map\ATM;
-use minepark\components\organisations\Organisations;
-use minepark\defaults\ComponentAttributes;
-use minepark\defaults\EventList;
-use minepark\defaults\MapConstants;
-use minepark\defaults\TimeConstants;
+use minepark\Tasks;
 use minepark\Events;
 use minepark\Providers;
-use minepark\providers\data\PhonesDataProvider;
-use minepark\providers\MapProvider;
-use minepark\Tasks;
-use pocketmine\event\player\PlayerQuitEvent;
+use minepark\Components;
 use pocketmine\world\Position;
+use minepark\components\map\ATM;
+use minepark\defaults\EventList;
+use jojoe77777\FormAPI\SimpleForm;
+use minepark\components\chat\Chat;
+use minepark\defaults\MapConstants;
+use minepark\providers\MapProvider;
+use minepark\defaults\TimeConstants;
+use minepark\components\base\Component;
+use minepark\common\player\MineParkPlayer;
+use minepark\defaults\ComponentAttributes;
+use minepark\defaults\OrganisationConstants;
+use pocketmine\event\player\PlayerQuitEvent;
+use minepark\providers\data\PhonesDataProvider;
+use minepark\components\organisations\Organisations;
 
 class Phone extends Component
 {
@@ -336,9 +337,9 @@ class Phone extends Component
         $organisationId = null;
 
         if($number === self::EMERGENCY_NUMBER_POLICE) {
-            $organisationId = Organisations::SECURITY_WORK;
+            $organisationId = OrganisationConstants::SECURITY_WORK;
         } elseif($number === self::EMERGENCY_NUMBER_AMBULANCE) {
-            $organisationId = Organisations::DOCTOR_WORK;
+            $organisationId = OrganisationConstants::DOCTOR_WORK;
         }
 
         if(!isset($organisationId)) {

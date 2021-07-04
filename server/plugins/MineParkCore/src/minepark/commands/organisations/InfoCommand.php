@@ -1,13 +1,14 @@
 <?php
 namespace minepark\commands\organisations;
 
-use minepark\commands\base\OrganisationsCommand;
-use pocketmine\event\Event;
-use minepark\defaults\Permissions;
-
-use minepark\common\player\MineParkPlayer;
 use minepark\Components;
+use pocketmine\event\Event;
 use minepark\components\chat\Chat;
+
+use minepark\defaults\Permissions;
+use minepark\common\player\MineParkPlayer;
+use minepark\defaults\OrganisationConstants;
+use minepark\commands\base\OrganisationsCommand;
 use minepark\components\organisations\Organisations;
 
 class InfoCommand extends OrganisationsCommand
@@ -60,7 +61,7 @@ class InfoCommand extends OrganisationsCommand
 
     private function canGetInfo(MineParkPlayer $p) : bool
     {
-        return $p->getSettings()->organisation == Organisations::GOVERNMENT_WORK or $p->getSettings()->organisation == Organisations::SECURITY_WORK;
+        return $p->getSettings()->organisation == OrganisationConstants::GOVERNMENT_WORK or $p->getSettings()->organisation == OrganisationConstants::SECURITY_WORK;
     }
 
     private function getPlayersNear(MineParkPlayer $player) : array

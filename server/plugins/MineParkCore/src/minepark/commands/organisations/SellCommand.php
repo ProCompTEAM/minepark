@@ -1,17 +1,18 @@
 <?php
 namespace minepark\commands\organisations;
 
-use minepark\commands\base\OrganisationsCommand;
 use minepark\Providers;
+use minepark\Components;
 
 use pocketmine\event\Event;
-use minepark\defaults\Permissions;
-use minepark\common\player\MineParkPlayer;
-use minepark\Components;
-use minepark\components\chat\Chat;
-use minepark\components\organisations\Organisations;
-use minepark\defaults\MapConstants;
 use pocketmine\item\ItemFactory;
+use minepark\components\chat\Chat;
+use minepark\defaults\Permissions;
+use minepark\defaults\MapConstants;
+use minepark\common\player\MineParkPlayer;
+use minepark\defaults\OrganisationConstants;
+use minepark\commands\base\OrganisationsCommand;
+use minepark\components\organisations\Organisations;
 
 class SellCommand extends OrganisationsCommand
 {
@@ -66,7 +67,7 @@ class SellCommand extends OrganisationsCommand
 
     public static function isSeller(MineParkPlayer $player) : bool
     {
-        return $player->getSettings()->organisation === Organisations::SELLER_WORK or $player->isOperator();
+        return $player->getSettings()->organisation === OrganisationConstants::SELLER_WORK or $player->isOperator();
     }
 
     private function isShopClose(MineParkPlayer $player)
