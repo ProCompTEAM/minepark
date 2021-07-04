@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "29bc02af-7a3a-4677-8b0e-6a7e3c01c9ea",
+		"_postman_id": "4a460d28-b4ec-44a9-bc1f-4a9c9f144e58",
 		"name": "POST Users",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -27,17 +27,11 @@
 					}
 				},
 				"url": {
-					"raw": "http://127.0.0.1:19000/users/create-internal",
-					"protocol": "http",
+					"raw": "users/create-internal",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"users"
 					],
-					"port": "19000",
 					"path": [
-						"users",
 						"create-internal"
 					],
 					"query": [
@@ -73,18 +67,52 @@
 					}
 				},
 				"url": {
-					"raw": "http://127.0.0.1:19000/users/get-user",
-					"protocol": "http",
+					"raw": "users/get-user",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"users"
 					],
-					"port": "19000",
 					"path": [
-						"users",
 						"get-user"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get settings",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "",
+						"type": "text",
+						"value": "",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\"Ivan_Ivanov\"",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "users/get-user-settings",
+					"host": [
+						"users"
+					],
+					"path": [
+						"get-user-settings"
 					],
 					"query": [
 						{
@@ -119,17 +147,11 @@
 					}
 				},
 				"url": {
-					"raw": "http://127.0.0.1:19000/users/exist",
-					"protocol": "http",
+					"raw": "users/exist",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"users"
 					],
-					"port": "19000",
 					"path": [
-						"users",
 						"exist"
 					],
 					"query": [
@@ -165,17 +187,11 @@
 					}
 				},
 				"url": {
-					"raw": "http://127.0.0.1:19000/users/set-password",
-					"protocol": "http",
+					"raw": "users/set-password",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"users"
 					],
-					"port": "19000",
 					"path": [
-						"users",
 						"set-password"
 					],
 					"query": [
@@ -211,18 +227,52 @@
 					}
 				},
 				"url": {
-					"raw": "http://127.0.0.1:19000/users/get-password",
-					"protocol": "http",
+					"raw": "users/get-password",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"users"
 					],
-					"port": "19000",
 					"path": [
-						"users",
 						"get-password"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Exist password",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "",
+						"type": "text",
+						"value": "",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\"Ivan_Ivanov\"",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "users/exist-password",
+					"host": [
+						"users"
+					],
+					"path": [
+						"exist-password"
 					],
 					"query": [
 						{
@@ -257,17 +307,11 @@
 					}
 				},
 				"url": {
-					"raw": "http://127.0.0.1:19000/users/reset-password",
-					"protocol": "http",
+					"raw": "users/reset-password",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"users"
 					],
-					"port": "19000",
 					"path": [
-						"users",
 						"reset-password"
 					],
 					"query": [
@@ -295,7 +339,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"Ivan_Ivanov\",\r\n    \"fullName\": \"Ivanka Petrov\",\r\n    \"group\": \"example\",\r\n    \"licenses\": null,\r\n    \"attributes\": \"B\",\r\n    \"people\": \"Alex777\",\r\n    \"tag\": \"Some text about this user\",\r\n    \"level\": \"parkcity\",\r\n    \"x\": 250.1485,\r\n    \"y\": 44,\r\n    \"z\": -18.1,\r\n    \"organisation\": 3,\r\n    \"bonus\": 16,\r\n    \"minutesPlayed\": 0,\r\n    \"vip\": false,\r\n    \"administrator\": true,\r\n    \"builder\": false,\r\n    \"realtor\": true,\r\n    \"joinedDate\": \"01.01.0001 0:00:00\",\r\n    \"leftDate\": \"01.01.0001 0:00:00\",\r\n    \"createdDate\": \"07.11.2020 22:58:08\",\r\n    \"updatedDate\": \"01.01.0001 0:00:00\",\r\n    \"id\": 1\r\n}",
+					"raw": "{\r\n    \"name\": \"Ivan_Ivanov\",\r\n    \"fullName\": \"Ivanka Petrov\",\r\n    \"group\": \"example\",\r\n    \"licenses\": null,\r\n    \"attributes\": \"B\",\r\n    \"people\": \"Alex777\",\r\n    \"tag\": \"Some text about this user\",\r\n    \"bonus\": 16,\r\n    \"minutesPlayed\": 0,\r\n    \"vip\": false,\r\n    \"administrator\": true,\r\n    \"builder\": false,\r\n    \"realtor\": true,\r\n    \"joinedDate\": \"01.01.0001 0:00:00\",\r\n    \"leftDate\": \"01.01.0001 0:00:00\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -303,17 +347,11 @@
 					}
 				},
 				"url": {
-					"raw": "http://127.0.0.1:19000/users/update",
-					"protocol": "http",
+					"raw": "users/update",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"users"
 					],
-					"port": "19000",
 					"path": [
-						"users",
 						"update"
 					],
 					"query": [
@@ -349,17 +387,11 @@
 					}
 				},
 				"url": {
-					"raw": "http://127.0.0.1:19000/users/update-join-status",
-					"protocol": "http",
+					"raw": "users/update-join-status",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"users"
 					],
-					"port": "19000",
 					"path": [
-						"users",
 						"update-join-status"
 					],
 					"query": [
@@ -395,17 +427,11 @@
 					}
 				},
 				"url": {
-					"raw": "http://127.0.0.1:19000/users/update-quit-status",
-					"protocol": "http",
+					"raw": "users/update-quit-status",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"users"
 					],
-					"port": "19000",
 					"path": [
-						"users",
 						"update-quit-status"
 					],
 					"query": [
@@ -418,30 +444,110 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Update settings",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Ivan_Ivanov\",\r\n    \"licenses\": \"\",\r\n    \"attributes\": \"\",\r\n    \"organisation\": 1,\r\n    \"world\": \"minepark\",\r\n    \"x\": 0,\r\n    \"y\": 120,\r\n    \"z\": 0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "users/update-settings",
+					"host": [
+						"users"
+					],
+					"path": [
+						"update-settings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Save executed command",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"sender\": \"Ivan_Ivanov\",\r\n    \"command\": \"CUM\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "users/save-executed-command",
+					"host": [
+						"users"
+					],
+					"path": [
+						"save-executed-command"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Save chat message",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"sender\": \"Ivan_Ivanov\",\r\n    \"message\": \"CUM CUM\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "users/save-chat-message",
+					"host": [
+						"users"
+					],
+					"path": [
+						"save-chat-message"
+					]
+				}
+			},
+			"response": []
 		}
 	],
-	"auth": {
-		"type": "apikey",
-		"apikey": [
-			{
-				"key": "value",
-				"value": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
-				"type": "string"
-			},
-			{
-				"key": "key",
-				"value": "Authorization",
-				"type": "string"
-			}
-		]
-	},
 	"event": [
 		{
 			"listen": "prerequest",
 			"script": {
 				"type": "text/javascript",
 				"exec": [
-					""
+					"if(pm.environment.name != \"MinePark Environment\") {",
+					"    throw new Error(\"MinePark environment not found :(\");",
+					"}",
+					"const Header = require(\"postman-collection\").Header;",
+					"",
+					"function addHeader(name, value)",
+					"{",
+					"    pm.request.addHeader(new Header(name + \": \" + value));",
+					"}",
+					"",
+					"var accessToken = pm.environment.get(\"AccessToken\");",
+					"var unitId = pm.environment.get(\"UnitId\");",
+					"var url = pm.environment.get(\"Url\");",
+					"",
+					"addHeader(\"Authorization\", accessToken);",
+					"addHeader(\"UnitId\", unitId);",
+					"",
+					"pm.request.url = pm.environment.get(\"Host\") + pm.request.url;"
 				]
 			}
 		},

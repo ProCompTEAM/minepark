@@ -93,7 +93,7 @@ class GiveLicCommand extends OrganisationsCommand
 
     private function canGiveDocuments(MineParkPlayer $player) : bool
     {
-        return $player->getProfile()->organisation === Organisations::GOVERNMENT_WORK or $player->getProfile()->organisation === Organisations::LAWYER_WORK;
+        return $player->getSettings()->organisation === Organisations::GOVERNMENT_WORK or $player->getSettings()->organisation === Organisations::LAWYER_WORK;
     }
 
     private function isNearPoint(MineParkPlayer $player) : bool

@@ -14,6 +14,8 @@ namespace MDC.Infrastructure.Services.Interfaces
 
         Task<UserDto> GetUserDto(string userName);
 
+        Task<UserSettingsDto> GetUserSettingsDto(string unitId, string userName);
+
         Task<string> GetPassword(string userName);
 
         Task<bool> ExistPassword(string userName);
@@ -22,11 +24,11 @@ namespace MDC.Infrastructure.Services.Interfaces
 
         Task ResetPassword(string userName);
 
-        Task Create(string unitId, UserDto userDto);
-
         Task<UserDto> CreateInternal(string unitId, string userName);
 
         Task Update(UserDto userDto);
+
+        Task UpdateSettings(string unitId, UserSettingsDto settingsDto);
 
         Task UpdateJoinStatus(string unitId, string userName);
 

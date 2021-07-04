@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
+using System;
 
 namespace MDC.Data.Migrations
 {
@@ -25,33 +26,7 @@ namespace MDC.Data.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "Level",
-                table: "Users",
-                type: "nvarchar(128)",
-                nullable: false,
-                defaultValue: "");
-
-            migrationBuilder.AddColumn<double>(
-                name: "X",
-                table: "Users",
-                type: "double",
-                nullable: false,
-                defaultValue: 0.0);
-
-            migrationBuilder.AddColumn<double>(
-                name: "Y",
-                table: "Users",
-                type: "double",
-                nullable: false,
-                defaultValue: 0.0);
-
-            migrationBuilder.AddColumn<double>(
-                name: "Z",
-                table: "Users",
-                type: "double",
-                nullable: false,
-                defaultValue: 0.0);
+            throw new NotImplementedException();
         }
     }
 }

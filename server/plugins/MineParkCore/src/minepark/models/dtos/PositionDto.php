@@ -3,7 +3,7 @@ namespace minepark\models\dtos;
 
 class PositionDto extends BaseDto
 {
-    public string $level;
+    public string $world;
 
     public float $x;
 

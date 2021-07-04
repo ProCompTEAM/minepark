@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "8e1ef6df-b398-4ed7-948e-ccbb2b37f786",
+		"_postman_id": "412fd8f1-2125-4941-b3ee-382821d54856",
 		"name": "POST Map",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -15,17 +15,11 @@
 					"raw": "\"testpoint\""
 				},
 				"url": {
-					"raw": "http://127.0.0.1:19000/map/get-point",
-					"protocol": "http",
+					"raw": "map/get-point",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"map"
 					],
-					"port": "19000",
 					"path": [
-						"map",
 						"get-point"
 					]
 				}
@@ -42,17 +36,11 @@
 					"raw": "\"testpoint\""
 				},
 				"url": {
-					"raw": "http://127.0.0.1:19000/map/get-point-group",
-					"protocol": "http",
+					"raw": "map/get-point-group",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"map"
 					],
-					"port": "19000",
 					"path": [
-						"map",
 						"get-point-group"
 					]
 				}
@@ -69,17 +57,11 @@
 					"raw": "0"
 				},
 				"url": {
-					"raw": "http://127.0.0.1:19000/map/get-points-by-group",
-					"protocol": "http",
+					"raw": "map/get-points-by-group",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"map"
 					],
-					"port": "19000",
 					"path": [
-						"map",
 						"get-points-by-group"
 					]
 				}
@@ -93,20 +75,14 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"level\": \"minepark\",\r\n    \"x\": 213,\r\n    \"y\": 70,\r\n    \"z\": 30\r\n}"
+					"raw": "{\r\n    \"world\": \"minepark\",\r\n    \"x\": 213,\r\n    \"y\": 70,\r\n    \"z\": 30,\r\n    \"distance\": 5\r\n}"
 				},
 				"url": {
-					"raw": "http://127.0.0.1:19000/map/get-near-points",
-					"protocol": "http",
+					"raw": "map/get-near-points",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"map"
 					],
-					"port": "19000",
 					"path": [
-						"map",
 						"get-near-points"
 					]
 				}
@@ -120,20 +96,14 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"testpoint\",\r\n    \"level\": \"minepark\",\r\n    \"group: 0,\r\n    \"x\": 213,\r\n    \"y\": 70,\r\n    \"z\": 30\r\n}"
+					"raw": "{\r\n    \"name\": \"testpoint\",\r\n    \"world\": \"minepark\",\r\n    \"groupId\": 0,\r\n    \"x\": 213,\r\n    \"y\": 70,\r\n    \"z\": 30\r\n}"
 				},
 				"url": {
-					"raw": "http://127.0.0.1:19000/map/set-point",
-					"protocol": "http",
+					"raw": "map/set-point",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"map"
 					],
-					"port": "19000",
 					"path": [
-						"map",
 						"set-point"
 					]
 				}
@@ -150,17 +120,11 @@
 					"raw": "\"testpoint\""
 				},
 				"url": {
-					"raw": "http://127.0.0.1:19000/map/delete-point",
-					"protocol": "http",
+					"raw": "map/delete-point",
 					"host": [
-						"127",
-						"0",
-						"0",
-						"1"
+						"map"
 					],
-					"port": "19000",
 					"path": [
-						"map",
 						"delete-point"
 					]
 				}
@@ -168,28 +132,30 @@
 			"response": []
 		}
 	],
-	"auth": {
-		"type": "apikey",
-		"apikey": [
-			{
-				"key": "key",
-				"value": "Authorization",
-				"type": "string"
-			},
-			{
-				"key": "value",
-				"value": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
-				"type": "string"
-			}
-		]
-	},
 	"event": [
 		{
 			"listen": "prerequest",
 			"script": {
 				"type": "text/javascript",
 				"exec": [
-					""
+					"if(pm.environment.name != \"MinePark Environment\") {",
+					"    throw new Error(\"MinePark environment not found :(\");",
+					"}",
+					"const Header = require(\"postman-collection\").Header;",
+					"",
+					"function addHeader(name, value)",
+					"{",
+					"    pm.request.addHeader(new Header(name + \": \" + value));",
+					"}",
+					"",
+					"var accessToken = pm.environment.get(\"AccessToken\");",
+					"var unitId = pm.environment.get(\"UnitId\");",
+					"var url = pm.environment.get(\"Url\");",
+					"",
+					"addHeader(\"Authorization\", accessToken);",
+					"addHeader(\"UnitId\", unitId);",
+					"",
+					"pm.request.url = pm.environment.get(\"Host\") + pm.request.url;"
 				]
 			}
 		},

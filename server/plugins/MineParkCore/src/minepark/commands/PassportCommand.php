@@ -64,7 +64,7 @@ class PassportCommand extends Command
 
     private function getPassportForm(MineParkPlayer $player) : string
     {
-        $outputOrg = $this->organisations->getName($player->getProfile()->organisation);
+        $outputOrg = $this->organisations->getName($player->getSettings()->organisation);
         $outputRank = $player->existsAttribute(PlayerAttributes::BOSS) ? " §7[§bНачальник§7]" : "";
         $outputPhone = $player->getProfile()->phoneNumber;
         

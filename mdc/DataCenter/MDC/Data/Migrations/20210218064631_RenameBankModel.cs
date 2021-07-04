@@ -34,28 +34,7 @@ namespace MDC.Data.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "BankAccounts");
-
-            migrationBuilder.CreateTable(
-                name: "Bank",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Cash = table.Column<double>(type: "double", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime", nullable: false),
-                    Credit = table.Column<double>(type: "double", nullable: false),
-                    Debit = table.Column<double>(type: "double", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(128)", nullable: false),
-                    PaymentMethod = table.Column<int>(type: "int", nullable: false),
-                    UnitId = table.Column<string>(type: "nvarchar(128)", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Bank", x => x.Id);
-                });
+            throw new NotImplementedException();
         }
     }
 }

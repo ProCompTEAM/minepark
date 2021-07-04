@@ -58,7 +58,7 @@ namespace MDC.Infrastructure
             RegisterProvider(new DateTimeProvider());
             RegisterProvider(new TokenProvider());
             RegisterProvider(new DatabaseProvider());
-            RegisterProvider(new UnitProvider());
+            RegisterProvider(new AuthorizationProvider());
         }
 
         private static void InitializeServices()

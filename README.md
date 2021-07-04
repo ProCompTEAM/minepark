@@ -1,4 +1,4 @@
-# MinePark Software - Release v1.2
+# MinePark Software - Release v1.3
 
 __Copyright http://vk.com/mcperp__
 ____

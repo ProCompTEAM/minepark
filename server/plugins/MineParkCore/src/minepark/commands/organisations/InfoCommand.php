@@ -60,7 +60,7 @@ class InfoCommand extends OrganisationsCommand
 
     private function canGetInfo(MineParkPlayer $p) : bool
     {
-        return $p->getProfile()->organisation == Organisations::GOVERNMENT_WORK or $p->getProfile()->organisation == Organisations::SECURITY_WORK;
+        return $p->getSettings()->organisation == Organisations::GOVERNMENT_WORK or $p->getSettings()->organisation == Organisations::SECURITY_WORK;
     }
 
     private function getPlayersNear(MineParkPlayer $player) : array

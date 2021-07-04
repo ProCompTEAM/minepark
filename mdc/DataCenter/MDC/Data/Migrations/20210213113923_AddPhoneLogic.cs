@@ -28,8 +28,7 @@ namespace MDC.Data.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Phones");
+            throw new NotImplementedException();
         }
     }
 }

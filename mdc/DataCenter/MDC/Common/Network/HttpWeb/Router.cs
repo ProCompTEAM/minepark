@@ -20,34 +20,41 @@ namespace MDC.Common.Network.HttpWeb
 
         private static readonly JsonSerializerOptions jsonDeserializeOptions = GetJsonDeserializeOptions();
 
-        private static readonly IUnitProvider unitProvider;
+        private static readonly IAuthorizationProvider authorizationProvider;
 
         static Router()
         {
-            unitProvider = Store.GetProvider<UnitProvider>();
+            authorizationProvider = Store.GetProvider<AuthorizationProvider>();
         }
 
         public static ExecutionResult Execute(RequestContext requestContext, string jsonData, string target)
         {
             string[] routes = target.Split('/');
 
-            if(routes.Length < 2)
+            if (routes.Length < 2)
             {
                 return CreateExecutionResult(HttpStatusCode.BadRequest);
             }
 
-            if(!unitProvider.Authorize(requestContext.AccessToken))
+            if (!authorizationProvider.Authorize(requestContext.AccessToken))
             {
                 General.Error("Declined request from ", requestContext.Address);
                 General.Error("Invalid access token = {0}", requestContext.AccessToken);
                 return CreateExecutionResult(HttpStatusCode.Forbidden);
             }
 
+            if (string.IsNullOrWhiteSpace(requestContext.UnitId))
+            {
+                General.Error("Declined request from ", requestContext.Address);
+                General.Error("Invalid UnitId value = {0}", requestContext.UnitId);
+                return CreateExecutionResult(HttpStatusCode.BadRequest);
+            }
+
             try
             {
                 return TryToExecute(routes, requestContext, jsonData);
             }
-            catch(TargetInvocationException exception)
+            catch (TargetInvocationException exception)
             {
                 Exception originalException = exception.InnerException;
 
@@ -59,7 +66,7 @@ namespace MDC.Common.Network.HttpWeb
                 General.Crash(originalException.Message, originalException.StackTrace.Split("\n\r"));
                 return CreateExecutionResult(HttpStatusCode.InternalServerError);
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 General.Crash(exception.Message, exception.StackTrace.Split("\n\r"));
                 return CreateExecutionResult(HttpStatusCode.InternalServerError);
@@ -113,14 +120,14 @@ namespace MDC.Common.Network.HttpWeb
 
         private static string ExecuteMethod(IController controller, MethodInfo method, RequestContext requestContext, string jsonData)
         {
-            if(!IsMethodContainArgument(method, typeof(RequestContext)))
+            if (!IsMethodContainArgument(method, typeof(RequestContext)))
             {
                 requestContext = null;
             }
 
             object data = null;
 
-            if(!JsonDataIsEmpty(jsonData))
+            if (!JsonDataIsEmpty(jsonData))
             {
                 data = JsonSerializer.Deserialize(jsonData, GetMethodArgumentType(method), jsonDeserializeOptions);
             }
@@ -152,14 +159,14 @@ namespace MDC.Common.Network.HttpWeb
 
         private static bool JsonDataIsEmpty(string jsonData)
         {
-            return jsonData.Trim() == "[]";
+            return jsonData.Trim() == "[]" || jsonData == null || jsonData == "";
         }
 
         private static object[] PrepareArguments(object data, RequestContext requestInfo)
         {
             List<object> args = new List<object>();
 
-            if(data != null)
+            if (data != null)
             {
                 args.Add(data);
             }
@@ -176,14 +183,14 @@ namespace MDC.Common.Network.HttpWeb
         {
             string result = methodName.Substring(0, 1).ToUpper();
 
-            for(int index = 1; index < methodName.Length; index++)
+            for (int index = 1; index < methodName.Length; index++)
             {
-                if(methodName[index] == '-')
+                if (methodName[index] == '-')
                 {
                     result += methodName.Substring(++index, 1).ToUpper();
                     continue;
                 }
-                
+
                 result += methodName[index];
             }
 

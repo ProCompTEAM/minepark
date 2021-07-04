@@ -10,15 +10,9 @@ namespace MDC.Data.Dtos
 
         public string Group { get; set; }
 
-        public string Licenses { get; set; }
-
-        public string Attributes { get; set; }
-
         public string People { get; set; }
 
         public string Tag { get; set; }
-
-        public int Organisation { get; set; }
 
         public int Bonus { get; set; }
 

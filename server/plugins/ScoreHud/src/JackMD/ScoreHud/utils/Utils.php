@@ -43,34 +43,34 @@ use RuntimeException;
 
 class Utils{
 
-	/**
-	 * Checks if the required virions/libraries are present before enabling the plugin.
-	 */
-	public static function checkVirions(): void{
-		$requiredVirions = [
-			ScoreFactory::class,
-			UpdateNotifier::class,
-			ConfigUpdater::class
-		];
+    /**
+     * Checks if the required virions/libraries are present before enabling the plugin.
+     */
+    public static function checkVirions(): void{
+        $requiredVirions = [
+            ScoreFactory::class,
+            UpdateNotifier::class,
+            ConfigUpdater::class
+        ];
 
-		foreach($requiredVirions as $class){
-			if(!class_exists($class)){
-				throw new RuntimeException("ScoreHud plugin will only work if you use the plugin phar from Poggit.");
-			}
-		}
-	}
+        foreach($requiredVirions as $class){
+            if(!class_exists($class)){
+                throw new RuntimeException("ScoreHud plugin will only work if you use the plugin phar from Poggit.");
+            }
+        }
+    }
 
-	/**
-	 * @param $timezone
-	 * @return bool
-	 */
-	public static function setTimezone($timezone): bool{
-		if($timezone !== false){
-			Server::getInstance()->getLogger()->notice(ScoreHud::PREFIX . "Server timezone successfully set to " . $timezone);
+    /**
+     * @param $timezone
+     * @return bool
+     */
+    public static function setTimezone($timezone): bool{
+        if($timezone !== false){
+            Server::getInstance()->getLogger()->notice(ScoreHud::PREFIX . "Server timezone successfully set to " . $timezone);
 
-			return date_default_timezone_set($timezone);
-		}
+            return date_default_timezone_set($timezone);
+        }
 
-		return false;
-	}
+        return false;
+    }
 }

@@ -66,7 +66,7 @@ class SellCommand extends OrganisationsCommand
 
     public static function isSeller(MineParkPlayer $player) : bool
     {
-        return $player->getProfile()->organisation === Organisations::SELLER_WORK or $player->isOperator();
+        return $player->getSettings()->organisation === Organisations::SELLER_WORK or $player->isOperator();
     }
 
     private function isShopClose(MineParkPlayer $player)

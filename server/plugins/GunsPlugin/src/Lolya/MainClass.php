@@ -12,7 +12,6 @@ use pocketmine\plugin\PluginBase;
 use pocketmine\player\Player;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
-use pocketmine\item\Item;
 use pocketmine\event\Listener;
 
 use Lolya\Loader;
@@ -25,6 +24,7 @@ use minepark\Providers;
 use minepark\providers\MapProvider;
 use pocketmine\world\World;
 use pocketmine\entity\EntityDataHelper;
+use pocketmine\network\mcpe\protocol\types\entity\EntityIds;
 
 class MainClass extends PluginBase implements Listener 
 {
@@ -51,7 +51,7 @@ class MainClass extends PluginBase implements Listener
 
         EntityFactory::getInstance()->register(BulletEntity::class, function(World $world, CompoundTag $nbt) : BulletEntity{
             return new BulletEntity(EntityDataHelper::parseLocation($nbt, $world), null, $nbt);
-        }, ['Bullet', 'minecraft:snowball'], EntityLegacyIds::SNOWBALL);
+        }, ['Bullet', EntityIds::SNOWBALL], EntityLegacyIds::SNOWBALL);
     }
 
     public function getCore() : Core

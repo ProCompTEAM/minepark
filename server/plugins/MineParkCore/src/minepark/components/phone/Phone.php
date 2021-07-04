@@ -357,7 +357,7 @@ class Phone extends Component
         foreach($this->getServer()->getOnlinePlayers() as $onlinePlayer) {
             $onlinePlayer = MineParkPlayer::cast($onlinePlayer);
 
-            if($onlinePlayer->getProfile()->organisation !== $organisationId) {
+            if($onlinePlayer->getSettings()->organisation !== $organisationId) {
                 continue;
             }
 

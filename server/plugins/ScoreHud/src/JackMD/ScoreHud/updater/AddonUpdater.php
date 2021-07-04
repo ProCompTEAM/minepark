@@ -39,34 +39,34 @@ use JackMD\ScoreHud\updater\task\AddonUpdateNotifyTask;
 
 class AddonUpdater{
 
-	/** @var ScoreHud */
-	private $plugin;
+    /** @var ScoreHud */
+    private $plugin;
 
-	/**
-	 * AddonUpdater constructor.
-	 *
-	 * @param ScoreHud $plugin
-	 */
-	public function __construct(ScoreHud $plugin){
-		$this->plugin = $plugin;
-	}
+    /**
+     * AddonUpdater constructor.
+     *
+     * @param ScoreHud $plugin
+     */
+    public function __construct(ScoreHud $plugin){
+        $this->plugin = $plugin;
+    }
 
-	/**
-	 * @param Addon $addon
-	 */
-	public function check(Addon $addon): void{
-		$plugin = $this->plugin;
-		$description = $addon->getDescription();
+    /**
+     * @param Addon $addon
+     */
+    public function check(Addon $addon): void{
+        $plugin = $this->plugin;
+        $description = $addon->getDescription();
 
-		$addonName = $description->getName();
-		$addonVersion = $description->getVersion();
+        $addonName = $description->getName();
+        $addonVersion = $description->getVersion();
 
-		if($addonVersion === "0.0.0"){
-			$plugin->getLogger()->warning("(Addon Update Notice) Addon $addonName is outdated. A new version has been released. Download the latest version from https://github.com/JackMD/ScoreHud-Addons");
+        if($addonVersion === "0.0.0"){
+            $plugin->getLogger()->warning("(Addon Update Notice) Addon $addonName is outdated. A new version has been released. Download the latest version from https://github.com/JackMD/ScoreHud-Addons");
 
-			return;
-		}
+            return;
+        }
 
-		$plugin->getServer()->getAsyncPool()->submitTask(new AddonUpdateNotifyTask($addonName, $addonVersion));
-	}
+        $plugin->getServer()->getAsyncPool()->submitTask(new AddonUpdateNotifyTask($addonName, $addonVersion));
+    }
 }

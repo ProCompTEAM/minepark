@@ -15,7 +15,7 @@ namespace MDC.Data.Models
         public string UnitId { get; set; }
 
         [Required, Unicode(Defaults.DefaultStringLength)]
-        public string Level { get; set; }
+        public string World { get; set; }
 
         [Required]
         public double X { get; set; }

@@ -1,12 +1,9 @@
 <?php
 namespace Lolya;
 
-use pocketmine\nbt\tag\CompoundTag;
-use pocketmine\nbt\tag\ListTag;
-use pocketmine\nbt\tag\DoubleTag;
-use pocketmine\nbt\tag\FloatTag;
-
 use Lolya\creature\BulletEntity;
+use pocketmine\entity\EntityDataHelper;
+use pocketmine\math\Vector3;
 use pocketmine\player\Player;
 
 class Shoot
@@ -22,28 +19,31 @@ class Shoot
     {
         $nbt = $this->generateNbt($player);
 
-        $bullet = new BulletEntity($player->getLocation(), $nbt, $player );
+        $location = $player->getLocation();
+
+        $location->y += $player->getEyeHeight();
+
+        $bullet = new BulletEntity($location, $player, $nbt);
         $bullet->setAmmoDamage($damage);
 
-        $bullet->setMotion ($bullet->getMotion()->multiply(5.0));
-
         $bullet->spawnToAll();
+
+        $bullet->setMotion($bullet->getMotion()->multiply(5.0));
     }
     
     private function generateNbt(Player $player)
     {
-        return new CompoundTag ( "", [ 
-                "Pos" => new ListTag ( "Pos", [ 
-                        new DoubleTag ( "", $player->x ),
-                        new DoubleTag ( "", $player->y + $player->getEyeHeight () ),
-                        new DoubleTag ( "", $player->z ) ] ),
-                "Motion" => new ListTag ( "Motion", [ 
-                        new DoubleTag ( "", - \sin ( $player->yaw / 180 * M_PI ) *\cos ( $player->pitch / 180 * M_PI ) ),
-                        new DoubleTag ( "", - \sin ( $player->pitch / 180 * M_PI ) ),
-                        new DoubleTag ( "",\cos ( $player->yaw / 180 * M_PI ) *\cos ( $player->pitch / 180 * M_PI ) ) ] ),
-                "Rotation" => new ListTag ( "Rotation", [ 
-                        new FloatTag ( "", $player->yaw ),
-                        new FloatTag ( "", $player->pitch ) ] ) ] );
+        $motion = new Vector3(0.0, 0.0, 0.0);
+
+        $location = $player->getLocation();
+
+        $location->y += $player->getEyeHeight();
+
+        $motion->x = - sin ($location->yaw / 180 * M_PI ) * cos($location->pitch / 180 * M_PI);
+        $motion->y = - sin($location->pitch / 180 * M_PI);
+        $motion->z =   cos($location->yaw / 180 * M_PI ) * cos($location->pitch / 180 * M_PI);
+
+        return EntityDataHelper::createBaseNBT($location, $motion, $location->yaw, $location->pitch);
     }
 }
 ?>

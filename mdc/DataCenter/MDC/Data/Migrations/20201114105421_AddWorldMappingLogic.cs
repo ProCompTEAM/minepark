@@ -39,16 +39,7 @@ namespace MDC.Data.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "MapPoints");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "UnitId",
-                table: "Bank",
-                type: "text",
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(128)");
+            throw new NotImplementedException();
         }
     }
 }
