@@ -182,15 +182,6 @@ class BossBar extends Component
 
     private function getHiddenEntityMetadata() : array
     {
-        /*return [
-            EntityMetadataProperties::LEAD_HOLDER_EID => [EntityMetadataTypes::LONG, -1],
-            EntityMetadataProperties::FLAGS => [EntityMetadataTypes::LONG, 0 ^ 1 << EntityMetadataFlags::SILENT ^ 1 << EntityMetadataFlags::INVISIBLE ^ 1 << EntityMetadataFlags::NO_AI],
-            EntityMetadataProperties::SCALE => [EntityMetadataTypes::FLOAT, 0],
-            EntityMetadataProperties::NAMETAG => [EntityMetadataTypes::STRING, ""],
-            EntityMetadataProperties::BOUNDING_BOX_WIDTH => [EntityMetadataTypes::FLOAT, 0],
-            EntityMetadataProperties::BOUNDING_BOX_HEIGHT => [EntityMetadataTypes::FLOAT, 0]
-        ];*/
-
         $properties = new EntityMetadataCollection;
 
         $properties->setGenericFlag(EntityMetadataFlags::SILENT, true);
