@@ -46,35 +46,37 @@ class EntitySettings extends Component
 
     public function processEntityDamageEvent(EntityDamageEvent $event)
     {
-        if (!$event->getEntity() instanceof MineParkPlayer) {
+        if(!$event->getEntity() instanceof MineParkPlayer) {
             return;
         }
 
         $damager = null;
 
-        if ($event instanceof EntityDamageByEntityEvent) {
+        if($event instanceof EntityDamageByEntityEvent) {
             $damager = $event->getDamager();
 
             $this->checkForStunning($event);
         }
 
-        if ($event->isCancelled()) {
+        if($event->isCancelled()) {
             return;
         }
 
-        $this->checkForPlayerKilling($event->getFinalDamage(), $event->getEntity(), $damager);
+        if($this->checkForPlayerKilling($event->getFinalDamage(), $event->getEntity(), $damager)) {
+            $event->cancel();
+        }
     }
 
     private function checkForStunning(EntityDamageByEntityEvent $event)
     {
-        if (!$event->getDamager() instanceof MineParkPlayer or !$event->getEntity() instanceof MineParkPlayer) {
+        if(!$event->getDamager() instanceof MineParkPlayer or !$event->getEntity() instanceof MineParkPlayer) {
             return;
         }
 
         $damager = MineParkPlayer::cast($event->getDamager());
         $player = MineParkPlayer::cast($event->getEntity());
 
-        if ($damager->getSettings()->organisation === Organisations::SECURITY_WORK and $damager->getInventory()->getItemInHand()->getId() === ItemIds::STICK) {
+        if($damager->getSettings()->organisation === Organisations::SECURITY_WORK and $damager->getInventory()->getItemInHand()->getId() === ItemIds::STICK) {
             $this->processStunAction($player, $damager);
         }
 
@@ -83,10 +85,10 @@ class EntitySettings extends Component
         }
     }
 
-    private function checkForPlayerKilling(int $finalDamage, MineParkPlayer $victim, ?Entity $damager)
+    private function checkForPlayerKilling(int $finalDamage, MineParkPlayer $victim, ?Entity $damager) : bool
     {
-        if ($victim->getHealth() > $finalDamage) {
-            return;
+        if($victim->getHealth() > $finalDamage) {
+            return false;
         }
 
         Providers::getMapProvider()->teleportPoint($victim, MapConstants::POINT_NAME_HOSPITAL);
@@ -107,9 +109,11 @@ class EntitySettings extends Component
         $victim->sendMessage("§6Срочно найдите доктора!");
         $victim->sendMessage("§dЕсли на Вас напали, вызовите полицию: /c 02");
 
-        $victim->sleepOn($victim->getPosition()->subtract(0, 1, 0));
+        $victim->sleepOn($victim->getPosition());
 
         $this->broadcastPlayerDeath($victim, $damager);
+
+        return true;
     }
 
     private function processStunAction(MineParkPlayer $victim, MineParkPlayer $policeMan)
@@ -134,7 +138,7 @@ class EntitySettings extends Component
         foreach($this->getServer()->getOnlinePlayers() as $onlinePlayer) {
             $onlinePlayer = MineParkPlayer::cast($onlinePlayer);
 
-            if ($onlinePlayer->isAdministrator()) {
+            if($onlinePlayer->isAdministrator()) {
                 $onlinePlayer->sendMessage($message);
             }
         }
@@ -143,7 +147,7 @@ class EntitySettings extends Component
     //TODO: Move it to MDC
     private function canPlayerHurt(MineParkPlayer $player, MineParkPlayer $damager) : bool
     {
-        if ($damager->getStatesMap()->damageDisabled) {
+        if($damager->getStatesMap()->damageDisabled) {
             $damager->sendMessage("§6PvP режим недоступен!");
             return false;
         }
