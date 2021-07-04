@@ -54,6 +54,8 @@ abstract class BaseCar extends BaseVehicle
 
         $this->setCanSaveWithChunk(true);
         $this->saveNBT();
+
+        $this->setSilent();
     }
 
     protected function getInitialSizeInfo() : EntitySizeInfo
