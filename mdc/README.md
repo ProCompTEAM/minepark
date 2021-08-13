@@ -1,4 +1,3 @@
-MinePark Data Center
+MinePark Data Center runs via REST Api on HTTP. 
 
-Центр обработки данных MinePark обрабатывает запросы сервера, приходящие по протоколу HTTP.
-Система работает на базе .NET Core с использованием Entity Framework
+Entity Framework is connected to MariaDB.
