@@ -1,7 +1,7 @@
 This snapshot was automatically generated on
-Sat, 05 Jun 2021 18:10:29 +0000
+Mon, 05 Jul 2021 16:42:01 +0000
 
-Version: 8.0.7
+Version: 8.0.8
 Branch: HEAD
 Build: D:\a\1\s\pocketmine-php-sdk\php-src\x64\Release_TS
 
@@ -78,10 +78,6 @@ Module: php_openssl.dll
 	libcrypto-1_1-x64.dll
 	libssl-1_1-x64.dll
 
-Module: php_pthreads.dll
-===========================
-	pthreadvc3.dll
-
 Module: php_sqlite3.dll
 ===========================
 	libsqlite3.dll
@@ -89,4 +85,8 @@ Module: php_sqlite3.dll
 Module: php_crypto.dll
 ===========================
 	libcrypto-1_1-x64.dll
+
+Module: php_pthreads.dll
+===========================
+	pthreadvc3.dll
 
