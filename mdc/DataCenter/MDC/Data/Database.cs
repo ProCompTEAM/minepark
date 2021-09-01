@@ -55,7 +55,7 @@ namespace MDC.Data
         {
             Dictionary<string, string> defaults = new Dictionary<string, string>()
             {
-                { "address", string.Empty },
+                { "address", "127.0.0.1" },
                 { "name", "minepark" },
                 { "user", "root" },
                 { "password", "9999" }
