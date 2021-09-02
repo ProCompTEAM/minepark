@@ -5,6 +5,7 @@ use minepark\Events;
 use minepark\Providers;
 use minepark\common\MDC;
 use minepark\defaults\Files;
+use pocketmine\console\ConsoleCommandSender;
 use pocketmine\event\Listener;
 use pocketmine\world\Position;
 use jojoe77777\FormAPI\FormAPI;
@@ -14,7 +15,6 @@ use pocketmine\plugin\PluginBase;
 use minepark\defaults\Permissions;
 use pocketmine\command\CommandSender;
 use minepark\external\service\Service;
-use pocketmine\command\ConsoleCommandSender;
 
 class Core extends PluginBase implements Listener
 {

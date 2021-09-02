@@ -68,6 +68,7 @@ class Chat extends Component
         } else if ($signature === ChatConstants::ADMINISTRATION_CHAT_SIGNATURE) {
             $this->sendAdminMessage($player, substr($message, 1));
         } else {
+            $this->tracking->message($player, $message, ChatConstants::LOCAL_CHAT_HEAR_RADIUS, "§b[Local Chat]");
             $this->sendLocalMessage($player, $message, self::CHAT_MESSAGE_PREFIX, ChatConstants::LOCAL_CHAT_HEAR_RADIUS, true);
         }
     }

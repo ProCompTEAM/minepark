@@ -75,7 +75,7 @@ class PlayerSettings extends Component
     {
         $player = MineParkPlayer::cast($event->getPlayer());
 
-        $event->setJoinMessage(null);
+        $event->setJoinMessage("");
 
         $player->getEffects()->clear();
         $player->setNameTag("");
@@ -97,7 +97,7 @@ class PlayerSettings extends Component
     {
         $player = MineParkPlayer::cast($event->getPlayer());
 
-        $event->setQuitMessage(null);
+        $event->setQuitMessage("");
 
         Providers::getUsersDataProvider()->updateUserQuitStatus($player->getName());
     }

@@ -17,13 +17,13 @@ class Shoot
     
     public function execute(Player $player, $damage=3)
     {
-        $nbt = $this->generateNbt($player);
-
         $location = $player->getLocation();
 
         $location->y += $player->getEyeHeight();
 
-        $bullet = new BulletEntity($location, $player, $nbt);
+        $bullet = new BulletEntity($location, $player);
+        $bullet->setMotion($this->getMotion($player));
+        $bullet->saveNBT();
         $bullet->setAmmoDamage($damage);
 
         $bullet->spawnToAll();
@@ -31,19 +31,17 @@ class Shoot
         $bullet->setMotion($bullet->getMotion()->multiply(5.0));
     }
     
-    private function generateNbt(Player $player)
+    private function getMotion(Player $player) : Vector3
     {
         $motion = new Vector3(0.0, 0.0, 0.0);
 
         $location = $player->getLocation();
 
-        $location->y += $player->getEyeHeight();
-
         $motion->x = - sin ($location->yaw / 180 * M_PI ) * cos($location->pitch / 180 * M_PI);
         $motion->y = - sin($location->pitch / 180 * M_PI);
         $motion->z =   cos($location->yaw / 180 * M_PI ) * cos($location->pitch / 180 * M_PI);
 
-        return EntityDataHelper::createBaseNBT($location, $motion, $location->yaw, $location->pitch);
+        return $motion;
     }
 }
 ?>
