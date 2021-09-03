@@ -114,15 +114,20 @@ class Phone extends Component
         $player->getStatesMap()->phoneCompanion = null;
     }
 
-    public function getPlayerByNumber(int $number, bool $nameOnly = false) : MineParkPlayer|string|null
+    public function getPlayerByNumber(int $number) : ?MineParkPlayer
     {
         $userName = $this->phonesDataProvider->getUserNameByNumber($number);
 
         if(isset($userName)) {
-            return $nameOnly ? $userName : $this->getServer()->getPlayerExact($userName);
+            return $this->getServer()->getPlayerExact($userName);
         }
 
         return null;
+    }
+
+    public function getPlayerNameByNumber(int $number) : ?string
+    {
+        return $this->phonesDataProvider->getUserNameByNumber($number);
     }
 
     public function getNumberByName(string $userName) : ?int

@@ -50,7 +50,7 @@ class PermissionsSwitch extends Component
     public function addOperator(string $subjectName)
     {
         if(!$this->isOperator($subjectName)) {
-            $this->operators[] = $subjectName;
+            array_push($this->operators, $subjectName);
         }
     }
 

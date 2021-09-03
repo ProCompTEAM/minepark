@@ -1,6 +1,7 @@
 <?php
 namespace minepark\components\settings;
 
+use minepark\defaults\StringConstants;
 use minepark\Events;
 use minepark\Providers;
 use pocketmine\event\player\PlayerLoginEvent;
@@ -75,10 +76,10 @@ class PlayerSettings extends Component
     {
         $player = MineParkPlayer::cast($event->getPlayer());
 
-        $event->setJoinMessage("");
+        $event->setJoinMessage(StringConstants::EMPTY_STRING);
 
         $player->getEffects()->clear();
-        $player->setNameTag("");
+        $player->setNameTag(StringConstants::EMPTY_STRING);
 
         if($player->getStatesMap()->isNew) {
             $this->handleNewPlayer($player);
@@ -97,7 +98,7 @@ class PlayerSettings extends Component
     {
         $player = MineParkPlayer::cast($event->getPlayer());
 
-        $event->setQuitMessage("");
+        $event->setQuitMessage(StringConstants::EMPTY_STRING);
 
         Providers::getUsersDataProvider()->updateUserQuitStatus($player->getName());
     }
