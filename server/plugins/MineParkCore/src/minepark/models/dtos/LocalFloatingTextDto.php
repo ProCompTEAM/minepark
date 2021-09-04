@@ -5,7 +5,7 @@ class LocalFloatingTextDto extends BaseDto
 {
     public string $text;
 
-    public string $level;
+    public string $world;
 
     public float $x;
 

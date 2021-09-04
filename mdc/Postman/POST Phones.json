@@ -1,0 +1,208 @@
+{
+	"info": {
+		"_postman_id": "08a936ba-ac20-4ac7-8d75-93cc5f17f020",
+		"name": "POST Phones",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get number by username",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\"Ivan_Ivanov\""
+				},
+				"url": {
+					"raw": "phones/get-number-for-user",
+					"host": [
+						"phones"
+					],
+					"path": [
+						"get-number-for-user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get username by number",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\"Ivan_Ivanov\""
+				},
+				"url": {
+					"raw": "phones/get-number-for-user",
+					"host": [
+						"phones"
+					],
+					"path": [
+						"get-number-for-user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get number for organization",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\"Police\""
+				},
+				"url": {
+					"raw": "phones/get-number-for-organization",
+					"host": [
+						"phones"
+					],
+					"path": [
+						"get-number-for-organization"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create number for organization",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\"Police\""
+				},
+				"url": {
+					"raw": "phones/create-number-for-organization",
+					"host": [
+						"phones"
+					],
+					"path": [
+						"create-number-for-organization"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get balance",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\"ivan_Ivanov\""
+				},
+				"url": {
+					"raw": "phones/get-balance",
+					"host": [
+						"phones"
+					],
+					"path": [
+						"get-balance"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Increase balance",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Ivan_Ivanov\",\r\n    \"amount\": 1000\r\n}"
+				},
+				"url": {
+					"raw": "phones/add-balance",
+					"host": [
+						"phones"
+					],
+					"path": [
+						"add-balance"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Reduce balance",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Ivan_Ivanov\",\r\n    \"amount\": 1000\r\n}"
+				},
+				"url": {
+					"raw": "phones/reduce-balance",
+					"host": [
+						"phones"
+					],
+					"path": [
+						"reduce-balance"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "value",
+				"value": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
+				"type": "string"
+			},
+			{
+				"key": "key",
+				"value": "Authorization",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"if(pm.environment.name != \"MinePark Environment\") {",
+					"    throw new Error(\"MinePark environment not found :(\");",
+					"}",
+					"const Header = require(\"postman-collection\").Header;",
+					"",
+					"function addHeader(name, value)",
+					"{",
+					"    pm.request.addHeader(new Header(name + \": \" + value));",
+					"}",
+					"",
+					"var accessToken = pm.environment.get(\"AccessToken\");",
+					"var unitId = pm.environment.get(\"UnitId\");",
+					"var url = pm.environment.get(\"Url\");",
+					"",
+					"addHeader(\"Authorization\", accessToken);",
+					"addHeader(\"UnitId\", unitId);",
+					"",
+					"pm.request.url = pm.environment.get(\"Host\") + pm.request.url;"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

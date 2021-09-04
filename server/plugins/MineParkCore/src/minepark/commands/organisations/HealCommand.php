@@ -1,17 +1,18 @@
 <?php
 namespace minepark\commands\organisations;
 
-use minepark\commands\base\OrganisationsCommand;
 use minepark\Providers;
+use minepark\Components;
 use pocketmine\event\Event;
 
-use minepark\defaults\Permissions;
-use minepark\common\player\MineParkPlayer;
-use minepark\Components;
 use minepark\components\chat\Chat;
-use minepark\components\organisations\Organisations;
-use minepark\providers\BankingProvider;
+use minepark\defaults\Permissions;
 use minepark\providers\MapProvider;
+use minepark\providers\BankingProvider;
+use minepark\common\player\MineParkPlayer;
+use minepark\defaults\OrganisationConstants;
+use minepark\commands\base\OrganisationsCommand;
+use minepark\components\organisations\Organisations;
 
 class HealCommand extends OrganisationsCommand
 {
@@ -73,7 +74,7 @@ class HealCommand extends OrganisationsCommand
 
     private function isHealer(MineParkPlayer $plr)
     {
-        return $plr->getProfile()->organisation === Organisations::DOCTOR_WORK;
+        return $plr->getSettings()->organisation === OrganisationConstants::DOCTOR_WORK;
     }
 
     private function isNearPoint(MineParkPlayer $player) : bool
@@ -113,7 +114,7 @@ class HealCommand extends OrganisationsCommand
 
     private function healPlayer(MineParkPlayer $healer, MineParkPlayer $playerToHeal)
     {
-        $playerToHeal->removeAllEffects();
+        $playerToHeal->getEffects()->clear();
         $playerToHeal->setHealth($playerToHeal->getMaxHealth());
 
         $this->g->sendLocalMessage($healer, "{CommandHealDo}");

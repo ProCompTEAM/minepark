@@ -3,5 +3,5 @@ namespace minepark\defaults;
 
 class ProtocolConstants 
 {
-    public const MDC_PROTOCOL_VERSION = 1;
+    public const MDC_PROTOCOL_VERSION = 3;
 }

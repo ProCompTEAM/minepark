@@ -1,26 +1,29 @@
 <?php
 namespace minepark\components\settings;
 
+use minepark\defaults\StringConstants;
 use minepark\Events;
 use minepark\Providers;
-use pocketmine\event\player\PlayerLoginEvent;
+use minepark\Components;
+use minepark\components\BossBar;
 use minepark\defaults\EventList;
+use pocketmine\item\ItemFactory;
 use minepark\defaults\Permissions;
 use minepark\defaults\ItemConstants;
 use minepark\defaults\PaymentMethods;
 use minepark\models\player\StatesMap;
 use minepark\defaults\PlayerConstants;
 use minepark\components\base\Component;
+use minepark\providers\ProfileProvider;
 use minepark\common\player\MineParkPlayer;
-use minepark\Components;
+use minepark\defaults\OrganisationConstants;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerQuitEvent;
+use pocketmine\event\player\PlayerLoginEvent;
+use minepark\components\administrative\Tracking;
 use pocketmine\event\player\PlayerCreationEvent;
 use pocketmine\event\player\PlayerInteractEvent;
 use minepark\components\organisations\Organisations;
-use minepark\components\administrative\Tracking;
-use minepark\providers\ProfileProvider;
-use pocketmine\item\ItemFactory;
 
 class PlayerSettings extends Component
 {
@@ -74,10 +77,10 @@ class PlayerSettings extends Component
     {
         $player = MineParkPlayer::cast($event->getPlayer());
 
-        $event->setJoinMessage(null);
+        $event->setJoinMessage(StringConstants::EMPTY_STRING);
 
         $player->getEffects()->clear();
-        $player->setNameTag("");
+        $player->setNameTag(StringConstants::EMPTY_STRING);
 
         if($player->getStatesMap()->isNew) {
             $this->handleNewPlayer($player);
@@ -96,7 +99,7 @@ class PlayerSettings extends Component
     {
         $player = MineParkPlayer::cast($event->getPlayer());
 
-        $event->setQuitMessage(null);
+        $event->setQuitMessage(StringConstants::EMPTY_STRING);
 
         Providers::getUsersDataProvider()->updateUserQuitStatus($player->getName());
     }
@@ -145,18 +148,20 @@ class PlayerSettings extends Component
         $gps->setCustomName("Навигатор");
         
         if(!$player->getInventory()->contains($phone)) {
-            $player->getInventory()->setItem(0, $phone);
+            $player->getInventory()->setItem(2, $phone);
         }
+
+        $player->getInventory()->setHeldItemIndex(3);
         
         if(!$player->getInventory()->contains($passport)) {
-            $player->getInventory()->setItem(1, $passport);
+            $player->getInventory()->setItem(3, $passport);
         }
         
         if(!$player->getInventory()->contains($gps)) {
-            $player->getInventory()->setItem(2, $gps);
+            $player->getInventory()->setItem(4, $gps);
         }
 
-        if($player->getProfile()->organisation == Organisations::SECURITY_WORK) {
+        if($player->getSettings()->organisation == OrganisationConstants::SECURITY_WORK) {
             $item = ItemFactory::getInstance()->get(280);
             $player->getInventory()->addItem($item);
         }

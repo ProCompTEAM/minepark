@@ -1,4 +1,4 @@
-# MinePark Software - Release v1.1
+# MinePark Software - Release v1.5
 
 __Copyright http://vk.com/mcperp__
 ____
@@ -43,3 +43,5 @@ ____
 - PM Api Documentation: http://apidoc.pmmp.io/
 - MBE Docs: http://bedrock.dev/
 - Minecraft Wiki-VG: https://wiki.vg/
+- MCPEDL: https://mcpedl.com/
+- Unicode Characters: [click :)](https://github.com/TwistedAsylumMC/bedrock-unicode-characters)

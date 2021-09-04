@@ -7,21 +7,16 @@ use minepark\components\organisations\Shop;
 use minepark\components\organisations\NoFire;
 use minepark\components\organisations\Workers;
 use minepark\defaults\ComponentAttributes;
+use minepark\defaults\OrganisationConstants;
 
 class Organisations extends Component
 {
-    public const NO_WORK = 0;
-    public const TAXI_WORK = 1;
-    public const DOCTOR_WORK = 2;
-    public const LAWYER_WORK = 3;
-    public const SECURITY_WORK = 4;
-    public const SELLER_WORK = 5;
-    public const GOVERNMENT_WORK = 6;
-    public const EMERGENCY_WORK = 7;
-
     private Shop $shop;
+
     private Workers $workers;
+
     private Farm $farm;
+
     private NoFire $noFire;
 
     public function initialize()
@@ -44,25 +39,15 @@ class Organisations extends Component
         ];
     }
 
-    public function getName(int $organizationId, bool $withColor = true)
+    public function getName(int $organizationId, bool $withColor = true) : string
     {
-        $form = null;
-
-        switch($organizationId)
-        {
-            case self::NO_WORK:         $form = "§0Безработный" ; break;
-            case self::TAXI_WORK:       $form = "§cДоктор" ; break;
-            case self::DOCTOR_WORK:     $form = "§eТаксист" ; break;
-            case self::LAWYER_WORK:     $form = "§aГос.служащий" ; break;
-            case self::SECURITY_WORK:   $form = "§9Служба Охраны" ; break;
-            case self::SELLER_WORK:     $form = "§eПродавец" ; break;
-            case self::GOVERNMENT_WORK: $form = "§bПравительство" ; break;
-            case self::EMERGENCY_WORK:  $form = "§4Служба Спасения" ; break;
-
-            default:                    $form = "§f";
+        if(in_array($organizationId, $this->getOrganisationsNames())) {
+            $organisationName = $this->getOrganisationsNames()[$organizationId];
+        } else {
+            $organisationName = "§f";
         }
 
-        $withColor ? $form : substr($form, 2);
+        return $withColor ? $organisationName : substr($organisationName, 2);
     }
 
     public function getShop() : Shop
@@ -83,5 +68,19 @@ class Organisations extends Component
     public function getNoFire() : NoFire
     {
         return $this->noFire;
+    }
+
+    private function getOrganisationsNames()
+    {
+        return [
+            OrganisationConstants::NO_WORK => "§0Безработный",
+            OrganisationConstants::TAXI_WORK => "§eТаксист",
+            OrganisationConstants::DOCTOR_WORK => "§cДоктор",
+            OrganisationConstants::LAWYER_WORK => "§aГос.служащий",
+            OrganisationConstants::SECURITY_WORK => "§9Служба Охраны",
+            OrganisationConstants::SELLER_WORK => "§eПродавец",
+            OrganisationConstants::GOVERNMENT_WORK => "§bПравительство",
+            OrganisationConstants::EMERGENCY_WORK => "§4Служба Спасения"
+        ];
     }
 }

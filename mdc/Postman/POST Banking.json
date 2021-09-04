@@ -1,0 +1,361 @@
+{
+	"info": {
+		"_postman_id": "aa07bc3b-a3da-472b-a59d-a25fe7bc5c6f",
+		"name": "POST Banking",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get cash",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\"Ivan_Ivanov\""
+				},
+				"url": {
+					"raw": "banking/get-cash",
+					"host": [
+						"banking"
+					],
+					"path": [
+						"get-cash"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get debit",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\"Ivan_Ivanov\""
+				},
+				"url": {
+					"raw": "banking/get-debit",
+					"host": [
+						"banking"
+					],
+					"path": [
+						"get-debit"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get credit",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\"Ivan_Ivanov\""
+				},
+				"url": {
+					"raw": "banking/get-credit",
+					"host": [
+						"banking"
+					],
+					"path": [
+						"get-credit"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all money",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\"Ivan_Ivanov\""
+				},
+				"url": {
+					"raw": "banking/get-all-money",
+					"host": [
+						"banking"
+					],
+					"path": [
+						"get-all-money"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Reduce cash",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Ivan_Ivanov\",\r\n    \"amount\": 1000\r\n}"
+				},
+				"url": {
+					"raw": "banking/reduce-cash",
+					"host": [
+						"banking"
+					],
+					"path": [
+						"reduce-cash"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Reduce debit",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Ivan_Ivanov\",\r\n    \"amount\": 1000\r\n}"
+				},
+				"url": {
+					"raw": "banking/reduce-debit",
+					"host": [
+						"banking"
+					],
+					"path": [
+						"reduce-debit"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Reduce credit",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Ivan_Ivanov\",\r\n    \"amount\": 1000\r\n}"
+				},
+				"url": {
+					"raw": "banking/reduce-credit",
+					"host": [
+						"banking"
+					],
+					"path": [
+						"reduce-credit"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Give cash",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Ivan_Ivanov\",\r\n    \"amount\": 1000\r\n}"
+				},
+				"url": {
+					"raw": "banking/give-cash",
+					"host": [
+						"banking"
+					],
+					"path": [
+						"give-cash"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Give debit",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Ivan_Ivanov\",\r\n    \"amount\": 1000\r\n}"
+				},
+				"url": {
+					"raw": "banking/give-debit",
+					"host": [
+						"banking"
+					],
+					"path": [
+						"give-debit"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Give credit",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Ivan_Ivanov\",\r\n    \"amount\": 1000\r\n}"
+				},
+				"url": {
+					"raw": "banking/give-credit",
+					"host": [
+						"banking"
+					],
+					"path": [
+						"give-credit"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Account exists",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\"Ivan_Ivanov\""
+				},
+				"url": {
+					"raw": "banking/exists",
+					"host": [
+						"banking"
+					],
+					"path": [
+						"exists"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get payment method",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\"Ivan_Ivanov\""
+				},
+				"url": {
+					"raw": "banking/get-payment-method",
+					"host": [
+						"banking"
+					],
+					"path": [
+						"get-payment-method"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Switch payment method",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Ivan_Ivanov\",\r\n    \"method\": 2\r\n}"
+				},
+				"url": {
+					"raw": "banking/switch-payment-method",
+					"host": [
+						"banking"
+					],
+					"path": [
+						"switch-payment-method"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get unit balance",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "banking/get-unit-balance",
+					"host": [
+						"banking"
+					],
+					"path": [
+						"get-unit-balance"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Transfer debit",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Ivan_Ivanov\",\r\n    \"target\": \"Ivan_Ivanov\",\r\n    \"amount\": 1000\r\n}"
+				},
+				"url": {
+					"raw": "banking/transfer-debit",
+					"host": [
+						"banking"
+					],
+					"path": [
+						"transfer-debit"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"if(pm.environment.name != \"MinePark Environment\") {",
+					"    throw new Error(\"MinePark environment not found :(\");",
+					"}",
+					"const Header = require(\"postman-collection\").Header;",
+					"",
+					"function addHeader(name, value)",
+					"{",
+					"    pm.request.addHeader(new Header(name + \": \" + value));",
+					"}",
+					"",
+					"var accessToken = pm.environment.get(\"AccessToken\");",
+					"var unitId = pm.environment.get(\"UnitId\");",
+					"var url = pm.environment.get(\"Url\");",
+					"",
+					"addHeader(\"Authorization\", accessToken);",
+					"addHeader(\"UnitId\", unitId);",
+					"",
+					"pm.request.url = pm.environment.get(\"Host\") + pm.request.url;"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

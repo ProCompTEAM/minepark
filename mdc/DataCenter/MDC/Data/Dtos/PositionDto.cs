@@ -4,7 +4,7 @@ namespace MDC.Data.Dtos
 {
     public class PositionDto
     {
-        public string Level { get; set; }
+        public string World { get; set; }
 
         public double X { get; set; }
 

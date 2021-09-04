@@ -1,18 +1,19 @@
 <?php
 namespace minepark\commands\organisations;
 
-use minepark\commands\base\OrganisationsCommand;
 use minepark\Providers;
+use minepark\Components;
 use pocketmine\event\Event;
 
-use minepark\defaults\Permissions;
-use minepark\common\player\MineParkPlayer;
-use minepark\Components;
 use minepark\components\chat\Chat;
-use minepark\components\organisations\Organisations;
-use minepark\providers\BankingProvider;
+use minepark\defaults\Permissions;
 use minepark\providers\MapProvider;
+use minepark\providers\BankingProvider;
 use minepark\providers\ProfileProvider;
+use minepark\common\player\MineParkPlayer;
+use minepark\defaults\OrganisationConstants;
+use minepark\commands\base\OrganisationsCommand;
+use minepark\components\organisations\Organisations;
 
 class ChangeNameCommand extends OrganisationsCommand
 {
@@ -92,7 +93,7 @@ class ChangeNameCommand extends OrganisationsCommand
         $toPlayer->getProfile()->fullName = $name . ' ' . $surname;
 
         $this->profileProvider->saveProfile($toPlayer);
-        $toPlayer->sendTip("§aпоздравляем!","§9$oldname §7>>> §e".$toPlayer->getProfile()->fullName, 5);
+        $toPlayer->sendTitle("§aпоздравляем!","§9$oldname §7>>> §e".$toPlayer->getProfile()->fullName, 5);
 
         $this->bankingProvider->givePlayerMoney($government, 10);
         $government->sendLocalizedMessage("{CommandChangeName}".$toPlayer->getProfile()->fullName);
@@ -111,7 +112,7 @@ class ChangeNameCommand extends OrganisationsCommand
 
     private function canGiveDocuments(MineParkPlayer $player) : bool
     {
-        return $player->getProfile()->organisation === Organisations::GOVERNMENT_WORK or $player->getProfile()->organisation === Organisations::LAWYER_WORK;
+        return $player->getSettings()->organisation === OrganisationConstants::GOVERNMENT_WORK or $player->getSettings()->organisation === OrganisationConstants::LAWYER_WORK;
     }
 
     private function isNearPoint(MineParkPlayer $player) : bool

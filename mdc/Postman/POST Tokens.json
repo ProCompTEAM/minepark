@@ -1,0 +1,105 @@
+{
+	"info": {
+		"_postman_id": "dbc37e03-06dd-442b-a147-0e391a756859",
+		"name": "POST Tokens",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Generate token",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\"CUM\""
+				},
+				"url": {
+					"raw": "settings/generate-token",
+					"host": [
+						"settings"
+					],
+					"path": [
+						"generate-token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Remove token",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\"insertyourtokenhere\""
+				},
+				"url": {
+					"raw": "settings/remove-token",
+					"host": [
+						"settings"
+					],
+					"path": [
+						"remove-token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get tokens",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "settings/get-tokens",
+					"host": [
+						"settings"
+					],
+					"path": [
+						"get-tokens"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"if(pm.environment.name != \"MinePark Environment\") {",
+					"    throw new Error(\"MinePark environment not found :(\");",
+					"}",
+					"const Header = require(\"postman-collection\").Header;",
+					"",
+					"function addHeader(name, value)",
+					"{",
+					"    pm.request.addHeader(new Header(name + \": \" + value));",
+					"}",
+					"",
+					"var accessToken = pm.environment.get(\"AccessToken\");",
+					"var unitId = pm.environment.get(\"UnitId\");",
+					"var url = pm.environment.get(\"Url\");",
+					"",
+					"addHeader(\"Authorization\", accessToken);",
+					"addHeader(\"UnitId\", unitId);",
+					"",
+					"pm.request.url = pm.environment.get(\"Host\") + pm.request.url;"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

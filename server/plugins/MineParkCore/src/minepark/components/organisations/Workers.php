@@ -16,6 +16,7 @@ use minepark\defaults\MapConstants;
 use minepark\Events;
 use minepark\providers\BankingProvider;
 use minepark\providers\MapProvider;
+use pocketmine\block\utils\SignText;
 use pocketmine\event\block\SignChangeEvent;
 
 class Workers extends Component
@@ -65,30 +66,38 @@ class Workers extends Component
 
     public function sign(SignChangeEvent $event)
     {
-        $player = $event->getPlayer();
-        $lns = $event->getNewText();
+        $player = MineParkPlayer::cast($event->getPlayer());
+        $lines = $event->getNewText()->getLines();
 
-        if ($lns[0] == "[workers1]" and $player->isOperator()) {
+        if ($lines[0] === "[workers1]" and $player->isOperator()) {
             $this->handleWorker1($event);
-        } elseif ($lns[0] == "[workers2]" and $player->isOperator()) {
+        } elseif ($lines[0] === "[workers2]" and $player->isOperator()) {
             $this->handleWorker2($event);
         }
     }
     
     private function handleWorker1(SignChangeEvent $event)
     {
-        $event->setLine(0, "§eЗдесь можно"); 
-        $event->setLine(1, "§eподзаработать");
-        $event->setLine(2, "§f(грузчики)");
-        $event->setLine(3, "§b/takebox");
+        $text = new SignText([
+            "§eЗдесь можно",
+            "§eподзаработать",
+            "§f(грузчики)",
+            "§b/takebox"
+        ]);
+
+        $event->setNewText($text);
     }
     
     private function handleWorker2(SignChangeEvent $event)
     {
-        $event->setLine(0, "§aЗдесь находится"); 
-        $event->setLine(1, "§aточка разгрузки");
-        $event->setLine(2, "§f(грузчики)");
-        $event->setLine(3, "§6Разгрузиться: §b/putbox");
+        $text = new SignText([
+            "§aЗдесь находится",
+            "§aточка разгрузки",
+            "§f(грузчики)",
+            "§6Разгрузиться: §b/putbox"
+        ]);
+        
+        $event->setNewText($text);
     }
 
     public function ifPointIsNearPlayer(Position $pos, int $group)
@@ -104,7 +113,7 @@ class Workers extends Component
         return false;
     }
 
-    public function takebox(MineParkPlayer $player)
+    public function takeBox(MineParkPlayer $player)
     {
         $hasPoint = $this->ifPointIsNearPlayer($player->getPosition(), MapConstants::POINT_GROUP_WORK1);
 
@@ -113,12 +122,12 @@ class Workers extends Component
             return;
         }
 
-        if($player->getStatesMap()->loadWeight == null) {
-            $this->handleBoxTake($player);
+        if(!is_null($player->getStatesMap()->loadWeight)) {
+            $player->sendMessage("§cСначала положите ящик из ваших рук на склад!");
             return;
         }
 
-        $player->sendMessage("§cСначала положите ящик из ваших рук на склад!");
+        $this->handleBoxTake($player);
     }
     
     private function handleBoxTake(MineParkPlayer $player)
@@ -137,7 +146,7 @@ class Workers extends Component
         $player->getStatesMap()->bar = "§aВ руках ящик около " . $player->getStatesMap()->loadWeight . " кг";
     }
 
-    public function putbox(MineParkPlayer $player)
+    public function putBox(MineParkPlayer $player)
     {
         $hasPoint = $this->ifPointIsNearPlayer($player->getPosition(), MapConstants::POINT_GROUP_WORK2);
 
@@ -146,12 +155,12 @@ class Workers extends Component
             return;
         }
 
-        if($player->getStatesMap()->loadWeight != null) {
-            $this->handlePutBox($player);
+        if(is_null($player->getStatesMap()->loadWeight)) {
+            $player->sendMessage("§cВам необходимо взять ящик со склада!");
             return;
         }
 
-        $player->sendMessage("§cВам необходимо взять ящик со склада!");
+        $this->handlePutBox($player);
     }
     
     private function handlePutBox(MineParkPlayer $player)

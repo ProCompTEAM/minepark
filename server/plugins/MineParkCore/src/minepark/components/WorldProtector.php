@@ -42,7 +42,7 @@ class WorldProtector extends Component
             return;
         }
 
-        if($this->isInRange($event->getBlock()->getPos())) {
+        if($this->isInRange($event->getBlock()->getPosition())) {
             $event->cancel();
         }
     }

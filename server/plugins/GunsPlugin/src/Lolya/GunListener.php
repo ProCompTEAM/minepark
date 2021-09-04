@@ -24,7 +24,11 @@ class GunListener implements Listener
     
     public function onInteract(PlayerInteractEvent $event)
     {
-        $player = $event->getPlayer();
+        $player = MineParkPlayer::cast($event->getPlayer());
+
+        if(!$player->getStatesMap()->authorized) {
+            return;
+        }
         
         if (!$this->playerCanShoot($player)) {
             return;
@@ -48,8 +52,7 @@ class GunListener implements Listener
         }
         
         $this->makeNotShoot($player);
-        
-        $player = MineParkPlayer::cast($player);
+
         $player->sendSound($gunData['sound']);
         
         foreach($this->main->getServer()->getOnlinePlayers() as $plr) {
@@ -57,7 +60,7 @@ class GunListener implements Listener
                 continue;
             }
 
-            if($player->getLocation()->distance($plr) < 10) {
+            if($player->getLocation()->distance($plr->getLocation()) < 10) {
                 $plr->sendSound($gunData['sound']);
             }
         }

@@ -9,17 +9,13 @@ class UserDto extends BaseDto
 
     public string $fullName;
 
+    public ?string $email;
+
     public ?string $group;
-
-    public ?string $licenses;
-
-    public ?string $attributes;
 
     public ?string $people;
 
     public ?string $tag;
-
-    public int $organisation;
 
     public int $bonus;
 

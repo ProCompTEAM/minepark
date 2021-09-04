@@ -41,9 +41,9 @@ class MapProvider extends Provider
             return null;
         }
 
-        $level = $this->getServer()->getWorldManager()->getWorldByName($pointData->level);
+        $world = $this->getServer()->getWorldManager()->getWorldByName($pointData->world);
 
-        return new Position($pointData->x, $pointData->y, $pointData->z, $level);
+        return new Position($pointData->x, $pointData->y, $pointData->z, $world);
     }
 
     public function getPointGroup(string $pointName) : ?int
@@ -106,7 +106,7 @@ class MapProvider extends Provider
     {
         $localMapPointDto = new LocalMapPointDto;
 
-        $localMapPointDto->level = $position->getWorld()->getDisplayName();
+        $localMapPointDto->world = $position->getWorld()->getDisplayName();
         $localMapPointDto->x = $position->getX();
         $localMapPointDto->y = $position->getY();
         $localMapPointDto->z = $position->getZ();
@@ -120,7 +120,7 @@ class MapProvider extends Provider
         $dto = new MapPointDto;
 
         $dto->name = $pointName;
-        $dto->level = $position->getWorld()->getDisplayName();
+        $dto->world = $position->getWorld()->getDisplayName();
         $dto->x = $position->getX();
         $dto->y = $position->getY();
         $dto->z = $position->getZ();

@@ -149,7 +149,7 @@ class Property
                 return;
             }
             
-            if(count($player->property) == 3 and !$player->isOp()) {
+            if(count($player->property) == 3 and !$player->isOperator()) {
                 $player->sendMessage("§6Дабы все жилье не скупили, государство ограничило количество квартир на человека до трех.");
                 $player->sendMessage("§eВы можете дождаться окончания аренды одного из купленного жилья, а затем вновь вернуться сюда!");
                 return;
@@ -201,8 +201,8 @@ class Property
                 $x = $c->getNested("$name.sign.x");
                 $y = $c->getNested("$name.sign.y");
                 $z = $c->getNested("$name.sign.z");
-                if($x == floor($block->getPos()->getX()) and $y == floor($block->getPos()->getY())
-                    and $z == floor($block->getPos()->getZ()))
+                if($x == floor($block->getPosition()->getX()) and $y == floor($block->getPosition()->getY())
+                    and $z == floor($block->getPosition()->getZ()))
                     {
                         $this->checkRented($name);
                         
@@ -212,7 +212,7 @@ class Property
                         $f = "§f### §3Паспорт жилого объекта §a$name §f###\n";
                         $f .= "§f=> Микрорайон/Регион: §3".$this->getArea($player->getPosition())."\n";
                         if($c->getNested("$name.owners")) {
-                            if(!$player->isOp()) $f .= "§f=> Это помещение §6уже арендовано§f!\n";
+                            if(!$player->isOperator()) $f .= "§f=> Это помещение §6уже арендовано§f!\n";
                             else $f .= "§f=> Квартирант: §c".$c->getNested("$name.owners")."\n";
                             $f .= "§f=> До конца аренды осталось: §3$days суток\n";
                         }
@@ -231,11 +231,11 @@ class Property
     
     public function sign($event)
     {
-        $lns = $event->getLines();
-        if(($lns[0] == "[property]" or $lns[0] == "[realty]" or $lns[0] == "realt") and $event->getPlayer()->getProfile()->realtor) 
+        $lines = $event->getLines();
+        if(($lines[0] == "[property]" or $lines[0] == "[realty]" or $lines[0] == "realt") and $event->getPlayer()->getProfile()->realtor) 
         {
             $player = $event->getPlayer();
-            $name = $lns[1];
+            $name = $lines[1];
             $c = $this->getConfig($player->getPosition());
             
             if($c->exists($name)) 
@@ -262,7 +262,7 @@ class Property
     
     public function block($event)
     {
-        if($event->getPlayer()->isOp()) return;
+        if($event->getPlayer()->isOperator()) return;
         
         $block = $event->getBlock();
         
@@ -424,7 +424,7 @@ class Property
                     
                     $this->checkRented($name);
                     
-                    if(count($p->property) > 1 and !$p->getServer()->isOp($p->getName())) return;
+                    if(count($p->property) > 1 and !$p->isOperator()) return;
                 }
             }
         }

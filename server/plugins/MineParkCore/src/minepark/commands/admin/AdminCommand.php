@@ -117,9 +117,10 @@ class AdminCommand extends Command
     {
         $text = ArraysUtility::getStringFromArray($args, 1);
 
-        foreach ($this->getServer()->getOnlinePlayers() as $p) {
-            $num = $this->phone->getNumber($p);
-            $this->phone->sendMessage($num, $text, Defaults::CONTEXT_NAME);
+        foreach($this->getServer()->getOnlinePlayers() as $player) {
+            $player = MineParkPlayer::cast($player);
+            $player->sendLocalizedMessage("{PhoneSend}" . Defaults::CONTEXT_NAME);
+            $player->sendMessage("§b[➪] " . $text);
         }
     }
 
@@ -136,8 +137,8 @@ class AdminCommand extends Command
             return;
         }
 
-        $targetPlayer->getProfile()->organisation = $oid; 
-        $this->profileProvider->saveProfile($targetPlayer);
+        $targetPlayer->getSettings()->organisation = $oid; 
+        $this->profileProvider->saveSettings($targetPlayer);
 
         $player->sendMessage("AdminCmdSetOrg1");
         $targetPlayer->sendLocalizedMessage("{GroupYou}". $this->organisations->getName($oid));
@@ -185,7 +186,7 @@ class AdminCommand extends Command
             return;
         }
 
-        $player->sendMessage($targetPlayer->getProfile()->attributes);
+        $player->sendMessage($targetPlayer->getSettings()->attributes);
     }
 
     public function commandAddTag(MineParkPlayer $player, array $args)

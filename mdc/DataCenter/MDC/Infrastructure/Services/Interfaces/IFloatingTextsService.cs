@@ -1,5 +1,4 @@
 using MDC.Data.Dtos;
-using MDC.Data.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -11,6 +10,6 @@ namespace MDC.Infrastructure.Services.Interfaces
 
         Task<FloatingTextDto> Save(string unitId, LocalFloatingTextDto dto);
 
-        Task<bool> Remove(string unitId, string level, double x, double y, double z); 
+        Task<bool> Remove(string unitId, string world, double x, double y, double z); 
     }
 }

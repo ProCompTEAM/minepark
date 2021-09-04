@@ -78,7 +78,8 @@ namespace MDC.Common.Network.HttpWeb
             return new RequestContext
             {
                 Address = request.RemoteEndPoint.ToString(),
-                AccessToken = request.Headers.Get("Authorization")
+                AccessToken = request.Headers.Get("Authorization"),
+                UnitId = request.Headers.Get("UnitId")
             };
         }
 

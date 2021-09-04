@@ -1,11 +1,12 @@
 <?php
 namespace minepark\commands\organisations;
 
-use minepark\commands\base\OrganisationsCommand;
 use pocketmine\event\Event;
 use minepark\defaults\Permissions;
-
 use minepark\common\player\MineParkPlayer;
+
+use minepark\defaults\OrganisationConstants;
+use minepark\commands\base\OrganisationsCommand;
 use minepark\components\organisations\Organisations;
 
 class RadioCommand extends OrganisationsCommand
@@ -32,9 +33,9 @@ class RadioCommand extends OrganisationsCommand
             return $player->sendMessage("§eПравильное использование этой команды: /o r [ТЕКСТ]");
         }
 
-        $organisationId = $player->getProfile()->organisation;
+        $organisationId = $player->getSettings()->organisation;
 
-        if ($organisationId === Organisations::NO_WORK) {
+        if ($organisationId === OrganisationConstants::NO_WORK) {
             $player->sendMessage("§6У вас нет рации!");
             return;
         }
@@ -45,7 +46,7 @@ class RadioCommand extends OrganisationsCommand
 
         foreach($this->getServer()->getOnlinePlayers() as $onlinePlayer) {
             $onlinePlayer = MineParkPlayer::cast($onlinePlayer);
-            if ($onlinePlayer->getProfile()->organisation === $organisationId) {
+            if ($onlinePlayer->getSettings()->organisation === $organisationId) {
                 $onlinePlayer->sendMessage($generatedRadioMessage);
             }
         }

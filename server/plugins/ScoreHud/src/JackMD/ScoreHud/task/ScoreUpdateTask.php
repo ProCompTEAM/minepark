@@ -38,42 +38,42 @@ use pocketmine\scheduler\Task;
 
 class ScoreUpdateTask extends Task{
 
-	/** @var ScoreHud */
-	private $plugin;
-	/** @var int */
-	private $titleIndex = 0;
+    /** @var ScoreHud */
+    private $plugin;
+    /** @var int */
+    private $titleIndex = 0;
 
-	/**
-	 * ScoreUpdateTask constructor.
-	 *
-	 * @param ScoreHud $plugin
-	 */
-	public function __construct(ScoreHud $plugin){
-		$this->plugin = $plugin;
-		$this->titleIndex = 0;
-	}
+    /**
+     * ScoreUpdateTask constructor.
+     *
+     * @param ScoreHud $plugin
+     */
+    public function __construct(ScoreHud $plugin){
+        $this->plugin = $plugin;
+        $this->titleIndex = 0;
+    }
 
-	public function onRun() : void{
-		$players = $this->plugin->getServer()->getOnlinePlayers();
+    public function onRun() : void{
+        $players = $this->plugin->getServer()->getOnlinePlayers();
 
-		$dataConfig = $this->plugin->getScoreHudConfig();
-		$titles = $dataConfig->get("server-names");
+        $dataConfig = $this->plugin->getScoreHudConfig();
+        $titles = $dataConfig->get("server-names");
 
-		if((is_null($titles)) || empty($titles) || !isset($titles)){
-			$this->plugin->getLogger()->error("Please set server-names in scorehud.yml properly.");
-			$this->plugin->getServer()->getPluginManager()->disablePlugin($this->plugin);
+        if((is_null($titles)) || empty($titles) || !isset($titles)){
+            $this->plugin->getLogger()->error("Please set server-names in scorehud.yml properly.");
+            $this->plugin->getServer()->getPluginManager()->disablePlugin($this->plugin);
 
-			return;
-		}
+            return;
+        }
 
-		if(!isset($titles[$this->titleIndex])){
-			$this->titleIndex = 0;
-		}
+        if(!isset($titles[$this->titleIndex])){
+            $this->titleIndex = 0;
+        }
 
-		foreach($players as $player){
-			$this->plugin->addScore($player, $titles[$this->titleIndex]);
-		}
+        foreach($players as $player){
+            $this->plugin->addScore($player, $titles[$this->titleIndex]);
+        }
 
-		$this->titleIndex++;
-	}
+        $this->titleIndex++;
+    }
 }

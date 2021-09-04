@@ -56,13 +56,13 @@ class RemoveCommand extends OrganisationsCommand
 
     private function tryRejectGuy(MineParkPlayer $player, MineParkPlayer $boss)
     {
-        if ($player->getProfile()->organisation !== $boss->getProfile()->organisation) {
+        if ($player->getSettings()->organisation !== $boss->getSettings()->organisation) {
             $boss->sendMessage("CommandRemoveNoOrg");
             return;
         }
 
-        $player->getProfile()->organisation = 0;
-        $this->profileProvider->saveProfile($player);
+        $player->getSettings()->organisation = 0;
+        $this->profileProvider->saveSettings($player);
 
         $boss->sendLocalizedMessage("{CommandRemoveDo1}" . $player->getProfile()->fullName);
         $player->sendLocalizedMessage("{CommandRemoveDo2}". $boss->getProfile()->fullName ."!");

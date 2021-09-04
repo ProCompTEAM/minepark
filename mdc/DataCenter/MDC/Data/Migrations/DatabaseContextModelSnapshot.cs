@@ -189,15 +189,15 @@ namespace MDC.Data.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime");
 
-                    b.Property<string>("Level")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(128)");
-
                     b.Property<string>("Text")
                         .IsRequired()
                         .HasColumnType("nvarchar(4096)");
 
                     b.Property<string>("UnitId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("World")
                         .IsRequired()
                         .HasColumnType("nvarchar(128)");
 
@@ -227,15 +227,15 @@ namespace MDC.Data.Migrations
                     b.Property<int>("GroupId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Level")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(128)");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("UnitId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("World")
                         .IsRequired()
                         .HasColumnType("nvarchar(128)");
 
@@ -310,9 +310,6 @@ namespace MDC.Data.Migrations
                     b.Property<bool>("Administrator")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<string>("Attributes")
-                        .HasColumnType("nvarchar(128)");
-
                     b.Property<int>("Bonus")
                         .HasColumnType("int");
 
@@ -321,6 +318,9 @@ namespace MDC.Data.Migrations
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<string>("FullName")
                         .IsRequired()
@@ -335,18 +335,12 @@ namespace MDC.Data.Migrations
                     b.Property<DateTime>("LeftDate")
                         .HasColumnType("datetime");
 
-                    b.Property<string>("Licenses")
-                        .HasColumnType("nvarchar(128)");
-
                     b.Property<int>("MinutesPlayed")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(128)");
-
-                    b.Property<int>("Organisation")
-                        .HasColumnType("int");
 
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(4096)");
@@ -369,6 +363,46 @@ namespace MDC.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("MDC.Data.Models.UserSettings", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Attributes")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("Licenses")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<int>("Organisation")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UnitId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("World")
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<double>("X")
+                        .HasColumnType("double");
+
+                    b.Property<double>("Y")
+                        .HasColumnType("double");
+
+                    b.Property<double>("Z")
+                        .HasColumnType("double");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserSettings");
                 });
 #pragma warning restore 612, 618
         }

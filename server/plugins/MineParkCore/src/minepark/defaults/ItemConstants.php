@@ -1,7 +1,6 @@
 <?php
 namespace minepark\defaults;
 
-use pocketmine\item\Item;
 use pocketmine\item\ItemIds;
 
 class ItemConstants 

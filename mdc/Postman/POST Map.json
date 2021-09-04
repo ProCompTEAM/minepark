@@ -1,0 +1,172 @@
+{
+	"info": {
+		"_postman_id": "412fd8f1-2125-4941-b3ee-382821d54856",
+		"name": "POST Map",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get point",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\"testpoint\""
+				},
+				"url": {
+					"raw": "map/get-point",
+					"host": [
+						"map"
+					],
+					"path": [
+						"get-point"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get point group",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\"testpoint\""
+				},
+				"url": {
+					"raw": "map/get-point-group",
+					"host": [
+						"map"
+					],
+					"path": [
+						"get-point-group"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get points by group",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "0"
+				},
+				"url": {
+					"raw": "map/get-points-by-group",
+					"host": [
+						"map"
+					],
+					"path": [
+						"get-points-by-group"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get near points",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"world\": \"minepark\",\r\n    \"x\": 213,\r\n    \"y\": 70,\r\n    \"z\": 30,\r\n    \"distance\": 5\r\n}"
+				},
+				"url": {
+					"raw": "map/get-near-points",
+					"host": [
+						"map"
+					],
+					"path": [
+						"get-near-points"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Set point",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"testpoint\",\r\n    \"world\": \"minepark\",\r\n    \"groupId\": 0,\r\n    \"x\": 213,\r\n    \"y\": 70,\r\n    \"z\": 30\r\n}"
+				},
+				"url": {
+					"raw": "map/set-point",
+					"host": [
+						"map"
+					],
+					"path": [
+						"set-point"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete point",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\"testpoint\""
+				},
+				"url": {
+					"raw": "map/delete-point",
+					"host": [
+						"map"
+					],
+					"path": [
+						"delete-point"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"if(pm.environment.name != \"MinePark Environment\") {",
+					"    throw new Error(\"MinePark environment not found :(\");",
+					"}",
+					"const Header = require(\"postman-collection\").Header;",
+					"",
+					"function addHeader(name, value)",
+					"{",
+					"    pm.request.addHeader(new Header(name + \": \" + value));",
+					"}",
+					"",
+					"var accessToken = pm.environment.get(\"AccessToken\");",
+					"var unitId = pm.environment.get(\"UnitId\");",
+					"var url = pm.environment.get(\"Url\");",
+					"",
+					"addHeader(\"Authorization\", accessToken);",
+					"addHeader(\"UnitId\", unitId);",
+					"",
+					"pm.request.url = pm.environment.get(\"Host\") + pm.request.url;"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

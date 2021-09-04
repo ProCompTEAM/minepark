@@ -24,13 +24,10 @@ class BankingProvider extends Provider
         switch($player->getStatesMap()->paymentMethod) {
             case PaymentMethods::CASH:
                 return $this->getCash($player);
-            break;
             case PaymentMethods::DEBIT:
                 return $this->getDebit($player);
-            break;
             case PaymentMethods::CREDIT:
                 return $this->getCredit($player);
-            break;
         }
     }
     

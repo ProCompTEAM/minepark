@@ -1,0 +1,564 @@
+{
+	"info": {
+		"_postman_id": "4a460d28-b4ec-44a9-bc1f-4a9c9f144e58",
+		"name": "POST Users",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create Internal",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\"Ivan_Ivanov\"",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "users/create-internal",
+					"host": [
+						"users"
+					],
+					"path": [
+						"create-internal"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "",
+						"type": "text",
+						"value": "",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\"Ivan_Ivanov\"",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "users/get-user",
+					"host": [
+						"users"
+					],
+					"path": [
+						"get-user"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get settings",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "",
+						"type": "text",
+						"value": "",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\"Ivan_Ivanov\"",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "users/get-user-settings",
+					"host": [
+						"users"
+					],
+					"path": [
+						"get-user-settings"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Exist",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "",
+						"type": "text",
+						"value": "",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\"Ivan_Ivanov\"",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "users/exist",
+					"host": [
+						"users"
+					],
+					"path": [
+						"exist"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Set Password",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "",
+						"type": "text",
+						"value": "",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"Ivan_Ivanov\",\r\n    \"password\": \"examplepass123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "users/set-password",
+					"host": [
+						"users"
+					],
+					"path": [
+						"set-password"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Password",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "",
+						"type": "text",
+						"value": "",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\"Ivan_Ivanov\"",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "users/get-password",
+					"host": [
+						"users"
+					],
+					"path": [
+						"get-password"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Exist password",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "",
+						"type": "text",
+						"value": "",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\"Ivan_Ivanov\"",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "users/exist-password",
+					"host": [
+						"users"
+					],
+					"path": [
+						"exist-password"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Reset Password",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "",
+						"type": "text",
+						"value": "",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\"Ivan_Ivanov\"",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "users/reset-password",
+					"host": [
+						"users"
+					],
+					"path": [
+						"reset-password"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "",
+						"type": "text",
+						"value": "",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Ivan_Ivanov\",\r\n    \"fullName\": \"Ivanka Petrov\",\r\n    \"group\": \"example\",\r\n    \"licenses\": null,\r\n    \"attributes\": \"B\",\r\n    \"people\": \"Alex777\",\r\n    \"tag\": \"Some text about this user\",\r\n    \"bonus\": 16,\r\n    \"minutesPlayed\": 0,\r\n    \"vip\": false,\r\n    \"administrator\": true,\r\n    \"builder\": false,\r\n    \"realtor\": true,\r\n    \"joinedDate\": \"01.01.0001 0:00:00\",\r\n    \"leftDate\": \"01.01.0001 0:00:00\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "users/update",
+					"host": [
+						"users"
+					],
+					"path": [
+						"update"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update join status",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "",
+						"type": "text",
+						"value": "",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\"Ivan_Ivanov\"",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "users/update-join-status",
+					"host": [
+						"users"
+					],
+					"path": [
+						"update-join-status"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update quit status",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "",
+						"type": "text",
+						"value": "",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\"Ivan_Ivanov\"",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "users/update-quit-status",
+					"host": [
+						"users"
+					],
+					"path": [
+						"update-quit-status"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update settings",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Ivan_Ivanov\",\r\n    \"licenses\": \"\",\r\n    \"attributes\": \"\",\r\n    \"organisation\": 1,\r\n    \"world\": \"minepark\",\r\n    \"x\": 0,\r\n    \"y\": 120,\r\n    \"z\": 0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "users/update-settings",
+					"host": [
+						"users"
+					],
+					"path": [
+						"update-settings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Save executed command",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"sender\": \"Ivan_Ivanov\",\r\n    \"command\": \"CUM\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "users/save-executed-command",
+					"host": [
+						"users"
+					],
+					"path": [
+						"save-executed-command"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Save chat message",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"sender\": \"Ivan_Ivanov\",\r\n    \"message\": \"CUM CUM\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "users/save-chat-message",
+					"host": [
+						"users"
+					],
+					"path": [
+						"save-chat-message"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"if(pm.environment.name != \"MinePark Environment\") {",
+					"    throw new Error(\"MinePark environment not found :(\");",
+					"}",
+					"const Header = require(\"postman-collection\").Header;",
+					"",
+					"function addHeader(name, value)",
+					"{",
+					"    pm.request.addHeader(new Header(name + \": \" + value));",
+					"}",
+					"",
+					"var accessToken = pm.environment.get(\"AccessToken\");",
+					"var unitId = pm.environment.get(\"UnitId\");",
+					"var url = pm.environment.get(\"Url\");",
+					"",
+					"addHeader(\"Authorization\", accessToken);",
+					"addHeader(\"UnitId\", unitId);",
+					"",
+					"pm.request.url = pm.environment.get(\"Host\") + pm.request.url;"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

@@ -2,23 +2,25 @@
 namespace minepark\components\vehicles\models\base;
 
 use minepark\Providers;
-use pocketmine\block\Block;
-use pocketmine\block\BlockFactory;
-use pocketmine\block\BlockLegacyIds;
-use pocketmine\world\World;
 use pocketmine\math\Vector3;
-use pocketmine\entity\Entity as Vehicle; //TODO: Сделать отдельный класс
+use pocketmine\entity\Location;
 use jojoe77777\FormAPI\ModalForm;
 use jojoe77777\FormAPI\SimpleForm;
+use pocketmine\block\BlockFactory;
 use pocketmine\nbt\tag\CompoundTag;
+use pocketmine\block\BlockLegacyIds;
+use pocketmine\entity\EntitySizeInfo;
 use minepark\defaults\VehicleConstants;
 use minepark\common\player\MineParkPlayer;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
-use pocketmine\network\mcpe\protocol\types\entity\EntityLink;
 use pocketmine\network\mcpe\protocol\SetActorLinkPacket;
+use pocketmine\network\mcpe\protocol\types\entity\EntityLink;
+use pocketmine\network\mcpe\protocol\types\entity\EntityMetadataFlags;
+use pocketmine\network\mcpe\protocol\types\entity\EntityMetadataProperties;
+use pocketmine\world\World;
 
-abstract class BaseCar extends Vehicle
+abstract class BaseCar extends BaseVehicle
 {
     public $gravity = 1.0;
 
@@ -36,9 +38,9 @@ abstract class BaseCar extends Vehicle
 
     private float $speed;
 
-    public function __construct(World $level, CompoundTag $nbt)
+    public function __construct(Location $location, CompoundTag $nbt = null)
     {
-        parent::__construct($level, $nbt);
+        parent::__construct($location, $nbt);
 
         $this->driver = null;
         $this->passenger = null;
@@ -52,6 +54,18 @@ abstract class BaseCar extends Vehicle
 
         $this->setCanSaveWithChunk(true);
         $this->saveNBT();
+
+        $this->setSilent();
+    }
+
+    protected function getInitialSizeInfo() : EntitySizeInfo
+    {
+        return new EntitySizeInfo($this->height, $this->width);
+    }
+
+    public function getName() : string
+    {
+        return "Car";
     }
 
     abstract public function getLeftSpeed() : float;
@@ -197,7 +211,7 @@ abstract class BaseCar extends Vehicle
 
     public function setVillagerProfession(int $profession)
     {
-        $this->propertyManager->setInt(self::DATA_VARIANT, $profession);
+        
     }
 
     public function removeRentedStatus()
@@ -259,9 +273,9 @@ abstract class BaseCar extends Vehicle
     public function updateSpeed(float $x, float $y)
     {
         if ($x > 0.0) {
-            $this->yaw -= $x * $this->getLeftSpeed();
+            $this->location->yaw -= $x * $this->getLeftSpeed();
         } else {
-            $this->yaw -= $x * $this->getRightSpeed();
+            $this->location->yaw -= $x * $this->getRightSpeed();
         }
 
         if ($y === 0.0) {
@@ -299,29 +313,6 @@ abstract class BaseCar extends Vehicle
         } else {
             $this->speed = $this->getReduceMaxSpeed();
         }
-    }
-
-    // more lightweight function for pmmp
-    public function getBlocksAround() : array
-    {
-        $vectors = [
-            new Vector3($this->getX() + 1, $this->getY(), $this->getZ()),
-            new Vector3($this->getX() - 1, $this->getY(), $this->getZ()),
-            new Vector3($this->getX(), $this->getY(), $this->getZ() + 1),
-            new Vector3($this->getX(), $this->getY(), $this->getZ() - 1)
-        ];
-
-        $blocks = [];
-        
-        foreach($vectors as $vector) {
-            $block = $this->getWorld()->getBlockAt($vector->getX(), $vector->getY(), $vector->getZ(), false, false);
-
-            if ($block->getId() !== BlockFactory::getInstance()->get(BlockLegacyIds::AIR)) {
-                $blocks[] = $block;
-            }
-        }
-
-        return $blocks;
     }
     
     // special for kirill: its being called every tick
@@ -388,15 +379,11 @@ abstract class BaseCar extends Vehicle
 
     protected function broadcastLink(MineParkPlayer $player, int $type = EntityLink::TYPE_RIDER)
     {
+        $pk = new SetActorLinkPacket();
+        $pk->link = new EntityLink($this->getId(), $player->getId(), $type, true, true);
+
         foreach($this->getViewers() as $viewer) {
-            if (!isset($viewer->getViewers()[$player->getLoaderId()])) {
-                $player->spawnTo($viewer);
-            }
-
-            $pk = new SetActorLinkPacket();
-            $pk->link = new EntityLink($this->getId(), $player->getId(), $type, true, true);
-
-            $viewer->sendDataPacket($pk);
+            $viewer->getNetworkSession()->sendDataPacket($pk);
         }
     }
 
@@ -505,29 +492,29 @@ abstract class BaseCar extends Vehicle
 
     private function updateUserFlags(MineParkPlayer $player, bool $status, bool $driver = true)
     {
-        $player->setGenericFlag(self::DATA_FLAG_RIDING, $status);
-        $player->setGenericFlag(self::DATA_FLAG_SITTING, $status);
+        $player->getNetworkProperties()->setGenericFlag(EntityMetadataFlags::RIDING, $status);
+        $player->getNetworkProperties()->setGenericFlag(EntityMetadataFlags::SITTING, $status);
 
-        if ($driver) {
-            $player->setGenericFlag(self::DATA_FLAG_WASD_CONTROLLED, $status);
+        if($driver) {
+            $player->getNetworkProperties()->setGenericFlag(EntityMetadataFlags::WASD_CONTROLLED, $status);
 
-            if ($status) {
-                $player->getDataPropertyManager()->setVector3(self::DATA_RIDER_SEAT_POSITION, $this->getDriverSeatPosition());
+            if($status) {
+                $player->getNetworkProperties()->setVector3(EntityMetadataProperties::RIDER_SEAT_POSITION, $this->getDriverSeatPosition());
             }
-        } else if ($status) {
-            $player->getDataPropertyManager()->setVector3(self::DATA_RIDER_SEAT_POSITION, $this->getPassengerSeatPosition());
+        } elseif($status) {
+            $player->getNetworkProperties()->setVector3(EntityMetadataProperties::RIDER_SEAT_POSITION, $this->getPassengerSeatPosition());
         }
-
-        $this->setGenericFlag(self::DATA_FLAG_SADDLED, $status);
+    
+        $this->getNetworkProperties()->setGenericFlag(EntityMetadataFlags::SADDLED, $status);
     }
 
     private function handleInteract(MineParkPlayer $player)
     {
-        if ($player->getStatesMap()->ridingVehicle) {
+        if($player->getStatesMap()->ridingVehicle) {
             return $player->sendMessage("Вы не сможете перепрыгнуть с одной машины в другую.");
         }
 
-        if (isset($this->driver) and isset($this->passenger)) {
+        if(isset($this->driver) and isset($this->passenger)) {
             return $player->sendMessage("В этой машине уже все сидения заняты.");
         }
 
