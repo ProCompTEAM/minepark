@@ -52,7 +52,7 @@
     "TrackerStopAdmin3": "§8 Что-бы ее возобновить, пропишите команду §b/a track ",
     "TrackerStartNew1": "§8 На сервер зашел новый игрок§b ",
     "TrackerStartNew2": "!§8 За ним началась слежка.",
-    "TrackerStartNew3": "§8 Что-бы ее отключить, пропишите команду§b /a track ",
+    "TrackerStartNew3": "§8 Что-бы ее отключить, пропишите команду§b /a untrack ",
     "TrackerStartAdmin1": "§8 За игроком§b ",
     "TrackerStartAdmin2": " §8началась слежка. Ее вызвал администратор: §b",
 

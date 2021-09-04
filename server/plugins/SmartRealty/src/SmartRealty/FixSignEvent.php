@@ -4,9 +4,9 @@
 namespace SmartRealty;
 
 use pocketmine\block\Block;
+use pocketmine\block\tile\Sign;
 use pocketmine\event\Cancellable;
 use pocketmine\player\Player;
-use pocketmine\tile\Sign;
 use pocketmine\event\block\SignChangeEvent;
 
 class FixSignEvent
@@ -32,8 +32,9 @@ class FixSignEvent
         {
             if($tile instanceof Sign)
             {
-                if(floor($tile->getX()) == floor($pos->getX()) and floor($tile->getY()) == floor($pos->getY())
-                    and floor($tile->getZ()) == floor($pos->getZ()) and $tile->getWorld() == $pos->getWorld())
+                $position = $tile->getPosition();
+                if(floor($position->getX()) == floor($pos->getX()) and floor($position->getY()) == floor($pos->getY())
+                    and floor($position->getZ()) == floor($pos->getZ()) and $position->getWorld() == $pos->getWorld())
                 {
                     return $tile->getText();
                 }
@@ -47,19 +48,11 @@ class FixSignChangeEvent extends SignChangeEvent
     public function setLine(int $index, string $text) : void
     {
         $pos = $this->getBlock();
-        foreach($pos->getWorld()->getTiles() as $tile)
-        {
-            if($tile instanceof Sign)
-            {
-                if(floor($tile->getX()) == floor($pos->getX()) and floor($tile->getY()) == floor($pos->getY())
-                    and floor($tile->getZ()) == floor($pos->getZ()) and $tile->getWorld() == $pos->getWorld())
-                {
-                    $l = $tile->getText();
-                    $l[$index] = $text;
-                    $lines = $tile->setText($l[0],$l[1],$l[2],$l[3]);
-                }
-            }
-        }
+        $tile = $pos->getPosition()->getWorld()->getTile($pos->getPosition()->asVector3());
+
+        $l = $tile->getText();
+        $l[$index] = $text;
+        $lines = $tile->setText($l[0],$l[1],$l[2],$l[3]);
     }
 }
 ?>

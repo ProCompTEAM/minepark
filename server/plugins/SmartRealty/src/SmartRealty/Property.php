@@ -201,8 +201,8 @@ class Property
                 $x = $c->getNested("$name.sign.x");
                 $y = $c->getNested("$name.sign.y");
                 $z = $c->getNested("$name.sign.z");
-                if($x == floor($block->getPos()->getX()) and $y == floor($block->getPos()->getY())
-                    and $z == floor($block->getPos()->getZ()))
+                if($x == floor($block->getPosition()->getX()) and $y == floor($block->getPosition()->getY())
+                    and $z == floor($block->getPosition()->getZ()))
                     {
                         $this->checkRented($name);
                         
