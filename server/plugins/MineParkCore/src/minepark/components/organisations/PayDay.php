@@ -6,11 +6,12 @@ use minepark\Providers;
 use minepark\defaults\TimeConstants;
 use minepark\defaults\PayDayConstants;
 use minepark\components\base\Component;
-use minepark\common\player\MineParkPlayer;
-use minepark\defaults\ComponentAttributes;
-use minepark\components\organisations\Organisations;
 use minepark\defaults\PlayerAttributes;
 use minepark\providers\BankingProvider;
+use minepark\common\player\MineParkPlayer;
+use minepark\defaults\ComponentAttributes;
+use minepark\defaults\OrganisationConstants;
+use minepark\components\organisations\Organisations;
 
 class PayDay extends Component
 {
@@ -42,7 +43,7 @@ class PayDay extends Component
                 $special += PayDayConstants::NEW_PLAYER_SPECIAL;
             }
 
-            if($player->getSettings()->organisation == Organisations::NO_WORK) {
+            if($player->getSettings()->organisation == OrganisationConstants::NO_WORK) {
                 $special += PayDayConstants::WORKLESS_SPECIAL;
             }
 
@@ -85,19 +86,19 @@ class PayDay extends Component
     {
         switch($player->getSettings()->organisation)
         {
-            case Organisations::TAXI_WORK: 
+            case OrganisationConstants::TAXI_WORK: 
                 return PayDayConstants::TAXI_WORK_SALARY;
-            case Organisations::DOCTOR_WORK: 
+            case OrganisationConstants::DOCTOR_WORK: 
                 return PayDayConstants::DOCTOR_WORK_SALARY;
-            case Organisations::LAWYER_WORK: 
+            case OrganisationConstants::LAWYER_WORK: 
                 return PayDayConstants::LAWYER_WORK_SALARY;
-            case Organisations::SECURITY_WORK: 
+            case OrganisationConstants::SECURITY_WORK: 
                 return PayDayConstants::SECURITY_WORK_SALARY;
-            case Organisations::SELLER_WORK: 
+            case OrganisationConstants::SELLER_WORK: 
                 return PayDayConstants::SELLER_WORK_SALARY;
-            case Organisations::GOVERNMENT_WORK:
+            case OrganisationConstants::GOVERNMENT_WORK:
                 return PayDayConstants::GOVERNMENT_WORK_SALARY;
-            case Organisations::EMERGENCY_WORK: 
+            case OrganisationConstants::EMERGENCY_WORK: 
                 return PayDayConstants::EMERGENCY_WORK_SALARY;
         }
 

@@ -4,8 +4,6 @@ namespace minepark\components\settings;
 use minepark\Events;
 use minepark\Providers;
 use minepark\Components;
-use pocketmine\entity\effect\EffectInstance;
-use pocketmine\entity\effect\VanillaEffects;
 use pocketmine\item\ItemIds;
 use pocketmine\utils\Config;
 use pocketmine\entity\Entity;
@@ -16,6 +14,9 @@ use minepark\defaults\MapConstants;
 use minepark\components\base\Component;
 use minepark\defaults\PlayerAttributes;
 use minepark\common\player\MineParkPlayer;
+use minepark\defaults\OrganisationConstants;
+use pocketmine\entity\effect\EffectInstance;
+use pocketmine\entity\effect\VanillaEffects;
 use pocketmine\event\entity\EntityDamageEvent;
 use minepark\components\organisations\Organisations;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
@@ -76,7 +77,7 @@ class EntitySettings extends Component
         $damager = MineParkPlayer::cast($event->getDamager());
         $player = MineParkPlayer::cast($event->getEntity());
 
-        if($damager->getSettings()->organisation === Organisations::SECURITY_WORK and $damager->getInventory()->getItemInHand()->getId() === ItemIds::STICK) {
+        if($damager->getSettings()->organisation === OrganisationConstants::SECURITY_WORK and $damager->getInventory()->getItemInHand()->getId() === ItemIds::STICK) {
             $this->processStunAction($player, $damager);
         }
 

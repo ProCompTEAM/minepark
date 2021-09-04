@@ -4,25 +4,26 @@ namespace minepark\components\settings;
 use minepark\defaults\StringConstants;
 use minepark\Events;
 use minepark\Providers;
-use pocketmine\event\player\PlayerLoginEvent;
+use minepark\Components;
+use minepark\components\BossBar;
 use minepark\defaults\EventList;
+use pocketmine\item\ItemFactory;
 use minepark\defaults\Permissions;
 use minepark\defaults\ItemConstants;
 use minepark\defaults\PaymentMethods;
 use minepark\models\player\StatesMap;
 use minepark\defaults\PlayerConstants;
 use minepark\components\base\Component;
+use minepark\providers\ProfileProvider;
 use minepark\common\player\MineParkPlayer;
-use minepark\Components;
+use minepark\defaults\OrganisationConstants;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerQuitEvent;
+use pocketmine\event\player\PlayerLoginEvent;
+use minepark\components\administrative\Tracking;
 use pocketmine\event\player\PlayerCreationEvent;
 use pocketmine\event\player\PlayerInteractEvent;
 use minepark\components\organisations\Organisations;
-use minepark\components\administrative\Tracking;
-use minepark\components\BossBar;
-use minepark\providers\ProfileProvider;
-use pocketmine\item\ItemFactory;
 
 class PlayerSettings extends Component
 {
@@ -160,7 +161,7 @@ class PlayerSettings extends Component
             $player->getInventory()->setItem(4, $gps);
         }
 
-        if($player->getSettings()->organisation == Organisations::SECURITY_WORK) {
+        if($player->getSettings()->organisation == OrganisationConstants::SECURITY_WORK) {
             $item = ItemFactory::getInstance()->get(280);
             $player->getInventory()->addItem($item);
         }
