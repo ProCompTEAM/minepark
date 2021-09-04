@@ -38,7 +38,7 @@ class PutBoxCommand extends Command
 
     public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
-        $this->organisations->getWorkers()->putbox($player);
+        $this->organisations->getWorkers()->putBox($player);
 
         $player->sendSound(Sounds::ROLEPLAY);
     }

@@ -9,7 +9,6 @@ use minepark\components\base\Component;
 use minepark\common\player\MineParkPlayer;
 use minepark\defaults\ComponentAttributes;
 use minepark\defaults\TimeConstants;
-use minepark\models\entities\BossBarEntity;
 use minepark\models\player\BossBarSession;
 use minepark\Tasks;
 use pocketmine\entity\Location;

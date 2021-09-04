@@ -1,12 +1,13 @@
 <?php
 namespace minepark\commands\organisations;
 
-use minepark\commands\base\OrganisationsCommand;
+use minepark\Components;
 use pocketmine\event\Event;
 use minepark\defaults\Permissions;
 
 use minepark\common\player\MineParkPlayer;
-use minepark\Components;
+use minepark\defaults\OrganisationConstants;
+use minepark\commands\base\OrganisationsCommand;
 use minepark\components\organisations\Organisations;
 
 class NoFireCommand extends OrganisationsCommand
@@ -43,7 +44,7 @@ class NoFireCommand extends OrganisationsCommand
     {
         $oid = $player->getSettings()->organisation;
 
-        if ($player->getSettings()->organisation !== Organisations::EMERGENCY_WORK) {
+        if ($player->getSettings()->organisation !== OrganisationConstants::EMERGENCY_WORK) {
             $player->sendMessage("§cВы не являетесь работником службы спасения!");
             return;
         }

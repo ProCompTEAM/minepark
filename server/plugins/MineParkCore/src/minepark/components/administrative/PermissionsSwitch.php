@@ -49,7 +49,9 @@ class PermissionsSwitch extends Component
 
     public function addOperator(string $subjectName)
     {
-        $this->operators[] = $subjectName;
+        if(!$this->isOperator($subjectName)) {
+            array_push($this->operators, $subjectName);
+        }
     }
 
     public function removeOperator(string $subjectName)
@@ -87,10 +89,10 @@ class PermissionsSwitch extends Component
 
         if($toggleOp) {
             $this->removeOperator($player->getName());
-            $this->getServer()->removeOp($player->getName());
+            $this->getServer()->addOp($player->getName());
         } else {
             $this->addOperator($player->getName());
-            $this->getServer()->addOp($player->getName());
+            $this->getServer()->removeOp($player->getName());
         }
 
         $player->getProfile()->administrator = $toggleAdmin;

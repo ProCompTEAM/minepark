@@ -62,9 +62,9 @@ class Vehicles extends Component
             return false;
         }
 
-        $nbt = EntityDataHelper::createBaseNBT($location->asPosition(), null, $yaw);
+        $vehicle = new $vehicleClassName($location);
+        $vehicle->saveNBT();
 
-        $vehicle = new $vehicleClassName($location, $nbt);
         $vehicle->spawnToAll();
 
         return true;

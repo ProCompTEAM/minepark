@@ -161,9 +161,9 @@ class Control extends PluginBase implements Listener
         $p = $e->getPlayer(); 
         $b = $e->getBlock(); 
 
-        $x = floor($b->getPos()->getX());
-        $y = floor($b->getPos()->getY());
-        $z = floor($b->getPos()->getZ());
+        $x = floor($b->getPosition()->getX());
+        $y = floor($b->getPosition()->getY());
+        $z = floor($b->getPosition()->getZ());
         $wname = $p->getWorld()->getDisplayName();
 
         $form1 = "$x:$y:$z:$wname";
@@ -179,14 +179,14 @@ class Control extends PluginBase implements Listener
                 } 
             }
             
-            $pos = new Position($b->getPos()->getX(), $b->getPos()->getY(), $b->getPos()->getZ(), $p->getWorld());
+            $pos = new Position($b->getPosition()->getX(), $b->getPosition()->getY(), $b->getPosition()->getZ(), $p->getWorld());
             
             for ($a=0; $a < 124; $a++) { 
                 $block = $pos->getWorld()->getBlock(new Vector3($pos->getX(), $pos->getY()+$a+1, $pos->getZ()));
                 if($block->getName() != "Air") break; 
             }
 
-            $mpos = new Position($block->getPos()->getX(), $block->getPos()->getY()+1, $block->getPos()->getZ(), $p->getWorld());
+            $mpos = new Position($block->getPosition()->getX(), $block->getPosition()->getY()+1, $block->getPosition()->getZ(), $p->getWorld());
 
             foreach($list as $i) { 
                 if($i->getX() == $mpos->getX() and $i->getY() == $mpos->getY() and $i->getZ() == $mpos->getZ() 

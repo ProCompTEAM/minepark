@@ -2,6 +2,7 @@
 namespace minepark\common\player;
 
 use Exception;
+use pocketmine\lang\Translatable;
 use pocketmine\Server;
 use minepark\Providers;
 use pocketmine\math\Vector3;
@@ -319,6 +320,11 @@ class MineParkPlayer extends Player
 
     public function sendMessage($message): void
     {
+        if($message instanceof Translatable) {
+            parent::sendMessage($message);
+            return;
+        }
+
         parent::sendMessage(Providers::getLocalizationProvider()->take($this->locale, $message) ?? $message);
     }
 
