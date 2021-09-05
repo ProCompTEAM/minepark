@@ -23,6 +23,8 @@ use pocketmine\event\entity\EntityDamageByEntityEvent;
 
 class EntitySettings extends Component
 {
+    private const NON_REDUCEABLE_MAXIMAL_DAMAGE = 1;
+
     private Config $config;
 
     private array $reasons;
@@ -56,6 +58,8 @@ class EntitySettings extends Component
         if($event instanceof EntityDamageByEntityEvent) {
             $damager = $event->getDamager();
 
+            $this->tryToReduceDamage($event);
+
             $this->checkForStunning($event);
         }
 
@@ -66,6 +70,15 @@ class EntitySettings extends Component
         if($this->checkForPlayerKilling($event->getFinalDamage(), $event->getEntity(), $damager)) {
             $event->cancel();
         }
+    }
+
+    private function tryToReduceDamage(EntityDamageByEntityEvent $event)
+    {
+        if($event->getBaseDamage() <= self::NON_REDUCEABLE_MAXIMAL_DAMAGE) {
+            return;
+        }
+
+        $event->setBaseDamage($event->getBaseDamage() / 2);
     }
 
     private function checkForStunning(EntityDamageByEntityEvent $event)
