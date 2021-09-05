@@ -1,12 +1,14 @@
 <?php 
 	header("HTTP/1.1 404 Not Found");
 ?>
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="/css/404.css">
+	<link rel="stylesheet" href="/css/slider.css">
 
 	<title>Cтраница не найдена</title>
 </head>

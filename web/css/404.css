@@ -78,12 +78,6 @@ body {
 
 }
 
-@media screen and (max-width: 992px) {
-	.wrapper {
-		width: 720px;
-	}
-}
-
 @media screen and (max-width: 768px) {
 	.wrapper {
 		width: 540px;

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="/profile/img/ico_developer.png" type="image/x-icon">
+    <link rel="stylesheet" href="/profile/assets/css/slider.css">
+    <link rel="stylesheet" href="/profile/assets/css/developers.css">
+    <link rel="stylesheet" href="/profile/assets/css/popup.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;900&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <title>Разработчики</title>
+</head>
+<body>
+    <header class="header">
+        <div class="wrapper">
+            <div class="menu">
+                <a href="/" class="logo"></a>
+                <nav class="menu__list">
+                    <a href="/" class="menu_items">Главная</a>
+                    <a href="./developers.html" class="menu_items">Разработчики</a>
+                    <a href="../abaut_profile.html" class="menu_items">О проекте</a>
+                    <a target="_blank" href="http://vk.com/mcperp" class="menu__items">Мы ВКОНТАКТЕ</a>
+                </nav>
+                <div class="navigation_menu">
+                    <nav class="menu_user">
+                        <ul class="menu_list">
+                            <li class="li__user">
+                                <div class="link_user">
+                                    <div class="menu_link_user"></div>
+                                    <div class="arrow"></div>
+                                </div>
+                                <ul class="sub-menu__list">
+                                    <li>
+                                        <a href="/profile">Мой профиль</a>
+                                    </li>
+                                    <li>
+                                        <a target="_blank" href="https://vk.me/mcperp" class="menu_link">Сообщить о проблеме</a>
+                                    </li>
+                                    <li>
+                                        <a id="button_server" onclick="openPopup();">Выбрать сервер</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="menu_link">Выйти</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+    <section class="information_developers">
+        <div class="wrapper">
+            <h1>Наши разработчики</h1>
+            <div class="managers">
+                <div class="ArtemKhudov">
+                    <div class="img_Artem"></div>
+                    <div class="informations">
+                        <p class="name_developers">Артём Худов</p>
+                        <p class="information_developers">Руководитель состава строителей</p>
+                    </div>    
+                </div>
+
+                <div class="ViolaSecret">
+                    <div class="img_Viola"></div>
+                    <div class="informations">
+                        <p class="name_developers">Виола Секрет</p>
+                        <p class="information_developers">Спонсор команды, руководитель отдела реализации</p>
+                    </div>
+                </div>
+
+                <div class="VladislavHansa">
+                    <div class="img_Vladislav"></div>
+                    <div class="informations">
+                        <p class="name_developers">Владислав Ганза</p>
+                        <p class="information_developers">Руководитель состава модерации и поддержки</p>
+                    </div>
+                </div>
+                
+                <div class="KirillPoroh">
+                    <div class="img_Kirill"></div>
+                    <div class="informations">
+                        <p class="name_developers">Кирилл Порох</p>
+                        <p class="information_developers">Первый основатель проекта</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer_menu">
+            <div class="wrapper">
+                <div class="menu_footer">
+                    <nav class="menu__list_footer">
+                        <a href="/" class="menu_items">Главная</a>
+                        <a href="./developers.html" class="menu_items">Разработчики</a>
+                        <a href="../abaut_profile.html" class="menu_items">О проекте</a>
+                        <a target="_blank" href="http://vk.com/mcperp" class="menu__items">Мы ВКОНТАКТЕ</a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div class="information_server" id="mypopup">
+        <div class="container">
+            <div class="linear_1"></div>
+            <div class="cross" id="close">
+                <a title="Закрыть" onclick="closePopup();">
+                    <div class="line_1"></div>
+                    <div class="line_2"></div>
+                </a>
+            </div>
+            <p class="text_server">Выберите сервер:</p>
+            <div class="RP_logo">
+                <div class="img_RP"></div>
+                <p class="text_RP">Городской режим</p>
+
+            </div>
+            <div class="button">
+                <p class="TextButton">выбрано</p>
+            </div>
+            <div class="linear_2"></div>
+        </div>
+    </div>
+    <script src="/profile/assets/js/popup.js"></script>
+</body>
+</html>
