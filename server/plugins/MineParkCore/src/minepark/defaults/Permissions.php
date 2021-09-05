@@ -57,7 +57,6 @@ class Permissions
             "sc.command.cc",
             "sc.command.v",
             "sc.command.see",
-            "sc.command.invsee",
             "sc.command.freeze",
             "sc.command.burn",
             "pocketmine.command.effect"

@@ -6,6 +6,7 @@ namespace Lolya;
 use Lolya\Shoot;
 use Lolya\Loader;
 use Lolya\GunData;
+use minepark\common\player\MineParkPlayer;
 use minepark\Core;
 use Lolya\GunListener;
 use minepark\Providers;
@@ -150,13 +151,13 @@ class MainClass extends PluginBase implements Listener
         return false;
     }
 
-    private function checkPlayer(Player $player) : bool
+    private function checkPlayer(MineParkPlayer $player) : bool
     {
         if ($this->getServer()->isOp($player->getName())) {
             return true;
         }
 
-        if ($player->org === OrganisationConstants::SECURITY_WORK) {
+        if ($player->getSettings()->organisation === OrganisationConstants::SECURITY_WORK) {
             if ($player->getLocation()->distance($this->getMapProvider()->getPointPosition(self::POINT_NAME)) <= self::POINT_DISTANCE) {
                 return true;
             }

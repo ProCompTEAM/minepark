@@ -42,7 +42,6 @@ class SmartCommands extends PluginBase implements Listener
         $this->command["unfreeze"] = new FreezeCommand($this);
         $this->command["burn"] = new BurnCommand($this);
         $this->command["see"] = new SeeCommand($this);
-        $this->command["invsee"] = new InvseeCommand($this);
         $this->command["timeban"] = new TBCommand($this);
         $this->command["free"] = new FreeCommand($this);
     }
@@ -114,13 +113,5 @@ class SmartCommands extends PluginBase implements Listener
             $e->cancel();
         }
     }
-    
-    public function onVirtualChestTransaction(InventoryTransactionEvent $e) 
-    {
-        if(isset($e->getTransaction()->getInventories()[1]->invsee_player)) {
-            $this->command["invsee"]->transaction($e->getTransaction());
-        }
-    }
-    
 }
 
