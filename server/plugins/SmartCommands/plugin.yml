@@ -66,8 +66,6 @@ permissions:
   default: op
  sc.command.v:
   default: op
- sc.command.feed:
-  default: op
  sc.command.coffee:
   default: op
  sc.command.pos:
