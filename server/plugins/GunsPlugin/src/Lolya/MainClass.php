@@ -32,6 +32,8 @@ class MainClass extends PluginBase implements Listener
     public const POINT_NAME = "Оружейная";
     public const POINT_DISTANCE = 6;
 
+    private const GUNS_PERMISSION = "guns.command.use";
+
     public $gunData;
     public $logger;
     public $shoot;
@@ -154,7 +156,7 @@ class MainClass extends PluginBase implements Listener
             return true;
         }
 
-        if ($player->org == OrganisationConstants::SECURITY_WORK) {
+        if ($player->org === OrganisationConstants::SECURITY_WORK) {
             if ($player->getLocation()->distance($this->getMapProvider()->getPointPosition(self::POINT_NAME)) <= self::POINT_DISTANCE) {
                 return true;
             }

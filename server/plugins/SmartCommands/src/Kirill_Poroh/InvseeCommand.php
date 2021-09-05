@@ -3,6 +3,11 @@ declare(strict_types = 1);
 
 namespace Kirill_Poroh;
 
+use pocketmine\block\BlockFactory;
+use pocketmine\block\tile\Chest;
+use pocketmine\block\tile\Tile;
+use pocketmine\block\tile\TileFactory;
+use pocketmine\block\VanillaBlocks;
 use pocketmine\player\Player;
 
 use pocketmine\world\Position;
@@ -10,7 +15,6 @@ use pocketmine\math\Vector3;
 use pocketmine\entity\Entity;
 use pocketmine\block\Block;
 use pocketmine\item\Item;
-use pocketmine\tile\Tile;
 
 use pocketmine\nbt\tag\CompoundTag;
 use pocketmine\nbt\tag\ListTag;
@@ -33,6 +37,8 @@ class InvseeCommand
     
     public function run($command, $args, Player $player)
     {
+        $player->sendMessage("Команда в разработке..");
+        return true;
         if($command == "invsee") 
         {
             if($player->hasPermission("sc.command.invsee")) 
@@ -53,29 +59,23 @@ class InvseeCommand
                     
                     return true;
                 }
-                
-                $chestBlock = new \pocketmine\block\Chest();
-                
-                $player->getWorld()->setBlock(new Vector3($player->getLocation()->getX(), $player->getLocation()->getY() - 4, $player->getLocation()->getZ()), $chestBlock, true, true);
-                
-                $nbt = new CompoundTag("", [
-                    new CompoundTag("Items", array()),
-                    new StringTag("id", Tile::CHEST),
-                    new IntTag("x", (int) floor($player->getLocation()->getX())),
-                    new IntTag("y", (int) floor($player->getLocation()->getY() - 4)),
-                    new IntTag("z", (int) floor($player->getLocation()->getZ()))
-                ]);
-                    
-                $tile = Tile::createTile("Chest", $player->getWorld(), $nbt);
+
+                $vector = $player->getLocation()->asVector3();
+                $vector->x = $vector->getFloorX();
+                $vector->y = $vector->getFloorY();
+                $vector->z = $vector->getFloorZ();
+
+                $chest = new Chest($player->getWorld(), $vector);
+                $chest->saveNBT();
                 
                 foreach($player->getInventory()->getContents() as $item) 
                 {
-                    $tile->getInventory()->addItem($item);
+                    $chest->getInventory()->addItem($item);
                 }
                 
-                $tile->getInventory()->invsee_player = $p;
-                
-                $player->addWindow($tile->getInventory());
+                $chest->getInventory()->invsee_player = $p;
+
+                $player->setCurrentWindow($chest->getInventory());
                 
             }
             else return false;

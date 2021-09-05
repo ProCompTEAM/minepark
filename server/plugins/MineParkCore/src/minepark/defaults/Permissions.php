@@ -18,13 +18,10 @@ class Permissions
     public static function getCustomAdministratorPermissions() : array
     {
         return [
-            "guns.command.use",
             "pocketmine.command.teleport",
             "pocketmine.command.gamemode",
             "pocketmine.command.effect",
-            "pocketmine.command.kill.other",
             "pocketmine.command.kick",
-            "pocketmine.command.gamemode",
             "pocketmine.command.ban.player",
             "pocketmine.command.ban.ip",
             "pocketmine.command.give"
@@ -35,7 +32,8 @@ class Permissions
     {
         return [
             "pocketmine.command.time",
-            "pocketmine.command.gamemode",
+            "pocketmine.command.time.set",
+            "pocketmine.command.time.add",
             "pocketmine.command.give"
         ];
     }
@@ -44,6 +42,8 @@ class Permissions
     {
         return [
             "pocketmine.command.time",
+            "pocketmine.command.time.set",
+            "pocketmine.command.time.add",
             "realt.creator"
         ];
     }
@@ -54,15 +54,12 @@ class Permissions
             "sc.command.pos",
             "sc.command.getpos",
             "sc.command.coffee",
-            "sc.command.feed",
-            "sc.command.heal",
             "sc.command.cc",
             "sc.command.v",
             "sc.command.see",
             "sc.command.invsee",
             "sc.command.freeze",
             "sc.command.burn",
-            "sc.command.time",
             "pocketmine.command.effect"
         ];
     }
