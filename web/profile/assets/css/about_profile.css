@@ -1,7 +1,7 @@
 body {
     margin: 0;
     padding: 0;
-    background: url("/profile/img/background_abaut_profile.png") no-repeat;
+    background: url("/profile/img/background_about_profile.png") no-repeat;
 	background-size: cover;
 	background-attachment: fixed;
 }

@@ -17,8 +17,8 @@
 		<div class="wrapper">
 			<div class="img_error"></div>
 			<div class="information">
-				<h2 class="information__H2">К сожилению данный путь не найден:(</h2>
-				<p class="information__P">вскорее всего данный путь перенесён или во все не существовал.</p>
+				<h2 class="information__H2">К сожалению данный путь не найден:(</h2>
+				<p class="information__P">Скорее всего данный путь перенесён или вовсе не существовал.</p>
 			</div>
 			<div class="button">
 				<a href="/" class="but"></a>

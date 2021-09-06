@@ -40,7 +40,7 @@
                 <nav class="menu__list">
                     <a href="/" class="menu_items">Главная</a>
                     <a href="./developers/developers.html" class="menu_items">Разработчики</a>
-                    <a href="./abaut_profile.html" class="menu_items">О проекте</a>
+                    <a href="./about_profile.html" class="menu_items">О проекте</a>
                     <a target="_blank" href="http://vk.com/mcperp" class="menu__items">Мы ВКОНТАКТЕ</a>
                 </nav>
                 <div class="navigation_menu">
@@ -77,7 +77,7 @@
                     <nav class="menu__listMB">
                         <a href="/" class="menu_itemsMB">Главная</a>
                         <a href="./developers/developers.html" class="menu_itemsMB">Разработчики</a>
-                        <a href="./abaut_profile.html" class="menu_itemsMB">О проекте</a>
+                        <a href="./about_profile.html" class="menu_itemsMB">О проекте</a>
                         <a target="_blank" href="http://vk.com/mcperp" class="menu_itemsMB">Мы ВКОНТАКТЕ</a>
                     </nav>
                     <div class="navigation_menuMB">
@@ -207,7 +207,7 @@
                     <nav class="menu__list_footer">
                         <a href="/" class="menu_items margin_left_44">Главная</a>
                         <a href="./developers/developers.html" class="menu_items">Разработчики</a>
-                        <a href="./abaut_profile.html" class="menu_items">О проекте</a>
+                        <a href="./about_profile.html" class="menu_items">О проекте</a>
                         <a target="_blank" href="http://vk.com/mcperp" class="menu__items">Мы ВКОНТАКТЕ</a>
                     </nav>
                 </div>

@@ -1,10 +1,9 @@
 <?php 
     $ban = False;
 
-    if($ban){
+    if($ban) {
         $style_ban = "block";
-    }
-    else{
+    } else {
         $style_ban = "none";
     }
 ?>
