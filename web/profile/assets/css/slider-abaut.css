@@ -1,0 +1,26 @@
+::-webkit-scrollbar-button {
+    background-image:url('');
+    background-repeat:no-repeat;
+    width:5px;
+    height:0px;
+}
+    
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 0px;
+    border-radius: 10px;
+    background-color:#7ca0c4dc;
+}
+::-webkit-scrollbar-thumb:hover {
+    background-color: #389bffe1;
+}
+    
+::-webkit-resizer {
+    background-image:url('');
+    background-repeat:no-repeat;
+    width:4px;
+    height:0px
+}
+    
+::-webkit-scrollbar{
+    width: 15px;
+}

@@ -19,6 +19,7 @@ body {
 	background: #191911;
 	text-align: center;
 	border-radius: 10px;
+	transition: 0.50s;
 }
 
 .box:hover {
@@ -54,7 +55,6 @@ body {
 	transition: 0.50s; 
 }
 
-
 .but:focus { 
 	width: 260px;
 	border-color: #33DB79B4; 
@@ -86,4 +86,151 @@ a {
 
 a:hover {
 	color: red;
+}
+
+@media screen and (max-width: 402px) {
+	.box {
+		width: 250px;
+	}
+
+	.box:hover {
+		width: 250px;
+	}
+
+	.but:focus { 
+		width: 220px;
+		border-color: #33DB79B4; 
+	}
+}
+
+
+@media screen and (max-width: 350px) {
+	.box {
+		width: 222px;
+	}
+
+	.box:hover {
+		width: 222px;
+	}
+
+	.but:focus { 
+		width: 190px;
+		border-color: #33DB79B4; 
+	}
+}
+
+
+@media screen and (max-width: 329px) {
+	.box {
+		width: 203px;
+	}
+
+	.box:hover {
+		width: 203px;
+	}
+
+	.but {
+		width: 174px;
+	}
+
+	.but:focus { 
+		width: 155px;
+		border-color: #33DB79B4; 
+	}
+}
+
+@media screen and (max-width: 305px) {
+	.box {
+		width: 174px;
+	}
+
+	.box:hover {
+		width: 174px;
+	}
+
+	.but {
+		width: 156px;
+	}
+
+	.button {
+		width: 174px;
+	}
+}
+
+@media screen and (max-width: 271px) {
+	.box {
+		width: 124px;
+	}
+
+	.box:hover {
+		width: 124px;
+	}
+
+	h1 {
+		font-size: 23px;
+	}
+
+	.but {
+		width: 104px;
+	}
+
+	.but:focus {
+		width: 104px;
+	}
+
+	.button {
+		width: 120px;
+	}
+}
+
+@media screen and (max-width: 230px) {
+	.box {
+		width: 95px;
+		padding-top: 18px;
+		padding-bottom: 18px;
+	}
+	.box:hover {
+		width: 95px;
+		padding-top: 18px;
+		padding-bottom: 18px;
+	}
+
+	h1 {
+		font-size: 19px;
+	}
+
+	.but {
+		width: 74px;
+	}
+
+	.button {
+		width: 83px;
+		padding: 10px;
+	}
+
+	.but:focus { 
+		width: 75px;
+	}
+}
+
+@media screen and (max-width: 201px) {
+	.box {
+		width: 76px;
+	}
+
+	.box:hover {
+		width: 76px;
+	}
+
+	.but {
+		width: 54px;
+	}
+
+	.but:focus {
+		width: 54px;
+	}
+
+	h1 {
+		font-size: 15px;
+	}
 }

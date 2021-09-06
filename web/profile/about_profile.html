@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="/profile/img/about_profile_ico.png" type="image/x-icon">
+    <link rel="stylesheet" href="/profile/assets/css/about_profile.css">
+    <link rel="stylesheet" href="/profile/assets/css/slider.css">
+    <link rel="stylesheet" href="/profile/assets/css/popup.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@700&family=Montserrat:wght@400;900&family=Open+Sans:wght@600;800&display=swap" rel="stylesheet">
+    <title>О проекте</title>
+</head>
+<body>
+    <header class="header">
+        <div class="wrapper">
+            <div class="menu">
+                <a href="/" class="logo"></a>
+                <nav class="menu__list">
+                    <a href="/" class="menu_items">Главная</a>
+                    <a href="./developers/developers.html" class="menu_items">Разработчики</a>
+                    <a href="./about_profile.html" class="menu_items">О проекте</a>
+                    <a target="_blank" href="http://vk.com/mcperp" class="menu__items">Мы ВКОНТАКТЕ</a>
+                </nav>
+
+                <div class="navigation_menu">
+                    <nav class="menu_user">
+                        <ul class="menu_list">
+                            <li class="li__user">
+                                <div class="link_user">
+                                    <div href="#" class="menu_link_user"></div>
+                                    <div href="#" class="arrow"></div>
+                                </div>
+                                <ul class="sub-menu__list">
+                                    <li>
+                                        <a href="/profile">Мой профиль</a>
+                                    </li>
+                                    <li>
+                                        <a target="_blank" href="https://vk.me/mcperp" class="menu_link">Сообщить о проблеме</a>
+                                    </li>
+                                    <li>
+                                        <a class="button_server" onclick="openPopup();">Выбрать сервер</a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="menu_link">Выйти</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="section">
+        <div class="wrapper">
+            <h2 class="text_information">О проекте</h2>
+            <p class="info_minepark">MinePark - это Minecraft Bedrock Edition сервера с уникальной атмосферой, собственной картой и самописными плагинами.</p>
+            <p class="advantages">Наши преимущества: </p>
+            <div class="advantages_text">
+                <div class="maps">
+                    <div class="check"></div>
+                    <p class="info_1">Cобственные карты.</p>    
+                </div>
+                <div class="plugins">
+                    <div class="check"></div>
+                    <p class="info_2">Самописные плагины.</p>
+                </div>
+                <div class="trends">
+                    <div class="check"></div>
+                    <p class="info_3">Мы всегда за новыми технологиями!</p>
+                </div>
+                <div class="original">
+                    <div class="check"></div>
+                    <p class="info_4">Мы уникальны.</p>
+                </div>
+                <div class="security">
+                    <div class="check"></div>
+                    <p class="info_5">Мы следим за тем, чтобы нашим игрокам было комфортно играть.</p>
+                </div>
+            </div>
+            <p class="information margin_top_31">Проект берёт своё начало с 2015 года, за это всё время  проект прошёл огонь, воду и медные трубы. Набрался незаменяемого  опыта.</p>
+            <p class="information margin_bottom_282">Наша команда сотрудничает с множеством известных Minecraft сообществ, что позволяет нам достигать самых высоких резултатов!</p>
+        </div>
+    </section>
+    
+    <footer class="footer">
+        <div class="footer_menu">
+            <div class="wrapper">
+                <div class="menu_footer">
+                    <nav class="menu__list_footer">
+                        <a href="/" class="menu_items">Главная</a>
+                        <a href="./developers/developers.html" class="menu_items">Разработчики</a>
+                        <a href="./about_profile.html" class="menu_items">О проекте</a>
+                        <a target="_blank" href="http://vk.com/mcperp" class="menu__items">Мы ВКОНТАКТЕ</a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <div class="information_server" id="mypopup">
+        <div class="container">
+            <div class="linear_1"></div>
+            <div class="cross" id="close">
+                <a title="Закрыть" onclick="closePopup();">
+                    <div class="line_1"></div>
+                    <div class="line_2"></div>
+                </a>
+            </div>
+            <p class="text_server">Выберите сервер:</p>
+            <div class="RP_logo">
+                <div class="img_RP"></div>
+                <p class="text_RP">Городской режим</p>
+
+            </div>
+            <div class="button">
+                <p class="TextButton">выбрано</p>
+            </div>
+            <div class="linear_2"></div>
+        </div>
+    </div>
+    <script src="/profile/assets/js/popup.js"></script>
+</body>
+</html>
