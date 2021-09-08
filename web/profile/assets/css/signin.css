@@ -23,8 +23,6 @@ body {
 }
 
 .box:hover {
-	width: 300px;
-	padding: 40px;
 	position: absolute;
 	top: 50%;
 	left: 50%;
@@ -51,13 +49,12 @@ body {
 	width: 200px;
 	outline: none;
 	color: white; 
-	border-radius: 24px;
+	border-radius: 10px;
 	transition: 0.50s; 
 }
 
 .but:focus { 
-	width: 260px;
-	border-color: #ebbb47; 
+	border-radius: 30px;
 }
 
 .button {
@@ -92,14 +89,6 @@ a:hover {
 	.box {
 		width: 250px;
 	}
-
-	.box:hover {
-		width: 250px;
-	}
-
-	.but:focus { 
-		width: 220px; 
-	}
 }
 
 
@@ -107,33 +96,21 @@ a:hover {
 	.box {
 		width: 222px;
 	}
-
-	.box:hover {
-		width: 222px;
-	}
-
-	.but:focus { 
-		width: 190px; 
-	}
 }
 
 
 @media screen and (max-width: 329px) {
-	.box, .box:hover {
+	.box {
 		width: 203px;
 	}
 
 	.but {
 		width: 174px;
 	}
-
-	.but:focus { 
-		width: 155px;
-	}
 }
 
 @media screen and (max-width: 305px) {
-	.box, .box:hover, .button {
+	.box, .button {
 		width: 174px;
 	}
 
@@ -143,7 +120,7 @@ a:hover {
 }
 
 @media screen and (max-width: 271px) {
-	.box, .box:hover {
+	.box {
 		width: 124px;
 	}
 
@@ -151,7 +128,7 @@ a:hover {
 		font-size: 23px;
 	}
 
-	.but, .but:focus {
+	.but {
 		width: 104px;
 	}
 
@@ -161,7 +138,7 @@ a:hover {
 }
 
 @media screen and (max-width: 230px) {
-	.box, .box:hover  {
+	.box {
 		width: 95px;
 		padding-top: 18px;
 		padding-bottom: 18px;
@@ -179,18 +156,14 @@ a:hover {
 		width: 83px;
 		padding: 10px;
 	}
-
-	.but:focus { 
-		width: 75px;
-	}
 }
 
 @media screen and (max-width: 201px) {
-	.box, .box:hover {
+	.box {
 		width: 76px;
 	}
 
-	.but, .but:focus {
+	.but {
 		width: 54px;
 	}
 
