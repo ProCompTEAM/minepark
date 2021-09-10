@@ -218,20 +218,49 @@
     <div class="information_server" id="mypopup">
         <div class="container">
             <div class="linear_1"></div>
+            <p class="text_server">Выберите сервер:</p>
             <div class="cross" id="close">
                 <a title="Закрыть" onclick="closePopup();">
                     <div class="line_1"></div>
                     <div class="line_2"></div>
                 </a>
             </div>
-            <p class="text_server">Выберите сервер:</p>
-            <div class="RP_logo">
-                <div class="img_RP"></div>
-                <p class="text_RP">Городской режим</p>
-
-            </div>
-            <div class="button">
-                <p class="TextButton">выбрано</p>
+            <div class="InformationBlock">
+                <div class="arrow_left">
+                    <div class="LineLeft1"></div>
+                    <div class="LineLeft2"></div>
+                </div>
+                <div class="BlockData1">
+                    <div class="RP_logo">
+                        <div class="img_RP"></div>
+                        <p class="text_RP">Городской режим</p>
+                    </div>
+                    <div class="button">
+                        <p class="TextButtonBlock1">выбрать</p>
+                    </div>
+                </div>
+                <div class="BlockData2">
+                    <div class="RP_logo">
+                        <div class="img_RP"></div>
+                        <p class="text_RP">Городской режим</p>
+                    </div>
+                    <div class="button">
+                        <p class="TextButtonBlock2 button_active">выбрано</p>
+                    </div>
+                </div>
+                <div class="BlockData3">
+                    <div class="RP_logo">
+                        <div class="img_RP"></div>
+                        <p class="text_RP">Городской режим</p>
+                    </div>
+                    <div class="button">
+                        <p class="TextButtonBlock3">выбрать</p>
+                    </div>
+                </div>
+                <div class="arrow_right">
+                    <div class="LineRight1"></div>
+                    <div class="LineRight2"></div>
+                </div>
             </div>
             <div class="linear_2"></div>
         </div>
