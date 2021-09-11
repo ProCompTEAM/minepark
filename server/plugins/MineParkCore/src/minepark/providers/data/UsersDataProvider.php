@@ -4,6 +4,7 @@ namespace minepark\providers\data;
 use minepark\models\dtos\ChatMessageDto;
 use minepark\models\dtos\ExecutedCommandDto;
 use minepark\models\dtos\PasswordDto;
+use minepark\models\dtos\PlayerBanDto;
 use minepark\models\dtos\UserDto;
 use minepark\models\dtos\UserSettingsDto;
 use minepark\providers\base\DataProvider;
@@ -95,14 +96,30 @@ class UsersDataProvider extends DataProvider
 
     protected function createDto(array $data) : UserDto
     {
+        $this->parseUserDtoData($data);
+
         $dto = new UserDto();
         $dto->set($data);
         return $dto;
     }
 
+    private function parseUserDtoData(array &$data)
+    {
+        if($data["ban"] !== null) {
+            $data["ban"] = $this->createBanDto($data["ban"]);
+        }
+    }
+
     private function createSettingsDto(array $data) : UserSettingsDto
     {
         $dto = new UserSettingsDto();
+        $dto->set($data);
+        return $dto;
+    }
+
+    private function createBanDto(array $data) : PlayerBanDto
+    {
+        $dto = new PlayerBanDto;
         $dto->set($data);
         return $dto;
     }

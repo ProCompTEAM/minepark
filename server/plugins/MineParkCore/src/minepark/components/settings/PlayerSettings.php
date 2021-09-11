@@ -1,6 +1,7 @@
 <?php
 namespace minepark\components\settings;
 
+use minepark\components\administrative\Bans;
 use minepark\defaults\StringConstants;
 use minepark\Events;
 use minepark\Providers;
@@ -29,6 +30,8 @@ class PlayerSettings extends Component
 {
     private Tracking $tracking;
 
+    private Bans $bans;
+
     public function initialize()
     {
         Events::registerEvent(EventList::PLAYER_CREATION_EVENT, [$this, "setDefaultPlayerClass"]);
@@ -38,6 +41,8 @@ class PlayerSettings extends Component
         Events::registerEvent(EventList::PLAYER_INTERACT_EVENT, [$this, "applyInteractSettings"]);
 
         $this->tracking = Components::getComponent(Tracking::class);
+
+        $this->bans = Components::getComponent(Bans::class);
     }
 
     public function getAttributes() : array
@@ -65,6 +70,10 @@ class PlayerSettings extends Component
         $this->updateNewPlayerStatus($player);
 
         $this->getProfileProvider()->initializeProfile($player);
+
+        if($this->checkPlayerForBan($player)) {
+            return;
+        }
 
         $this->updateBegginerStatus($player);
 
@@ -133,6 +142,21 @@ class PlayerSettings extends Component
         } else if($itemId === 405) { //405 - gps
             $player->sendCommand("/gps");
         }
+    }
+
+    private function checkPlayerForBan(MineParkPlayer $player) : bool
+    {
+        $banInfo = $player->getProfile()->ban;
+
+        if($banInfo === null) {
+            return false;
+        }
+
+        $kickMessage = "§eВы заблокированы на сервере до §b" . $banInfo->end . "§e. Вас заблокировал игрок §b" . $banInfo->issuer . " §eпо причине §b" . $banInfo->reason;
+
+        $player->kick($kickMessage);
+
+        return true;
     }
 
     private function addInventoryItems(MineParkPlayer $player)
