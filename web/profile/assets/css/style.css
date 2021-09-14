@@ -768,7 +768,12 @@ footer {
 	.menu__list {
 		margin-left: 33px;
 	}
-	
+	.slider {
+		display: block;
+	}
+	.content_destop {
+		display: none;
+	}
 }
 
 @media screen and (max-width: 705px) {
@@ -795,6 +800,9 @@ footer {
 	}
 	.link_exit {
 		margin-left: 68%;
+	}
+	.container {
+		height: 410px;
 	}
 }
 
@@ -847,5 +855,8 @@ footer {
 	}
 	.column_2 {
 		margin-left: 0;
+	}
+	.linear_2 {
+		margin-top: 29px;
 	}
 }

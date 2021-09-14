@@ -37,6 +37,10 @@
     padding-top: 60px;
 }
 
+.InformationBlock {
+	display: flex;
+}
+
 .container {
 	border: 1px solid #007bff;
     text-align: center;
@@ -51,7 +55,7 @@
 .arrow_left {
 	width: 28px;
 	height: 55px;
-	margin-top: 90px;
+	margin-top: 96px;
 	margin-left: 15px;
 }
 
@@ -86,10 +90,16 @@
 }
 
 .arrow_right {
-	width: 40px;
+	width: 28px;
 	height: 55px;
-	margin-top: 90px;
-	margin-right: 15px;
+	margin-top: 96px;
+	margin-right: 27px;
+}
+
+.arrow_left:hover .LineLeft1, .arrow_left:hover .LineLeft2, .arrow_right:hover .LineRight1, .arrow_right:hover .LineRight2 {
+	cursor: pointer;
+	border: 1px solid red;
+	transition: all 0.5s;
 }
 
 .linear_1{
@@ -119,15 +129,11 @@
 	transform: rotate(45deg);
 }
 
-.cross:hover .line_1 {
+.cross:hover .line_1, .cross:hover .line_2 {
 	border: 1px solid red;
 	transition: all 0.5s;
 }
 
-.cross:hover .line_2 {
-	border: 1px solid red;
-	transition: all 0.5s;
-}
 
 .text_server {
 	margin: 0;
@@ -201,18 +207,19 @@
 	margin-top: 29px;
 }
 
-.InformationBlock {
-	display: flex;
-}
-.BlockData1, .BlockData2, .BlockData3 {
+.Sliders {
+	display: none;
 	margin: 0 auto;
 }
 
-.openPopup {
+.ContentBlock {
+	margin: 0 auto;
+}
+.openPopup, .curry {
 	display: block;
 }
 
-.closePopup {
+.closePopup, .slider {
 	display: none;
 }
 
