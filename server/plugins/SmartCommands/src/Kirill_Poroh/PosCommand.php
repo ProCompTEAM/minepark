@@ -57,9 +57,9 @@ class PosCommand
                 $player->sendMessage
                 (
                     "§a☸ Позиция игрока §6$name §f=" . 
-                    floor($p->getX()) . " " .
-                    floor($p->getY()) . " " .
-                    floor($p->getZ())
+                    floor($p->getPosition()->getX()) . " " .
+                    floor($p->getPosition()->getY()) . " " .
+                    floor($p->getPosition()->getZ())
                 );
             }
             else return false;

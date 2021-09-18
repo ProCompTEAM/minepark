@@ -1,16 +1,17 @@
 <?php
 namespace minepark\commands;
 
+use minepark\Providers;
 use pocketmine\event\Event;
 use minepark\defaults\Sounds;
 use pocketmine\world\Position;
-use minepark\defaults\Permissions;
 
+use minepark\defaults\Permissions;
 use minepark\commands\base\Command;
-use minepark\common\player\MineParkPlayer;
-use minepark\components\organisations\Organisations;
-use minepark\Providers;
 use minepark\providers\MapProvider;
+use minepark\common\player\MineParkPlayer;
+use minepark\defaults\OrganisationConstants;
+use minepark\components\organisations\Organisations;
 
 class GetSellerCommand extends Command
 {
@@ -52,7 +53,7 @@ class GetSellerCommand extends Command
 
         foreach($this->getServer()->getOnlinePlayers() as $targetPlayer){
             $targetPlayer = MineParkPlayer::cast($targetPlayer);
-            if($targetPlayer->getSettings()->organisation == Organisations::SELLER_WORK) {
+            if($targetPlayer->getSettings()->organisation == OrganisationConstants::SELLER_WORK) {
                 $targetPlayer->sendMessage("CommandGetSellerCall1");
             }
         }
