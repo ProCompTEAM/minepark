@@ -1,0 +1,17 @@
+.menu_mobile{
+	display: none;
+	position: fixed;
+	width: 100vw;
+	height: 100vh;
+	background-color: #010101;
+}
+
+.menu__listMB{
+	display: flex;
+    flex-direction: column;
+}
+
+.menu_itemsMB {
+	margin-top: 10px;
+}
+

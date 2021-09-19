@@ -3,14 +3,15 @@
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <title>minepark.ru</title>
-    <link rel="stylesheet" href="src_mcrpg/bootstrap.css">
-    <link href="src_mcrpg/css.css" rel="stylesheet">
-    <link rel="stylesheet" href="src_mcrpg/style.css">
-    <link rel="stylesheet" href="src_mcrpg/vk_board.css">
-    <script src="src_mcrpg/jquery-3.js"></script>
-    <script src="src_mcrpg/popper.js"></script>
-    <script src="src_mcrpg/bootstrap.js"></script>
-    <script src="src_mcrpg/script.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link href="css/css.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/vk_board.css">
+    <link rel="stylesheet" href="/css/slider.css">
+    <script src="js/jquery-3.js"></script>
+    <script src="js/popper.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/script.js"></script>
     <meta charset="utf-8">
     <meta property="og:url" content="https://minepark.ru/">
     <meta property="og:image:width" content="795">
@@ -22,14 +23,14 @@
     <div class="navbar-light navbar-expand-lg2">
         <div class="container">
             <div class="menu d-flex align-items-center">
-                <span>
+                <span class="span_1">
                     <a href="#.sectionModes">О команде</a>
                     <a href="#.sectionComments">Разработчики</a>
                     <a href="#.sectionStart">О ценностях</a>
                 </span>
                 <a href="https://vk.com/mcperp"><img class="logo" src="src_mcrpg/logo.png"></a>
-                <span>
-                    <a target="_blank" href="http://vk.com/mcperp">Мы ВКОНТАКТЕ</a>
+                <span class="span_2">
+                    <a class="But_VK" target="_blank" href="http://vk.com/mcperp">Мы ВКОНТАКТЕ</a>
                     <a class="link" href="profile/sign_in/sign_in.html">Профиль игрока</a>
                 </span>
             </div>
@@ -50,7 +51,7 @@
         </div>
         <div class="spyme">
             <div class="text">Добро пожаловать на сайт сервера MinePark<br>
-                Посетитте наш парк прямо сейчас!</div>
+                Посетите наш парк прямо сейчас!</div>
             
             <img src="src_mcrpg/spyme.png" alt="spyme">
         </div>
@@ -76,7 +77,7 @@
             <div class="col-6 col-lg-3 mode BW">
                 <img src="src_mcrpg/mode_BW.png" class="bg">
                 <div class="name">Креатив</div>
-                <div class="info">Мы придумывааем новые идеи и воплащаем их в реальность!</div>
+                <div class="info">Мы придумываем новые идеи и воплощаем их в реальность!</div>
             </div>
             <div class="col-6 col-lg-3 mode P">
                 <img src="src_mcrpg/mode_P.png" class="bg">
@@ -97,7 +98,7 @@
             <div class="col-6 col-lg-3 mode C">
                 <img src="src_mcrpg/mode_C.png" class="bg">
                 <div class="name">Стабильность</div>
-                <div class="info">Нам важно, чтобы наше оборудывание было <b>исправно</b> и <b>быстро</b>!</div>
+                <div class="info">Нам важно, чтобы наше оборудование было <b>исправно</b> и <b>быстро</b>!</div>
             </div>
             <div class="col-6 col-lg-3 mode A">
                 <img src="src_mcrpg/mode_A.png" class="bg">
@@ -113,7 +114,7 @@
         <div class="col-md-12">
             <div class="vk-board-panel panel panel-primary">
                 <div class="panel-heading"></div>
-                                    <div class="panel-body row">
+                    <div class="panel-body row">
 
                         <div class="col-xs-3 col-sm-2 col-md-1">
                         <img class="img-circle vk_avatar" alt="P" src="src_mcrpg/hudov.jpg"></div>
@@ -123,7 +124,7 @@
                         </div>
                     </div>
                     <hr class="vk-board-hr">
-                                    <div class="panel-body row">
+                    <div class="panel-body row">
 
                         <div class="col-xs-3 col-sm-2 col-md-1">
                         <img class="img-circle vk_avatar" alt="P" src="src_mcrpg/viola.jpg"></div>
@@ -133,7 +134,7 @@
                         </div>
                     </div>
                     <hr class="vk-board-hr">
-                                    <div class="panel-body row">
+                     <div class="panel-body row">
 
                         <div class="col-xs-3 col-sm-2 col-md-1">
                         <img class="img-circle vk_avatar" alt="P" src="src_mcrpg/ganza.jpg"></div>
@@ -142,8 +143,7 @@
                             <div class="vk-board-comment-text">Руководитель состава модерации и поддержки</div>
                         </div>
                     </div>
-                    <hr class="vk-board-hr">
-                                
+                    <hr class="vk-board-hr">        
             </div>
         </div>
     </div>
@@ -161,9 +161,6 @@
                 <h2>Страница основателя команды</h2>
                 <span>С удовольствием обсужу возможные перспективы партнерства и сотрудничества!</span>
                 <button class="buttonBonus" onclick="window.location.href = 'http://vk.com/tnull2'" >Напиши мне :)</button>
-            </div>
-            <div class="col-4">
-                <img src="src_mcrpg/bonus.png">
             </div>
         </div>
     </div>
@@ -188,10 +185,7 @@
                 <div class="contact">
                     <div class="head discord">
                         <img src="src_mcrpg/forum.png">
-                        <svg class="bend" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" width="270px" height="30px" viewBox="0 0 270 30">
-                            
-                        </svg>
-
+                        <svg class="bend" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" width="270px" height="30px" viewBox="0 0 270 30"></svg>
                     </div>
                     <a class="title" href="https://vk.me/join/AJQ1d6f41QpLvvHgq4gklJPY">Беседа игроков</a>
                     <span>300+ собеседников</span>
@@ -214,10 +208,7 @@
                 <div class="contact">
                     <div class="head site">
                         <img src="src_mcrpg/logo-small.png">
-                        <svg class="bend" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" width="270px" height="30px" viewBox="0 0 270 30">
-                            
-						</svg>
-
+                        <svg class="bend" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" width="270px" height="30px" viewBox="0 0 270 30"></svg>
                     </div>
                     <a class="title" href="http://minepark.ru/">Основной сайт</a>
                     <span>Вы находитесь здесь :)</span>
