@@ -1,4 +1,4 @@
-# MinePark Software - Release v1.5
+# MinePark Software - Release v1.6
 
 __Copyright http://vk.com/mcperp__
 ____
@@ -20,7 +20,6 @@ ____
 ## Branches:
 - **master** => main development branch
 - **release** => release versions of product
-- **web** => site and web pages development
 
 ## .NET Specifications:
 - UpperCamelCase: functions, fields, properties, classes, interface
