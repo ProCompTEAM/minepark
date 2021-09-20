@@ -232,8 +232,8 @@
                             <div class="img_RP"></div>
                             <p class="text_RP">Городской режим</p>
                         </div>
-                        <div class="button">
-                            <p class="TextButtonBlock1">выбрать</p>
+                        <div class="button" onclick="openButton1()">
+                            <p class="TextButtonBlock1" id="btn1"></p>
                         </div>
                     </div>
                     <div class="ContentBlock">
@@ -242,7 +242,7 @@
                             <p class="text_RP">Городской режим</p>
                         </div>
                         <div class="button">
-                            <p class="TextButtonBlock2 button_active">выбрано</p>
+                            <p class="TextButtonBlock2 button_active" id="btn2" onclick="openButton2()"></p>
                         </div>
                     </div>
                     <div class="ContentBlock">
@@ -251,7 +251,7 @@
                             <p class="text_RP">Городской режим</p>
                         </div>
                         <div class="button">
-                            <p class="TextButtonBlock3">выбрать</p>
+                            <p class="TextButtonBlock3" id="btn3" onclick="openButton3()"></p>
                         </div>
                     </div>
                 </div>
@@ -281,7 +281,7 @@
                                 <p class="text_RP">Городской режим 1</p>
                             </div>
                             <div class="button">
-                                <p class="TextButtonBlock1">выбрать</p>
+                                <p class="TextButtonBlock1 button_active" id="ButtonSlider1" onclick="openButtonSlider1()"></p>
                             </div>
                         </div>
                         <div class="Sliders">
@@ -290,7 +290,7 @@
                                 <p class="text_RP">Городской режим 2</p>
                             </div>
                             <div class="button">
-                                <p class="TextButtonBlock2 button_active">выбрано</p>
+                                <p class="TextButtonBlock2" id="ButtonSlider2" onclick="openButtonSlider2()"></p>
                             </div>
                         </div>
                         <div class="Sliders">
@@ -299,7 +299,7 @@
                                 <p class="text_RP">Городской режим 3</p>
                             </div>
                             <div class="button">
-                                <p class="TextButtonBlock3">выбрать</p>
+                                <p class="TextButtonBlock3" id="ButtonSlider3" onclick="openButtonSlider3()"></p>
                             </div>
                         </div>
                         <div class="arrow_right" id="btn">

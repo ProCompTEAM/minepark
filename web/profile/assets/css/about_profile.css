@@ -4,6 +4,7 @@ body {
     background: url("/profile/img/background_about_profile.png") no-repeat;
 	background-size: cover;
 	background-attachment: fixed;
+	background-position: center;
 }
 
 a {

@@ -195,9 +195,18 @@
 	background-color: #c4c4c4;
 }
 
+.TextButtonBlock1::before, .TextButtonBlock2::before, .TextButtonBlock3::before {
+	content: 'выбрать';
+}
+
 .button_active {
-	box-shadow: inset 0px 0px 5px rgba(0, 0, 0, 0.25);
+	box-shadow: inset 0px 0px 5px rgba(0, 0, 0, 0.30);
 	background: #C4C4C4;
+	transition: 0.5s all;
+}
+
+.button_active::before {
+	content: 'выбрано';
 }
 
 .linear_2 {

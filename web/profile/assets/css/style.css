@@ -25,6 +25,7 @@ body {
 	background: url("/profile/img/backgraund.jpg") no-repeat;
 	background-size: cover;
 	background-attachment: fixed;
+	background-position: center;
 }
 
 a {
@@ -851,7 +852,7 @@ footer {
 	}
 	.cross {
 		margin: 10px;
-		margin-left: 92%;
+		margin-left: 89%;
 	}
 	.column_2 {
 		margin-left: 0;
