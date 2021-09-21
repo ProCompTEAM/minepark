@@ -723,6 +723,9 @@ footer {
 	.navigation_menu {
     margin-left: -66px;
 	}
+	.cross {
+		margin-left: 93%;
+	}
 }
 
 @media screen and (max-width: 760px) {

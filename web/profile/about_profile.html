@@ -101,23 +101,99 @@
     </footer>
     <div class="information_server" id="mypopup">
         <div class="container">
-            <div class="linear_1"></div>
-            <div class="cross" id="close">
-                <a title="Закрыть" onclick="closePopup();">
-                    <div class="line_1"></div>
-                    <div class="line_2"></div>
-                </a>
+            <div class="content_destop">
+                <div class="linear_1"></div>
+                <p class="text_server">Выберите сервер:</p>
+                <div class="cross" id="close">
+                    <a title="Закрыть" onclick="closePopup();">
+                        <div class="line_1"></div>
+                        <div class="line_2"></div>
+                    </a>
+                </div>
+                <div class="InformationBlock">
+                    <div class="ContentBlock">
+                        <div class="RP_logo">
+                            <div class="img_RP"></div>
+                            <p class="text_RP">Городской режим</p>
+                        </div>
+                        <div class="button" onclick="openButton1()">
+                            <p class="TextButtonBlock1" id="btn1"></p>
+                        </div>
+                    </div>
+                    <div class="ContentBlock">
+                        <div class="RP_logo">
+                            <div class="img_RP"></div>
+                            <p class="text_RP">Городской режим</p>
+                        </div>
+                        <div class="button">
+                            <p class="TextButtonBlock2 button_active" id="btn2" onclick="openButton2()"></p>
+                        </div>
+                    </div>
+                    <div class="ContentBlock">
+                        <div class="RP_logo">
+                            <div class="img_RP"></div>
+                            <p class="text_RP">Городской режим</p>
+                        </div>
+                        <div class="button">
+                            <p class="TextButtonBlock3" id="btn3" onclick="openButton3()"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="linear_2"></div>
             </div>
-            <p class="text_server">Выберите сервер:</p>
-            <div class="RP_logo">
-                <div class="img_RP"></div>
-                <p class="text_RP">Городской режим</p>
 
+            <div class="slider">
+                <div class="slider__items">
+                    <div class="information-block">
+                        <div class="linear_1"></div>
+                        <p class="text_server">Выберите сервер:</p>
+                        <div class="cross" id="close">
+                            <a title="Закрыть" onclick="closePopup();">
+                                <div class="line_1"></div>
+                                <div class="line_2"></div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="InformationBlock">
+                        <div class="arrow_left" id="btn">
+                            <div class="LineLeft1"></div>
+                            <div class="LineLeft2"></div>
+                        </div>
+                        <div class="Sliders curry">
+                            <div class="RP_logo">
+                                <div class="img_RP"></div>
+                                <p class="text_RP">Городской режим 1</p>
+                            </div>
+                            <div class="button">
+                                <p class="TextButtonBlock1 button_active" id="ButtonSlider1" onclick="openButtonSlider1()"></p>
+                            </div>
+                        </div>
+                        <div class="Sliders">
+                            <div class="RP_logo">
+                                <div class="img_RP"></div>
+                                <p class="text_RP">Городской режим 2</p>
+                            </div>
+                            <div class="button">
+                                <p class="TextButtonBlock2" id="ButtonSlider2" onclick="openButtonSlider2()"></p>
+                            </div>
+                        </div>
+                        <div class="Sliders">
+                            <div class="RP_logo">
+                                <div class="img_RP"></div>
+                                <p class="text_RP">Городской режим 3</p>
+                            </div>
+                            <div class="button">
+                                <p class="TextButtonBlock3" id="ButtonSlider3" onclick="openButtonSlider3()"></p>
+                            </div>
+                        </div>
+                        <div class="arrow_right" id="btn">
+                            <div class="LineRight1"></div>
+                            <div class="LineRight2"></div>
+                        </div>
+                    </div>
+                    <div class="linear_2"></div>
+                </div>
             </div>
-            <div class="button">
-                <p class="TextButton">выбрано</p>
-            </div>
-            <div class="linear_2"></div>
         </div>
     </div>
     <script src="/profile/assets/js/popup.js"></script>
