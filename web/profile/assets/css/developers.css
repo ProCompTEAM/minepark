@@ -251,3 +251,7 @@ footer {
 	flex-direction: row;
 	align-items: flex-start;
 }
+
+.display_none {
+	display: none;
+}

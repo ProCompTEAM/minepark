@@ -220,14 +220,14 @@
             <div class="content_destop">
                 <div class="linear_1"></div>
                 <p class="text_server">Выберите сервер:</p>
-                <div class="cross" id="close">
-                    <a title="Закрыть" onclick="closePopup();">
+                <div class="cross" id="close" onclick="closePopup();">
+                    <a title="Закрыть">
                         <div class="line_1"></div>
                         <div class="line_2"></div>
                     </a>
                 </div>
                 <div class="InformationBlock">
-                    <div class="ContentBlock">
+                    <div class="ContentBlock display_none">
                         <div class="RP_logo">
                             <div class="img_RP"></div>
                             <p class="text_RP">Городской режим</p>
@@ -245,7 +245,7 @@
                             <p class="TextButtonBlock2 button_active" id="btn2" onclick="openButton2()"></p>
                         </div>
                     </div>
-                    <div class="ContentBlock">
+                    <div class="ContentBlock display_none">
                         <div class="RP_logo">
                             <div class="img_RP"></div>
                             <p class="text_RP">Городской режим</p>
@@ -263,8 +263,8 @@
                     <div class="information-block">
                         <div class="linear_1"></div>
                         <p class="text_server">Выберите сервер:</p>
-                        <div class="cross" id="close">
-                            <a title="Закрыть" onclick="closePopup();">
+                        <div class="cross" id="close" onclick="closePopup();">
+                            <a title="Закрыть">
                                 <div class="line_1"></div>
                                 <div class="line_2"></div>
                             </a>

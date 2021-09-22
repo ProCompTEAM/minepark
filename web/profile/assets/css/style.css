@@ -572,6 +572,10 @@ footer {
 	margin: 0 auto;
 }
 
+.display_none {
+	display: none;
+}
+
 @media screen and (max-width: 1230px) {
 	.wrapper {
 		width: 1118px;
@@ -771,12 +775,6 @@ footer {
 	}
 	.menu__list {
 		margin-left: 33px;
-	}
-	.slider {
-		display: block;
-	}
-	.content_destop {
-		display: none;
 	}
 }
 
