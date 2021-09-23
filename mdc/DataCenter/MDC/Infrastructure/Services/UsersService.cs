@@ -172,6 +172,7 @@ namespace MDC.Infrastructure.Services
         {
             User user = await GetUser(userName);
 
+            // TODO: Вместо этого костыля выпустить хороший фикс (задача #512)
             if (user.JoinedDate.Year == 0001)
             {
                 return;
