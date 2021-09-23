@@ -2,10 +2,12 @@
 namespace minepark\components\organisations;
 
 use minepark\Events;
+use pocketmine\block\BaseSign;
+use pocketmine\block\FloorSign;
+use pocketmine\block\tile\Sign;
+use pocketmine\block\utils\SignText;
 use pocketmine\item\ItemFactory;
-use pocketmine\tile\Sign;
 use pocketmine\utils\Config;
-use pocketmine\block\SignPost;
 use pocketmine\block\WallSign;
 use minepark\defaults\EventList;
 use pocketmine\event\block\BlockEvent;
@@ -21,12 +23,14 @@ class Shop extends Component
     const MINIMAL_PRICE = 0;
     const MAXIMAL_PRICE = 20000;
 
+    private Config $config;
+
     public function initialize()
     {
         Events::registerEvent(EventList::SIGN_CHANGE_EVENT, [$this, "sign"]);
         Events::registerEvent(EventList::PLAYER_INTERACT_EVENT, [$this, "tap"]);
 
-        $this->c = new Config($this->getCore()->getTargetDirectory()."shops.json", Config::JSON);
+        $this->config = new Config($this->getCore()->getTargetDirectory() . "shops.json", Config::JSON);
     }
 
     public function getAttributes() : array
@@ -40,10 +44,10 @@ class Shop extends Component
     {
         $block = $event->getBlock();
 
-        if($block instanceof Sign or $block instanceof SignPost or $block instanceof WallSign) {
-            $format = $block->getX() . "_" . $block->getY() . "_" . $block->getZ();
+        if($block instanceof BaseSign) {
+            $format = $block->getPosition()->getX() . "_" . $block->getPosition()->getY() . "_" . $block->getPosition()->getZ();
 
-            if($this->c->exists($format)) {
+            if($this->config->exists($format)) {
                 $this->handleSignTap($format, $event);
             }
         }
@@ -85,18 +89,18 @@ class Shop extends Component
     
     private function handleSignTap(string $pos, PlayerInteractEvent $event)
     {
-        $price = $this->c->getNested($pos . ".price");
-        $label = $this->c->getNested($pos . ".label");
-        $id = $this->c->getNested($pos . ".id");
+        $price = $this->config->getNested($pos . ".price");
+        $label = $this->config->getNested($pos . ".label");
+        $id = $this->config->getNested($pos . ".id");
 
-        $res = array($id, $price, $label);
+        $res = [$id, $price, $label];
 
         array_push($event->getPlayer()->getStatesMap()->goods, $res);
     
         $event->getPlayer()->sendMessage("§7[§6!§7] §aВы положили §b$label §aза §b$price §aв корзину.");
     }
 
-    private function handleCreateSign(BlockEvent $event, array $lines, MineParkPlayer $player)
+    private function handleCreateSign(SignChangeEvent $event, array $lines, MineParkPlayer $player)
     {
         if(self::priceInvalid($lines[2])) {
             $player->sendMessage("§cЦена товара должна быть в интервале от 0 до 20000");
@@ -111,11 +115,11 @@ class Shop extends Component
         $this->createSign($event, $name, $price, $id, $player);
     }
 
-    private function createSign(BlockEvent $event, string $name, int $price, int $id, MineParkPlayer $player)
+    private function createSign(SignChangeEvent $event, string $name, int $price, int $id, MineParkPlayer $player)
     {
-        $x = floor($event->getBlock()->getX());
-        $y = floor($event->getBlock()->getY());
-        $z = floor($event->getBlock()->getZ());
+        $x = floor($event->getBlock()->getPosition()->getX());
+        $y = floor($event->getBlock()->getPosition()->getY());
+        $z = floor($event->getBlock()->getPosition()->getZ());
         $pos = $x."_".$y."_".$z;
 
         $this->setSignLines($event, $name, $price);
@@ -124,20 +128,24 @@ class Shop extends Component
         $player->sendMessage("§aТочка продажи §3$name §a по цене §d$price §aдобавлена");
     }
 
-    private function setSignLines($event, string $name, int $price)
+    private function setSignLines(SignChangeEvent $event, string $name, int $price)
     {
-        $event->setLine(0, "§7[§6нажмите§7]"); 
-        $event->setLine(1, "§f(в корзину)");
-        $event->setLine(2, "§dЦена: §e$price".'р');
-        $event->setLine(3, "§b$name");
+        $text = new SignText([
+            "§7[§6нажмите§7]",
+            "§f(в корзину)",
+            "§dЦена: §e$price".'р',
+            "§b$name"
+        ]);
+
+        $event->setNewText($text);
     }
 
     private function saveSignInConfig(string $pos, int $price, int $id, string $name)
     {
-        $this->c->setNested("$pos.price",$price);
-        $this->c->setNested("$pos.label",$name);
-        $this->c->setNested("$pos.id",$id);
-        $this->c->save();
+        $this->config->setNested("$pos.price",$price);
+        $this->config->setNested("$pos.label",$name);
+        $this->config->setNested("$pos.id",$id);
+        $this->config->save();
     }
 
     private function handleItemName(int $itemId, string $line) : string
@@ -148,9 +156,13 @@ class Shop extends Component
 
     private function showSignHelp(SignChangeEvent $event)
     {
-        $event->setLine(0, "§eПозвать продавца:"); 
-        $event->setLine(1, "§b/getseller");
-        $event->setLine(2, "§6Очистить корзину:");
-        $event->setLine(3, "§8/clear goods");
+        $text = new SignText([
+            "§eПозвать продавца:",
+            "§b/getseller",
+            "§6Очистить корзину:",
+            "§8/clear goods"
+        ]);
+
+        $event->setNewText($text);
     }
 }

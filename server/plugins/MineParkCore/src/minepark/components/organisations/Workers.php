@@ -3,6 +3,7 @@ namespace minepark\components\organisations;
 
 use minepark\Providers;
 
+use pocketmine\data\bedrock\EffectIds;
 use pocketmine\entity\effect\VanillaEffects;
 use pocketmine\world\Position;
 use pocketmine\entity\effect\EffectInstance;
@@ -70,13 +71,13 @@ class Workers extends Component
         $lines = $event->getNewText()->getLines();
 
         if ($lines[0] === "[workers1]" and $player->isOperator()) {
-            $this->handleWorker1($event);
+            $this->handleTakeBoxSign($event);
         } elseif ($lines[0] === "[workers2]" and $player->isOperator()) {
-            $this->handleWorker2($event);
+            $this->handlePutBoxSign($event);
         }
     }
     
-    private function handleWorker1(SignChangeEvent $event)
+    private function handleTakeBoxSign(SignChangeEvent $event)
     {
         $text = new SignText([
             "§eЗдесь можно",
@@ -88,7 +89,7 @@ class Workers extends Component
         $event->setNewText($text);
     }
     
-    private function handleWorker2(SignChangeEvent $event)
+    private function handlePutBoxSign(SignChangeEvent $event)
     {
         $text = new SignText([
             "§aЗдесь находится",
@@ -100,24 +101,9 @@ class Workers extends Component
         $event->setNewText($text);
     }
 
-    public function ifPointIsNearPlayer(Position $pos, int $group)
-    {
-        $points = $this->mapProvider->getNearPoints($pos, 6);
-
-        foreach($points as $point) {
-            if($this->mapProvider->getPointGroup($point) == $group) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     public function takeBox(MineParkPlayer $player)
     {
-        $hasPoint = $this->ifPointIsNearPlayer($player->getPosition(), MapConstants::POINT_GROUP_WORK1);
-
-        if(!$hasPoint) {
+        if(!$this->isNearAreaWithBoxes($player)) {
             $player->sendMessage("§cРядом нет площадки с ящиками!");
             return;
         }
@@ -132,10 +118,8 @@ class Workers extends Component
     
     private function handleBoxTake(MineParkPlayer $player)
     {
-        $effectManager = $player->getEffects();
-        $effect = VanillaEffects::fromString("slowness");
-        $instance = new EffectInstance($effect, 20 * 9999, 3, true);
-        $effectManager->add($instance);
+        $this->giveSlownessEffect($player);
+
         $box = $this->words[mt_rand(0, count($this->words))]; 
         $player->getStatesMap()->loadWeight = mt_rand(1, 12); 
         
@@ -148,9 +132,7 @@ class Workers extends Component
 
     public function putBox(MineParkPlayer $player)
     {
-        $hasPoint = $this->ifPointIsNearPlayer($player->getPosition(), MapConstants::POINT_GROUP_WORK2);
-
-        if(!$hasPoint) {
+        if(!$this->isNearUnloadingPoint($player)) {
             $player->sendMessage("§cРядом нет точек для разрузки!");
             return;
         }
@@ -172,5 +154,35 @@ class Workers extends Component
 
         $player->getStatesMap()->loadWeight = null; 
         $player->getStatesMap()->bar = null;
+    }
+
+    private function giveSlownessEffect(MineParkPlayer $player)
+    {
+        $effect = VanillaEffects::fromString("slowness");
+        $instance = new EffectInstance($effect, 20 * 9999, 3, true);
+        $player->getEffects()->add($instance);
+    }
+
+    private function isPlayerNearPoint(Position $position, int $group) : bool
+    {
+        $points = $this->mapProvider->getNearPoints($position, 6);
+
+        foreach($points as $point) {
+            if($this->mapProvider->getPointGroup($point) === $group) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function isNearAreaWithBoxes(MineParkPlayer $player) : bool
+    {
+        return $this->isPlayerNearPoint($player->getPosition(), MapConstants::POINT_GROUP_WORK1);
+    }
+
+    private function isNearUnloadingPoint(MineParkPlayer $player) : bool
+    {
+        return $this->isPlayerNearPoint($player->getPosition(), MapConstants::POINT_GROUP_WORK2);
     }
 }

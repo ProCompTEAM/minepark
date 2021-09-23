@@ -20,4 +20,9 @@ class ArraysUtility
 
        return $str;
     }
+
+    public static function isArrayEmpty(array $array) : bool
+    {
+        return !isset($array[0]);
+    }
 }
