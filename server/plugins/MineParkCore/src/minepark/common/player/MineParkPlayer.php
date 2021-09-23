@@ -151,6 +151,14 @@ class MineParkPlayer extends Player
         $pk->formData = json_encode($data);
         $this->getNetworkSession()->sendDataPacket($pk);
     }
+
+    public function sendWindowLocalizedMessage($text, $title = "")
+    {
+        $text = Providers::getLocalizationProvider()->take($this->locale, $text) ?? $text;
+        $title = Providers::getLocalizationProvider()->take($this->locale, $title) ?? $title;
+
+        self::sendWindowMessage($text, $title);
+    }
     
     public function sendSound(string $soundName, Vector3 $vector3 = null, int $volume = 100, int $pitch = 1)
     {
