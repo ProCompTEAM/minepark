@@ -75,7 +75,7 @@ class Run {
                 if($block->getName() != "Air") break;
             } 
             
-            $endpos = new Position($block->getPos()->getX(), $block->getPos()->getY(), $block->getPos()->getZ(), $pos->getWorld());
+            $endpos = new Position($block->getPosition()->getX(), $block->getPosition()->getY(), $block->getPosition()->getZ(), $pos->getWorld());
 
             array_push($this->cs->lifts, array($pos, $endpos, 0, false, 1));
             
@@ -87,7 +87,7 @@ class Run {
                 if($block->getName() != "Air") break;
             } 
 
-            $endpos = new Position($block->getPos()->getX(), $block->getPos()->getX(), $block->getPos()->getX(), $pos->getWorld());
+            $endpos = new Position($block->getPosition()->getX(), $block->getPosition()->getX(), $block->getPosition()->getX(), $pos->getWorld());
             array_push($this->cs->lifts, array($pos, $endpos, 0, false, 2));
             $this->cs->work->reload();
         }

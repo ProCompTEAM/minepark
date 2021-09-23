@@ -2,6 +2,8 @@
 namespace minepark\components\organisations;
 
 use minepark\Providers;
+use pocketmine\block\Block;
+use pocketmine\block\BlockLegacyIds;
 use pocketmine\entity\effect\VanillaEffects;
 use pocketmine\world\Position;
 
@@ -40,13 +42,10 @@ class Farm extends Component
         ];
     }
 
-    public function from($player)
+    public function getHarvest(MineParkPlayer $player)
     {
-        if ($this->playerIsNearWheat($player)) {
-            $effectManager = $player->getEffects();
-            $effect = VanillaEffects::fromString("slowness");
-            $instance = new EffectInstance($effect, 20 * 9999, 1, true);
-            $effectManager->add($instance);
+        if($this->isPlayerNearWheat($player)) {
+            $this->giveSlownessEffect($player);
 
             $this->chat->sendLocalMessage($player, "§8(§dв корзине собранный урожай |§8)", "§d : ", 12);
             $player->getStatesMap()->bar = "§eДонесите корзину на пункт сбора около фермы"; 
@@ -56,16 +55,9 @@ class Farm extends Component
         }
     }
 
-    public function playerIsAtPlace(Position $pos) : bool
+    public function putHarvest(MineParkPlayer $player)
     {
-        $points = $this->mapProvider->getNearPoints($pos, 3);
-
-        return in_array(self::POINT_NAME, $points);
-    }
-    
-    public function to($player)
-    {
-        $hasPoint = $this->playerIsAtPlace($player->getPosition());
+        $hasPoint = $this->isPlayerAtFarm($player->getPosition());
 
         if(!$hasPoint) {
             $player->sendMessage("§cВам стоит подойти ближе к точке выброса урожая!");
@@ -73,6 +65,13 @@ class Farm extends Component
         }
 
         $player->getStatesMap()->loadWeight != null ? $this->handleDrop($player) : $player->sendMessage("§cВам необходимо собрать плантации с земли..");
+    }
+
+    private function giveSlownessEffect(MineParkPlayer $player)
+    {
+        $effect = VanillaEffects::fromString("slowness");
+        $instance = new EffectInstance($effect, 20 * 9999, 1, true);
+        $player->getEffects()->add($instance);
     }
     
     private function handleDrop(MineParkPlayer $player)
@@ -86,8 +85,18 @@ class Farm extends Component
         $player->getStatesMap()->bar = null;
     }
 
-    private function playerIsNearWheat(MineParkPlayer $player)
+    private function isPlayerAtFarm(Position $pos) : bool
     {
-        return $player->getWorld()->getBlockAt($player->getLocation()->getX(), $player->getLocation()->getY() - 1, $player->getLocation()->getZ())->getId() == 60;
+        $points = $this->mapProvider->getNearPoints($pos, 3);
+
+        return in_array(self::POINT_NAME, $points);
+    }
+
+    private function isPlayerNearWheat(MineParkPlayer $player) : bool
+    {
+        $vector = $player->getLocation()->subtract(0, 1, 0);
+        $block = $player->getWorld()->getBlock($vector);
+
+        return $block->getId() === BlockLegacyIds::FARMLAND;
     }
 }

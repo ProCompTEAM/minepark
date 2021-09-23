@@ -19,6 +19,8 @@ class PermissionsSwitch extends Component
 
     private const FORM_TOGGLE_REALTOR = 3;
 
+    private const FORM_TOGGLE_VIP = 4;
+
     private array $operators;
 
     private ProfileProvider $profileProvider;
@@ -49,7 +51,9 @@ class PermissionsSwitch extends Component
 
     public function addOperator(string $subjectName)
     {
-        $this->operators[] = $subjectName;
+        if(!$this->isOperator($subjectName)) {
+            array_push($this->operators, $subjectName);
+        }
     }
 
     public function removeOperator(string $subjectName)
@@ -70,6 +74,7 @@ class PermissionsSwitch extends Component
         $form->addToggle("§eАдминистратор", $profile->administrator);
         $form->addToggle("§eСтроитель", $profile->builder);
         $form->addToggle("§eРиэлтор", $profile->realtor);
+        $form->addToggle("§eVIP", $profile->vip);
 
         return $form;
     }
@@ -84,18 +89,20 @@ class PermissionsSwitch extends Component
         $toggleAdmin = $inputData[self::FORM_TOGGLE_ADMIN];
         $toggleBuilder = $inputData[self::FORM_TOGGLE_BUILDER];
         $toggleRealtor = $inputData[self::FORM_TOGGLE_REALTOR];
+        $toggleVip = $inputData[self::FORM_TOGGLE_VIP];
 
         if($toggleOp) {
             $this->removeOperator($player->getName());
-            $this->getServer()->removeOp($player->getName());
+            $this->getServer()->addOp($player->getName());
         } else {
             $this->addOperator($player->getName());
-            $this->getServer()->addOp($player->getName());
+            $this->getServer()->removeOp($player->getName());
         }
 
         $player->getProfile()->administrator = $toggleAdmin;
         $player->getProfile()->builder = $toggleBuilder;
         $player->getProfile()->realtor = $toggleRealtor;
+        $player->getProfile()->vip = $toggleVip;
 
         $this->profileProvider->saveProfile($player);
 

@@ -3,33 +3,37 @@ declare(strict_types = 1);
 
 namespace Lolya;
 
-use Lolya\creature\BulletEntity;
-use pocketmine\data\bedrock\EntityLegacyIds;
-use pocketmine\entity\EntityFactory;
-use pocketmine\item\ItemFactory;
-use pocketmine\nbt\tag\CompoundTag;
-use pocketmine\plugin\PluginBase;
-use pocketmine\player\Player;
-use pocketmine\command\Command;
-use pocketmine\command\CommandSender;
-use pocketmine\event\Listener;
-
-use Lolya\Loader;
 use Lolya\Shoot;
+use Lolya\Loader;
 use Lolya\GunData;
-use Lolya\GunListener;
+use minepark\common\player\MineParkPlayer;
 use minepark\Core;
-use minepark\components\organisations\Organisations;
+use Lolya\GunListener;
 use minepark\Providers;
-use minepark\providers\MapProvider;
 use pocketmine\world\World;
+use pocketmine\player\Player;
+use pocketmine\event\Listener;
+use pocketmine\command\Command;
+
+use Lolya\creature\BulletEntity;
+use pocketmine\item\ItemFactory;
+use pocketmine\plugin\PluginBase;
+use minepark\providers\MapProvider;
+use pocketmine\nbt\tag\CompoundTag;
+use pocketmine\entity\EntityFactory;
+use pocketmine\command\CommandSender;
 use pocketmine\entity\EntityDataHelper;
+use minepark\defaults\OrganisationConstants;
+use pocketmine\data\bedrock\EntityLegacyIds;
+use minepark\components\organisations\Organisations;
 use pocketmine\network\mcpe\protocol\types\entity\EntityIds;
 
 class MainClass extends PluginBase implements Listener 
 {
     public const POINT_NAME = "Оружейная";
     public const POINT_DISTANCE = 6;
+
+    private const GUNS_PERMISSION = "guns.command.use";
 
     public $gunData;
     public $logger;
@@ -147,13 +151,13 @@ class MainClass extends PluginBase implements Listener
         return false;
     }
 
-    private function checkPlayer(Player $player) : bool
+    private function checkPlayer(MineParkPlayer $player) : bool
     {
         if ($this->getServer()->isOp($player->getName())) {
             return true;
         }
 
-        if ($player->org == Organisations::SECURITY_WORK) {
+        if ($player->getSettings()->organisation === OrganisationConstants::SECURITY_WORK) {
             if ($player->getLocation()->distance($this->getMapProvider()->getPointPosition(self::POINT_NAME)) <= self::POINT_DISTANCE) {
                 return true;
             }

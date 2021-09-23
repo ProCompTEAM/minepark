@@ -3,6 +3,7 @@ namespace minepark\components\organisations;
 
 use minepark\Providers;
 
+use pocketmine\data\bedrock\EffectIds;
 use pocketmine\entity\effect\VanillaEffects;
 use pocketmine\world\Position;
 use pocketmine\entity\effect\EffectInstance;
@@ -16,6 +17,7 @@ use minepark\defaults\MapConstants;
 use minepark\Events;
 use minepark\providers\BankingProvider;
 use minepark\providers\MapProvider;
+use pocketmine\block\utils\SignText;
 use pocketmine\event\block\SignChangeEvent;
 
 class Workers extends Component
@@ -65,68 +67,59 @@ class Workers extends Component
 
     public function sign(SignChangeEvent $event)
     {
-        $player = $event->getPlayer();
+        $player = MineParkPlayer::cast($event->getPlayer());
         $lines = $event->getNewText()->getLines();
 
-        if ($lines[0] == "[workers1]" and $player->isOperator()) {
-            $this->handleWorker1($event);
-        } elseif ($lines[0] == "[workers2]" and $player->isOperator()) {
-            $this->handleWorker2($event);
+        if ($lines[0] === "[workers1]" and $player->isOperator()) {
+            $this->handleTakeBoxSign($event);
+        } elseif ($lines[0] === "[workers2]" and $player->isOperator()) {
+            $this->handlePutBoxSign($event);
         }
     }
     
-    private function handleWorker1(SignChangeEvent $event)
+    private function handleTakeBoxSign(SignChangeEvent $event)
     {
-        $event->setLine(0, "§eЗдесь можно"); 
-        $event->setLine(1, "§eподзаработать");
-        $event->setLine(2, "§f(грузчики)");
-        $event->setLine(3, "§b/takebox");
+        $text = new SignText([
+            "§eЗдесь можно",
+            "§eподзаработать",
+            "§f(грузчики)",
+            "§b/takebox"
+        ]);
+
+        $event->setNewText($text);
     }
     
-    private function handleWorker2(SignChangeEvent $event)
+    private function handlePutBoxSign(SignChangeEvent $event)
     {
-        $event->setLine(0, "§aЗдесь находится"); 
-        $event->setLine(1, "§aточка разгрузки");
-        $event->setLine(2, "§f(грузчики)");
-        $event->setLine(3, "§6Разгрузиться: §b/putbox");
+        $text = new SignText([
+            "§aЗдесь находится",
+            "§aточка разгрузки",
+            "§f(грузчики)",
+            "§6Разгрузиться: §b/putbox"
+        ]);
+        
+        $event->setNewText($text);
     }
 
-    public function ifPointIsNearPlayer(Position $pos, int $group)
+    public function takeBox(MineParkPlayer $player)
     {
-        $points = $this->mapProvider->getNearPoints($pos, 6);
-
-        foreach($points as $point) {
-            if($this->mapProvider->getPointGroup($point) == $group) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public function takebox(MineParkPlayer $player)
-    {
-        $hasPoint = $this->ifPointIsNearPlayer($player->getPosition(), MapConstants::POINT_GROUP_WORK1);
-
-        if(!$hasPoint) {
+        if(!$this->isNearAreaWithBoxes($player)) {
             $player->sendMessage("§cРядом нет площадки с ящиками!");
             return;
         }
 
-        if($player->getStatesMap()->loadWeight == null) {
-            $this->handleBoxTake($player);
+        if(!is_null($player->getStatesMap()->loadWeight)) {
+            $player->sendMessage("§cСначала положите ящик из ваших рук на склад!");
             return;
         }
 
-        $player->sendMessage("§cСначала положите ящик из ваших рук на склад!");
+        $this->handleBoxTake($player);
     }
     
     private function handleBoxTake(MineParkPlayer $player)
     {
-        $effectManager = $player->getEffects();
-        $effect = VanillaEffects::fromString("slowness");
-        $instance = new EffectInstance($effect, 20 * 9999, 3, true);
-        $effectManager->add($instance);
+        $this->giveSlownessEffect($player);
+
         $box = $this->words[mt_rand(0, count($this->words))]; 
         $player->getStatesMap()->loadWeight = mt_rand(1, 12); 
         
@@ -137,21 +130,19 @@ class Workers extends Component
         $player->getStatesMap()->bar = "§aВ руках ящик около " . $player->getStatesMap()->loadWeight . " кг";
     }
 
-    public function putbox(MineParkPlayer $player)
+    public function putBox(MineParkPlayer $player)
     {
-        $hasPoint = $this->ifPointIsNearPlayer($player->getPosition(), MapConstants::POINT_GROUP_WORK2);
-
-        if(!$hasPoint) {
+        if(!$this->isNearUnloadingPoint($player)) {
             $player->sendMessage("§cРядом нет точек для разрузки!");
             return;
         }
 
-        if($player->getStatesMap()->loadWeight != null) {
-            $this->handlePutBox($player);
+        if(is_null($player->getStatesMap()->loadWeight)) {
+            $player->sendMessage("§cВам необходимо взять ящик со склада!");
             return;
         }
 
-        $player->sendMessage("§cВам необходимо взять ящик со склада!");
+        $this->handlePutBox($player);
     }
     
     private function handlePutBox(MineParkPlayer $player)
@@ -163,5 +154,35 @@ class Workers extends Component
 
         $player->getStatesMap()->loadWeight = null; 
         $player->getStatesMap()->bar = null;
+    }
+
+    private function giveSlownessEffect(MineParkPlayer $player)
+    {
+        $effect = VanillaEffects::fromString("slowness");
+        $instance = new EffectInstance($effect, 20 * 9999, 3, true);
+        $player->getEffects()->add($instance);
+    }
+
+    private function isPlayerNearPoint(Position $position, int $group) : bool
+    {
+        $points = $this->mapProvider->getNearPoints($position, 6);
+
+        foreach($points as $point) {
+            if($this->mapProvider->getPointGroup($point) === $group) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function isNearAreaWithBoxes(MineParkPlayer $player) : bool
+    {
+        return $this->isPlayerNearPoint($player->getPosition(), MapConstants::POINT_GROUP_WORK1);
+    }
+
+    private function isNearUnloadingPoint(MineParkPlayer $player) : bool
+    {
+        return $this->isPlayerNearPoint($player->getPosition(), MapConstants::POINT_GROUP_WORK2);
     }
 }

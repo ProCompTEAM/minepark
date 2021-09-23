@@ -1,0 +1,271 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: url("/profile/img/background_about_profile.png") no-repeat;
+	background-size: cover;
+	background-attachment: fixed;
+}
+
+a {
+	text-decoration: none;
+	color: #d7d7d7;
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 16px;
+	transition: 0.5s;
+}
+
+li {
+	list-style: none;
+	position: relative;
+}
+
+.wrapper {
+	width: 1170px;
+	margin: 0 auto;
+}
+.header {
+	padding-top: 12px;
+}
+
+.logo {
+	display: block;
+	width: 164px;
+	height: 49px;
+	background: url("/profile/img/logo.png") no-repeat;
+	background-size: contain;
+}
+
+.menu {
+	display: flex;
+	align-items: center;
+	font-family: Montserrat;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 13px;
+	line-height: 16px;
+}
+
+.navigation_menu {
+	margin-left: 218px;
+	width: 62px;
+	height: 40px;
+}
+
+.menu__list {
+	width: 539px;
+	height: 16px;
+	margin-left: 187px;
+	display: flex;
+	flex-direction: row;
+	align-items: flex-start;
+}
+
+
+a:hover {
+	color: rgb(179, 179, 179);
+}
+
+
+.menu_items {
+	margin-right: 70px;
+}
+
+.menu_link_user {
+	display: flex;
+	width: 40px;
+	height: 40px;
+	align-items: center;
+	border-radius: 29px;
+	background: url("/profile/img/user.jpg") no-repeat;
+	background-size: contain;
+}
+
+.li__user {
+	width: 62px;
+	transition: 0.5s all;
+
+}
+
+.link_user {
+	display: block;
+	width: 62px;
+}
+
+.link_user:hover {
+	cursor: pointer;
+}
+
+.arrow {
+	position: absolute;
+	left: 47px;
+	top: 16px;
+	border-left: 7px solid transparent;
+	border-right: 7px solid transparent;
+	border-top: 7.5px solid #f1f1f1;
+	transition: 0.5s all;
+}
+
+.menu_list {
+	display: flex;
+	padding: 0;
+	margin: 0;
+	transition: 0.5s all;
+}
+
+.sub-menu__list {
+	display: none;
+	position: absolute;
+	left: -40px;
+	width: 137px;
+	text-align: center;
+	padding-top: 8px;
+	padding-left: 0;
+}
+
+.sub-menu__list>li {
+	background-color: #000000d6;
+	width: 122px;
+	padding: 3px 5px 11px 5px;
+	transition: 0.5s all;
+}
+
+.li__user:hover .sub-menu__list {
+	display: block;
+	transition: 0.5s all;
+}
+
+.menu_list>li:hover .arrow {
+	transform: rotate(-180deg);
+	transition: 0.5s all;
+}
+
+.text_information {
+    text-align: center;
+    margin-top: 45px;
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 900;
+    font-size: 30px;
+    line-height: 37px;
+    color: #fff;
+}
+
+.info_minepark {
+    margin-left: 91.98px;
+	margin-bottom: 19px;
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 22px;
+    color: rgb(216, 216, 216);
+}
+
+.advantages {
+    margin-left: 91.98px;
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 17px;
+    line-height: 23px;
+    color: #fff;
+}
+
+.advantages_text {
+    margin-left: 109.86px;
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 22px;
+    color: rgb(216, 216, 216);
+}
+
+.check {
+    width: 34.12px;
+    height: 28px;
+    margin-right: 10px;
+    background: url("/profile/img/check.png") no-repeat;
+}
+
+.maps {
+    display: flex;
+    align-items: center;
+	margin-bottom: 10px;
+}
+
+.plugins {
+    display: flex;
+    align-items: center;
+	margin-bottom: 10px;
+}
+
+.trends {
+	display: flex;
+	align-items: center;
+	margin-bottom: 10px;
+}
+
+.original {
+	display: flex;
+	align-items: center;
+	margin-bottom: 10px;
+}
+
+.security {
+	display: flex;
+	align-items: center;
+	margin-bottom: 10px;
+}
+
+.information {
+	margin-left: 91.98px;
+	margin-bottom: 20px;
+    font-family: Open Sans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 22px;
+    color: rgb(216, 216, 216);
+}
+
+
+.margin_top_31 {
+	margin-top: 31px;
+}
+
+.margin_bottom_282 {
+	margin-bottom: 282px;
+}
+
+footer {
+	height: 210px;
+	background-color: #363D47;
+}
+
+
+
+.menu_footer {
+	display: flex;
+	align-items: center;
+	font-family: Montserrat;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 13px;
+	line-height: 16px;
+	padding-top: 96px;
+}
+
+
+.menu__list_footer {
+	width: 539px;
+	height: 16px;
+	margin: 0 auto;
+	display: flex;
+	flex-direction: row;
+	align-items: flex-start;
+}
+

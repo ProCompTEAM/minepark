@@ -10,7 +10,7 @@ class GuestCar3 extends VillagerCar
 {
     public $height = 1.5;
 
-    public function __construct(Location $location, CompoundTag $nbt)
+    public function __construct(Location $location, ?CompoundTag $nbt = null)
     {
         parent::__construct($location, $nbt);
 

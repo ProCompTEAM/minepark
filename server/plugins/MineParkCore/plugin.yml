@@ -3,147 +3,147 @@ main: minepark\Core
 version: 1.0
 api: 4.0.0
 load: POSTWORLD
-website: http://vk.com/mcperp
+website: https://vk.com/mcperp
 
 commands:
  service:
   default: op
-  permissions: minepark.service
+  permission: minepark.service
  addpoint:
   default: true
-  permissions: minepark.all
+  permission: minepark.all
  rempoint:
   default: true
-  permissions: minepark.all
+  permission: minepark.all
  topoint:
   default: true
-  permissions: minepark.all
+  permission: minepark.all
  tonearpoint:
   default: true
-  permissions: minepark.all
+  permission: minepark.all
  a:
   default: true
-  permissions: minepark.all
+  permission: minepark.all
  lvl:
   default: true
-  permissions: minepark.all
+  permission: minepark.all
  report:
   default: true
-  permissions: minepark.all
+  permission: minepark.all
  reply:
   default: true
-  permissions: minepark.all
+  permission: minepark.all
  close:
   default: true
-  permissions: minepark.all
+  permission: minepark.all
  gpsnear:
   default: true
-  permissions: minepark.all
+  permission: minepark.all
  gps:
   default: true
-  permissions: minepark.all
+  permission: minepark.all
  o:
   default: true
-  permissions: minepark.all
+  permission: minepark.all
  p:
   default: true
-  permissions: minepark.all
+  permission: minepark.all
  pay:
   default: true
-  permissions: minepark.all
+  permission: minepark.all
  money:
   default: true
-  permissions: minepark.all
+  permission: minepark.all
  doc:
   default: true
-  permissions: minepark.all
+  permission: minepark.all
  pass:
   default: true
-  permissions: minepark.all
+  permission: minepark.all
  showpass:
   default: true
-  permissions: minepark.all
+  permission: minepark.all
  balance:
   default: true
-  permissions: minepark.all
+  permission: minepark.all
  c:
   default: true
-  permissions: minepark.all
+  permission: minepark.all
  sms:
   default: true
-  permissions: minepark.all
+  permission: minepark.all
  anim:
   default: true
-  permissions: minepark.all
+  permission: minepark.all
  jexit:
   default: true
-  permissions: minepark.all
+  permission: minepark.all
  takebox:
   default: true
-  permissions: minepark.all
+  permission: minepark.all
  putbox:
   default: true
-  permissions: minepark.all
+  permission: minepark.all
  getseller:
   default: true
-  permissions: minepark.all
+  permission: minepark.all
  getf:
   default: true
-  permissions: minepark.all
+  permission: minepark.all
  putf:
   default: true
-  permissions: minepark.all
+  permission: minepark.all
  casino:
   default: true
-  permissions: minepark.all
+  permission: minepark.all
  donate:
   default: true
-  permissions: minepark.all
+  permission: minepark.all
  getorg:
   default: true
-  permissions: minepark.all
+  permission: minepark.all
  online:
   default: true
-  permissions: minepark.all
+  permission: minepark.all
  do:
   default: true
-  permissions: minepark.all
+  permission: minepark.all
  me:
   default: true
-  permissions: minepark.all
+  permission: minepark.all
  try:
   default: true
-  permissions: minepark.all
+  permission: minepark.all
  s:
   default: true
-  permissions: minepark.all
+  permission: minepark.all
  resetpassword:
   default: true
-  permissions: minepark.all
+  permission: minepark.all
  bank:
   default: true
-  permissions: minepark.all
+  permission: minepark.all
  day:
   default: op
-  permissions: minepark.all
+  permission: minepark.all
  night:
   default: op
-  permissions: minepark.all
+  permission: minepark.all
  t:
   default: op
-  permissions: minepark.all
- switch:
-  default: true
-  permissions: minepark.all
+  permission: minepark.all
  q:
   default: true
-  permissions: minepark.all
+  permission: minepark.all
  floatingtexts:
   default: true
-  permissions: minepark.all
+  permission: minepark.all
  atm:
   default: true
-  permissions: minepark.all
+  permission: minepark.all
+ sell:
+  default: true
+  permission: minepark.all
 
 permissions:
   minepark.service:

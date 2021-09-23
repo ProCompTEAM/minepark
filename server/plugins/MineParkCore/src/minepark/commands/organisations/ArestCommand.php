@@ -1,13 +1,14 @@
 <?php
 namespace minepark\commands\organisations;
 
-use minepark\commands\base\OrganisationsCommand;
-use pocketmine\event\Event;
-use minepark\defaults\Permissions;
-
-use minepark\common\player\MineParkPlayer;
 use minepark\Components;
+use pocketmine\event\Event;
 use minepark\components\chat\Chat;
+
+use minepark\defaults\Permissions;
+use minepark\common\player\MineParkPlayer;
+use minepark\defaults\OrganisationConstants;
+use minepark\commands\base\OrganisationsCommand;
 use minepark\components\organisations\Organisations;
 
 class ArestCommand extends OrganisationsCommand
@@ -58,7 +59,7 @@ class ArestCommand extends OrganisationsCommand
 
     private function canArrest(MineParkPlayer $player) : bool
     {
-        return $player->getSettings()->organisation === Organisations::GOVERNMENT_WORK or $player->getSettings()->organisation === Organisations::SECURITY_WORK;
+        return $player->getSettings()->organisation === OrganisationConstants::GOVERNMENT_WORK or $player->getSettings()->organisation === OrganisationConstants::SECURITY_WORK;
     }
 
     private function getPlayersNear(MineParkPlayer $player) : array
