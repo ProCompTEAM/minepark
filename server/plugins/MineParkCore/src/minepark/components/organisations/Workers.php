@@ -1,6 +1,7 @@
 <?php
 namespace minepark\components\organisations;
 
+use minepark\defaults\TimeConstants;
 use minepark\Providers;
 
 use pocketmine\data\bedrock\EffectIds;
@@ -32,7 +33,7 @@ class Workers extends Component
     
     public function initialize()
     {
-        Events::registerEvent(EventList::SIGN_CHANGE_EVENT, [$this, "sign"]);
+        Events::registerEvent(EventList::SIGN_CHANGE_EVENT, [$this, "onSignChange"]);
 
         $this->words = [
             "Сельдь *Московская*","Картофель *Беларус*","Боярышник","*Contex Classic*",
@@ -65,7 +66,7 @@ class Workers extends Component
         ];
     }
 
-    public function sign(SignChangeEvent $event)
+    public function onSignChange(SignChangeEvent $event)
     {
         $player = MineParkPlayer::cast($event->getPlayer());
         $lines = $event->getNewText()->getLines();
@@ -159,7 +160,7 @@ class Workers extends Component
     private function giveSlownessEffect(MineParkPlayer $player)
     {
         $effect = VanillaEffects::fromString("slowness");
-        $instance = new EffectInstance($effect, 20 * 9999, 3, true);
+        $instance = new EffectInstance($effect, TimeConstants::ONE_SECOND_TICKS * 9999, 3, true);
         $player->getEffects()->add($instance);
     }
 

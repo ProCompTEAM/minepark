@@ -141,9 +141,6 @@ commands:
  atm:
   default: true
   permission: minepark.all
- sell:
-  default: true
-  permission: minepark.all
 
 permissions:
   minepark.service:

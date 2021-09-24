@@ -24,6 +24,14 @@ use pocketmine\world\World;
 
 class NoFire extends Component
 {
+    private const MINIMAL_X_FIRE_SPAWN_RADIUS = -5;
+    private const MINIMAL_Y_FIRE_SPAWN_RADIUS = 0;
+    private const MINIMAL_Z_FIRE_SPAWN_RADIUS = -5;
+
+    private const MAXIMAL_X_FIRE_SPAWN_RADIUS = 5;
+    private const MAXIMAL_Y_FIRE_SPAWN_RADIUS = 5;
+    private const MAXIMAL_Z_FIRE_SPAWN_RADIUS = 5;
+
     public ?Position $currentPoint;
 
     private MapProvider $mapProvider;
@@ -34,6 +42,7 @@ class NoFire extends Component
     
     public function initialize()
     {
+        // TODO: Fix fire creating in #511
         Tasks::registerRepeatingAction(TimeConstants::NOFIRE_UPDATE_INTERVAL, [$this, "createFire"]);
 
         $this->currentPoint = null;
@@ -156,9 +165,9 @@ class NoFire extends Component
     {
         $world = $pointPosition->getWorld();
 
-        for($x = -5; $x <= 5; $x++) {
-            for($z = -5; $z <= 5; $z++) {
-                for($y = 0; $y <= 5; $y++) {
+        for($x = self::MINIMAL_X_FIRE_SPAWN_RADIUS; $x <= self::MAXIMAL_X_FIRE_SPAWN_RADIUS; $x++) {
+            for($z = self::MINIMAL_Z_FIRE_SPAWN_RADIUS; $z <= self::MAXIMAL_Z_FIRE_SPAWN_RADIUS; $z++) {
+                for($y = self::MINIMAL_Y_FIRE_SPAWN_RADIUS; $y <= self::MAXIMAL_Y_FIRE_SPAWN_RADIUS; $y++) {
                     $pointVector = $pointPosition->add($x, $y, $z);
 
                     if($this->checkForFireAvailability($pointVector, $world)) {

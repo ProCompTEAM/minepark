@@ -21,7 +21,7 @@ class TimeConstants
 
     public const SHOW_PLAYERS_LIST_INTERVAL = 470;
 
-    public const NOFIRE_UPDATE_INTERVAL = 30;
+    public const NOFIRE_UPDATE_INTERVAL = 180;
 
     public const TRAFFIC_LIGHTS_UPDATE_INTERVAL = 25;
 

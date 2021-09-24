@@ -122,14 +122,17 @@ class SellCommand extends OrganisationsCommand
             $item = ItemFactory::getInstance()->get($good[0]);
             $item->setCustomName($good[2]);
             $buyer->getInventory()->addItem($item);
-            $receipt .= "§a".$good[2]." §eза §3".$good[1]." руб\n";
+            $receipt .= "§a" . $good[2] . " §eза §3" . $good[1] . " руб\n";
         }
 
         $buyer->sendMessage($receipt);
         $buyer->sendLocalizedMessage("{CommandSellFinalPart1}" . $price . "{CommandSellFinalPart2}");
 
         $buyer->getStatesMap()->goods = [];
-        Providers::getBankingProvider()->givePlayerMoney($seller, ceil($price/2));
+
+        if($seller->getName() !== $buyer->getName()) {
+            Providers::getBankingProvider()->givePlayerMoney($seller, ceil($price / 2));
+        }
 
         $seller->sendLocalizedMessage("{CommandSellDo}" . ($buyerId + 1));
     }
