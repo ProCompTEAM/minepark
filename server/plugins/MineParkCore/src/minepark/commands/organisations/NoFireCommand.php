@@ -42,13 +42,11 @@ class NoFireCommand extends OrganisationsCommand
 
     public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
-        $oid = $player->getSettings()->organisation;
-
-        if ($player->getSettings()->organisation !== OrganisationConstants::EMERGENCY_WORK) {
+        if($player->getSettings()->organisation !== OrganisationConstants::EMERGENCY_WORK) {
             $player->sendMessage("§cВы не являетесь работником службы спасения!");
             return;
         }
 
-        $this->organisations->getNoFire()->clean($player);
+        $this->organisations->getNoFire()->putOutFire($player);
     }
 }

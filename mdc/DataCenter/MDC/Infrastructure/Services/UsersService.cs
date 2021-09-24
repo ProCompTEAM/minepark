@@ -171,6 +171,13 @@ namespace MDC.Infrastructure.Services
         public async Task UpdateQuitStatus(string unitId, string userName)
         {
             User user = await GetUser(userName);
+
+            // TODO: Вместо этого костыля выпустить хороший фикс (задача #512)
+            if (user.JoinedDate.Year == 0001)
+            {
+                return;
+            }
+
             user.LeftDate = dateTimeProvider.Now;
             user.MinutesPlayed += GetMinutesLeft(user.JoinedDate, user.LeftDate);
 

@@ -5,6 +5,7 @@ body {
 	background: url("/profile/img/background__developers.png") no-repeat;
     background-size: cover;
 	background-attachment: fixed;
+	background-position: center;
 }
 
 a {
@@ -249,4 +250,8 @@ footer {
 	display: flex;
 	flex-direction: row;
 	align-items: flex-start;
+}
+
+.display_none {
+	display: none;
 }

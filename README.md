@@ -1,4 +1,4 @@
-# MinePark Software - Release v1.6
+# MinePark Software - Release v1.7
 
 __Copyright http://vk.com/mcperp__
 ____
@@ -22,7 +22,7 @@ ____
 - **release** => release versions of product
 
 ## .NET Specifications:
-- UpperCamelCase: functions, fields, properties, classes, interface
+- UpperCamelCase: functions, fields, properties, classes, interfaces
 - lowerCamelCase: variables
 
 ## PHP Specifications:

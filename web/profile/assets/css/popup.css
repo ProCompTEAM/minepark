@@ -37,16 +37,69 @@
     padding-top: 60px;
 }
 
+.InformationBlock {
+	display: flex;
+}
+
 .container {
 	border: 1px solid #007bff;
     text-align: center;
     margin: 5% auto 15% auto;
 	width: 90%;
-	height: 371px;
+	height: 392px;
     position: relative;
-    padding-left: 15%;
     padding: 0px;
     background-color: rgb(255,255,255);
+}
+
+.arrow_left {
+	width: 28px;
+	height: 55px;
+	margin-top: 96px;
+	margin-left: 15px;
+}
+
+.LineLeft1 {
+	width: 39.6px;
+	height: 0px;
+	border: 1px solid #000000;
+	transform: rotate(-45deg);
+}
+
+.LineLeft2 {
+	width: 39.6px;
+	height: 0px;
+	border: 1px solid #000000;
+	transform: rotate(-135deg);
+	margin-top: 27px;
+}
+
+.LineRight1 {
+	width: 39.6px;
+	height: 0;
+	border: 1px solid #000000;
+	transform: rotate(45deg);
+}
+
+.LineRight2 {
+	width: 39.6px;
+	height: 0;
+	border: 1px solid #000000;
+	transform: rotate(135deg);
+	margin-top: 27px;
+}
+
+.arrow_right {
+	width: 28px;
+	height: 55px;
+	margin-top: 96px;
+	margin-right: 27px;
+}
+
+.arrow_left:hover .LineLeft1, .arrow_left:hover .LineLeft2, .arrow_right:hover .LineRight1, .arrow_right:hover .LineRight2 {
+	cursor: pointer;
+	border: 1px solid red;
+	transition: all 0.5s;
 }
 
 .linear_1{
@@ -59,7 +112,7 @@
 	width: 30px;
 	height: 31px;
 	margin-left: 95%;
-	margin-top: 20px;
+	margin-top: -9px;
 	cursor: pointer;
 	transition: all 0.5s;
 }
@@ -76,19 +129,16 @@
 	transform: rotate(45deg);
 }
 
-.cross:hover .line_1 {
+.cross:hover .line_1, .cross:hover .line_2 {
 	border: 1px solid red;
 	transition: all 0.5s;
 }
 
-.cross:hover .line_2 {
-	border: 1px solid red;
-	transition: all 0.5s;
-}
 
 .text_server {
+	margin: 0;
+    margin-top: 9px;
 	text-align: center;
-	margin-top: -25px;
 	font-family: Azonix;
 	font-style: normal;
 	font-weight: normal;
@@ -131,13 +181,13 @@
 	font-weight: normal;
 	font-size: 18px;
 	line-height: 18px;
-	filter: drop-shadow(0px 0px 10px rgba(0, 0, 0, 0.25));
+	filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.25));
 	cursor: pointer;
 	margin-bottom: 33px;
 	margin-top: 40px;
 }
 
-.TextButton {
+.TextButtonBlock1, .TextButtonBlock2, .TextButtonBlock3 {
 	padding-left: 43px;
 	padding-top: 9px;
 	padding-right: 43px;
@@ -145,18 +195,40 @@
 	background-color: #c4c4c4;
 }
 
+.TextButtonBlock1::before, .TextButtonBlock2::before, .TextButtonBlock3::before {
+	content: 'выбрать';
+}
+
+.button_active {
+	box-shadow: inset 0px 0px 5px rgba(0, 0, 0, 0.30);
+	background: #C4C4C4;
+	transition: 0.5s all;
+}
+
+.button_active::before {
+	content: 'выбрано';
+}
+
 .linear_2 {
 	background: url(/profile/img/liner_2.png) no-repeat;
 	background-size: contain;	
 	height: 19px;
-	margin-top: 47px;
+	margin-top: 29px;
 }
 
-.openPopup {
+.Sliders {
+	display: none;
+	margin: 0 auto;
+}
+
+.ContentBlock {
+	margin: 0 auto;
+}
+.openPopup, .curry {
 	display: block;
 }
 
-.closePopup {
+.closePopup, .slider {
 	display: none;
 }
 
