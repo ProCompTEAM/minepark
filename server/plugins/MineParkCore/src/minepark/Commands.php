@@ -184,7 +184,7 @@ class Commands
 
     private function executeOrganisationsCommand(MineParkPlayer $player, array $arguments, ?Event $event = null)
     {
-        if(!isset($commands[0])) {
+        if(!isset($arguments[0])) {
             return;
         }
 

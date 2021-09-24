@@ -19,7 +19,7 @@ class PayDay extends Component
 
     public function initialize()
     {
-        Tasks::registerRepeatingAction(TimeConstants::PAYDAY_INTERVAL, [$this, "calculateAndShow"]);
+        Tasks::registerRepeatingAction(TimeConstants::PAYDAY_INTERVAL, [$this, "calculateSalary"]);
 
         $this->bankingProvider = Providers::getBankingProvider();
     }
@@ -31,10 +31,14 @@ class PayDay extends Component
         ];
     }
     
-    public function calculateAndShow()
+    public function calculateSalary()
     {
         foreach($this->getServer()->getOnlinePlayers() as $player) {
             $player = MineParkPlayer::cast($player);
+
+            if(!$player->isAuthorized()) {
+                continue;
+            }
 
             $salary = $this->getSalaryValue($player); 
             $special = 0;
@@ -55,50 +59,47 @@ class PayDay extends Component
                 $salary *= 2;
             }
 
-            $summ = ($salary + $special);
+            $summary = $salary + $special;
 
-            if($summ > 0) {
-                $this->bankingProvider->giveDebit($player, $summ);
+            if($summary > 0) {
+                $this->bankingProvider->giveDebit($player, $summary);
             }
 
-            if($summ < 0) {
-               $this->bankingProvider->reduceDebit($player, $summ);
+            if($summary < 0) {
+               $this->bankingProvider->reduceDebit($player, $summary);
             }
 
-            $this->sendForm($player, $salary, $special, $summ);
+            $this->sendForm($player, $salary, $special, $summary);
         }
     }
 
-    private function sendForm(MineParkPlayer $player, int $salary, int $special, int $summ) 
+    private function sendForm(MineParkPlayer $player, int $salary, int $special, int $summary)
     {
         $form = "§7----=====§eВРЕМЯ ЗАРПЛАТЫ§7=====----";
         $form .= "\n §3> §fЗаработано: §2" . $salary;
         $form .= "\n §3> §fПособие: §2" . $special;
         $form .= "\n§8- - - -== -==- ==- - - -";
-        $form .= "\n §3☛ §fИтого: §2" . $summ;
+        $form .= "\n §3☛ §fИтого: §2" . $summary;
 
-        if($player->isAuthorized()) {
-            $player->sendMessage($form);
-        }
+        $player->sendMessage($form);
     }
 
     private function getSalaryValue(MineParkPlayer $player) : int
     {
-        switch($player->getSettings()->organisation)
-        {
-            case OrganisationConstants::TAXI_WORK: 
+        switch($player->getSettings()->organisation) {
+            case OrganisationConstants::TAXI_WORK:
                 return PayDayConstants::TAXI_WORK_SALARY;
-            case OrganisationConstants::DOCTOR_WORK: 
+            case OrganisationConstants::DOCTOR_WORK:
                 return PayDayConstants::DOCTOR_WORK_SALARY;
-            case OrganisationConstants::LAWYER_WORK: 
+            case OrganisationConstants::LAWYER_WORK:
                 return PayDayConstants::LAWYER_WORK_SALARY;
-            case OrganisationConstants::SECURITY_WORK: 
+            case OrganisationConstants::SECURITY_WORK:
                 return PayDayConstants::SECURITY_WORK_SALARY;
-            case OrganisationConstants::SELLER_WORK: 
+            case OrganisationConstants::SELLER_WORK:
                 return PayDayConstants::SELLER_WORK_SALARY;
             case OrganisationConstants::GOVERNMENT_WORK:
                 return PayDayConstants::GOVERNMENT_WORK_SALARY;
-            case OrganisationConstants::EMERGENCY_WORK: 
+            case OrganisationConstants::EMERGENCY_WORK:
                 return PayDayConstants::EMERGENCY_WORK_SALARY;
         }
 
