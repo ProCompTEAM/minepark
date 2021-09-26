@@ -105,6 +105,7 @@
 .linear_1{
 	background: url('/profile/img/liner_1.png') no-repeat;
 	background-size: contain;
+	background-position: center;
 	height: 20px;
 }
 
@@ -212,6 +213,7 @@
 .linear_2 {
 	background: url(/profile/img/liner_2.png) no-repeat;
 	background-size: contain;	
+	background-position: center;
 	height: 19px;
 	margin-top: 29px;
 }
