@@ -54,7 +54,7 @@ class MoneyGiftCommand extends Command
             return;
         }
 
-        $targetPlayer = $this->getServer()->getPlayerExact($targetPlayerName);
+        $targetPlayer = $this->getServer()->getPlayerByPrefix($targetPlayerName);
         if(!is_null($targetPlayer)) {
             $this->transfer($player, $targetPlayer, $sum);
             $this->showMessages($player, $targetPlayer, $sum);

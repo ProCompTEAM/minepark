@@ -49,6 +49,7 @@ use minepark\commands\roleplay\WhisperCommand;
 use minepark\commands\map\FloatingTextsCommand;
 use minepark\commands\organisations\AddCommand;
 use minepark\commands\base\OrganisationsCommand;
+use minepark\commands\economy\MoneyGiftCommand;
 use minepark\commands\organisations\HealCommand;
 use minepark\commands\organisations\InfoCommand;
 use minepark\commands\organisations\SellCommand;
@@ -122,6 +123,7 @@ class Commands
             new ReplyCommand,
             new CloseCommand,
             new BankCommand,
+            new MoneyGiftCommand,
             new DayCommand,
             new NightCommand,
             new TransportCommand,
