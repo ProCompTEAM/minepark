@@ -131,7 +131,7 @@ class AdminCommand extends Command
         }
 
         $oid = $args[2];
-        $targetPlayer = MineParkPlayer::cast($this->getServer()->getPlayerExact($args[1]));
+        $targetPlayer = MineParkPlayer::cast($this->getServer()->getPlayerByPrefix($args[1]));
         
         if($targetPlayer === null) {
             return;
@@ -163,7 +163,7 @@ class AdminCommand extends Command
             return;
         }
 
-        $targetPlayer = $this->getServer()->getPlayerExact($args[1]);
+        $targetPlayer = $this->getServer()->getPlayerByPrefix($args[1]);
 
         if($targetPlayer === null) {
             $player->sendMessage("§cИгрок §e" . $args[1] . "§c не на сервере.");
@@ -189,7 +189,7 @@ class AdminCommand extends Command
             return;
         }
 
-        $targetPlayer = MineParkPlayer::cast($this->getServer()->getPlayerExact($args[1]));
+        $targetPlayer = MineParkPlayer::cast($this->getServer()->getPlayerByPrefix($args[1]));
 
         if($targetPlayer === null) {
             return;
@@ -204,7 +204,7 @@ class AdminCommand extends Command
             return;
         }
 
-        $targetPlayer = $this->getServer()->getPlayerExact($args[1]);
+        $targetPlayer = $this->getServer()->getPlayerByPrefix($args[1]);
         $targetPlayer = MineParkPlayer::cast($targetPlayer);
 
         if($targetPlayer === null or !isset($args[2])) {
@@ -222,7 +222,7 @@ class AdminCommand extends Command
             return;
         }
 
-        $targetPlayer = $this->getServer()->getPlayerExact($args[1]);
+        $targetPlayer = $this->getServer()->getPlayerByPrefix($args[1]);
         $targetPlayer = MineParkPlayer::cast($targetPlayer);
         
         if($targetPlayer === null or !isset($args[2])) {
@@ -258,7 +258,7 @@ class AdminCommand extends Command
             return;
         }
 
-        $target = $this->getServer()->getPlayerExact($args[1]);
+        $target = $this->getServer()->getPlayerByPrefix($args[1]);
 
         if ($target === null) {
             $player->sendMessage("TrackerPlayerNotExists");
@@ -279,7 +279,7 @@ class AdminCommand extends Command
             return;
         }
 
-        $target = $this->getServer()->getPlayerExact($args[1]);
+        $target = $this->getServer()->getPlayerByPrefix($args[1]);
 
         if ($target === null) {
             $player->sendMessage("TrackerPlayerNotExists");

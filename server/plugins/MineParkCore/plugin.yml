@@ -141,6 +141,9 @@ commands:
  atm:
   default: true
   permission: minepark.all
+ moneygift:
+  default: true
+  permission: minepark.all
 
 permissions:
   minepark.service:

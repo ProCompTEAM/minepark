@@ -131,6 +131,12 @@
     "CommandLevelUse": "Использование: /lvl <имя мира>",
     "CommandLevelInvalid": "Мир с таким названием не был найден!",
 
+    "CommandMoneyGiftUsage": "§eИспользование: /moneygift §b<имя игрока> <сумма>",
+    "CommandMoneyGiftMax": "§6Привышен лимит выделяемых средств! Операция отменена!",
+    "CommandMoneyGiftNoPlayer": "§сИгрок не найден!",
+    "CommandMoneyGiftMessage1": "§eВам выделена сумма от администрации парка:",
+    "CommandMoneyGiftMessage2": "Средства поступят на Ваш банковский счет.",
+    "CommandMoneyGiftNotification": "§4[!!!] Осуществлен перевод средств из гос.бюджета:",
 
     "CommandOnlineNoAdmins": "Сейчас нет администраторов в сети, но это не повод вести себя плохо :)",
     "CommandOnlineMessage": "Администрация в сети: ",

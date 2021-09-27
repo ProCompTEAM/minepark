@@ -211,7 +211,7 @@ class ATM extends Component
 
         $player->sendMessage("§bВы успешно перевели игроку §e" . $target . " $amount §bденег!");
 
-        $targetPlayer = $this->getServer()->getPlayerExact($target);
+        $targetPlayer = $this->getServer()->getPlayerByPrefix($target);
 
         if(isset($targetPlayer) and $this->phone->hasStream($targetPlayer->getPosition())) {
             $targetPlayer->sendMessage("§e[SMS] §bЧеловек §e" . $player->getName() . " §bперевёл вам §e$amount");

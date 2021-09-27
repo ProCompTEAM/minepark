@@ -1,5 +1,5 @@
 <?php
-namespace minepark\commands;
+namespace minepark\commands\economy;
 
 use minepark\Providers;
 use pocketmine\event\Event;
