@@ -43,7 +43,7 @@ class PayDay extends Component
             $salary = $this->getSalaryValue($player); 
             $special = 0;
 
-            if(!$player->getStatesMap()->isNew) {
+            if($player->getStatesMap()->isNew) {
                 $special += PayDayConstants::NEW_PLAYER_SPECIAL;
             }
 
