@@ -1,6 +1,7 @@
 <?php
 namespace minepark\components;
 
+use minepark\defaults\Defaults;
 use minepark\Tasks;
 use minepark\Events;
 use minepark\Providers;
@@ -136,9 +137,11 @@ class Auth extends Component
                 $this->registerUser($player, $password);
             }
         } elseif($state == self::STATE_NEED_AUTH) {
+            $passwordWithSalt = $password . Defaults::SALT;
+
             if(strlen($password) < 6) {
                 $player->kick("AuthLen");
-            } elseif(password_verify($password, $this->usersDataProvider->getUserPassword($player->getName()))) {
+            } elseif(password_verify($passwordWithSalt, $this->usersDataProvider->getUserPassword($player->getName()))) {
                 $this->logInUser($player);
             } else {
                 $player->kick("AuthInvalid");
@@ -194,9 +197,11 @@ class Auth extends Component
 
     private function updatePassword(MineParkPlayer $player, string $password) 
     {
+        $passwordWithSalt = $password . Defaults::SALT;
+
         $passwordDto = new PasswordDto();
         $passwordDto->name = $player->getName();
-        $passwordDto->password = password_hash($password, PASSWORD_DEFAULT);
+        $passwordDto->password = password_hash($passwordWithSalt, PASSWORD_DEFAULT);
 
         $this->usersDataProvider->setUserPassword($passwordDto);
     }
