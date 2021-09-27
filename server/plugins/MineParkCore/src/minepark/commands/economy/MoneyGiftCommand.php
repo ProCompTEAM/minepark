@@ -57,6 +57,7 @@ class MoneyGiftCommand extends Command
         $targetPlayer = $this->getServer()->getPlayerByPrefix($targetPlayerName);
         if(!is_null($targetPlayer)) {
             $this->transferMoney($player, $targetPlayer, $sum);
+            $this->notifyTargetPlayer($targetPlayer, $sum);
             $this->notifyOperators($player, $targetPlayer, $sum);
         } else {
             $player->sendMessage("CommandMoneyGiftNoPlayer");
@@ -70,10 +71,13 @@ class MoneyGiftCommand extends Command
         $this->bankingProvider->transferDebit($operator->getName(), $targetPlayer->getName(), $sum);
     }
 
-    private function notifyOperators(MineParkPlayer $operator, MineParkPlayer $targetPlayer, float $sum)
+    private function notifyTargetPlayer(MineParkPlayer $targetPlayer, float $sum)
     {
         $targetPlayer->sendLocalizedMessage("{CommandMoneyGiftMessage1} $sum \n{CommandMoneyGiftMessage2}");
+    }
 
+    private function notifyOperators(MineParkPlayer $operator, MineParkPlayer $targetPlayer, float $sum)
+    {
         $operatorName = $operator->getName();
         $targetPlayerName = $targetPlayer->getName();
 
