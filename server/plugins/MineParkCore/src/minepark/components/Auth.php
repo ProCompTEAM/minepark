@@ -138,7 +138,7 @@ class Auth extends Component
         } elseif($state == self::STATE_NEED_AUTH) {
             if(strlen($password) < 6) {
                 $player->kick("AuthLen");
-            } elseif(md5($password) == $this->usersDataProvider->getUserPassword($player->getName())) {
+            } elseif(password_verify($password, $this->usersDataProvider->getUserPassword($player->getName()))) {
                 $this->logInUser($player);
             } else {
                 $player->kick("AuthInvalid");
@@ -196,7 +196,7 @@ class Auth extends Component
     {
         $passwordDto = new PasswordDto();
         $passwordDto->name = $player->getName();
-        $passwordDto->password = md5($password);
+        $passwordDto->password = password_hash($password, PASSWORD_DEFAULT);
 
         $this->usersDataProvider->setUserPassword($passwordDto);
     }
