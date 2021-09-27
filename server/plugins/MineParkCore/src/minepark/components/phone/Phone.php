@@ -151,7 +151,7 @@ class Phone extends Component
         }
 
         if(!$this->hasStream($initializer->getPosition())) {
-            $initializer->sendSound(Sounds::PHONE_UNCONNECT);
+            $initializer->sendSound(Sounds::PHONE_DISCONNECT);
             $initializer->sendMessage("PhoneNoNet2");
             return;
         }
@@ -159,7 +159,7 @@ class Phone extends Component
         $target = $this->getPlayerByNumber($targetNumber);
 
         if(!isset($target)) {
-            $initializer->sendSound(Sounds::PHONE_UNCONNECT);
+            $initializer->sendSound(Sounds::PHONE_DISCONNECT);
             $initializer->sendMessage("PhoneNoNet");
             return;
         }

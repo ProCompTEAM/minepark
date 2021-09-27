@@ -19,7 +19,7 @@ class Sounds
 
     public const PHONE_INCOMING_CALL = "phone.sound1";
 
-    public const PHONE_UNCONNECT = "phone.sound2";
+    public const PHONE_DISCONNECT = "phone.sound2";
 
     public const PHONE_OUTCOMMING_CALL = "phone.sound3";
 
