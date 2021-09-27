@@ -86,5 +86,69 @@
 				"name": "sounds/train/station5"
 			}
 		]
+	},
+	"phone.loud1": {
+		"category": "neutral",
+		"sounds": [
+			{
+				"name": "sounds/phone/loud1"
+			}
+		]
+	},
+	"phone.loud2": {
+		"category": "neutral",
+		"sounds": [
+			{
+				"name": "sounds/phone/loud2"
+			}
+		]
+	},
+	"phone.loud3": {
+		"category": "neutral",
+		"sounds": [
+			{
+				"name": "sounds/phone/loud3"
+			}
+		]
+	},
+	"phone.loud4": {
+		"category": "neutral",
+		"sounds": [
+			{
+				"name": "sounds/phone/loud4"
+			}
+		]
+	},
+	"phone.loud5": {
+		"category": "neutral",
+		"sounds": [
+			{
+				"name": "sounds/phone/loud5"
+			}
+		]
+	},
+	"phone.loud6": {
+		"category": "neutral",
+		"sounds": [
+			{
+				"name": "sounds/phone/loud6"
+			}
+		]
+	},
+	"phone.loud7": {
+		"category": "neutral",
+		"sounds": [
+			{
+				"name": "sounds/phone/loud7"
+			}
+		]
+	},
+	"phone.loud8": {
+		"category": "neutral",
+		"sounds": [
+			{
+				"name": "sounds/phone/loud8"
+			}
+		]
 	}
 }
