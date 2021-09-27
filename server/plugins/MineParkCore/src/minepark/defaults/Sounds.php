@@ -17,20 +17,20 @@ class Sounds
 
     public const TRAIN_STATION = "train.station";
 
-    public const PHONE_INCOMING_CALL = "phone.loud1";
+    public const PHONE_INCOMING_CALL = "phone.sound1";
 
-    public const PHONE_UNCONNECT = "phone.loud2";
+    public const PHONE_UNCONNECT = "phone.sound2";
 
-    public const PHONE_OUTCOMMING_CALL = "phone.loud3";
+    public const PHONE_OUTCOMMING_CALL = "phone.sound3";
 
-    public const PHONE_UNDIALING = "phone.loud4";
+    public const PHONE_UNDIALING = "phone.sound4";
 
-    public const PHONE_CHECK_NUM = "phone.loud5";
+    public const PHONE_CHECK_NUM = "phone.sound5";
 
-    public const PHONE_UNAVAILABLE = "phone.loud6";
+    public const PHONE_UNAVAILABLE = "phone.sound6";
 
-    public const PHONE_SMS = "phone.loud7";
+    public const PHONE_SMS = "phone.sound7";
 
-    public const PHONE_LOST_CONNECT = "phone.loud8";
+    public const PHONE_LOST_CONNECT = "phone.sound8";
 
 }

@@ -87,67 +87,67 @@
 			}
 		]
 	},
-	"phone.loud1": {
+	"phone.sound1": {
 		"category": "neutral",
 		"sounds": [
 			{
-				"name": "sounds/phone/loud1"
+				"name": "sounds/phone/sound11"
 			}
 		]
 	},
-	"phone.loud2": {
+	"phone.sound2": {
 		"category": "neutral",
 		"sounds": [
 			{
-				"name": "sounds/phone/loud2"
+				"name": "sounds/phone/sound2"
 			}
 		]
 	},
-	"phone.loud3": {
+	"phone.sound3": {
 		"category": "neutral",
 		"sounds": [
 			{
-				"name": "sounds/phone/loud3"
+				"name": "sounds/phone/sound3"
 			}
 		]
 	},
-	"phone.loud4": {
+	"phone.sound4": {
 		"category": "neutral",
 		"sounds": [
 			{
-				"name": "sounds/phone/loud4"
+				"name": "sounds/phone/sound4"
 			}
 		]
 	},
-	"phone.loud5": {
+	"phone.sound5": {
 		"category": "neutral",
 		"sounds": [
 			{
-				"name": "sounds/phone/loud5"
+				"name": "sounds/phone/sound5"
 			}
 		]
 	},
-	"phone.loud6": {
+	"phone.sound6": {
 		"category": "neutral",
 		"sounds": [
 			{
-				"name": "sounds/phone/loud6"
+				"name": "sounds/phone/sound6"
 			}
 		]
 	},
-	"phone.loud7": {
+	"phone.sound7": {
 		"category": "neutral",
 		"sounds": [
 			{
-				"name": "sounds/phone/loud7"
+				"name": "sounds/phone/sound7"
 			}
 		]
 	},
-	"phone.loud8": {
+	"phone.sound8": {
 		"category": "neutral",
 		"sounds": [
 			{
-				"name": "sounds/phone/loud8"
+				"name": "sounds/phone/sound8"
 			}
 		]
 	}
