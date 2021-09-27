@@ -196,7 +196,7 @@ namespace MDC.Infrastructure.Services
         }
         public async Task<bool> TransferDebit(string unitId, string userName, string target, double amount)
         {
-            if (!await Exists(unitId, userName))
+            if (!await Exists(unitId, target))
             {
                 return false;
             }
@@ -206,7 +206,7 @@ namespace MDC.Infrastructure.Services
                 return false;
             }
 
-            await GiveDebit(unitId, userName, amount);
+            await GiveDebit(unitId, target, amount);
 
             return true;
         }

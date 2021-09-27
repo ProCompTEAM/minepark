@@ -40,7 +40,7 @@ class MoneyGiftCommand extends Command
     public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
         if(!self::argumentsMin(2, $args) or !is_numeric($args[1])) {
-            $player->sendMessage("MoneyGiftCommand");
+            $player->sendMessage("CommandMoneyGiftUsage");
             return;
         }
 
@@ -50,29 +50,29 @@ class MoneyGiftCommand extends Command
         $player->sendSound(Sounds::ROLEPLAY);
 
         if($sum > self::MAX_GIFT_SUM) {
-            $player->sendMessage("MoneyGiftMax");
+            $player->sendMessage("CommandMoneyGiftMax");
             return;
         }
 
         $targetPlayer = $this->getServer()->getPlayerByPrefix($targetPlayerName);
         if(!is_null($targetPlayer)) {
-            $this->transfer($player, $targetPlayer, $sum);
-            $this->showMessages($player, $targetPlayer, $sum);
+            $this->transferMoney($player, $targetPlayer, $sum);
+            $this->notifyOperators($player, $targetPlayer, $sum);
         } else {
-            $player->sendMessage("MoneyGiftNoPlayer");
+            $player->sendMessage("CommandMoneyGiftNoPlayer");
         }
     }
 
-    private function transfer(MineParkPlayer $operator, MineParkPlayer $targetPlayer, float $sum)
+    private function transferMoney(MineParkPlayer $operator, MineParkPlayer $targetPlayer, float $sum)
     {
         //transfer sum through operator for mdc audit log
         $this->bankingProvider->giveDebit($operator, $sum);
         $this->bankingProvider->transferDebit($operator->getName(), $targetPlayer->getName(), $sum);
     }
 
-    private function showMessages(MineParkPlayer $operator, MineParkPlayer $targetPlayer, float $sum)
+    private function notifyOperators(MineParkPlayer $operator, MineParkPlayer $targetPlayer, float $sum)
     {
-        $targetPlayer->sendLocalizedMessage("{MoneyGiftMessage1} $sum \n{MoneyGiftMessage2}");
+        $targetPlayer->sendLocalizedMessage("{CommandMoneyGiftMessage1} $sum \n{CommandMoneyGiftMessage2}");
 
         $operatorName = $operator->getName();
         $targetPlayerName = $targetPlayer->getName();
@@ -81,7 +81,7 @@ class MoneyGiftCommand extends Command
             $player = MineParkPlayer::cast($player);
 
             if($player->isOperator()) {
-                $player->sendLocalizedMessage("{MoneyGiftNotification} [$sum] $operatorName -> $targetPlayerName");
+                $player->sendLocalizedMessage("{CommandMoneyGiftNotification} [$sum] $operatorName -> $targetPlayerName");
             }
         }
     }
