@@ -28,7 +28,7 @@ class EconomyAPI extends PluginBase
     public function addMoney($player, $amount, bool $force = false, string $issued = "") : int
     {
         if (is_string($player)) {
-            $player = $this->getServer()->getPlayerExact($player);
+            $player = $this->getServer()->getPlayerByPrefix($player);
         }
 
         return Providers::getBankingProvider()->givePlayerMoney($player, $amount);
@@ -37,7 +37,7 @@ class EconomyAPI extends PluginBase
     public function reduceMoney($player, $amount, bool $force = false, string $issued = "") : int
     {
         if (is_string($player)) {
-            $player = $this->getServer()->getPlayerExact($player);
+            $player = $this->getServer()->getPlayerByPrefix($player);
         }
 
         return Providers::getBankingProvider()->takePlayerMoney($player, $amount);

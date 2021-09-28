@@ -39,13 +39,9 @@ class Organisations extends Component
         ];
     }
 
-    public function getName(int $organizationId, bool $withColor = true) : string
+    public function getName(int $organisationId, bool $withColor = true) : string
     {
-        if(in_array($organizationId, $this->getOrganisationsNames())) {
-            $organisationName = $this->getOrganisationsNames()[$organizationId];
-        } else {
-            $organisationName = "§f";
-        }
+        $organisationName = $this->getOrganisationsNames()[$organisationId] ?? "§f";
 
         return $withColor ? $organisationName : substr($organisationName, 2);
     }

@@ -9,6 +9,7 @@ use minepark\Components;
 use pocketmine\world\Position;
 use minepark\components\map\ATM;
 use minepark\defaults\EventList;
+use minepark\defaults\Sounds;
 use jojoe77777\FormAPI\SimpleForm;
 use minepark\components\chat\Chat;
 use minepark\defaults\MapConstants;
@@ -95,10 +96,11 @@ class Phone extends Component
 
     private function breakCallForNoStream(MineParkPlayer $player)
     {
-        $player->sendMessage("PhoneSmsNoNet");
-        $player->sendMessage("PhoneSmsErrorNet");
+        $player->getStatesMap()->phoneCompanion->sendSound(Sounds::PHONE_LOST_CONNECT);
+        $player->sendMessage("PhoneNoNet");
+        $player->sendMessage("PhoneErrorNet");
 
-        $player->getStatesMap()->phoneCompanion->sendMessage("PhoneSmsErrorNet");
+        $player->getStatesMap()->phoneCompanion->sendMessage("PhoneErrorNet");
 
         $player->getStatesMap()->phoneCompanion->getStatesMap()->phoneCompanion = null; 
         $player->getStatesMap()->phoneCompanion = null;
@@ -106,10 +108,11 @@ class Phone extends Component
 
     private function breakCallForNoMoney(MineParkPlayer $player)
     {
-        $player->sendMessage("PhoneSmsContinueNoMoney");
-        $player->sendMessage("PhoneSmsErrorNet");
+        $player->getStatesMap()->phoneCompanion->sendSound(Sounds::PHONE_LOST_CONNECT);
+        $player->sendMessage("PhoneContinueNoMoney");
+        $player->sendMessage("PhoneErrorNet");
 
-        $player->getStatesMap()->phoneCompanion->sendMessage("PhoneSmsErrorNet");
+        $player->getStatesMap()->phoneCompanion->sendMessage("PhoneErrorNet");
 
         $player->getStatesMap()->phoneCompanion->getStatesMap()->phoneCompanion = null; 
         $player->getStatesMap()->phoneCompanion = null;
@@ -120,7 +123,7 @@ class Phone extends Component
         $userName = $this->phonesDataProvider->getUserNameByNumber($number);
 
         if(isset($userName)) {
-            return $this->getServer()->getPlayerExact($userName);
+            return $this->getServer()->getPlayerByPrefix($userName);
         }
 
         return null;
@@ -148,32 +151,38 @@ class Phone extends Component
         }
 
         if(!$this->hasStream($initializer->getPosition())) {
-            $initializer->sendMessage("PhoneSmsNoNet2");
+            $initializer->sendSound(Sounds::PHONE_DISCONNECT);
+            $initializer->sendMessage("PhoneNoNet2");
             return;
         }
 
         $target = $this->getPlayerByNumber($targetNumber);
 
         if(!isset($target)) {
-            $initializer->sendMessage("PhoneSmsNoNet");
+            $initializer->sendSound(Sounds::PHONE_DISCONNECT);
+            $initializer->sendMessage("PhoneNoNet");
             return;
         }
 
         if($target->getName() === $initializer->getName()) {
+            $initializer->sendSound(Sounds::PHONE_CHECK_NUM);
             $initializer->sendMessage("PhoneCheckNum");
             return;
         }
 
+        $initializer->sendSound(Sounds::PHONE_UNDIALING);
         $initializer->sendMessage("PhoneBeeps");
 
         if(isset($initializer->getStatesMap()->phoneCompanion) or isset($initializer->getStatesMap()->phoneIncomingCall)
             or isset($initializer->getStatesMap()->phoneOutcomingCall)) {
+            $initializer->sendSound(Sounds::PHONE_UNAVAILABLE);
             $initializer->sendMessage("PhoneAlreadyInCall");
             return;
         }
 
         if(isset($target->getStatesMap()->phoneCompanion) or isset($target->getStatesMap()->phoneIncomingCall)
             or isset($target->getStatesMap()->phoneOutcomingCall)) {
+            $initializer->sendSound(Sounds::PHONE_UNDIALING);
             $initializer->sendMessage("PhoneCalling3");
             return;
         }
@@ -183,10 +192,12 @@ class Phone extends Component
 
         $this->chat->sendLocalMessage($target, "{PhoneCallingBeep}", "§d : ", 10);
 
+        $target->sendSound(Sounds::PHONE_INCOMING_CALL);
         $target->sendLocalizedMessage("{PhoneCalling1}" . $initializer->getProfile()->phoneNumber . ".");
         $target->sendMessage("PhoneCalling2");
         $target->sendMessage("PhoneCalling4");
 
+        $initializer->sendSound(Sounds::PHONE_OUTCOMMING_CALL);
         $initializer->sendMessage("PhoneCalling5");
     }
 
@@ -214,6 +225,7 @@ class Phone extends Component
             return;
         }
 
+        $target->sendSound(Sounds::PHONE_SMS);
         $target->sendLocalizedMessage("{PhoneSend}" . $sender->getProfile()->phoneNumber);
         $target->sendMessage("§b[➪] " . $text);
 
@@ -325,6 +337,7 @@ class Phone extends Component
 
     private function cancelRequest(MineParkPlayer $player)
     {
+        $player->getStatesMap()->phoneOutcomingCall->sendSound(Sounds::PHONE_UNDIALING);
         $player->sendMessage("PhoneCancelRequest");
 
         $player->getStatesMap()->phoneOutcomingCall->getStatesMap()->phoneIncomingCall = null;
@@ -333,6 +346,7 @@ class Phone extends Component
 
     public function breakCall(MineParkPlayer $player)
     {
+        $player->sendSound(Sounds::PHONE_LOST_CONNECT);
         $player->getStatesMap()->phoneCompanion = null;
         $player->sendMessage("PhoneErrorNet");
     }

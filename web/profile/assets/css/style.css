@@ -25,6 +25,7 @@ body {
 	background: url("/profile/img/backgraund.jpg") no-repeat;
 	background-size: cover;
 	background-attachment: fixed;
+	background-position: center;
 }
 
 a {
@@ -571,6 +572,10 @@ footer {
 	margin: 0 auto;
 }
 
+.display_none {
+	display: none;
+}
+
 @media screen and (max-width: 1230px) {
 	.wrapper {
 		width: 1118px;
@@ -722,6 +727,9 @@ footer {
 	.navigation_menu {
     margin-left: -66px;
 	}
+	.cross {
+		margin-left: 93%;
+	}
 }
 
 @media screen and (max-width: 760px) {
@@ -768,7 +776,6 @@ footer {
 	.menu__list {
 		margin-left: 33px;
 	}
-	
 }
 
 @media screen and (max-width: 705px) {
@@ -785,7 +792,7 @@ footer {
 		margin-left: 92%;
 	}
 	.linear_2 {
-		margin-top: 55px;
+		margin-top: 44px;
 	}
 	.margin_left_44 {
 		margin-left: 20px;
@@ -795,6 +802,9 @@ footer {
 	}
 	.link_exit {
 		margin-left: 68%;
+	}
+	.container {
+		height: 410px;
 	}
 }
 
@@ -843,9 +853,12 @@ footer {
 	}
 	.cross {
 		margin: 10px;
-		margin-left: 92%;
+		margin-left: 89%;
 	}
 	.column_2 {
 		margin-left: 0;
+	}
+	.linear_2 {
+		margin-top: 18px;
 	}
 }

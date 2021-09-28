@@ -1,5 +1,5 @@
 <?php
-namespace minepark\commands;
+namespace minepark\commands\economy;
 
 use minepark\Components;
 use minepark\components\map\ATM;

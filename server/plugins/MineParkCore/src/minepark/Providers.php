@@ -55,54 +55,62 @@ class Providers
         self::$profileProvider = new ProfileProvider;
     }
 
-    public static function getBankingProvider() 
-    {
-        return self::$bankingProvider;
-    }
+    /*
+        Data Providers
+    */
 
-    public static function getLocalizationProvider() 
-    {
-        return self::$localizationProvider;
-    }
-
-    public static function getMapProvider()
-    {
-        return self::$mapProvider;
-    }
-
-    public static function getProfileProvider()
-    {
-        return self::$profileProvider;
-    }
-
-    public static function getBankingDataProvider()
+    public static function getBankingDataProvider() : BankingDataProvider
     {
         return self::$bankingDataProvider;
     }
 
-    public static function getMapDataProvider()
+    public static function getMapDataProvider() : MapDataProvider
     {
         return self::$mapDataProvider;
     }
 
-    public static function getPhonesDataProvider()
+    public static function getPhonesDataProvider() : PhonesDataProvider
     {
         return self::$phonesDataProvider;
     }
 
-    public static function getSettingsDataProvider()
+    public static function getSettingsDataProvider() : SettingsDataProvider
     {
         return self::$settingsDataProvider;
     }
 
-    public static function getUsersDataProvider()
+    public static function getUsersDataProvider() : UsersDataProvider
     {
         return self::$usersDataProvider;
     }
 
-    public static function getFloatingTextsDataProvider()
+    public static function getFloatingTextsDataProvider() : FloatingTextsDataProvider
     {
         return self::$floatingTextsDataProvider;
+    }
+
+    /*
+        Generic Providers
+    */
+
+    public static function getBankingProvider() : BankingProvider
+    {
+        return self::$bankingProvider;
+    }
+
+    public static function getLocalizationProvider()  : LocalizationProvider
+    {
+        return self::$localizationProvider;
+    }
+
+    public static function getMapProvider() : MapProvider
+    {
+        return self::$mapProvider;
+    }
+
+    public static function getProfileProvider() : ProfileProvider
+    {
+        return self::$profileProvider;
     }
 
     public static function getBansDataProvider()
