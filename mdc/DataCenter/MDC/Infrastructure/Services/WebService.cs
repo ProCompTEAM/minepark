@@ -43,16 +43,15 @@ namespace MDC.Infrastructure.Services
 
         private UserWebProfileDto CreateUserWebProfileDto(UserDto userDto, BankAccount bankAccount)
         {
-            UserWebProfileDto userWebProfileDto = new UserWebProfileDto();
-
-            userWebProfileDto.FullName = userDto.FullName;
-            userWebProfileDto.Privilege = GetUserPrivilege(userDto);
-            userWebProfileDto.PhoneNumber = userDto.PhoneNumber;
-            userWebProfileDto.MoneySummary = bankAccount.Cash + bankAccount.Debit + bankAccount.Credit;
-            userWebProfileDto.MinutesPlayed = userDto.MinutesPlayed;
-            userWebProfileDto.CreatedDate = userDto.CreatedDate;
-
-            return userWebProfileDto;
+            return new UserWebProfileDto
+            {
+                FullName = userDto.FullName,
+                Privilege = GetUserPrivilege(userDto),
+                PhoneNumber = userDto.PhoneNumber,
+                MoneySummary = bankAccount.Cash + bankAccount.Debit + bankAccount.Credit,
+                MinutesPlayed = userDto.MinutesPlayed,
+                CreatedDate = userDto.CreatedDate
+            };
         }
 
         private async Task<BankAccount> GetBankAccount(string unitId, string userName)
@@ -66,22 +65,22 @@ namespace MDC.Infrastructure.Services
 
         private UserPrivilege GetUserPrivilege(UserDto userDto)
         {
-            if (userDto.Vip == true)
+            if (userDto.Vip)
             {
                 return UserPrivilege.Vip;
             }
 
-            if (userDto.Builder == true)
+            if (userDto.Builder)
             {
                 return UserPrivilege.Builder;
             }
 
-            if (userDto.Realtor == true)
+            if (userDto.Realtor)
             {
                 return UserPrivilege.Realtor;
             }
 
-            if (userDto.Administrator == true)
+            if (userDto.Administrator)
             {
                 return UserPrivilege.Administrator;
             }
