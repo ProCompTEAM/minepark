@@ -144,6 +144,9 @@ commands:
  moneygift:
   default: true
   permission: minepark.all
+ realty:
+  default: true
+  permission: minepark.all
 
 permissions:
   minepark.service:
