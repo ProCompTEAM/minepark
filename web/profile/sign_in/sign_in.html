@@ -15,10 +15,13 @@
 				<h1 class="animated swing">Вход в minepark:</h1>
 				<input class="but" type="text" placeholder="Ваш ник">
 				<input class="but" type="password" placeholder="Пароль">
-				<input class="button" type="submit" value="Войти">
+				<input type="hidden" name="token" id="token">
+				<input class="button" name="post" type="submit" value="Войти">
 			</form>
 		</div>
 	</header>
 	<a href="/profile/">тестовый вход</a>
+	<script src="https://www.google.com/recaptcha/api.js?render=6LcrNJ4cAAAAAKIYPhVuc4CwnmSkap-9L_MTNvS2"></script>
+	<script src="assets/js/captcha.js"></script>
 </body>
 </html>
