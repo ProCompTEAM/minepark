@@ -23,6 +23,10 @@ class GPSCommand extends Command
 
     private const GPS_LIGHTS_SUBCOMMAND_NAME = "lights";
 
+    private const MINIMAL_X = -100000;
+
+    private const MINIMAL_Z = -100000;
+
     private const MAXIMAL_X = 100000;
 
     private const MAXIMAL_Z = 100000;
@@ -74,7 +78,8 @@ class GPSCommand extends Command
         $x = $args[0];
         $z = $args[1];
 
-        if($x > self::MAXIMAL_X or $z > self::MAXIMAL_Z) {
+        if($x > self::MAXIMAL_X or $z > self::MAXIMAL_Z
+            or $x < self::MINIMAL_X or $z < self::MINIMAL_Z) {
             $player->sendMessage("CommandGPSCoordinatesBig");
             return;
         }
@@ -181,6 +186,7 @@ class GPSCommand extends Command
     private function showInformation(MineParkPlayer $player)
     {
         $this->sendInformationWindow($player);
+
         $player->sendSound(Sounds::OPEN_NAVIGATOR);
     }
 
