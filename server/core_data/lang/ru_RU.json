@@ -62,7 +62,8 @@
     "AddPointSuccessPart2": " §3добавлена в базу!",
     "AddPointNoArg": "Использование команды: /addpoint (имя точки) (ее группа, по умолчанию 1)",
 
-    "CommangGPSnoXZ": "§cУказана неверная позиция X Z",
+    "CommandGPSnoXZ": "§cУказана неверная позиция X Z",
+    "CommandGPSCoordinatesBig": "§cX и Z не могут превышать допустимого значения",
     "CommandGPSPath1": "§aМаршрут к указанной точке проложен;",
     "CommandGPSPath2": "§6Следуйте по направлению указателей навигатора!",
     "CommandGPSNoPointPart1": "§6Места§e",
