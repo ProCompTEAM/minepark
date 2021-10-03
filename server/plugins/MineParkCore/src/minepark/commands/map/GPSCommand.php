@@ -21,6 +21,16 @@ class GPSCommand extends Command
 
     private const FLOATING_TEXT_TAG = "GPS";
 
+    private const GPS_LIGHTS_SUBCOMMAND_NAME = "lights";
+
+    private const MINIMAL_X = -100000;
+
+    private const MINIMAL_Z = -100000;
+
+    private const MAXIMAL_X = 100000;
+
+    private const MAXIMAL_Z = 100000;
+
     private MapProvider $mapProvider;
 
     public function __construct()
@@ -44,32 +54,37 @@ class GPSCommand extends Command
 
     public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
-        if (self::argumentsCount(2, $args)) {
-            return $this->initializeCoordinatesGps($player, $args);
-        } else if (self::argumentsCount(1, $args)) {
-            if($args[0] === "lights") {
-                return $this->updateLights($player);
+        if(self::argumentsCount(2, $args)) {
+            $this->initializeCoordinatesGps($player, $args);
+        } else if(self::argumentsCount(1, $args)) {
+            if($args[0] === self::GPS_LIGHTS_SUBCOMMAND_NAME) {
+                $this->updateLights($player);
             } else {
-                return $this->initializePointGps($player, $args);
+               $this->initializePointGps($player, $args);
             }
+        } else {
+            $this->disableGPS($player);
+            $this->showInformation($player);
         }
-
-        $player->getStatesMap()->gps = null;
-        $player->getStatesMap()->bar = null;
-            
-        $this->sendInformationWindow($player);
-
-        $player->sendSound(Sounds::OPEN_NAVIGATOR);
     }
 
     private function initializeCoordinatesGps(MineParkPlayer $player, array $args)
     {
-        if (!is_numeric($args[0]) or !is_numeric($args[1])) {
-            $player->sendMessage("CommangGPSnoXZ");
+        if(!is_numeric($args[0]) or !is_numeric($args[1])) {
+            $player->sendMessage("CommandGPSnoXZ");
             return;
         }
 
-        $player->getStatesMap()->gps = new Position($args[0], $player->getLocation()->getY(), $args[1], $player->getWorld());
+        $x = $args[0];
+        $z = $args[1];
+
+        if($x > self::MAXIMAL_X or $z > self::MAXIMAL_Z
+            or $x < self::MINIMAL_X or $z < self::MINIMAL_Z) {
+            $player->sendMessage("CommandGPSCoordinatesBig");
+            return;
+        }
+
+        $player->getStatesMap()->gps = new Position($x, $player->getLocation()->getY(), $z, $player->getWorld());
 
         $player->sendMessage("CommandGPSPath1");
         $player->sendMessage("CommandGPSPath2");
@@ -77,16 +92,17 @@ class GPSCommand extends Command
 
     private function initializePointGps(MineParkPlayer $player, array $args)
     {
-        $point = $args[0];
+        $pointName = $args[0];
 
-        $gps = $this->mapProvider->getPointPosition($point);
+        $pointPosition = $this->mapProvider->getPointPosition($pointName);
 
-        if (!isset($gps)) {
-            return $player->sendLocalizedMessage("{CommandGPSNoPointPart1} $point {CommandGPSNoPointPart2}");
+        if(!isset($pointPosition)) {
+            $player->sendLocalizedMessage("{CommandGPSNoPointPart1} $pointName {CommandGPSNoPointPart2}");
+            return;
         }
 
-        $player->getStatesMap()->gps = $gps;
-        $player->sendLocalizedMessage("{CommandGPSToPointPart1} $point {CommandGPSToPointPart2}");
+        $player->getStatesMap()->gps = $pointPosition;
+        $player->sendLocalizedMessage("{CommandGPSToPointPart1} $pointName {CommandGPSToPointPart2}");
         $player->sendMessage("CommandGPSPath2");
     }
 
@@ -105,8 +121,8 @@ class GPSCommand extends Command
 
     private function sendInformationWindow(MineParkPlayer $player) 
     {
-        $x = floor($player->getLocation()->getX()); 
-        $z = floor($player->getLocation()->getZ());
+        $x = $player->getLocation()->getFloorX();
+        $z = $player->getLocation()->getFloorZ();
 
         $form  = "§4(§7gps§4) §7Места рядом: §d/gpsnear\n";
         $form .= "§4(§7gps§4) §7Подсветить точки: §d/gps lights\n";
@@ -140,9 +156,9 @@ class GPSCommand extends Command
         foreach($points as $point) {
             $point = $this->castToMapPointDto($point);
 
-            if(strtolower($player->getWorld()->getDisplayName()) === $point->level) {
-                $level = $this->getServer()->getWorldManager()->getWorldByName($point->level);
-                $position = new Position($point->x, $point->y, $point->z, $level);
+            if(strtolower($player->getWorld()->getDisplayName()) === $point->world) {
+                $world = $this->getServer()->getWorldManager()->getWorldByName($point->world);
+                $position = new Position($point->x, $point->y, $point->z, $world);
                 $player->setFloatingText($position, $prefix . $point->name, self::FLOATING_TEXT_TAG);
             }
         }
@@ -159,6 +175,19 @@ class GPSCommand extends Command
         }
 
         $player->sendMessage("§6Точки навигации были скрыты.");
+    }
+
+    private function disableGPS(MineParkPlayer $player)
+    {
+        $player->getStatesMap()->gps = null;
+        $player->getStatesMap()->bar = null;
+    }
+
+    private function showInformation(MineParkPlayer $player)
+    {
+        $this->sendInformationWindow($player);
+
+        $player->sendSound(Sounds::OPEN_NAVIGATOR);
     }
 
     private function castToMapPointDto(object $point) : MapPointDto
