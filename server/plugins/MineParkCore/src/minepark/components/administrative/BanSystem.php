@@ -68,12 +68,12 @@ class BanSystem extends Component
         return $status;
     }
 
-    public function pardonUser(string $userName, ?string $issuer = null) : bool
+    public function pardonUser(string $userName, ?string $issuerName = null) : bool
     {
         $status = $this->banRecordsDataProvider->pardonUser($userName);
 
         if($status) {
-            $this->broadcastUnbanMessage($userName, $issuer);
+            $this->broadcastUnbanMessage($userName, $issuerName);
         }
 
         return $status;
@@ -84,26 +84,26 @@ class BanSystem extends Component
         return $this->banRecordsDataProvider->isBanned($userName);
     }
 
-    private function broadcastBanMessage(string $target, string $issuer, string $dateTime, string $reason)
+    private function broadcastBanMessage(string $target, string $issuerName, string $releaseDate, string $reason)
     {
-        $message = "§c[§eБАНЫ§c] §eИгрок§b $target §eбыл заблокирован администратором§b $issuer §eпо причине§b $reason. §eДата окончания блокировки:§b $dateTime";
+        $message = "§c[§eБАНЫ§c] §eИгрок§b $target §eбыл заблокирован администратором§b $issuerName §eпо причине§b $reason. §eДата окончания блокировки:§b $releaseDate";
 
         $this->getServer()->broadcastMessage($message);
     }
 
-    private function broadcastUnbanMessage(string $target, ?string $issuer = null)
+    private function broadcastUnbanMessage(string $target, ?string $issuerName = null)
     {
         $message = "§c[§eБАНЫ§c] §eИгрок§b $target §eбыл разблокирован";
 
-        if(!is_null($issuer)) {
-            $message = $message . " администратором§b $issuer";
+        if(!is_null($issuerName)) {
+            $message = $message . " администратором§b $issuerName";
         }
 
         $this->getServer()->broadcastMessage($message);
     }
 
-    private function kickPlayer(MineParkPlayer $target, string $issuer, string $dateTime, string $reason)
+    private function kickPlayer(MineParkPlayer $target, string $issuerName, string $releaseDate, string $reason)
     {
-        $target->kick("§eВы были заблокированы администратором§b $issuer §eпо причине§b $reason.\n§eДата окончания блокировки -§b $dateTime");
+        $target->kick("§eВы были заблокированы администратором§b $issuerName §eпо причине§b $reason.\n§eДата окончания блокировки -§b $releaseDate");
     }
 }
