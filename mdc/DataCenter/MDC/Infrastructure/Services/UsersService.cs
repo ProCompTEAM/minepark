@@ -22,7 +22,7 @@ namespace MDC.Infrastructure.Services
 
         private readonly IBankingService bankingService;
 
-        private readonly IBansService bansService;
+        private readonly IBanRecordsService banRecordsService;
 
         private readonly IExecutedCommandsAuditService executedCommandsAuditService;
 
@@ -39,7 +39,7 @@ namespace MDC.Infrastructure.Services
 
             phonesService = Store.GetService<PhonesService>();
             bankingService = Store.GetService<BankingService>();
-            bansService = Store.GetService<BansService>();
+            banRecordsService = Store.GetService<BanRecordsService>();
 
             executedCommandsAuditService = Store.GetService<ExecutedCommandsAuditService>();
             chatMessagesAuditService = Store.GetService<ChatMessagesAuditService>();
@@ -57,7 +57,7 @@ namespace MDC.Infrastructure.Services
         {
             User user = await databaseProvider.SingleOrDefaultAsync<User>(u => u.Name.ToLower() == userName.ToLower());
 
-            await bansService.UpdateBanStatus(user);
+            await banRecordsService.UpdateBanStatus(user);
 
             return user;
         }
@@ -66,7 +66,7 @@ namespace MDC.Infrastructure.Services
         {
             User user = await databaseProvider.FindPrimary<User>(userId);
 
-            await bansService.UpdateBanStatus(user);
+            await banRecordsService.UpdateBanStatus(user);
 
             return user;
         }

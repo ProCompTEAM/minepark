@@ -2,7 +2,7 @@
 namespace minepark;
 
 use Exception;
-use minepark\components\administrative\Bans;
+use minepark\components\administrative\BanSystem;
 use minepark\components\Auth;
 use minepark\components\BossBar;
 use minepark\components\map\ATM;
@@ -61,7 +61,7 @@ class Components
             new FloatingTexts,
             new ATM,
             new ClearLagg,
-            new Bans
+            new BanSystem
         ];
 
         foreach(self::$components as $component) {

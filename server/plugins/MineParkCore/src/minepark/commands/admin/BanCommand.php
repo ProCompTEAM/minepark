@@ -4,22 +4,47 @@ namespace minepark\commands\admin;
 
 use DateInterval;
 use DateTime;
+use jojoe77777\FormAPI\CustomForm;
 use minepark\commands\base\Command;
 use minepark\common\player\MineParkPlayer;
 use minepark\Components;
-use minepark\components\administrative\Bans;
+use minepark\components\administrative\BanSystem;
 use minepark\defaults\Permissions;
+use minepark\Providers;
+use minepark\providers\data\UsersDataProvider;
 use pocketmine\event\Event;
 
 class BanCommand extends Command
 {
     private const COMMAND_NAME = "ban";
 
-    private Bans $bans;
+    private const MONTHS_PATTERN_SUFFIX = "M";
+
+    private const DAYS_PATTERN_SUFFIX = "D";
+
+    private const TIMESTAMP_START_PATTERN = "T";
+
+    private const HOURS_PATTERN_SUFFIX = "H";
+
+    private const MINIMAL_NAME_LENGTH = 1;
+
+    private const MINIMAL_REASON_LENGTH = 1;
+
+    private const MAXIMAL_MONTHS = 12;
+
+    private const MAXIMAL_DAYS = 30;
+
+    private const MAXIMAL_HOURS = 24;
+
+    private UsersDataProvider $usersDataProvider;
+
+    private BanSystem $banSystem;
 
     public function __construct()
     {
-        $this->bans = Components::getComponent(Bans::class);
+        $this->usersDataProvider = Providers::getUsersDataProvider();
+
+        $this->banSystem = Components::getComponent(BanSystem::class);
     }
 
     public function getCommand() : array
@@ -39,102 +64,140 @@ class BanCommand extends Command
 
     public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
-        if(!self::argumentsMin(2, $args)) {
-            $this->sendInvalidCommandUsage($player);
-            return;
-        }
-
-        $this->tryParsingArguments($player, $args);
+        $this->sendBanForm($player);
     }
 
-    private function tryParsingArguments(MineParkPlayer $player, array $arguments)
+    private function sendBanForm(MineParkPlayer $player)
     {
-        $target = $arguments[0];
+        $form = new CustomForm([$this, "answerBanForm"]);
 
-        $arguments = array_slice($arguments, 1);
+        $form->setTitle("Блокировка игроков");
 
-        $months = 0;
-        $days = 0;
-        $hours = 0;
+        $form->addInput("Имя игрока");
+        $form->addInput("Причина бана");
+        $form->addSlider("Кол-во месяцев", 0, self::MAXIMAL_MONTHS);
+        $form->addSlider("Кол-во дней", 0, self::MAXIMAL_DAYS);
+        $form->addSlider("Кол-во часов", 0, self::MAXIMAL_HOURS);
 
-        for($i = 0; $i < count($arguments); $i++) {
-            $argument = $arguments[$i];
-
-            $suffix = substr($argument, -1);
-            $number = substr($argument, 0, strlen($argument) - 1);
-
-            if(!is_numeric($number)) {
-                break;
-            }
-
-            $number = (int) $number;
-
-            if($suffix === "m") {
-                $months += $number;
-            } else if($suffix === "d") {
-                $days += $number;
-            } else if($suffix === "h") {
-                $hours += $number;
-            } else {
-                break;
-            }
-        }
-
-        if($i === 0) {
-            $this->sendInvalidCommandUsage($player);
-            return;
-        }
-
-        $dateTime = $this->createDateTime($months, $days, $hours);
-
-        $arguments = array_slice($arguments, $i);
-
-        if(!isset($arguments[0])) {
-            $this->sendInvalidCommandUsage($player);
-            return;
-        }
-
-        $reason = implode(self::ARGUMENTS_SEPERATOR, $arguments);
-
-        $this->tryBanningPlayer($player, $target, $reason, $dateTime);
+        $player->sendForm($form);
     }
 
-    private function tryBanningPlayer(MineParkPlayer $player, string $target, string $reason, DateTime $dateTime)
+    public function answerBanForm(MineParkPlayer $player, ?array $inputData = null)
     {
-        $result = $this->bans->banPlayer($target, $player->getName(), $dateTime, $reason);
+        if(is_null($inputData)) {
+            return;
+        }
 
-        if($result) {
-            $player->sendMessage("§eИгрок успешно заблокирован!");
+        if(!isset($inputData[4])) {
+            $player->sendMessage("§eПроизошла ошибка. Попробуйте позже.");
+            return;
+        }
+
+        $userName = $inputData[0];
+        $reason = $inputData[1];
+        $months = $inputData[2];
+        $days = $inputData[3];
+        $hours = $inputData[4];
+
+        if(!$this->checkInputData($player, $userName, $reason, $months, $days, $hours)) {
+            return;
+        }
+
+        $this->processBan($player, $userName, $reason, $months, $days, $hours);
+    }
+
+    private function checkInputData(MineParkPlayer $player, string $userName, string $reason, int $months, int $days, int $hours) : bool
+    {
+        if(!is_numeric($months) or !is_numeric($days) or !is_numeric($hours)) {
+            $player->sendMessage("§eПроизошла ошибка. Попробуйте позже");
+            return false;
+        }
+
+        if($months === 0 and $days === 0 and $hours === 0) {
+            $player->sendMessage("§cВы не указали время бана!");
+            return false;
+        }
+
+        if($months > self::MAXIMAL_MONTHS or $days > self::MAXIMAL_DAYS or $hours > self::MAXIMAL_HOURS) {
+            $player->sendMessage("§eПроизошла ошибка. Попробуйте позже");
+            return false;
+        }
+
+        if(strlen($userName) < self::MINIMAL_NAME_LENGTH) {
+            $player->sendMessage("§cВы не указали ник игрока, которого желаете забанить!");
+            return false;
+        }
+
+        if(strlen($reason) < self::MINIMAL_REASON_LENGTH) {
+            $player->sendMessage("§cВы не указали причину бана!");
+            return false;
+        }
+
+        return true;
+    }
+
+    private function processBan(MineParkPlayer $issuer, string $targetName, string $reason, int $months, int $days, int $hours)
+    {
+        $target = $this->getServer()->getPlayerByPrefix($targetName);
+
+        if(!is_null($target)) {
+            $this->banOnlinePlayer($issuer, $target, $reason, $months, $days, $hours);
         } else {
-            $player->sendMessage("§eВозможно, игрок§b $target §eне существует или уже заблокирован");
+            $this->banOfflinePlayer($issuer, $targetName, $reason, $months, $days, $hours);
         }
     }
 
-    private function sendInvalidCommandUsage(MineParkPlayer $player)
+    private function banOnlinePlayer(MineParkPlayer $issuer, MineParkPlayer $target, string $reason, int $months, int $days, int $hours)
     {
-        $player->sendMessage("§eНеверное использование данной команды. Формат: §b/ban (имя игрока) (время) (причина)");
+        $releaseDate = $this->createDateTime($months, $days, $hours);
+
+        $this->banSystem->banOnlineUser($target, $issuer->getName(), $releaseDate, $reason);
+
+        $issuer->sendMessage("§eИгрок §b" . $target->getName() . "§e был успешно заблокирован!");
+    }
+
+    private function banOfflinePlayer(MineParkPlayer $issuer, string $targetName, string $reason, int $months, int $days, int $hours)
+    {
+        if(!$this->usersDataProvider->isUserExist($targetName)) {
+            $issuer->sendMessage("§eИгрока§b $targetName §eне существует :(");
+            return;
+        }
+
+        $releaseDate = $this->createDateTime($months, $days, $hours);
+
+        $banStatus = $this->banSystem->banOfflineUser($targetName, $issuer->getName(), $releaseDate, $reason);
+
+        if($banStatus) {
+            $issuer->sendMessage("§eИгрок§b $targetName §eбыл успешно заблокирован!");
+        } else {
+            $issuer->sendMessage("§eИгрок§b $targetName §eуже в бане!");
+        }
     }
 
     private function createDateTime(int $months, int $days, int $hours) : DateTime
     {
-        $timePattern = "P";
+        $dateTime = new DateTime;
+        $dateTime->add($this->createDateInterval($months, $days, $hours));
 
-        if($months !== 0) {
-            $timePattern = $timePattern . $months . "M";
+        return $dateTime;
+    }
+
+    private function createDateInterval(int $months, int $days, int $hours) : DateInterval
+    {
+        $dateIntervalPattern = "P";
+
+        if($months > 0) {
+            $dateIntervalPattern = $dateIntervalPattern . $months . self::MONTHS_PATTERN_SUFFIX;
         }
 
-        if($days !== 0) {
-            $timePattern = $timePattern . $days . "D";
+        if($days > 0) {
+            $dateIntervalPattern = $dateIntervalPattern . $days . self::DAYS_PATTERN_SUFFIX;
         }
 
-        if($hours !== 0) {
-            $timePattern = $timePattern . "T";
-
-            $timePattern = $timePattern . $hours . "H";
+        if($hours > 0) {
+            $dateIntervalPattern = $dateIntervalPattern . self::TIMESTAMP_START_PATTERN . $hours . self::HOURS_PATTERN_SUFFIX;
         }
 
-        $dateInterval = new DateInterval($timePattern);
-
-        return (new DateTime)->add($dateInterval);
+        return new DateInterval($dateIntervalPattern);
     }
 }

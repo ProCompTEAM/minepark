@@ -2,13 +2,13 @@
 
 namespace minepark\models\dtos;
 
-class PlayerBanDto extends BaseDto
+class UserBanRecordDto extends BaseDto
 {
     public string $userName;
 
-    public string $issuer;
+    public string $issuerName;
 
-    public string $end;
+    public string $releaseDate;
 
     public string $reason;
 }

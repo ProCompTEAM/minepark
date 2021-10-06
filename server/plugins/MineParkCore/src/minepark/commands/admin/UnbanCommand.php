@@ -5,8 +5,10 @@ namespace minepark\commands\admin;
 use minepark\commands\base\Command;
 use minepark\common\player\MineParkPlayer;
 use minepark\Components;
-use minepark\components\administrative\Bans;
+use minepark\components\administrative\BanSystem;
 use minepark\defaults\Permissions;
+use minepark\Providers;
+use minepark\providers\data\UsersDataProvider;
 use pocketmine\event\Event;
 
 class UnbanCommand extends Command
@@ -15,11 +17,15 @@ class UnbanCommand extends Command
 
     public const COMMAND_ALIAS = "pardon";
 
-    private Bans $bans;
+    private UsersDataProvider $usersDataProvider;
+
+    private BanSystem $banSystem;
 
     public function __construct()
     {
-        $this->bans = Components::getComponent(Bans::class);
+        $this->usersDataProvider = Providers::getUsersDataProvider();
+
+        $this->banSystem = Components::getComponent(BanSystem::class);
     }
 
     public function getCommand() : array
@@ -45,12 +51,19 @@ class UnbanCommand extends Command
             return;
         }
 
-        $status = $this->bans->unbanPlayer($args[0], $player->getName());
+        $userName = $args[0];
+
+        if(!$this->usersDataProvider->isUserExist($userName)) {
+            $player->sendMessage("§eИгрока§b $userName §eне существует!");
+            return;
+        }
+
+        $status = $this->banSystem->pardonUser($userName, $player->getName());
 
         if($status) {
-            $player->sendMessage("§eИгрок §b" . $args[0] . " §eразблокирован!");
+            $player->sendMessage("§eИгрок§b $userName §eразблокирован!");
         } else {
-            $player->sendMessage("§eВозможно, данного игрока не существует или он попросту не заблокирован");
+            $player->sendMessage("§eИгрок§b $userName §eне является заблокированным!");
         }
     }
 

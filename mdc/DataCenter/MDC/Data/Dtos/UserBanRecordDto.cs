@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace MDC.Data.Dtos
 {
-    public class PlayerBanDto
+    public class UserBanRecordDto
     {
         public string UserName { get; set; }
 
-        public string Issuer { get; set; }
+        public string IssuerName { get; set; }
 
-        public DateTime End { get; set; }
+        public DateTime ReleaseDate { get; set; }
 
         public string Reason { get; set; }
     }

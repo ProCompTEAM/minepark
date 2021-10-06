@@ -31,7 +31,7 @@ namespace MDC.Data
 
         public DbSet<UserTrafficAuditRecord> UserTrafficAuditRecords { get; set; }
 
-        public DbSet<PlayerBan> PlayerBans { get; set; }
+        public DbSet<UserBanRecord> UserBanRecords { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -54,7 +54,7 @@ namespace MDC.Data
         private void ConfigureRelationships(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>()
-                .HasOne(user => user.Ban);
+                .HasOne(user => user.BanRecord);
         }
     }
 }

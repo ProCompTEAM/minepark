@@ -18,7 +18,7 @@ namespace MDC.Common.Mapping
 
             CreateMap<Credentials, CredentialsDto>().ReverseMap();
 
-            CreateMap<PlayerBan, PlayerBanDto>().ReverseMap();
+            CreateMap<UserBanRecord, UserBanRecordDto>().ReverseMap();
         }
     }
 }

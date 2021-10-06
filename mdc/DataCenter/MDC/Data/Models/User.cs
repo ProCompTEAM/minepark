@@ -48,7 +48,7 @@ namespace MDC.Data.Models
         [Required]
         public bool Realtor { get; set; }
 
-        public virtual PlayerBan Ban { get; set; }
+        public virtual UserBanRecord BanRecord { get; set; }
 
         public DateTime JoinedDate { get; set; }
 

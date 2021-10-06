@@ -9,36 +9,36 @@ namespace MDC.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<int>(
-                name: "BanId",
+                name: "BanRecordId",
                 table: "Users",
                 nullable: true);
 
             migrationBuilder.CreateTable(
-                name: "PlayerBans",
+                name: "UserBanRecords",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     UserName = table.Column<string>(type: "nvarchar(128)", nullable: false),
-                    Issuer = table.Column<string>(type: "nvarchar(128)", nullable: false),
-                    End = table.Column<DateTime>(nullable: false),
+                    IssuerName = table.Column<string>(type: "nvarchar(128)", nullable: false),
+                    ReleaseDate = table.Column<DateTime>(nullable: false),
                     Reason = table.Column<string>(type: "nvarchar(128)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PlayerBans", x => x.Id);
+                    table.PrimaryKey("PK_UserBanRecords", x => x.Id);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_BanId",
+                name: "IX_Users_BanRecordId",
                 table: "Users",
-                column: "BanId");
+                column: "BanRecordId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Users_PlayerBans_BanId",
+                name: "FK_Users_UserBanRecords_BanRecordId",
                 table: "Users",
-                column: "BanId",
-                principalTable: "PlayerBans",
+                column: "BanRecordId",
+                principalTable: "UserBanRecords",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
         }
@@ -46,18 +46,18 @@ namespace MDC.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Users_PlayerBans_BanId",
+                name: "FK_Users_UserBanRecords_BanRecordId",
                 table: "Users");
 
             migrationBuilder.DropTable(
-                name: "PlayerBans");
+                name: "UserBanRecords");
 
             migrationBuilder.DropIndex(
-                name: "IX_Users_BanId",
+                name: "IX_Users_BanRecordId",
                 table: "Users");
 
             migrationBuilder.DropColumn(
-                name: "BanId",
+                name: "BanRecordId",
                 table: "Users");
         }
     }

@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MDC.Data.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20210910092929_AddBanSystem")]
+    [Migration("20211003141551_AddBanSystem")]
     partial class AddBanSystem
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -285,32 +285,6 @@ namespace MDC.Data.Migrations
                     b.ToTable("Phones");
                 });
 
-            modelBuilder.Entity("MDC.Data.Models.PlayerBan", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("End")
-                        .HasColumnType("datetime");
-
-                    b.Property<string>("Issuer")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<string>("Reason")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(128)");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(128)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("PlayerBans");
-                });
-
             modelBuilder.Entity("MDC.Data.Models.UnitBalance", b =>
                 {
                     b.Property<int>("Id")
@@ -338,7 +312,7 @@ namespace MDC.Data.Migrations
                     b.Property<bool>("Administrator")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<int?>("BanId")
+                    b.Property<int?>("BanRecordId")
                         .HasColumnType("int");
 
                     b.Property<int>("Bonus")
@@ -393,9 +367,35 @@ namespace MDC.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BanId");
+                    b.HasIndex("BanRecordId");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("MDC.Data.Models.UserBanRecord", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("IssuerName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime>("ReleaseDate")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(128)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserBanRecords");
                 });
 
             modelBuilder.Entity("MDC.Data.Models.UserSettings", b =>
@@ -440,9 +440,9 @@ namespace MDC.Data.Migrations
 
             modelBuilder.Entity("MDC.Data.Models.User", b =>
                 {
-                    b.HasOne("MDC.Data.Models.PlayerBan", "Ban")
+                    b.HasOne("MDC.Data.Models.UserBanRecord", "BanRecord")
                         .WithMany()
-                        .HasForeignKey("BanId");
+                        .HasForeignKey("BanRecordId");
                 });
 #pragma warning restore 612, 618
         }

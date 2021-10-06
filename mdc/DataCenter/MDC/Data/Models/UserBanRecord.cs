@@ -6,16 +6,16 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MDC.Data.Models
 {
-    public class PlayerBan : BaseEntity
+    public class UserBanRecord : BaseEntity
     {
         [Required, Unicode(Defaults.DefaultStringLength)]
         public string UserName { get; set; }
 
         [Required, Unicode(Defaults.DefaultStringLength)]
-        public string Issuer { get; set; }
+        public string IssuerName { get; set; }
 
         [Required]
-        public DateTime End { get; set; }
+        public DateTime ReleaseDate { get; set; }
 
         [Required, Unicode(Defaults.DefaultStringLength)]
         public string Reason { get; set; }

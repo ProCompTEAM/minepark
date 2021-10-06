@@ -1,7 +1,7 @@
 <?php
 namespace minepark\components\settings;
 
-use minepark\components\administrative\Bans;
+use minepark\components\administrative\BanSystem;
 use minepark\defaults\StringConstants;
 use minepark\Events;
 use minepark\Providers;
@@ -30,8 +30,6 @@ class PlayerSettings extends Component
 {
     private Tracking $tracking;
 
-    private Bans $bans;
-
     public function initialize()
     {
         Events::registerEvent(EventList::PLAYER_CREATION_EVENT, [$this, "setDefaultPlayerClass"]);
@@ -41,8 +39,6 @@ class PlayerSettings extends Component
         Events::registerEvent(EventList::PLAYER_INTERACT_EVENT, [$this, "applyInteractSettings"]);
 
         $this->tracking = Components::getComponent(Tracking::class);
-
-        $this->bans = Components::getComponent(Bans::class);
     }
 
     public function getAttributes() : array
@@ -146,13 +142,13 @@ class PlayerSettings extends Component
 
     private function checkPlayerForBan(MineParkPlayer $player) : bool
     {
-        $banInfo = $player->getProfile()->ban;
+        $banInfo = $player->getProfile()->banRecord;
 
         if($banInfo === null) {
             return false;
         }
 
-        $kickMessage = "§eВы заблокированы на сервере до §b" . $banInfo->end . "§e. Вас заблокировал игрок §b" . $banInfo->issuer . " §eпо причине §b" . $banInfo->reason;
+        $kickMessage = "§eВы заблокированы на сервере до §b" . $banInfo->releaseDate . "§e. Вас заблокировал игрок §b" . $banInfo->issuerName . " §eпо причине §b" . $banInfo->reason;
 
         $player->kick($kickMessage);
 

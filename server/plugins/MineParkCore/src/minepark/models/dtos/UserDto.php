@@ -31,7 +31,7 @@ class UserDto extends BaseDto
 
     public bool $realtor;
 
-    public ?PlayerBanDto $ban;
+    public ?UserBanRecordDto $banRecord;
 
     public string $joinedDate;
 
