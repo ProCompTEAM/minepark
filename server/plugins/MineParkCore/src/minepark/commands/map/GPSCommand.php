@@ -148,7 +148,7 @@ class GPSCommand extends Command
         $this->showLightsForPoints($player, $marketPoints, "§b§e＄ ");
         $this->showLightsForPoints($player, $realtyPoints, "§b§9⌂ ");
 
-        $player->sendMessage("§9Теперь вы видите базовые точки прямо на карте!");
+        $player->sendMessage("CommandGPSShowLights");
     }
 
     private function showLightsForPoints(MineParkPlayer $player, array $points, string $prefix) 
@@ -174,7 +174,7 @@ class GPSCommand extends Command
             $player->unsetFloatingText($floatingText);
         }
 
-        $player->sendMessage("§6Точки навигации были скрыты.");
+        $player->sendMessage("CommandGPSHideLights");
     }
 
     private function disableGPS(MineParkPlayer $player)

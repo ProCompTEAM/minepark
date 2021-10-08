@@ -6,6 +6,10 @@
     "NoPermission1": "§cУ вас нет прав на эту команду :(",
     "NoPermission2": "§6Возможно она станет доступна после покупки: /donate",
     "GroupYou": "Теперь вы ",
+    "Rubles": "§3рублей.",
+    "ClearLagg": "§dКоммунальные службы очистили среду от мусора!",
+    "GoodLuck": "§bУдачи!",
+    "LessSymbols": "§eВ содержимом должен быть хотя бы 1 символ.",
 
 
     "Lifts": "&b*ЛИФТЫ*",
@@ -33,6 +37,7 @@
     "LiftsError#3": "допустимая скорость кабины: 1 / 2 / 3 / 4",
 
 
+    "AdminCmdNoArg": "§eВсе аргументы пусты :(",
     "AdminCmdSetOrg1": "[!] Организация игрока изменена на $oid",
     "AdminCmdPlayerNear": "Игроки в радиусе блоков:",
     "AdminCmdArestPart1": "§7[§eA§7] §6Администратор ",
@@ -62,6 +67,8 @@
     "AddPointSuccessPart2": " §3добавлена в базу!",
     "AddPointNoArg": "Использование команды: /addpoint (имя точки) (ее группа, по умолчанию 1)",
 
+    "CommandATMNoNear": "§eПоблизости нету банкомата!",
+
     "CommandGPSnoXZ": "§cУказана неверная позиция X Z",
     "CommandGPSCoordinatesBig": "§cX и Z не могут превышать допустимого значения",
     "CommandGPSPath1": "§aМаршрут к указанной точке проложен;",
@@ -70,6 +77,9 @@
     "CommandGPSNoPointPart2": "§6на карте не существует!",
     "CommandGPSToPointPart1": "§aМаршрут к точке§e",
     "CommandGPSToPointPart2": "§aобновлен;",
+
+    "CommandGPSShowLights": "§9Теперь вы видите базовые точки прямо на карте!",
+    "CommandGPSHideLights": "§6Точки навигации были скрыты.",
 
     "CommandGPSCome": "§aПоздравляем, вы прибыли к месту назначения!",
     "CommandGPSNearUse": "§6Вы можете посмотреть места рядом: §e/gpsnear",
@@ -102,6 +112,10 @@
     "CommandCasinoMoneyMax": " и < ",
     "CommandCasinoUse": "§6Шанс выйгрыша 50%! Использование: /casino <сумма>",
     "CommandCasinoNear": "§cВам необходимо находиться около игровых автоматов!",
+
+
+    "CommandDay": "§9⌚ Вы включили §dдень §9в игровом мире §e",
+    "CommandNight": "§9⌚ Вы включили §1ночь §9в игровом мире §e",
 
 
     "CommandBankSuccess": "§aВы успешно сменили метод платежа!",
@@ -141,6 +155,20 @@
 
     "CommandOnlineNoAdmins": "Сейчас нет администраторов в сети, но это не повод вести себя плохо :)",
     "CommandOnlineMessage": "Администрация в сети: ",
+
+
+    "CommandResetPasNoName": "Необходимо указать никнейм игрока.",
+    "CommandResetPasNameNoExist": "Указанного игрока не существует.",
+    "CommandResetPasSucces1": "Сброс пароля игрока",
+    "CommandResetPasSucces2": "прошёл успешно.",
+    "CommandResetPasForPlayer": "§cАдминистратор сбросил вам пароль.",
+
+
+    "CommandTransportErrorSpawn": "Неправильное использование команды. /t spawn <машина>",
+    "CommandTransportErrorStation": "Неправильное использование команды. /t station <порядковый номер>",
+    "CommandTransporNoPermission": "Необходимо запросить доступ для выполнения этой команды!",
+    "CommandTransportErrorModel": "Неверное название модели машины!",
+
 
     "CommandPassportTake": "достал(а) документы из кармана",
 
@@ -235,6 +263,28 @@
     "FastFoodNoMoney": "§cУ вас нет денег для покупки еды в автомате быстрого питания!",
     "FastFoodNoNear": "§6Вам необходимо подойти ближе к автомату с едой!",
 
+
+    "ATMCash": "§2→ Наличные§e",
+    "ATMDebit": "§3→ На карте§e",
+    "ATMCredit": "§4→ В кредит§e",
+    "ATMComeAgain": "§bПриходите ещё!",
+    "ATMNumber": "§eВы должны ввести число в поле ввода!",
+    "ATMNumecic": "§eВы должны были ввести число, а не нечто иное",
+    "ATMNoMoneyDebit": "§eНедостаточно денег на счету :(",
+    "ATMNoMoneyCash": "§eНедостаточно денег наличными :(",
+    "ATMNoMoney": "§eУ вас недостаточно денег",
+    "ATMSuccesTake": "§bВы успешно вывели §e$input!",
+    "ATMSuccesPut": "§bВы успешно пополнили счёт на §e$input!",
+    "ATMSuccesPutBalance": "§bВы успешно пополнили баланс на §e$input",
+    "ATMTransferMyself": "§eПереводить деньги самому себе запрещено",
+    "ATMTransferError": "§eНе удалось перевести деньги",
+    "ATMTransferSucces1": "§bВы успешно перевели игроку §e",
+    "ATMTransferSucces2": " $amount §bденег!",
+    "ATMTransferSuccesPlayer1": "§e[SMS] §bЧеловек §e",
+    "ATMTransferSuccesPlayer2": " §bперевёл вам §e$amount",
+
+
+    "CommandCallPhoneTake": "§8(§dв руках телефон§8)",
 
     "PhoneLost": "§7[на экране мобильного] §6: §6Связь прервалась!",
     "PhoneSend": "§b[➪] SMS > отправитель: §e",
@@ -368,6 +418,15 @@
     "UserOnline": "§dв сети!",
     "GroupUpdated": "§aВам установлена группа §3",
     "GroupNew": "§6Вы установили группу игроку на §e",
+
+
+    "PermissionSwitchSucces": "§eИзменения применены.",
+
+
+    "FloatingTextsCreateSucces": "§eНадпись успешно создана!",
+    "FloatingTextsDeleteUnSucces": "§eУдаление надписи прошло неуспешно.",
+    "FloatingTextsDeleteSucces": "§eНадпись успешно удалена!",
+
 
     "ScoreBoard1": "§eПосетителей: §a",
     "ScoreBoard2": "§eВремя МСК:  §c",
