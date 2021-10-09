@@ -1,3 +1,4 @@
+let InformationError = document.getElementById("InformationError");
 document.querySelector('form').addEventListener('submit', (e) => {
     e.preventDefault();
     grecaptcha.ready(function() {
@@ -7,16 +8,16 @@ document.querySelector('form').addEventListener('submit', (e) => {
 			for (const pair of new FormData(document.querySelector('form'))) {
 				data.append(pair[0], pair[1]);
 			}
-            fetch('assets/php/captcha.php', {
+            fetch('../assets/php/captcha.php', {
                 method: 'post',
                 body: data,
             })
             .then(response => response.json())
             .then(result => {
                 if (result['om_score'] >= 0.5) {
-                    return om_score = true;
+                    window.location.href = '/profile';
                 } else {
-                    return om_score = false;
+                    InformationError.innerHTML = 'К сожалению, вы не прошли проверку на бота. Повторите попытку...';
                 }
             });
         });
