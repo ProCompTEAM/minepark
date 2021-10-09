@@ -64,15 +64,15 @@ class ATM extends Component
         $debit = $this->bankingProvider->getDebit($player);
         $credit = $this->bankingProvider->getCredit($player);
 
-        $player->sendMessage("§2→ Наличные§e $cash §3рублей.");
-        $player->sendMessage("§3→ На карте§e $debit §3рублей.");
-        $player->sendMessage("§4→ В кредит§e $credit §3рублей.");
+        $player->sendLocalizedMessage("{ATMCash} $cash {Rubles}");
+        $player->sendLocalizedMessage("{ATMDebit} $debit {Rubles}");
+        $player->sendLocalizedMessage("{ATMCredit} $credit {Rubles}");
     }
 
     public function answerMenu(MineParkPlayer $player, ?int $choice = null)
     {
         if(!isset($choice)) {
-            $player->sendMessage("§bПриходите ещё!");
+            $player->sendMessage("ATMComeAgain");
             return;
         }
 
@@ -128,18 +128,18 @@ class ATM extends Component
         $input = $data[0];
 
         if(!is_numeric($input)) {
-            $player->sendMessage("§eВы должны ввести число в поле ввода!");
+            $player->sendMessage("ATMNumber");
             return;
         }
 
         if(!$this->bankingProvider->reduceDebit($player, $input)) {
-            $player->sendMessage("§eНедостаточно денег на счету :(");
+            $player->sendMessage("ATMNoMoney");
             return;
         }
 
         $this->bankingProvider->giveCash($player, $input);
 
-        $player->sendMessage("§bВы успешно вывели §e$input!");
+        $player->sendMessage("ATMSuccesTake");
     }
 
     private function sendPutBankMoneyForm(MineParkPlayer $player)
@@ -160,18 +160,18 @@ class ATM extends Component
         $input = $data[0];
 
         if(!is_numeric($input)) {
-            $player->sendMessage("§eВы должны ввести число в поле ввода!");
+            $player->sendMessage("ATMNumber");
             return;
         }
 
         if(!$this->bankingProvider->reduceCash($player, $input)) {
-            $player->sendMessage("§eНедостаточно денег наличными :(");
+            $player->sendMessage("ATMNoMoneyCash");
             return;
         }
 
         $this->bankingProvider->giveDebit($player, $input);
 
-        $player->sendMessage("§bВы успешно пополнили счёт на §e$input!");
+        $player->sendMessage("ATMSuccesPut");
     }
 
     private function sendTransferDebitForm(MineParkPlayer $player)
@@ -193,28 +193,28 @@ class ATM extends Component
         $amount = $data[1];
 
         if(!is_numeric($amount)) {
-            $player->sendMessage("§eВы должны были ввести число, а не нечто иное");
+            $player->sendMessage("ATMNumecic");
             return;
         }
 
         $target = strtolower($data[0]);
 
         if($target === strtolower($player->getName())) {
-            $player->sendMessage("§eПереводить деньги самому себе запрещено");
+            $player->sendMessage("ATMTransferMyself");
             return;
         }
 
         if(!$this->bankingProvider->transferDebit($player->getName(), $target, $amount)) {
-            $player->sendMessage("§eНе удалось перевести деньги");
+            $player->sendMessage("ATMTransferError");
             return;
         }
 
-        $player->sendMessage("§bВы успешно перевели игроку §e" . $target . " $amount §bденег!");
+        $player->sendLocalizedMessage("{ATMTransferSucces1}" . $target . "{ATMTransferSucces2}");
 
         $targetPlayer = $this->getServer()->getPlayerByPrefix($target);
 
         if(isset($targetPlayer) and $this->phone->hasStream($targetPlayer->getPosition())) {
-            $targetPlayer->sendMessage("§e[SMS] §bЧеловек §e" . $player->getName() . " §bперевёл вам §e$amount");
+            $targetPlayer->sendLocalizedMessage("{ATMTransferSuccesPlayer1}" . $player->getName() . "{ATMTransferSuccesPlayer2}");
         }
     }
 
@@ -236,17 +236,17 @@ class ATM extends Component
         $input = $data[0];
 
         if(!is_numeric($input)) {
-            $player->sendMessage("§eВы должны были ввести число, а не нечто иное");
+            $player->sendMessage("ATMNumecic");
             return;
         }
 
         if(!$this->bankingProvider->reduceDebit($player, $input)) {
-            $player->sendMessage("§eУ вас недостаточно денег");
+            $player->sendMessage("ATMNoMoney");
             return;
         }
 
         $this->phone->addBalance($player, $input);
 
-        $player->sendMessage("§bВы успешно пополнили баланс на §e$input");
+        $player->sendMessage("ATMSuccesPutBalance");
     }
 }

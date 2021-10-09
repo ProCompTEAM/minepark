@@ -38,14 +38,14 @@ class ResetPasswordCommand extends Command
     public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
         if(self::argumentsNo($args)) {
-            $player->sendMessage("Необходимо указать никнейм игрока.");
+            $player->sendMessage("CommandResetPasNoName");
             return;
         }
         
         $targetPlayerName = $args[0];
 
         if(!$this->usersDataProvider->isUserExist($targetPlayerName)){
-            $player->sendMessage("Указанного игрока не существует.");
+            $player->sendMessage("CommandResetPasNameNoExist");
             return;
         }
         
@@ -55,11 +55,11 @@ class ResetPasswordCommand extends Command
     private function resetPassword(MineParkPlayer $sender, string $targetPlayerName)
     {
         $this->usersDataProvider->resetUserPassword($targetPlayerName);
-        $sender->sendMessage("Сброс пароля игрока $targetPlayerName прошёл успешно.");
+        $sender->sendLocalizedMessage("{CommandResetPasSucces1} $targetPlayerName {CommandResetPasSucces2}");
         $targetPlayer = $this->getServer()->getPlayerByPrefix($targetPlayerName);
 
         if (isset($targetPlayer)) { 
-            $targetPlayer->kick("§cАдминистратор сбросил вам пароль.");
+            $targetPlayer->kick("CommandResetPasForPlayer");
         }
     }
 }

@@ -45,7 +45,7 @@ class ATMCommand extends Command
     public function execute(MineParkPlayer $player, array $args = array(), ?Event $event = null)
     {
         if(!$this->isNearATM($player)) {
-            $player->sendMessage("§eПоблизости нету банкомата!");
+            $player->sendMessage("CommandATMNoNear");
             return;
         }
 

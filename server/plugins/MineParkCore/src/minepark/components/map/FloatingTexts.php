@@ -129,7 +129,7 @@ class FloatingTexts extends Component
     public function answerMenu(MineParkPlayer $player, ?int $data = null)
     {
         if(!isset($data)) {
-            $player->sendMessage("§bУдачи!");
+            $player->sendMessage("GoodLuck");
             return;
         }
 
@@ -158,20 +158,20 @@ class FloatingTexts extends Component
     public function answerCreateForm(MineParkPlayer $player, ?array $data = null)
     {
         if(!isset($data)) {
-            $player->sendMessage("§bУдачи!");
+            $player->sendMessage("GoodLuck");
             return;
         }
 
         $input = $data[0];
 
         if(strlen($input) === 0) {
-            $player->sendMessage("§eВ содержимом должен быть хотя бы 1 символ.");
+            $player->sendMessage("LessSymbols");
             return;
         }
 
         $this->save($input, $player->getPosition());
 
-        $player->sendMessage("§eНадпись успешно создана!");
+        $player->sendMessage("FloatingTextsCreateSucces");
     }
 
     private function tryToRemove(MineParkPlayer $player)
@@ -179,11 +179,11 @@ class FloatingTexts extends Component
         $removedStatus = $this->remove($player->getPosition());
 
         if(!$removedStatus) {
-            $player->sendMessage("§eУдаление надписи прошло неуспешно.");
+            $player->sendMessage("FloatingTextsDeleteUnSucces");
             return;
         }
 
-        $player->sendMessage("§eНадпись успешно удалена!");
+        $player->sendMessage("FloatingTextsDeleteSucces");
     }
 
     private function getLocalFloatingTextDto(FloatingTextDto $floatingText) : LocalFloatingTextDto

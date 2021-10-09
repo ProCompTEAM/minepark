@@ -55,7 +55,7 @@ class AdminCommand extends Command
     public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
         if (self::argumentsNo($args)) {
-            $player->sendMessage("§eВсе аргументы пусты :(");
+            $player->sendMessage("AdminCmdNoArg");
             return;
         }
         

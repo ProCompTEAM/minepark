@@ -106,6 +106,6 @@ class PermissionsSwitch extends Component
 
         $this->profileProvider->saveProfile($player);
 
-        $player->kick("§eИзменения применены.");
+        $player->kick("PermissionSwitchSucces");
     }
 }
