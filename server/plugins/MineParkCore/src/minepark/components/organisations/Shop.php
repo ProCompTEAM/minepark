@@ -68,7 +68,7 @@ class Shop extends Component
                 return;
             }
 
-            $player->sendMessage("§cНекорректный формат данных при создании магазина!");
+            $player->sendMessage("ShopCreateError");
         } elseif($lines[0] == "[shophelp]" and $player->isOperator()) {
             $this->showSignHelp($event);
         }
@@ -96,13 +96,13 @@ class Shop extends Component
 
         array_push($event->getPlayer()->getStatesMap()->goods, $productInfo);
     
-        $event->getPlayer()->sendMessage("§7[§6!§7] §aВы положили §b$label §aза §b$price §aв корзину.");
+        $event->getPlayer()->sendMessage("ShopPutIn");
     }
 
     private function handleCreateSign(SignChangeEvent $event, array $lines, MineParkPlayer $player)
     {
         if(self::priceInvalid($lines[2])) {
-            $player->sendMessage("§cЦена товара должна быть в интервале от 0 до 20000");
+            $player->sendMessage("ShopBadPrice");
             return;
         }
 
@@ -110,7 +110,7 @@ class Shop extends Component
         $price = $lines[2];
 
         if(!$this->itemIdExists($id)) {
-            $player->sendMessage("§cВещи с ID§e $id §cне существует");
+            $player->sendMessage("ShopItemNoExist");
             return;
         }
 
@@ -131,7 +131,7 @@ class Shop extends Component
         $this->setSignLines($event, $name, $price);
         $this->saveSignInConfig($signPosition, $price, $id, $name);
         
-        $player->sendMessage("§aТочка продажи §3$name §a по цене §d$price §aдобавлена");
+        $player->sendMessage("ShopCreate");
     }
 
     private function setSignLines(SignChangeEvent $event, string $name, int $price)

@@ -119,9 +119,9 @@ class EntitySettings extends Component
         }
         $victim->setHealth(4);
 
-        $victim->sendMessage("§6Вы очнулись после ". $this->getRandomDeathReason() . ".");
-        $victim->sendMessage("§6Срочно найдите доктора!");
-        $victim->sendMessage("§dЕсли на Вас напали, вызовите полицию: /c 02");
+        $victim->sendLocalizedMessage("{WakeUp1}". $this->getRandomDeathReason() . ".");
+        $victim->sendMessage("DamageSearchDoctor");
+        $victim->sendMessage("DamageCallPolice");
 
         $victim->sleepOn($victim->getPosition());
 
@@ -132,8 +132,8 @@ class EntitySettings extends Component
 
     private function processStunAction(MineParkPlayer $victim, MineParkPlayer $policeMan)
     {
-        $this->chat->sendLocalMessage($policeMan, "§8(§dв руках дубинка-электрошокер§8)", "§d : ", 10);
-        $this->chat->sendLocalMessage($victim, "§8(§dлежит на полу | ослеплен§8)", "§d : ", 12);
+        $this->chat->sendLocalMessage($policeMan, "StunGunInArm", "§d : ", 10);
+        $this->chat->sendLocalMessage($victim, "Stun", "§d : ", 12);
         
         $victim->changeAttribute(PlayerAttributes::WANTED);
 
@@ -162,7 +162,7 @@ class EntitySettings extends Component
     private function canPlayerHurt(MineParkPlayer $player, MineParkPlayer $damager) : bool
     {
         if($damager->getStatesMap()->damageDisabled) {
-            $damager->sendMessage("§6PvP режим недоступен!");
+            $damager->sendMessage("NoPVP");
             return false;
         }
         
@@ -181,7 +181,7 @@ class EntitySettings extends Component
             if(MathUtility::interval($x ,$x1, $x2) 
                 and MathUtility::interval($y, $y1, $y2) 
                     and MathUtility::interval($z, $z1 , $z2)) {
-                $damager->sendMessage("§aВы находитесь в зеленой зоне! Здесь запрещено драться!");
+                $damager->sendMessage("SafeArea");
                 return false;
             }
         }

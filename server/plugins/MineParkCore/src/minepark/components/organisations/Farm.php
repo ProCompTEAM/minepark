@@ -46,13 +46,13 @@ class Farm extends Component
     public function getHarvest(MineParkPlayer $player)
     {
         if(!$this->isPlayerNearWheat($player)) {
-            $player->sendMessage("§cВы не на ферме, /gps Ферма");
+            $player->sendMessage("FarmNoNear");
             return;
         }
 
         $this->giveSlownessEffect($player);
 
-        $this->chat->sendLocalMessage($player, "§8(§dв корзине собранный урожай |§8)", "§d : ", 12);
+        $this->chat->sendLocalMessage($player, "FarmHarvestIn", "§d : ", 12);
         $player->getStatesMap()->bar = "§eДонесите корзину на пункт сбора около фермы";
         $player->getStatesMap()->loadWeight = 1;
     }
@@ -60,11 +60,11 @@ class Farm extends Component
     public function putHarvest(MineParkPlayer $player)
     {
         if(!$this->isPlayerAtFarm($player)) {
-            $player->sendMessage("§cВам стоит подойти ближе к точке выброса урожая!");
+            $player->sendMessage("FarmHarvestOutNoNear");
             return;
         }
 
-        isset($player->getStatesMap()->loadWeight) ? $this->handleDrop($player) : $player->sendMessage("§cВам необходимо собрать плантации с земли..");
+        isset($player->getStatesMap()->loadWeight) ? $this->handleDrop($player) : $player->sendMessage("FarmNoHarvest");
     }
 
     private function giveSlownessEffect(MineParkPlayer $player)
@@ -78,7 +78,7 @@ class Farm extends Component
     {
         $player->getEffects()->clear();
 
-        $this->chat->sendLocalMessage($player, "высыпал из корзины урожай", "§d ", 12);
+        $this->chat->sendLocalMessage($player, "FarmHarvestOut", "§d ", 12);
         $this->bankingProvider->givePlayerMoney($player, 150);
 
         $player->getStatesMap()->loadWeight = null; 

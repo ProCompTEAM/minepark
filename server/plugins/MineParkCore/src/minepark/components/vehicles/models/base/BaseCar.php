@@ -145,7 +145,7 @@ abstract class BaseCar extends BaseVehicle
         }
 
         if (isset($this->rentedBy)) {
-            return $player->sendMessage("Извините, но эту машину уже видимо арендовали");
+            return $player->sendMessage("VehicleWasRented1");
         }
 
         if (Providers::getBankingProvider()->takePlayerMoney($player, $this->getCost())) {
@@ -153,7 +153,7 @@ abstract class BaseCar extends BaseVehicle
 
             $this->trySetPlayerDriver($player);
         } else {
-            $player->sendMessage("Вам не хватило денег :(");
+            $player->sendMessage("VehicleNoMoney");
         }
     }
 
@@ -364,7 +364,7 @@ abstract class BaseCar extends BaseVehicle
         if ($this->setDriver($player)) {
             $player->sendTip("Вы успешно сели за руль!");
         } else {
-            $player->sendMessage("Кто-то сидит за рулём!");
+            $player->sendMessage("VehicleWheelOccupied");
         }
     }
 
@@ -373,7 +373,7 @@ abstract class BaseCar extends BaseVehicle
         if ($this->setPassenger($player)) {
             return $player->sendTip("Вы успешно сели в машину!");
         } else {
-            return $player->sendMessage("На данный момент есть человек, сидящий на пассажирском кресле");
+            return $player->sendMessage("VehiclePassengerOccupied");
         }
     }
 
@@ -395,7 +395,7 @@ abstract class BaseCar extends BaseVehicle
 
         if (isset($this->rentedBy)) {
             if ($this->rentedBy->getName() !== $player->getName()) {
-                $player->sendMessage("Увы, эта машина кем-то арендована :(");
+                $player->sendMessage("VehicleWasRented2");
                 return false;
             }
 
@@ -415,7 +415,7 @@ abstract class BaseCar extends BaseVehicle
 
     private function setRented(MineParkPlayer $player)
     {
-        $player->sendMessage("Вы успешно арендовали данную машину!");
+        $player->sendMessage("VehicleRentedSucces");
 
         $this->setRentedBy($player);
     }
@@ -511,11 +511,11 @@ abstract class BaseCar extends BaseVehicle
     private function handleInteract(MineParkPlayer $player)
     {
         if($player->getStatesMap()->ridingVehicle) {
-            return $player->sendMessage("Вы не сможете перепрыгнуть с одной машины в другую.");
+            return $player->sendMessage("VehicleNoMoveAnotherCar");
         }
 
         if(isset($this->driver) and isset($this->passenger)) {
-            return $player->sendMessage("В этой машине уже все сидения заняты.");
+            return $player->sendMessage("VehisleOccupied");
         }
 
         $form = new SimpleForm([$this, "performAction"]);
