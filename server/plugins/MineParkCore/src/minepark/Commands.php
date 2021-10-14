@@ -233,8 +233,8 @@ class Commands
             return true;
         }
 
-        $player->sendMessage("§cУ вас нет прав на эту команду :(");
-        $player->sendMessage("§6Возможно она станет доступна после покупки: /donate");
+        $player->sendMessage("NoPermission1");
+        $player->sendMessage("NoPermission2");
 
         if(isset($event)) {
             $event->cancel();

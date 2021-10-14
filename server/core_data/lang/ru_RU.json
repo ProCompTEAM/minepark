@@ -7,6 +7,7 @@
     "NoPermission2": "§6Возможно она станет доступна после покупки: /donate",
     "GroupYou": "Теперь вы ",
     "Rubles": "§3рублей.",
+    "Rub": "руб",
     "ClearLagg": "§dКоммунальные службы очистили среду от мусора!",
     "GoodLuck": "§bУдачи!",
     "LessSymbols": "§eВ содержимом должен быть хотя бы 1 символ.",
@@ -89,10 +90,6 @@
 
     "CommandRemovePointSuccess": "§eТочка была удалена!",
     "CommandRemovePointUnsuccess": "§cНе удалось удалить точку!",
-
-
-    "ReportCloseNoID": "§eРепорта с таким айди не существует :(",
-    "ReportReplyNoArgs": "§eПравильное использование команды:§b /report <АЙДИ РЕПОРТА> <СОДЕРЖАНИЕ>",
 
 
     "CommandRolePlayDoUse": "Использование: /do <со мной произошло действие...>",
@@ -259,6 +256,8 @@
 
 
     "FastFoodNear": "§8(§dрядом автомат с едой§8)",
+    "FastFoodSound": "§8(§dслышен звук торгового автомата§8)",
+    "FastFoodItemInArm": "§8(§dв руке товар с надписью ",
     "FastFoodBoard": "§a[На табло автомата] §9Спасибо за покупку!",
     "FastFoodNoMoney": "§cУ вас нет денег для покупки еды в автомате быстрого питания!",
     "FastFoodNoNear": "§6Вам необходимо подойти ближе к автомату с едой!",
@@ -282,6 +281,37 @@
     "ATMTransferSucces2": " $amount §bденег!",
     "ATMTransferSuccesPlayer1": "§e[SMS] §bЧеловек §e",
     "ATMTransferSuccesPlayer2": " §bперевёл вам §e$amount",
+
+
+    "FarmNoNear": "§cВы не на ферме, /gps Ферма",
+    "FarmHarvestIn": "§8(§dв корзине собранный урожай |§8)",
+    "FarmHarvestOutNoNear": "§cВам стоит подойти ближе к точке выброса урожая!",
+    "FarmHarvestOut": "высыпал из корзины урожай",
+    "FarmNoHarvest": "§cВам необходимо собрать плантации с земли..",
+
+
+    "FireExtinguisher": "§8(§dв руках огнетушитель§8)",
+    "FireExtinguisherSucces": "§c[§e➪§c] §aОчаг потушен! (+2000)",
+    "FireCall1": "§c[§e➪§c] §6!!! §e<=== §6ЭКСТРЕННЫЙ ВЫЗОВ (ОТПРАВЛЯЙТЕСЬ) §e===>",
+    "FireCall2": "§c[§e➪§c] §6!!! §cТРЕВОГА! §eВОЗГОРАНИЕ НА ТЕРРИТОРИИ  $firePoint !",
+    "FireCall3": "§c[§e➪§c] §6!!! §eНЕМЕДЛЕННО ВЫЕЗЖАЙТЕ: §7/gps§b $firePoint",
+    "FireCallOperator": "§7[§6!§7] Fire : На территории $firePoint начался пожар!",
+
+
+    "ShopCreate": "§aТочка продажи §3$name §a по цене §d$price §aдобавлена",
+    "ShopCreateError": "§cНекорректный формат данных при создании магазина!",
+    "ShopPutIn": "§7[§6!§7] §aВы положили §b$label §aза §b$price §aв корзину.",
+    "ShopBadPrice": "§cЦена товара должна быть в интервале от 0 до 20000",
+    "ShopItemNoExist": "§cВещи с ID§e $id §cне существует",
+
+
+    "WorkersNoNear1": "§cРядом нет площадки с ящиками!",
+    "WorkersNoNear2": "§cРядом нет точек для разрузки!",
+    "WorkersBoxNoPut": "§cСначала положите ящик из ваших рук на склад!",
+    "WorkersSearchPalace": "§7Найдите точку разгрузки и положите ящик!",
+    "WorkersBoxInArm": "§8(§dв руках ящик с надписью | $box |§8)",
+    "WorkersNoBoxInArm": "§cВам необходимо взять ящик со склада!",
+    "WorkersBoxPut": "§8(§dЯщик расположился на складе§8)",
 
 
     "CommandCallPhoneTake": "§8(§dв руках телефон§8)",
@@ -335,6 +365,8 @@
     "ReporterNoAccess": "§bВы не имеете доступ к данному репорту.",
     "ReporterSelf": "§bВы не можете отвечать§e САМОМУ СЕБЕ!",
     "ReporterOffline": "§bДанный игрок больше §eНЕ в§b игре. Репорт закрыт.",
+    "ReportCloseNoID": "§eРепорта с таким айди не существует :(",
+    "ReportReplyNoArgs": "§eПравильное использование команды:§b /report <АЙДИ РЕПОРТА> <СОДЕРЖАНИЕ>",
     "ReporterAnswerPart1": "§bВы ответили на тикет §e",
     "ReporterAnswerPart2": " §bхелперам с сообщением:",
     "ReporterAnswerPlayerPart1": "Игрок §e",
@@ -378,6 +410,7 @@
     "NotifyLabel": "§e===§bОТЧЁТ О ПОСЕЩАЕМОСТИ§e===",
     "PayDay": "§7----=====§eВРЕМЯ ЗАРПЛАТЫ§7=====----",
     "DamageStun": "§6ВЫ ОГЛУШЕНЫ!",
+    "WakeUp": "§6Вы очнулись после ",
     "DamageSearchDoctor": "§6Срочно найдите доктора!",
     "DamageCallPolice": "§dЕсли на Вас напали, вызовите полицию: /c 02",
     "SafeArea": "§aВы находитесь в зеленой зоне! Здесь безопасно!",
@@ -418,6 +451,24 @@
     "UserOnline": "§dв сети!",
     "GroupUpdated": "§aВам установлена группа §3",
     "GroupNew": "§6Вы установили группу игроку на §e",
+    "StunGunInArm": "§8(§dв руках дубинка-электрошокер§8)",
+    "Stun": "§8(§dлежит на полу | ослеплен§8)",
+    "NoPVP": "§6PvP режим недоступен!",
+
+
+    "VehicleWasRented1": "Извините, но эту машину уже видимо арендовали",
+    "VehicleWasRented2": "Увы, эта машина кем-то арендована :(",
+    "VehicleRentedSucces": "Вы успешно арендовали данную машину!",
+    "VehicleNoMoney": "Вам не хватило денег :(",
+    "VehicleWheelOccupied": "Кто-то сидит за рулём!",
+    "VehiclePassengerOccupied": "На данный момент есть человек, сидящий на пассажирском кресле",
+    "VehicleNoMoveAnotherCar": "Вы не сможете перепрыгнуть с одной машины в другую.",
+    "VehisleOccupied": "В этой машине уже все сидения заняты.",
+
+
+    "BankingDebiting": "§eС вашего счета списано рублей: ",
+    "BankingBalance": "§bТекущий остаток на карте: ",
+    "BankingCrediting": "§aНа ваш счет зачислена сумма в рублях: ",
 
 
     "PermissionSwitchSucces": "§eИзменения применены.",

@@ -105,12 +105,12 @@ class Workers extends Component
     public function takeBox(MineParkPlayer $player)
     {
         if(!$this->isNearAreaWithBoxes($player)) {
-            $player->sendMessage("§cРядом нет площадки с ящиками!");
+            $player->sendMessage("WorkersNoNear1");
             return;
         }
 
         if(!is_null($player->getStatesMap()->loadWeight)) {
-            $player->sendMessage("§cСначала положите ящик из ваших рук на склад!");
+            $player->sendMessage("WorkersBoxNoPut");
             return;
         }
 
@@ -124,9 +124,9 @@ class Workers extends Component
         $box = $this->words[mt_rand(0, count($this->words))]; 
         $player->getStatesMap()->loadWeight = mt_rand(1, 12); 
         
-        $player->sendMessage("§7Найдите точку разгрузки и положите ящик!");
+        $player->sendMessage("WorkersSearchPalace");
         
-        $this->chat->sendLocalMessage($player, "§8(§dв руках ящик с надписью | $box |§8)", "§d : ", 12);
+        $this->chat->sendLocalMessage($player, "WorkersBoxInArm", "§d : ", 12);
     
         $player->getStatesMap()->bar = "§aВ руках ящик около " . $player->getStatesMap()->loadWeight . " кг";
     }
@@ -134,12 +134,12 @@ class Workers extends Component
     public function putBox(MineParkPlayer $player)
     {
         if(!$this->isNearUnloadingPoint($player)) {
-            $player->sendMessage("§cРядом нет точек для разрузки!");
+            $player->sendMessage("WorkersNoNear2");
             return;
         }
 
         if(is_null($player->getStatesMap()->loadWeight)) {
-            $player->sendMessage("§cВам необходимо взять ящик со склада!");
+            $player->sendMessage("WorkersNoBoxInArm");
             return;
         }
 
@@ -150,7 +150,7 @@ class Workers extends Component
     {
         $player->getEffects()->clear();
 
-        $this->chat->sendLocalMessage($player, "§8(§dЯщик расположился на складе§8)", "§d : ", 12);
+        $this->chat->sendLocalMessage($player, "WorkersBoxPut", "§d : ", 12);
         $this->bankingProvider->givePlayerMoney($player, 20 * $player->getStatesMap()->loadWeight);
 
         $player->getStatesMap()->loadWeight = null; 
