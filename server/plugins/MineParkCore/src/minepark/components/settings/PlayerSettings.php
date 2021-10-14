@@ -148,7 +148,11 @@ class PlayerSettings extends Component
             return false;
         }
 
-        $kickMessage = "§eВы заблокированы на сервере до §b" . $banInfo->releaseDate . "§e. Вас заблокировал игрок §b" . $banInfo->issuerName . " §eпо причине §b" . $banInfo->reason;
+        $releaseDate = $banInfo->releaseDate;
+        $issuerName = $banInfo->issuerName;
+        $reason = $banInfo->reason;
+
+        $kickMessage = "§eВы заблокированы на сервере до§b $releaseDate. §eВас заблокировал игрок§b $issuerName §eпо причине§b $reason";
 
         $player->kick($kickMessage);
 

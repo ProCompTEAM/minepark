@@ -24,12 +24,6 @@
     <Compile Remove="Data\Migrations\20200704154429_AddUserIdForeignKey.Designer.cs" />
     <Compile Remove="Data\Migrations\20210526170743_AddExecutedCommandsAuditRecord.cs" />
     <Compile Remove="Data\Migrations\20210526170743_AddExecutedCommandsAuditRecord.Designer.cs" />
-    <Compile Remove="Data\Migrations\20210909153948_AddBanSystem.cs" />
-    <Compile Remove="Data\Migrations\20210909153948_AddBanSystem.Designer.cs" />
-    <Compile Remove="Data\Migrations\20210910081535_AddBanSystem.cs" />
-    <Compile Remove="Data\Migrations\20210910081535_AddBanSystem.Designer.cs" />
-    <Compile Remove="Data\Migrations\20210910092929_AddBanSystem.cs" />
-    <Compile Remove="Data\Migrations\20210910092929_AddBanSystem.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
