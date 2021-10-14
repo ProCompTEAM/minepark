@@ -31,6 +31,8 @@ class UserDto extends BaseDto
 
     public bool $realtor;
 
+    public string $lastVersionNotified;
+
     public string $joinedDate;
 
     public string $leftDate;
