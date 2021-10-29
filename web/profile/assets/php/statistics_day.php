@@ -1,5 +1,5 @@
 <?php  
-    $minute = 600000;
+   
 
     if($minute >= 0 && $minute < 60){
         $day = $minute . 'мин.';

@@ -1,9 +1,18 @@
 ﻿<?php 
+    include 'assets/php/connection.php';
+    $profile = createRequest("web", "get-user-profile", "Layere");
+
+    $vip = $profile["privilege"];
+    $balance = $profile["moneySummary"];
+    $numbers = $profile["phoneNumber"];
+    $registerData = $profile["createdDate"];
+    $registerData = explode(' ', $registerData)[0]; 
+    $nik = $profile["fullName"];
+    $minute = $profile["minutesPlayed"];
+
     include 'assets/php/balance.php';
     include 'assets/php/vip_status.php';
     include 'assets/php/nik_status.php';
-    include 'assets/php/register_data.php';
-    include 'assets/php/phone_number.php';
     include 'assets/php/statistics_day.php';
     include 'assets/php/ban.php';
 ?>
@@ -123,7 +132,7 @@
                     </div>
                     <div class="info_user height_29">
                         <p class="info__user_data_reg margin_right">ДАТА  РЕГИСТРАЦИИ:</p>
-                        <p class="user__data"><?php print_r($register_data); ?></p>
+                        <p class="user__data"><?php print_r($registerData); ?></p>
                     </div>
                     <div class="info_user width_400">
                         <p class="info__user_balance margin_right">ОБЩИЙ БАЛАНС СЧЁТА:</p>

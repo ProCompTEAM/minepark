@@ -1,6 +1,4 @@
 <?php 
-    $balance = 1000000;
-
     if($balance >= 1000000) {
         $balance_sum = $balance / 1000000;
         $remains = $balance % 1000000;

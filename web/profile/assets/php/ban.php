@@ -1,5 +1,5 @@
 <?php 
-    $ban = False;
+
 
     if($ban) {
         $style_ban = "block";
