@@ -1,25 +1,23 @@
 <?php  
-   
-
-    if($minute >= 0 && $minute < 60){
-        $day = $minute . 'мин.';
-        $temp = $minute;
+    if($minutesPlayed >= 0 && $minutesPlayed < 60){
+        $day = $minutesPlayed . 'мин.';
+        $temp = $minutesPlayed;
         $TEMP = 1;
         $title = $temp . ' минут';
-    } elseif ($minute <= 1439) {
-        $temp = floor($minute / 60);
+    } elseif ($minutesPlayed <= 1439) {
+        $temp = floor($minutesPlayed / 60);
         $day = $temp . 'ч.';
         $title = $temp . " часов";
-    } elseif ($minute >= 1439 && $minute < 525600) {
-        $temp = floor($minute / 1440);
+    } elseif ($minutesPlayed >= 1439 && $minutesPlayed < 525600) {
+        $temp = floor($minutesPlayed / 1440);
         $day = $temp . 'д.';
         $title = $temp . " дней/дня";
-    } elseif ($minute >= 525600 && $minute < 52560000) {
-        $temp = floor($minute / 525600);
+    } elseif ($minutesPlayed >= 525600 && $minutesPlayed < 52560000) {
+        $temp = floor($minutesPlayed / 525600);
         $day = $temp . 'г.';
         $title = $temp . " год/лет";
-    } elseif ($minute >= 52560000) {
-        $temp = floor($minute / 52560000);
+    } elseif ($minutesPlayed >= 52560000) {
+        $temp = floor($minutesPlayed / 52560000);
         $day = $temp . 'в.';
         $title = $temp . " века/веков";
     }
@@ -28,9 +26,9 @@
         $width_style = "166px";
     } elseif ($TEMP == 1) {
         $width_style = "151px";
-        if ($minute >= 20 && $minute < 60) {
+        if ($minutesPlayed >= 20 && $minutesPlayed < 60) {
             $width_style = "194px";
-        } elseif ($minute >= 10 && $minute < 20) {
+        } elseif ($minutesPlayed >= 10 && $minutesPlayed < 20) {
             $width_style = "185px";
         }
     } elseif ($temp == 1) {

@@ -2,13 +2,13 @@
     include 'assets/php/connection.php';
     $profile = createRequest("web", "get-user-profile", "Layere");
 
-    $vip = $profile["privilege"];
+    $privilege = $profile["privilege"];
     $balance = $profile["moneySummary"];
-    $numbers = $profile["phoneNumber"];
+    $phoneNumber = $profile["phoneNumber"];
     $registerData = $profile["createdDate"];
     $registerData = explode(' ', $registerData)[0]; 
     $nik = $profile["fullName"];
-    $minute = $profile["minutesPlayed"];
+    $minutesPlayed = $profile["minutesPlayed"];
 
     include 'assets/php/balance.php';
     include 'assets/php/vip_status.php';
@@ -140,11 +140,11 @@
                     </div>
                     <div class="info_user width_313">
                         <p class="info__user_role margin_right">VIP: </p>
-                        <p class="user__data_role"><?php print_r($vip_status); ?></p>
+                        <p class="user__data_role"><?php print_r($privilege_status); ?></p>
                     </div>
                      <div class="info_user width_313">
                         <p class="info__user_work margin_right">НОМЕР ТЕЛЕФОНА: </p>
-                        <p class="user__data_work"><?php print_r($numbers); ?></p>
+                        <p class="user__data_work"><?php print_r($phoneNumber); ?></p>
                     </div>
                 </div>
             </div>

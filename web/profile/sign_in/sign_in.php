@@ -1,6 +1,3 @@
-<?php 
-	include '../assets/php/conection.php';
-?>
 <!DOCTYPE html>
 <html lang="ru">
 <head>
