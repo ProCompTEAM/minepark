@@ -45,20 +45,7 @@ namespace MDC.Data.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Users_UserBanRecords_BanRecordId",
-                table: "Users");
-
-            migrationBuilder.DropTable(
-                name: "UserBanRecords");
-
-            migrationBuilder.DropIndex(
-                name: "IX_Users_BanRecordId",
-                table: "Users");
-
-            migrationBuilder.DropColumn(
-                name: "BanRecordId",
-                table: "Users");
+            throw new NotImplementedException();
         }
     }
 }
