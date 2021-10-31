@@ -1,6 +1,8 @@
 <?php
 namespace minepark;
 
+use minepark\commands\admin\BanCommand;
+use minepark\commands\admin\UnbanCommand;
 use pocketmine\event\Event;
 use minepark\defaults\EventList;
 use minepark\commands\DayCommand;
@@ -129,7 +131,9 @@ class Commands
             new TransportCommand,
             new SwitchCommand,
             new FloatingTextsCommand,
-            new ATMCommand
+            new ATMCommand,
+            new BanCommand,
+            new UnbanCommand
         ];
     }
 
@@ -177,6 +181,8 @@ class Commands
 
         $arguments = array_slice($arguments, 1);
 
+        $event->cancel();
+
         if(!$this->checkPermissions($player, $command, $event)) {
             return;
         }
@@ -184,7 +190,7 @@ class Commands
         $command->execute($player, $arguments, $event);
     }
 
-    private function executeOrganisationsCommand(MineParkPlayer $player, array $arguments, ?Event $event = null)
+    private function executeOrganisationsCommand(MineParkPlayer $player, array $arguments, PlayerCommandPreprocessEvent $event)
     {
         if(!isset($arguments[0])) {
             return;
@@ -197,6 +203,8 @@ class Commands
         }
 
         $arguments = array_slice($arguments, 1);
+
+        $event->cancel();
 
         if(!$this->checkPermissions($player, $command, $event)) {
             return;
@@ -235,10 +243,6 @@ class Commands
 
         $player->sendMessage("NoPermission1");
         $player->sendMessage("NoPermission2");
-
-        if(isset($event)) {
-            $event->cancel();
-        }
 
         return false;
     }

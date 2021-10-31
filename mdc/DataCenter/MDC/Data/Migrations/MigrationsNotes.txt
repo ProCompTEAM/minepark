@@ -28,6 +28,8 @@ And next migration:
 > Add-Migration <name> -Project MDC
 > Update-Database -Project MDC
 
+Also, when adding new migration you must open migration file and modify its Down function to: throw new NotImplementedException();
+
 
 PROTOCOL:
 MDC and the remote target must understand each other;

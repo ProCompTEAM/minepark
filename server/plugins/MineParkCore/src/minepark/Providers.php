@@ -1,6 +1,7 @@
 <?php
 namespace minepark;
 
+use minepark\providers\data\BanRecordsDataProvider;
 use minepark\providers\MapProvider;
 use minepark\providers\BankingProvider;
 use minepark\providers\LocalizationProvider;
@@ -34,6 +35,8 @@ class Providers
 
     private static FloatingTextsDataProvider $floatingTextsDataProvider;
 
+    private static BanRecordsDataProvider $banRecordsDataProvider;
+
     public static function initializeAll()
     {
         //Data Providers
@@ -43,6 +46,7 @@ class Providers
         self::$settingsDataProvider = new SettingsDataProvider;
         self::$usersDataProvider = new UsersDataProvider;
         self::$floatingTextsDataProvider = new FloatingTextsDataProvider;
+        self::$banRecordsDataProvider = new BanRecordsDataProvider;
 
         //Generic Providers
         self::$bankingProvider = new BankingProvider;
@@ -107,5 +111,10 @@ class Providers
     public static function getProfileProvider() : ProfileProvider
     {
         return self::$profileProvider;
+    }
+
+    public static function getBanRecordsDataProvider()
+    {
+        return self::$banRecordsDataProvider;
     }
 }
