@@ -98,7 +98,7 @@ class Vehicles extends Component
                 return;
             }
 
-            $vehicle = $event->getOrigin()->getPlayer()->getWorld()->getEntity($event->getPacket()->target);
+            $vehicle = $event->getOrigin()->getPlayer()->getWorld()->getEntity($event->getPacket()->targetActorRuntimeId);
             if ($vehicle instanceof BaseCar) {
                 $vehicle->tryToRemovePlayer($event->getOrigin()->getPlayer());
                 $event->cancel();

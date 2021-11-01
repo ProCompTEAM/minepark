@@ -125,7 +125,7 @@ class BossBar extends Component
     {
         $packet = new BossEventPacket;
 
-        $packet->bossEid = $player->getStatesMap()->bossBarSession->fakeEntityId;
+        $packet->bossActorUniqueId = $player->getStatesMap()->bossBarSession->fakeEntityId;
         $packet->eventType = BossEventPacket::TYPE_HIDE;
 
         $player->getNetworkSession()->sendDataPacket($packet);
@@ -137,7 +137,7 @@ class BossBar extends Component
 
         $attribute = new Attribute(AttributeIds::HEALTH, 0, 100, 30, 30);
 
-        $packet->entityRuntimeId = $fakeEntityId;
+        $packet->actorRuntimeId = $fakeEntityId;
         $packet->entries[] = $attribute;
 
         $player->getNetworkSession()->sendDataPacket($packet);
@@ -146,13 +146,14 @@ class BossBar extends Component
     private function createBossEntity(MineParkPlayer $player, int $fakeEntityId) : int
     {
         $packet = new AddActorPacket;
-        
-        $packet->entityRuntimeId = $fakeEntityId;
+
+        $packet->actorUniqueId = $fakeEntityId;
+        $packet->actorRuntimeId = $fakeEntityId;
         $packet->type = EntityIds::SLIME;
         $packet->metadata = $this->getHiddenEntityMetadata();
         $packet->position = $player->getPosition()->asVector3()->add(0, 10, 0);
         $packet->motion = null;
-
+        
         $player->getNetworkSession()->sendDataPacket($packet);
 
         $this->initializeHealthAttribute($player, $fakeEntityId);
