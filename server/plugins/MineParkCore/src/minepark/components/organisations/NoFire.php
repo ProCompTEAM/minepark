@@ -67,11 +67,11 @@ class NoFire extends Component
 
     public function putOutFire(MineParkPlayer $player)
     {
-        $this->chat->sendLocalMessage($player, "§8(§dв руках огнетушитель§8)", "§d : ", 10);
+        $this->chat->sendLocalMessage($player, "FireExtinguisher", "§d : ", 10);
             
         if($this->tryToPutOutFire($player->getPosition(), 5)) {
             $this->bankingProvider->givePlayerMoney($player, 2000);
-            $player->sendMessage("§c[§e➪§c] §aОчаг потушен! (+2000)");
+            $player->sendMessage("FireExtinguisherSucces");
         }
     }
     
@@ -202,15 +202,15 @@ class NoFire extends Component
     private function fireWarning(array $fireFighters, string $firePoint)
     {
         foreach($fireFighters as $fireFighter) {
-            $fireFighter->sendMessage("§c[§e➪§c] §6!!! §e<=== §6ЭКСТРЕННЫЙ ВЫЗОВ (ОТПРАВЛЯЙТЕСЬ) §e===>");
-            $fireFighter->sendMessage("§c[§e➪§c] §6!!! §cТРЕВОГА! §eВОЗГОРАНИЕ НА ТЕРРИТОРИИ  $firePoint !");
-            $fireFighter->sendMessage("§c[§e➪§c] §6!!! §eНЕМЕДЛЕННО ВЫЕЗЖАЙТЕ: §7/gps§b $firePoint");
+            $fireFighter->sendMessage("FireCall1");
+            $fireFighter->sendMessage("FireCall2");
+            $fireFighter->sendMessage("FireCall3");
         }
             
         foreach($this->getServer()->getOnlinePlayers() as $player) {
             $player = MineParkPlayer::cast($player);
             if($player->isOperator()) {
-                $player->sendMessage("§7[§6!§7] Fire : На территории $firePoint начался пожар!");
+                $player->sendMessage("FireCallOperator");
             }
         }
     }

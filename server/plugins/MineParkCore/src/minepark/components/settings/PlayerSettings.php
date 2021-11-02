@@ -1,6 +1,7 @@
 <?php
 namespace minepark\components\settings;
 
+use minepark\components\administrative\BanSystem;
 use minepark\defaults\StringConstants;
 use minepark\Events;
 use minepark\Providers;
@@ -65,6 +66,10 @@ class PlayerSettings extends Component
         $this->updateNewPlayerStatus($player);
 
         $this->getProfileProvider()->initializeProfile($player);
+
+        if($this->checkPlayerForBan($player)) {
+            return;
+        }
 
         $this->updateBegginerStatus($player);
 
@@ -133,6 +138,25 @@ class PlayerSettings extends Component
         } else if($itemId === 405) { //405 - gps
             $player->sendCommand("/gps");
         }
+    }
+
+    private function checkPlayerForBan(MineParkPlayer $player) : bool
+    {
+        $banInfo = $player->getProfile()->banRecord;
+
+        if($banInfo === null) {
+            return false;
+        }
+
+        $releaseDate = $banInfo->releaseDate;
+        $issuerName = $banInfo->issuerName;
+        $reason = $banInfo->reason;
+
+        $kickMessage = "§eВы заблокированы на сервере до§b $releaseDate. §eВас заблокировал игрок§b $issuerName §eпо причине§b $reason";
+
+        $player->kick($kickMessage);
+
+        return true;
     }
 
     private function addInventoryItems(MineParkPlayer $player)

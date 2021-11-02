@@ -1,4 +1,4 @@
-# MinePark Software - Release v1.8
+# MinePark Software - Release v1.9
 
 __Copyright http://vk.com/mcperp__
 ____
@@ -7,7 +7,7 @@ ____
 - Minecraft BE Client support 1.17
 - PocketMine-MP API 4
 - PHP 8.x, .NET 5.0
-- MySQL (10.5.8-MariaDB) > dbo.minepark
+- MySQL (10.5.12-MariaDB) > dbo.minepark
 - Use Postman for MDC requests
 - We write PHP code with any IDE (PHP 8 support required)
 - For MDC development we use C# with Visual Studio 2019

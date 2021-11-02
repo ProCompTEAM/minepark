@@ -1,0 +1,130 @@
+{
+	"info": {
+		"_postman_id": "25c9af30-7392-4889-9697-15bbf3620a02",
+		"name": "POST Bans",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Ban user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"Gewinum\",\r\n    \"issuerName\": \"brah\",\r\n    \"releaseDate\": \"2021-12-12 15:00:00\",\r\n    \"reason\": \"bad boy\"\r\n}"
+				},
+				"url": {
+					"raw": "bans/ban-user",
+					"host": [
+						"bans"
+					],
+					"path": [
+						"ban-user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Pardon user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\"Gewinum\""
+				},
+				"url": {
+					"raw": "bans/pardon-user",
+					"host": [
+						"bans"
+					],
+					"path": [
+						"pardon-user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get user ban record",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\"Gewinum\""
+				},
+				"url": {
+					"raw": "bans/get-player-ban-info",
+					"host": [
+						"bans"
+					],
+					"path": [
+						"get-player-ban-info"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Is user banned",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\"Gewinum\""
+				},
+				"url": {
+					"raw": "bans/is-banned",
+					"host": [
+						"bans"
+					],
+					"path": [
+						"is-banned"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"if(pm.environment.name != \"MinePark Environment\") {",
+					"    throw new Error(\"MinePark environment not found :(\");",
+					"}",
+					"const Header = require(\"postman-collection\").Header;",
+					"",
+					"function addHeader(name, value)",
+					"{",
+					"    pm.request.addHeader(new Header(name + \": \" + value));",
+					"}",
+					"",
+					"var accessToken = pm.environment.get(\"AccessToken\");",
+					"var unitId = pm.environment.get(\"UnitId\");",
+					"var url = pm.environment.get(\"Url\");",
+					"",
+					"addHeader(\"Authorization\", accessToken);",
+					"addHeader(\"UnitId\", unitId);",
+					"",
+					"pm.request.url = pm.environment.get(\"Host\") + pm.request.url;"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

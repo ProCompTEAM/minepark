@@ -214,7 +214,7 @@ namespace MDC.Infrastructure.Services
         public async Task<bool> Exists(string unitId, string userName)
         {
             return await databaseProvider.AnyAsync<BankAccount>(
-                bank => bank.UnitId == unitId && bank.Name == userName
+                bankAccount => bankAccount.UnitId == unitId && bankAccount.Name == userName
             );
         }
         public async Task<PaymentMethod> GetPaymentMethod(string unitId, string userName)
@@ -246,7 +246,7 @@ namespace MDC.Infrastructure.Services
 
         public async Task<bool> InitializeUnitBalance(string unitId)
         {
-            if (!await databaseProvider.AnyAsync<UnitBalance>(b => b.UnitId == unitId)) 
+            if (!await databaseProvider.AnyAsync<UnitBalance>(unitBalance => unitBalance.UnitId == unitId)) 
             {
                 await CreateUnitBalance(unitId);
 
@@ -290,14 +290,14 @@ namespace MDC.Infrastructure.Services
         private async Task<BankAccount> GetBankAccount(string unitId, string userName)
         {
             BankAccount bankAccount = await databaseProvider.SingleOrDefaultAsync<BankAccount>(
-                b => 
-                    b.Name == userName.ToLower() &&
-                    b.UnitId == unitId
+                bankAccount =>
+                    bankAccount.Name == userName.ToLower() &&
+                    bankAccount.UnitId == unitId
                 );
 
             if (bankAccount == null) 
             {
-                throw new InvalidOperationException("User not exist");
+                throw new InvalidOperationException("Bank not exist");
             }
 
             return bankAccount;
@@ -332,7 +332,7 @@ namespace MDC.Infrastructure.Services
 
         private async Task<UnitBalance> GetUnitBalanceModel(string unitId)
         {
-            UnitBalance unitBalance = await databaseProvider.SingleOrDefaultAsync<UnitBalance>(b => b.UnitId == unitId);
+            UnitBalance unitBalance = await databaseProvider.SingleOrDefaultAsync<UnitBalance>(unitBalance => unitBalance.UnitId == unitId);
 
             if (unitBalance == null) 
             {

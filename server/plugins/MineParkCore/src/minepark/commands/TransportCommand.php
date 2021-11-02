@@ -40,7 +40,7 @@ class TransportCommand extends Command
     public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
         if(self::argumentsNo($args)) {
-            $player->sendMessage("Неправильное использование команды. /t spawn <машина>");
+            $player->sendMessage("CommandTransportErrorSpawn");
 
             return;
         }
@@ -49,19 +49,19 @@ class TransportCommand extends Command
         
         if($subCommand == "spawn") {
             if(!$player->isAdministrator()) {
-                $player->sendMessage("Необходимо запросить доступ для выполнения этой команды!");
+                $player->sendMessage("CommandTransporNoPermission");
 
                 return;
             }
 
             if(!self::argumentsMin(2, $args)) {
-                $player->sendMessage("Неправильное использование команды. /t spawn <машина>");
+                $player->sendMessage("CommandTransportErrorSpawn");
 
                 return;
             }
 
             if(!$this->spawnCar($player, $args[1])) {
-                $player->sendMessage("Неверное название модели машины!");
+                $player->sendMessage("CommandTransportErrorSpawnModel");
 
                 return;
             }
@@ -71,7 +71,7 @@ class TransportCommand extends Command
             //TODO: Add check: is @driver in @vehicle only
 
             if(!self::argumentsMin(2, $args)) {
-                $player->sendMessage("Неправильное использование команды. /t station <порядковый номер>");
+                $player->sendMessage("CommandTransportErrorStation");
 
                 return;
             }

@@ -3,22 +3,22 @@
     "header":  {
                    "description":  "vk.com/mcperp",
                    "name":  "MineParkRU",
-                   "uuid":  "a55116cd-e61b-4fb9-a17e-0e4ea0d83c15",
+                   "uuid":  "6a01c649-877a-41bc-bec9-ee4130d1cade",
                    "version":  [
                                    2021,
                                    9,
-                                   19
+                                   27
                                ]
                },
     "modules":  [
                     {
                         "description":  "MineParkRU",
                         "type":  "resources",
-                        "uuid":  "d0e4fe8f-b8b8-4f77-8fd6-687a1736f069",
+                        "uuid":  "aae26eea-8f08-42bf-ae55-cf9af04c1aae",
                         "version":  [
                                         2021,
                                         9,
-                                        19
+                                        27
                                     ]
                     }
                 ]

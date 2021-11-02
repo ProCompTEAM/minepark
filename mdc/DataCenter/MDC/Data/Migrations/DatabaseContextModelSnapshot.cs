@@ -310,6 +310,9 @@ namespace MDC.Data.Migrations
                     b.Property<bool>("Administrator")
                         .HasColumnType("tinyint(1)");
 
+                    b.Property<int?>("BanRecordId")
+                        .HasColumnType("int");
+
                     b.Property<int>("Bonus")
                         .HasColumnType("int");
 
@@ -362,7 +365,35 @@ namespace MDC.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BanRecordId");
+
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("MDC.Data.Models.UserBanRecord", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("IssuerName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime>("ReleaseDate")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(128)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserBanRecords");
                 });
 
             modelBuilder.Entity("MDC.Data.Models.UserSettings", b =>
@@ -403,6 +434,13 @@ namespace MDC.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("UserSettings");
+                });
+
+            modelBuilder.Entity("MDC.Data.Models.User", b =>
+                {
+                    b.HasOne("MDC.Data.Models.UserBanRecord", "BanRecord")
+                        .WithMany()
+                        .HasForeignKey("BanRecordId");
                 });
 #pragma warning restore 612, 618
         }

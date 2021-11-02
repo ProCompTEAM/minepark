@@ -48,7 +48,7 @@ class Run {
             $data = file_get_contents($dir.$file);
             if(!Empty(explode(" ", $data)[3])) { 
                 $my = explode(" ", $data);
-                array_push($this->all, new Position($my[0], $my[1], $my[2], $this->cs->getServer()->getWorldManager()->getWorldByName($my[3])));
+                array_push($this->all, new Position(intval($my[0]), intval($my[1]), intval($my[2]), $this->cs->getServer()->getWorldManager()->getWorldByName($my[3])));
             } 
         } 
     } 

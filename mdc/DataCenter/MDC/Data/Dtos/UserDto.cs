@@ -28,6 +28,8 @@ namespace MDC.Data.Dtos
 
         public bool Realtor { get; set; }
 
+        public UserBanRecordDto BanRecord { get; set; }
+
         public DateTime JoinedDate { get; set; }
 
         public DateTime LeftDate { get; set; }

@@ -17,6 +17,8 @@ namespace MDC.Common.Mapping
             CreateMap<FloatingText, FloatingTextDto>().ReverseMap();
 
             CreateMap<Credentials, CredentialsDto>().ReverseMap();
+
+            CreateMap<UserBanRecord, UserBanRecordDto>().ReverseMap();
         }
     }
 }

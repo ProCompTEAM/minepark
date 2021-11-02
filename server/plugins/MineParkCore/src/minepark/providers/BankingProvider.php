@@ -48,8 +48,8 @@ class BankingProvider extends Provider
         }
     
         if ($label and $status) {
-            $player->sendMessage(self::PREFIX . "§eС вашего счета списано рублей: " . $money);
-            $player->sendMessage(self::PREFIX . "§bТекущий остаток на карте: " . $this->getPlayerMoney($player) . "руб");
+            $player->sendLocalizedMessage(self::PREFIX . "{BankingDebiting}" . $money);
+            $player->sendLocalizedMessage(self::PREFIX . "{BankingBalance}" . $this->getPlayerMoney($player) . "{Rub}");
         }
         
         return $status;
@@ -72,8 +72,8 @@ class BankingProvider extends Provider
         }
         
         if ($label and $status) {
-            $player->sendMessage(self::PREFIX . "§aНа ваш счет зачислена сумма в рублях: " . $money);
-            $player->sendMessage(self::PREFIX . "§2Текущий остаток на карте: §a" . $this->getPlayerMoney($player) . "руб");
+            $player->sendLocalizedMessage(self::PREFIX . "{BankingCrediting}" . $money);
+            $player->sendLocalizedMessage(self::PREFIX . "{BankingBalance}" . $this->getPlayerMoney($player) . "{Rub}");
         }
         
         return $status;

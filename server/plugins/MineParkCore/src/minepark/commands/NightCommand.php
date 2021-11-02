@@ -30,6 +30,6 @@ class NightCommand extends Command
     public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
         $player->getWorld()->setTime(World::TIME_NIGHT);
-        $player->sendMessage("§9⌚ Вы включили §1ночь §9в игровом мире §e" . $player->getWorld()->getDisplayName());
+        $player->sendLocalizedMessage("{CommandNight}" . $player->getWorld()->getDisplayName());
     }
 }
