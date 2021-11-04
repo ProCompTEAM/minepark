@@ -84,6 +84,9 @@ a {
 a:hover {
 	color: red;
 }
+.InformationError {
+	color: red;
+}
 
 @media screen and (max-width: 402px) {
 	.box {

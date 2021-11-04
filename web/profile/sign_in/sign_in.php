@@ -11,10 +11,11 @@
 <body>
 	<header>
 		<div class="conteiner">
-			<form class="box" method="post">
+			<form class="box" method="post" action="../assets/php/sign_in_handler_form.php">
 				<h1 class="animated swing">Вход в minepark:</h1>
-				<input class="but" type="text" placeholder="Ваш ник">
-				<input class="but" type="password" placeholder="Пароль">
+				<p class="InformationError" id="InformationError"></p>
+				<input class="but" type="text" name="name" placeholder="Ваш ник">
+				<input class="but" type="password" name="password" placeholder="Пароль">
 				<input class="button" type="submit" value="Войти">
 			</form>
 		</div>
