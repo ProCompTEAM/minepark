@@ -10,7 +10,7 @@
         $fileJson = file_put_contents($location, $dataJson);
     }
 
-    if(file_exists('assets/json/config.json') == False) {
+    if(!file_exists('assets/json/config.json')) {
         createJsonDataMDC('assets/json/config.json');
     }
 
