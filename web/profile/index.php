@@ -1,6 +1,6 @@
 ﻿<?php 
     include 'assets/php/connection.php';
-    $profile = createRequest("web", "get-user-profile", "Layere");
+    $profile = createRequest("web", "get-user-profile", "Layere", $token, $unitId, $urlAddress);
 
     $privilege = $profile["privilege"];
     $balance = $profile["moneySummary"];
@@ -10,15 +10,19 @@
     $nik = $profile["fullName"];
     $minutesPlayed = $profile["minutesPlayed"];
 
-    include 'assets/php/balance.php';
-    include 'assets/php/vip_status.php';
-    include 'assets/php/nik_status.php';
-    include 'assets/php/statistics_day.php';
-    include 'assets/php/ban.php';
+    include 'assets/php/translator.php';
+    $balance_str = balanceUser($balance);
+    nikStatusUser($nik);
+
+    $day = statisticsDayPlayer($minutesPlayed)['day'];
+    $title = statisticsDayPlayer($minutesPlayed)['title'];
+    $width_style = statisticsDayPlayer($minutesPlayed)['width_style'];
+
+    $privilege_status = privilegeStatusPlayer($privilege);
 ?>
 
 <!DOCTYPE html>
-<html lang="ru">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -128,23 +132,23 @@
                 <div class="info">
                     <div class="info_user">
                         <p class="info__user margin_right">НИК: </p>
-                        <p class="user__info"><?php print_r($nik); ?></p>
+                        <p class="user__info"><?php echo $nik; ?></p>
                     </div>
                     <div class="info_user height_29">
                         <p class="info__user_data_reg margin_right">ДАТА  РЕГИСТРАЦИИ:</p>
-                        <p class="user__data"><?php print_r($registerData); ?></p>
+                        <p class="user__data"><?php echo $registerData; ?></p>
                     </div>
                     <div class="info_user width_400">
                         <p class="info__user_balance margin_right">ОБЩИЙ БАЛАНС СЧЁТА:</p>
-                        <p class="user__data_balance"><?php print_r($balance_str); ?></p>
+                        <p class="user__data_balance"><?php echo $balance_str; ?></p>
                     </div>
                     <div class="info_user width_313">
-                        <p class="info__user_role margin_right">VIP: </p>
-                        <p class="user__data_role"><?php print_r($privilege_status); ?></p>
+                        <p class="info__user_role margin_right">ПРИВИЛЕГИЯ: </p>
+                        <p class="user__data_role"><?php echo $privilege_status; ?></p>
                     </div>
                      <div class="info_user width_313">
                         <p class="info__user_work margin_right">НОМЕР ТЕЛЕФОНА: </p>
-                        <p class="user__data_work"><?php print_r($phoneNumber); ?></p>
+                        <p class="user__data_work"><?php echo $phoneNumber; ?></p>
                     </div>
                 </div>
             </div>
@@ -159,7 +163,7 @@
                         <div class="column_1">
                             <div class="day">
                                 <p class="text_information_1">кол-во времени в игре</p>
-                                <h2 class="h2_information width_181 cursor_pointer" title="<?php print_r($title)?>"> <?php print_r($day);?> </h2>
+                                <h2 class="h2_information width_181 cursor_pointer" title="<?php echo $title;?>"> <?php echo $day;?> </h2>
                             </div>
                             <div class="score">
                                 <p class="text_information_1">счетов в банке</p>
