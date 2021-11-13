@@ -1,3 +1,13 @@
+<?php
+	session_start();
+	$errorText = $_SESSION['ErrorTextSignIn'];
+	if ($_SESSION['SignIn'] == 1) {
+		header('Location:../');
+	} else {
+		session_unset();
+    	session_destroy();
+	}
+?>
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -11,15 +21,14 @@
 <body>
 	<header>
 		<div class="conteiner">
-			<form class="box" method="post" action="../assets/php/sign_in_handler_form.php">
+			<form class="box" method="post" action="../assets/php/signInHandlerForm.php">
 				<h1 class="animated swing">Вход в minepark:</h1>
-				<p class="InformationError" id="InformationError"></p>
+				<p class="InformationError" id="InformationError"><?php echo $errorText?></p>
 				<input class="but" type="text" name="name" placeholder="Ваш ник">
 				<input class="but" type="password" name="password" placeholder="Пароль">
 				<input class="button" type="submit" value="Войти">
 			</form>
 		</div>
 	</header>
-	<a href="/profile/">тестовый вход</a>
 </body>
 </html>

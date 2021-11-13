@@ -10,11 +10,20 @@
     $nik = $profile["fullName"];
     $minutesPlayed = $profile["minutesPlayed"];
 
+    session_start();
+
     include 'assets/php/balance.php';
     include 'assets/php/vip_status.php';
     include 'assets/php/nik_status.php';
     include 'assets/php/statistics_day.php';
     include 'assets/php/ban.php';
+
+    if (!$_SESSION['SignIn']) {
+        header('Location:sign_in/sign_in.php');
+        session_unset();
+        session_destroy();
+        exit();
+    }
 ?>
 
 <!DOCTYPE html>
@@ -68,7 +77,7 @@
                                         <a class="button_server" onclick="openPopup();">Выбрать сервер</a>
                                     </li>
                                     <li>
-                                        <a href="#" class="menu_link">Выйти</a>
+                                    <a href="assets/php/exit.php" class="menu_link">Выйти</a>
                                     </li>
                                 </ul>
                             </li>
@@ -104,8 +113,8 @@
                                         <li>
                                             <a id="button_server" onclick="openPopup();">Выбрать сервер</a>
                                         </li>
-                                        <li>
-                                            <a href="#" class="menu_link">Выйти</a>
+                                        <li>   
+                                            <a href="assets/php/exit.php" class="menu_link">Выйти</a>
                                         </li>
                                     </ul>
                                 </li>
