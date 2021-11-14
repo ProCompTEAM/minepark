@@ -3,10 +3,9 @@
     session_start();
 
     if(empty($_POST['name']) or empty($_POST['password'])) {
-        header('Location:../../sign_in/sign_in.php');
         $_SESSION['ErrorTextSignIn'] = 'Вы не ввели одно или два поля.';
+        header('Location:../../sign_in/sign_in.php');
         exit();
-        $errorText = 'Вы не ввели одно или два поля.';
     } else {
         $name = htmlspecialchars($_POST['name']);
         $password = htmlspecialchars($_POST['password']);
@@ -17,14 +16,13 @@
         $passwordVerifty = password_verify($password, $profilePassword);
 
         if($passwordVerifty == True) {
-            header('Location:../../index.php');
             $_SESSION['SignIn'] = 1;
+            header('Location:../../index.php');
             exit();
         } else {
-            header('Location:../../sign_in/sign_in.php');
             $_SESSION['ErrorTextSignIn'] = 'Вы ввели неправильно логин или пароль';
+            header('Location:../../sign_in/sign_in.php');
             exit();
-            $errorText = 'Вы ввели неправильно логин или пароль';
         }
     }
 ?>
