@@ -39,13 +39,14 @@ namespace MDC.Common.Network.HttpWeb
                     await HandleRequest(context.Request, context.Response);
                 }
 
+                // TODO #543
                 try
                 {
                     context.Response.Close();
                 }
-                catch(Exception exception)
+                catch(AggregateException aggregateException)
                 {
-                    General.Error(exception.ToString());
+                    General.Error(aggregateException.ToString());
                 }
             }
 
