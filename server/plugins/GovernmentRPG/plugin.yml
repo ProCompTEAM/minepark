@@ -8,10 +8,10 @@ author: Kirill_Poroh
 commands:
  gov:
   default: true
-  permissions: mcrpg.gov
+  permission: mcrpg.gov
  law:
   default: true
-  permissions: mcrpg.law
+  permission: mcrpg.law
   
 permissions:
   mcrpg.gov:

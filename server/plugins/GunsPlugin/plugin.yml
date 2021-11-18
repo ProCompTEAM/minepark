@@ -6,4 +6,8 @@ author: MCRPG Team
 
 commands:
     guns:
+        permission: guns.command.use
+
+permissions:
+    guns.command.use:
         default: true

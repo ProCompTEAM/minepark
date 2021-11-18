@@ -34,6 +34,9 @@ class Permissions
             "pocketmine.command.time",
             "pocketmine.command.time.set",
             "pocketmine.command.time.add",
+            "pocketmine.command.time.start",
+            "pocketmine.command.time.stop",
+            "pocketmine.command.time.query",
             "pocketmine.command.give"
         ];
     }
@@ -44,6 +47,9 @@ class Permissions
             "pocketmine.command.time",
             "pocketmine.command.time.set",
             "pocketmine.command.time.add",
+            "pocketmine.command.time.start",
+            "pocketmine.command.time.stop",
+            "pocketmine.command.time.query",
             "realt.creator"
         ];
     }
