@@ -8,46 +8,46 @@ author: Kirill_Poroh
 commands:
  coffee:
   default: op
-  permissions: sc.command.ef
+  permission: sc.command.coffee
  pos:
   default: op
-  permissions: sc.command.pos
+  permission: sc.command.pos
  v:
   default: op
-  permissions: sc.command.v
+  permission: sc.command.v
  cc:
   default: op
-  permissions: sc.command.cc
+  permission: sc.command.cc
  free:
   default: op
-  permissions: sc.command.free
+  permission: sc.command.free
  freeze:
   default: op
-  permissions: sc.command.freeze
+  permission: sc.command.freeze
  unfreeze:
   default: op
-  permissions: sc.command.freeze
+  permission: sc.command.freeze
  burn:
   default: op
-  permissions: sc.command.burn
+  permission: sc.command.burn
  invsee:
   default: op
-  permissions: sc.command.invsee
+  permission: sc.command.invsee
  timeban:
   default: op
-  permissions: sc.command.timeban
+  permission: sc.command.timeban
  see:
   default: op
-  permissions: sc.command.see
+  permission: sc.command.see
  getpos:
   default: op
-  permissions: sc.command.getpos
+  permission: sc.command.getpos
  mute:
   default: op
-  permissions: sc.command.mute
+  permission: sc.command.mute
  unmute:
   default: op
-  permissions: sc.command.mute
+  permission: sc.command.mute
   
 permissions:
  sc.command.freeze:
