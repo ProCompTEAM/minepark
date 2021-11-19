@@ -5,6 +5,7 @@ use minepark\defaults\TimeConstants;
 use minepark\Providers;
 
 use pocketmine\data\bedrock\EffectIds;
+use pocketmine\entity\effect\StringToEffectParser;
 use pocketmine\entity\effect\VanillaEffects;
 use pocketmine\world\Position;
 use pocketmine\entity\effect\EffectInstance;
@@ -159,7 +160,7 @@ class Workers extends Component
 
     private function giveSlownessEffect(MineParkPlayer $player)
     {
-        $effect = VanillaEffects::fromString("slowness");
+        $effect = StringToEffectParser::getInstance()->parse("slowness");
         $instance = new EffectInstance($effect, TimeConstants::ONE_SECOND_TICKS * 9999, 3, true);
         $player->getEffects()->add($instance);
     }

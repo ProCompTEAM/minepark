@@ -5,6 +5,7 @@ use minepark\defaults\TimeConstants;
 use minepark\Providers;
 use pocketmine\block\Block;
 use pocketmine\block\BlockLegacyIds;
+use pocketmine\entity\effect\StringToEffectParser;
 use pocketmine\entity\effect\VanillaEffects;
 use pocketmine\world\Position;
 
@@ -69,7 +70,7 @@ class Farm extends Component
 
     private function giveSlownessEffect(MineParkPlayer $player)
     {
-        $effect = VanillaEffects::fromString("slowness");
+        $effect = StringToEffectParser::getInstance()->parse("slowness");
         $instance = new EffectInstance($effect, TimeConstants::ONE_SECOND_TICKS * 9999, 1, true);
         $player->getEffects()->add($instance);
     }

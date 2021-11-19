@@ -4,6 +4,7 @@ namespace minepark\components\settings;
 use minepark\Events;
 use minepark\Providers;
 use minepark\Components;
+use pocketmine\entity\effect\StringToEffectParser;
 use pocketmine\item\ItemIds;
 use pocketmine\utils\Config;
 use pocketmine\entity\Entity;
@@ -111,9 +112,10 @@ class EntitySettings extends Component
             "weakness",
             "poison"
         ];
+
         $effectManager = $victim->getEffects();
         foreach($effects as $effectName) {
-            $effect = VanillaEffects::fromString($effectName);
+            $effect = StringToEffectParser::getInstance()->parse($effectName);
             $instance = new EffectInstance($effect, 5000, 1, true);
             $effectManager->add($instance);
         }

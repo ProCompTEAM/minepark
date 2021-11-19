@@ -3,6 +3,7 @@ declare(strict_types = 1);
 
 namespace Kirill_Poroh;
 
+use pocketmine\entity\effect\StringToEffectParser;
 use pocketmine\entity\effect\VanillaEffects;
 use pocketmine\player\Player;
 use pocketmine\entity\effect\Effect;
@@ -33,7 +34,7 @@ class CoffeeCommand
                 $effectManager = $player->getEffects();
 
                 foreach($this->effects as $effectName) {
-                    $effect = VanillaEffects::fromString($effectName);
+                    $effect = StringToEffectParser::getInstance()->parse($effectName);
                     $instance = new EffectInstance($effect, 20 * 60, 3, true);
                     $effectManager->add($instance);
                 }
