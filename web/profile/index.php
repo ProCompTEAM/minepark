@@ -14,9 +14,9 @@
     $balance_str = balanceUser($balance);
     nikStatusUser($nik);
 
-    $day = statisticsDayPlayer($minutesPlayed)['day'];
-    $title = statisticsDayPlayer($minutesPlayed)['title'];
-    $width_style = statisticsDayPlayer($minutesPlayed)['width_style'];
+    $time  = statisticsTimePlayer($minutesPlayed)['time'];
+    $title = statisticsTimePlayer($minutesPlayed)['title'];
+    $width_style = statisticsTimePlayer($minutesPlayed)['width_style'];
 
     $privilege_status = privilegeStatusPlayer($privilege);
 ?>
@@ -135,20 +135,20 @@
                         <p class="user__info"><?php echo $nik; ?></p>
                     </div>
                     <div class="info_user height_29">
-                        <p class="info__user_data_reg margin_right">ДАТА  РЕГИСТРАЦИИ:</p>
+                        <p class="infoUserDataRegistration margin_right">ДАТА  РЕГИСТРАЦИИ:</p>
                         <p class="user__data"><?php echo $registerData; ?></p>
                     </div>
                     <div class="info_user width_400">
-                        <p class="info__user_balance margin_right">ОБЩИЙ БАЛАНС СЧЁТА:</p>
-                        <p class="user__data_balance"><?php echo $balance_str; ?></p>
+                        <p class="infoUserBalance margin_right">ОБЩИЙ БАЛАНС СЧЁТА:</p>
+                        <p class="infoUserDataBalance"><?php echo $balance_str; ?></p>
                     </div>
                     <div class="info_user width_313">
-                        <p class="info__user_role margin_right">ПРИВИЛЕГИЯ: </p>
-                        <p class="user__data_role"><?php echo $privilege_status; ?></p>
+                        <p class="infoUserRole margin_right">ПРИВИЛЕГИЯ: </p>
+                        <p class="userDataRole"><?php echo $privilege_status; ?></p>
                     </div>
                      <div class="info_user width_313">
-                        <p class="info__user_work margin_right">НОМЕР ТЕЛЕФОНА: </p>
-                        <p class="user__data_work"><?php echo $phoneNumber; ?></p>
+                        <p class="infoUserWork margin_right">НОМЕР ТЕЛЕФОНА: </p>
+                        <p class="userDataWork"><?php echo $phoneNumber; ?></p>
                     </div>
                 </div>
             </div>
@@ -163,7 +163,7 @@
                         <div class="column_1">
                             <div class="day">
                                 <p class="text_information_1">кол-во времени в игре</p>
-                                <h2 class="h2_information width_181 cursor_pointer" title="<?php echo $title;?>"> <?php echo $day;?> </h2>
+                                <h2 class="h2_information width_181 cursor_pointer" title="<?php echo $title;?>"> <?php echo $time;?> </h2>
                             </div>
                             <div class="score">
                                 <p class="text_information_1">счетов в банке</p>

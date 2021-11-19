@@ -246,7 +246,7 @@ h1 {
 	line-height: 27px;
 }
 
-.info__user_data_reg {
+.infoUserDataRegistration {
 	width: 185px;
 	height: 27px;
 	font-family: Open Sans;
@@ -283,7 +283,7 @@ h1 {
 	line-height: 27px;
 }
 
-.info__user_balance {
+.infoUserBalance {
 	width: 197px;
 	height: 27px;
 	font-family: Open Sans;
@@ -294,7 +294,7 @@ h1 {
 	color: #E4E4E4;
 }
 
-.user__data_balance {
+.infoUserDataBalance {
 	width: 194px;
 	height: 41px;
 	font-family: Open Sans;
@@ -314,7 +314,7 @@ h1 {
 }
 
 
-.info__user_role {
+.infoUserRole {
 	width: 126px;
 	height: 27px;
 	font-family: Open Sans;
@@ -325,7 +325,7 @@ h1 {
 	color: #E4E4E4;
 }
 
-.user__data_role {
+.userDataRole {
 	width: 102px;
 	height: 40px;
 	font-family: Open Sans;
@@ -336,7 +336,7 @@ h1 {
 	color: #E4E4E4;
 }
 
-.info__user_work {
+.infoUserWork {
 	width: 170px;
 	height: 27px;
 	font-family: Open Sans;
@@ -348,7 +348,7 @@ h1 {
 }
 
 
-.user__data_work {
+.userDataWork {
 	width: 102px;
 	height: 40px;
 	font-family: Open Sans;

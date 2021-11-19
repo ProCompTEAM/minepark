@@ -50,32 +50,32 @@
         }
     }
 
-    function statisticsDayPlayer($minutesPlayed) 
+    function statisticsTimePlayer($minutesPlayed) 
     {
         if($minutesPlayed >= 0 && $minutesPlayed < 60){
-            $day = $minutesPlayed . 'мин.';
+            $time = $minutesPlayed . 'мин.';
             $temp = $minutesPlayed;
             $TEMP = 1;
             $title = $temp . ' минут';
 
         } elseif ($minutesPlayed <= 1439) {
             $temp = floor($minutesPlayed / 60);
-            $day = $temp . 'ч.';
+            $time = $temp . 'ч.';
             $title = $temp . " часов";
 
         } elseif ($minutesPlayed >= 1439 && $minutesPlayed < 525600) {
             $temp = floor($minutesPlayed / 1440);
-            $day = $temp . 'д.';
+            $time = $temp . 'д.';
             $title = $temp . " дней/дня";
 
         } elseif ($minutesPlayed >= 525600 && $minutesPlayed < 52560000) {
             $temp = floor($minutesPlayed / 525600);
-            $day = $temp . 'г.';
+            $time = $temp . 'г.';
             $title = $temp . " год/лет";
 
         } elseif ($minutesPlayed >= 52560000) {
             $temp = floor($minutesPlayed / 52560000);
-            $day = $temp . 'в.';
+            $time = $temp . 'в.';
             $title = $temp . " века/веков";
         }
     
@@ -103,7 +103,7 @@
         }
 
         return array(
-            'day' => $day,
+            'time' => $time,
             'title' => $title,
             'width_style' => $width_style
         );
@@ -111,29 +111,18 @@
 
     function privilegeStatusPlayer($privilege) 
     {
-        if($privilege == 0) {
-            $privilege_status = 'нету';
-            return $privilege_status;
-        } 
-
-        if($privilege == 1) {
-            $privilege_status = 'Вип';
-            return $privilege_status;
-        }
-
-        if($privilege == 2) {
-            $privilege_status = 'Админ';
-            return $privilege_status;
-        }
-
-        if($privilege == 3) {
-            $privilege_status = 'Билдер';
-            return $privilege_status;
-        }
-
-        if($privilege == 4) {
-            $privilege_status =  'Риэлтор';
-            return $privilege_status;
+        switch($privilege)
+        {
+            case 0:
+                return 'нету';
+            case 1:
+                return 'Вип';
+            case 2:
+                return 'Админ';
+            case 3:
+                return 'Билдер';
+            case 4:
+                return 'Риэлтор';
         }
     }
 ?>
