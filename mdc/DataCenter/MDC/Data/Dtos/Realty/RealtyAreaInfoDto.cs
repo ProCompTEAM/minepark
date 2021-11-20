@@ -2,7 +2,7 @@
 
 namespace MDC.Data.Dtos.Realty
 {
-    public class AreaInfoDto
+    public class RealtyAreaInfoDto
     {
         public string Name { get; set; }
 

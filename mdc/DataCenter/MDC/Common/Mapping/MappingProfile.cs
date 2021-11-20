@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using MDC.Data.Dtos;
+using MDC.Data.Dtos.Realty;
 using MDC.Data.Models;
+using MDC.Data.Models.Realty;
 
 namespace MDC.Common.Mapping
 {
@@ -17,6 +19,8 @@ namespace MDC.Common.Mapping
             CreateMap<FloatingText, FloatingTextDto>().ReverseMap();
 
             CreateMap<Credentials, CredentialsDto>().ReverseMap();
+
+            CreateMap<RealtyArea, RealtyAreaInfoDto>().ReverseMap();
         }
     }
 }

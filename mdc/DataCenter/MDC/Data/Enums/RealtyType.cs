@@ -1,6 +1,6 @@
 namespace MDC.Data.Enums
 {
-    public enum RealtyView : int
+    public enum RealtyType : int
     {
         PrivateHouse = 1,
 
