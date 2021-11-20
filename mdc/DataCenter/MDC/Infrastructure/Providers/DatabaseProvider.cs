@@ -14,9 +14,9 @@ namespace MDC.Infrastructure.Providers
     {
         private readonly IDateTimeProvider dateTimeProvider;
 
-        public DatabaseProvider()
+        public DatabaseProvider(DateTimeProvider dateTimeProvider)
         {
-            dateTimeProvider = Store.GetProvider<DateTimeProvider>();
+            this.dateTimeProvider = dateTimeProvider;
         }
 
         public List<T> GetAll<T>() where T : class, IEntity => Database.Context.Set<T>().ToList();

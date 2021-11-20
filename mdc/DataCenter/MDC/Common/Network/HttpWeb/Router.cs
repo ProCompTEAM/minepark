@@ -1,6 +1,7 @@
-﻿using MDC.Common.Network.HttpWeb.Json;
+﻿using MDC.Common.Network.HttpWeb.Attributes;
+using MDC.Common.Network.HttpWeb.Json;
+
 using MDC.Infrastructure;
-using MDC.Infrastructure.Controllers.Interfaces;
 using MDC.Infrastructure.Providers;
 using MDC.Infrastructure.Providers.Interfaces;
 
@@ -24,7 +25,7 @@ namespace MDC.Common.Network.HttpWeb
 
         static Router()
         {
-            authorizationProvider = Store.GetProvider<AuthorizationProvider>();
+            authorizationProvider = Resolver.Container.Resolve<AuthorizationProvider>();
         }
 
         public static ExecutionResult Execute(RequestContext requestContext, string jsonData, string target)
@@ -84,7 +85,7 @@ namespace MDC.Common.Network.HttpWeb
 
         private static ExecutionResult TryToExecute(string[] routes, RequestContext requestContext, string jsonData)
         {
-            IController controller = Store.GetControllerByRoute(routes[0]);
+            object controller = GetControllerByRoute(routes[0]);
 
             if (controller == null)
             {
@@ -102,7 +103,20 @@ namespace MDC.Common.Network.HttpWeb
             return CreateExecutionResult(HttpStatusCode.OK, methodExecutionResult);
         }
 
-        private static MethodInfo SearchForMethod(IController controller, string methodName)
+        public static object GetControllerByRoute(string route)
+        {
+            var controller = Assembly.GetExecutingAssembly()
+                .GetTypes()
+                .Where(type => 
+                        type.GetCustomAttributes<WebRoute>()
+                            .Any(attribute => attribute.Value.Equals(route)
+                    ))
+                .SingleOrDefault();
+
+            return controller == null ? null : Resolver.Container.Resolve(controller);
+        }
+
+        private static MethodInfo SearchForMethod(object controller, string methodName)
         {
             methodName = NormalizeMethodName(methodName);
 
@@ -118,7 +132,7 @@ namespace MDC.Common.Network.HttpWeb
             return method;
         }
 
-        private static string ExecuteMethod(IController controller, MethodInfo method, RequestContext requestContext, string jsonData)
+        private static string ExecuteMethod(object controller, MethodInfo method, RequestContext requestContext, string jsonData)
         {
             if (!IsMethodContainArgument(method, typeof(RequestContext)))
             {

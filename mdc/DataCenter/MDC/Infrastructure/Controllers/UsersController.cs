@@ -1,22 +1,24 @@
 ﻿using MDC.Common.Network.HttpWeb;
+using MDC.Common.Network.HttpWeb.Attributes;
+
 using MDC.Data.Dtos;
 using MDC.Data.Dtos.Audit;
-using MDC.Infrastructure.Controllers.Interfaces;
+
 using MDC.Infrastructure.Services;
 using MDC.Infrastructure.Services.Interfaces;
+
 using System.Threading.Tasks;
 
 namespace MDC.Infrastructure.Controllers
 {
-    public class UsersController : IController
+    [WebRoute("users")]
+    public class UsersController
     {
-        public string Route { get; set; } = "users";
-
         private readonly IUsersService usersService;
 
-        public UsersController()
+        public UsersController(UsersService usersService)
         {
-            usersService = Store.GetService<UsersService>();
+            this.usersService = usersService;
         }
 
         public async Task<bool> Exist(string userName)

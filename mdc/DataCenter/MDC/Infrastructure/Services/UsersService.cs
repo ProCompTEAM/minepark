@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+
 using MDC.Data.Dtos;
 using MDC.Data.Models;
 using MDC.Infrastructure.Providers;
@@ -7,6 +8,7 @@ using MDC.Infrastructure.Services.Audit;
 using MDC.Infrastructure.Services.Audit.Interfaces;
 using MDC.Infrastructure.Services.Interfaces;
 using MDC.Utilities;
+
 using System;
 using System.Threading.Tasks;
 
@@ -32,20 +34,29 @@ namespace MDC.Infrastructure.Services
 
         private readonly IMapper mapper;
 
-        public UsersService()
+        public UsersService(
+            DatabaseProvider databaseProvider,
+            DateTimeProvider dateTimeProvider,
+            PhonesService phonesService,
+            BankingService bankingService,
+            BanRecordsService banRecordsService,
+            ExecutedCommandsAuditService executedCommandsAuditService,
+            ChatMessagesAuditService chatMessagesAuditService,
+            UserTrafficAuditService userTrafficAuditService,
+            Mapper mapper)
         {
-            databaseProvider = Store.GetProvider<DatabaseProvider>();
-            dateTimeProvider = Store.GetProvider<DateTimeProvider>();
+            this.databaseProvider = databaseProvider;
+            this.dateTimeProvider = dateTimeProvider;
 
-            phonesService = Store.GetService<PhonesService>();
-            bankingService = Store.GetService<BankingService>();
-            banRecordsService = Store.GetService<BanRecordsService>();
+            this.phonesService = phonesService;
+            this.bankingService = bankingService;
+            this.banRecordsService = banRecordsService;
 
-            executedCommandsAuditService = Store.GetService<ExecutedCommandsAuditService>();
-            chatMessagesAuditService = Store.GetService<ChatMessagesAuditService>();
-            userTrafficAuditService = Store.GetService<UserTrafficAuditService>();
+            this.executedCommandsAuditService = executedCommandsAuditService;
+            this.chatMessagesAuditService = chatMessagesAuditService;
+            this.userTrafficAuditService = userTrafficAuditService;
 
-            mapper = Store.GetMapper();
+            this.mapper = mapper;
         }
 
         public Task<bool> Exist(string userName)
@@ -183,7 +194,7 @@ namespace MDC.Infrastructure.Services
         {
             User user = await GetUser(userName);
 
-            // TODO: Вместо этого костыля выпустить хороший фикс (задача #512)
+            // TODO: Fix in #512
             if (user.JoinedDate.Year == 0001)
             {
                 return;

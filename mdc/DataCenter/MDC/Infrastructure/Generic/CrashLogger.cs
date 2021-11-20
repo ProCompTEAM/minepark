@@ -15,7 +15,7 @@ namespace MDC.Infrastructure.Generic
 
         public CrashLogger()
         {
-            dateTimeProvider = Store.GetProvider<DateTimeProvider>();
+            dateTimeProvider = Resolver.Container.Resolve<DateTimeProvider>();
 
             Directory.CreateDirectory(CrashFolder);
         }

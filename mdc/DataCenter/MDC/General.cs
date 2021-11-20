@@ -58,7 +58,7 @@ namespace MDC
         {
             CommonMapper.Initialize();
 
-            Store.InitializeAll();
+            Resolver.ResolveAll();
 
             Properties = new MDCProperties();
             logger = new Logger();
@@ -76,7 +76,8 @@ namespace MDC
 
         private static void LoadContextData()
         {
-            Store.GetProvider<AuthorizationProvider>().RestoreCredentials();
+            Resolver.Container.Resolve<AuthorizationProvider>()
+                .RestoreCredentials();
         }
     }
 }

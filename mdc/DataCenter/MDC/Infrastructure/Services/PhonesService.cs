@@ -4,6 +4,7 @@ using MDC.Data.Models;
 using MDC.Infrastructure.Providers;
 using MDC.Infrastructure.Providers.Interfaces;
 using MDC.Infrastructure.Services.Interfaces;
+
 using System;
 using System.Threading.Tasks;
 
@@ -13,9 +14,9 @@ namespace MDC.Infrastructure.Services
     {
         private readonly IDatabaseProvider databaseProvider;
 
-        public PhonesService()
+        public PhonesService(DatabaseProvider databaseProvider)
         {
-            databaseProvider = Store.GetProvider<DatabaseProvider>();
+            this.databaseProvider = databaseProvider;
         }
 
         public async Task<long> CreateNumberForUser(string userName)
