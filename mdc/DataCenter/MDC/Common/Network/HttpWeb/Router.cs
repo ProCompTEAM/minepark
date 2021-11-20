@@ -105,7 +105,7 @@ namespace MDC.Common.Network.HttpWeb
 
         public static object GetControllerByRoute(string route)
         {
-            var controller = Assembly.GetExecutingAssembly()
+            Type targetType = Assembly.GetExecutingAssembly()
                 .GetTypes()
                 .Where(type => 
                         type.GetCustomAttributes<WebRoute>()
@@ -113,7 +113,7 @@ namespace MDC.Common.Network.HttpWeb
                     ))
                 .SingleOrDefault();
 
-            return controller == null ? null : Resolver.Container.Resolve(controller);
+            return targetType == null ? null : Resolver.Container.Resolve(targetType);
         }
 
         private static MethodInfo SearchForMethod(object controller, string methodName)
