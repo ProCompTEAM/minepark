@@ -1,22 +1,24 @@
 ﻿using MDC.Common.Network.HttpWeb;
+using MDC.Common.Network.HttpWeb.Attributes;
+
 using MDC.Data.Dtos;
-using MDC.Infrastructure.Controllers.Interfaces;
+
 using MDC.Infrastructure.Services;
 using MDC.Infrastructure.Services.Interfaces;
+
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace MDC.Infrastructure.Controllers
 {
-    public class MapController : IController
+    [WebRoute("map")]
+    public class MapController
     {
-        public string Route { get; set; } = "map";
-
         private readonly IMapService mapService;
 
-        public MapController()
+        public MapController(MapService mapService)
         {
-            mapService = Store.GetService<MapService>();
+            this.mapService = mapService;
         }
 
         public async Task<MapPointDto> GetPoint(string name, RequestContext requestContext)

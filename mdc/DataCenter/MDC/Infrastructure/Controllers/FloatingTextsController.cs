@@ -1,22 +1,24 @@
 using MDC.Common.Network.HttpWeb;
+using MDC.Common.Network.HttpWeb.Attributes;
+
 using MDC.Data.Dtos;
-using MDC.Infrastructure.Controllers.Interfaces;
+
 using MDC.Infrastructure.Services;
 using MDC.Infrastructure.Services.Interfaces;
+
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace MDC.Infrastructure.Controllers
 {
-    public class FloatingTextsController : IController
+    [WebRoute("floating-texts")]
+    public class FloatingTextsController
     {
-        public string Route { get; set; } = "floating-texts";
-
         private readonly IFloatingTextsService floatingTextsService;
 
-        public FloatingTextsController()
+        public FloatingTextsController(FloatingTextsService floatingTextsService)
         {
-            floatingTextsService = Store.GetService<FloatingTextsService>();
+            this.floatingTextsService = floatingTextsService;
         }
 
         public List<FloatingTextDto> GetAll(RequestContext context)

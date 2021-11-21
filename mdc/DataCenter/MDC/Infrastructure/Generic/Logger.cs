@@ -15,7 +15,7 @@ namespace MDC.Infrastructure.Generic
 
         public Logger()
         {
-            dateTimeProvider = Store.GetProvider<DateTimeProvider>();
+            dateTimeProvider = Resolver.Container.Resolve<DateTimeProvider>();
         }
 
         public void Info(string message, string prefix = "Info", ConsoleColor color = DefaultConsoleColor)

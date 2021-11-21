@@ -2,22 +2,25 @@
 using MDC.Data.Enums;
 using MDC.Data.Models;
 using MDC.Infrastructure.Providers;
+using MDC.Infrastructure.Providers.Interfaces;
 using MDC.Infrastructure.Services.Interfaces;
+
 using System.Threading.Tasks;
 
 namespace MDC.Infrastructure.Services
 {
     public class WebService : IWebService, IService
     {
-        private readonly DatabaseProvider databaseProvider;
+        private readonly IDatabaseProvider databaseProvider;
 
-        private readonly UsersService usersService;
+        private readonly IUsersService usersService;
 
-        public WebService()
+        public WebService(
+            DatabaseProvider databaseProvider,
+            UsersService usersService)
         {
-            databaseProvider = Store.GetProvider<DatabaseProvider>();
-
-            usersService = Store.GetService<UsersService>();
+            this.databaseProvider = databaseProvider;
+            this.usersService = usersService;
         }
 
         public async Task<UserWebProfileDto> GetUserProfile(string unitId, string userName)

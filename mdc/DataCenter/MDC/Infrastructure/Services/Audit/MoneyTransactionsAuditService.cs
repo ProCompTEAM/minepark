@@ -1,10 +1,13 @@
 using MDC.Data.Enums;
+
 using MDC.Infrastructure.Services.Audit.Interfaces;
 using MDC.Infrastructure.Services.Interfaces;
 using MDC.Infrastructure.Providers;
 using MDC.Infrastructure.Providers.Interfaces;
-using System.Threading.Tasks;
+
 using MDC.Data.Models.Audit;
+
+using System.Threading.Tasks;
 
 namespace MDC.Infrastructure.Services.Audit
 {
@@ -12,9 +15,9 @@ namespace MDC.Infrastructure.Services.Audit
     {
         private readonly IDatabaseProvider databaseProvider;
 
-        public MoneyTransactionsAuditService()
+        public MoneyTransactionsAuditService(DatabaseProvider databaseProvider)
         {
-            databaseProvider = Store.GetProvider<DatabaseProvider>();
+            this.databaseProvider = databaseProvider;
         }
 
         public async Task ProcessGiveOperation(string unitId, string userName, double amount, PaymentMethod paymentMethod)

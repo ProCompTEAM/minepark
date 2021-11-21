@@ -1,20 +1,22 @@
-﻿using MDC.Data.Dtos;
-using MDC.Infrastructure.Controllers.Interfaces;
+﻿using MDC.Common.Network.HttpWeb.Attributes;
+
+using MDC.Data.Dtos;
+
 using MDC.Infrastructure.Services;
 using MDC.Infrastructure.Services.Interfaces;
+
 using System.Threading.Tasks;
 
 namespace MDC.Infrastructure.Controllers
 {
-    public class PhonesController : IController
+    [WebRoute("phones")]
+    public class PhonesController
     {
-        public string Route { get; set; } = "phones";
-
         private readonly IPhonesService phonesService;
 
-        public PhonesController()
+        public PhonesController(PhonesService phonesService)
         {
-            phonesService = Store.GetService<PhonesService>();
+            this.phonesService = phonesService;
         }
 
         public async Task<long?> GetNumberForUser(string userName)

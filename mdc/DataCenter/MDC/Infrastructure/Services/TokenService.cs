@@ -1,8 +1,11 @@
 using AutoMapper;
+
 using MDC.Data.Dtos;
 using MDC.Data.Models;
 using MDC.Infrastructure.Providers;
+using MDC.Infrastructure.Providers.Interfaces;
 using MDC.Infrastructure.Services.Interfaces;
+
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -10,23 +13,24 @@ namespace MDC.Infrastructure.Services
 {
     public class TokenService : IService, ITokenService
     {
-        private readonly TokenProvider tokenProvider;
+        private readonly ITokenProvider tokenProvider;
 
-        private readonly AuthorizationProvider unitProvider;
+        private readonly IAuthorizationProvider unitProvider;
 
-        private readonly DatabaseProvider databaseProvider;
+        private readonly IDatabaseProvider databaseProvider;
 
         private readonly IMapper mapper;
 
-        public TokenService()
+        public TokenService(
+            TokenProvider tokenProvider,
+            AuthorizationProvider unitProvider,
+            DatabaseProvider databaseProvider,
+            Mapper mapper)
         {
-            tokenProvider = Store.GetProvider<TokenProvider>();
-
-            unitProvider = Store.GetProvider<AuthorizationProvider>();
-
-            databaseProvider = Store.GetProvider<DatabaseProvider>();
-
-            mapper = Store.GetMapper();
+            this.tokenProvider = tokenProvider;
+            this.unitProvider = unitProvider;
+            this.databaseProvider = databaseProvider;
+            this.mapper = mapper;
         }
 
         public async Task<string> GenerateToken(string tag = null)
