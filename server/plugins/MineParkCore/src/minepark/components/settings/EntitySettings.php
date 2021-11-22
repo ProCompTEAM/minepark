@@ -132,8 +132,8 @@ class EntitySettings extends Component
 
     private function processStunAction(MineParkPlayer $victim, MineParkPlayer $policeMan)
     {
-        $this->chat->sendLocalMessage($policeMan, "StunGunInArm", "§d : ", 10);
-        $this->chat->sendLocalMessage($victim, "Stun", "§d : ", 12);
+        $this->chat->sendLocalMessage($policeMan, "{StunGunInArm}", "§d : ", 10);
+        $this->chat->sendLocalMessage($victim, "{Stun}", "§d : ", 12);
         
         $victim->changeAttribute(PlayerAttributes::WANTED);
 
