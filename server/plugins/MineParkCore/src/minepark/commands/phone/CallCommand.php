@@ -43,7 +43,7 @@ class CallCommand extends Command
 
     public function execute(MineParkPlayer $player, array $args = array(), Event $event = null)
     {
-        $this->chat->sendLocalMessage($player, "CommandCallPhoneTake", "§d : ", 10);
+        $this->chat->sendLocalMessage($player, "{CommandCallPhoneTake}", "§d : ", 10);
 
         $player->sendSound(Sounds::ENABLE_PHONE, null, 20);
 
