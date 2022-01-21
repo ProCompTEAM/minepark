@@ -2,23 +2,20 @@
     include 'assets/php/connection.php';
     $profile = createRequest("web", "get-user-profile", "Layere", $token, $unitId, $urlAddress);
 
-    $privilege = $profile["privilege"];
+    $privilegeUser = $profile["privilege"];
     $balance = $profile["moneySummary"];
     $phoneNumber = $profile["phoneNumber"];
     $registerData = $profile["createdDate"];
     $registerData = explode(' ', $registerData)[0]; 
-    $nik = $profile["fullName"];
-    $minutesPlayed = $profile["minutesPlayed"];
+    $userName = $profile["fullName"];
+    $minutesUser = $profile["minutesPlayed"];
 
     include 'assets/php/translator.php';
-    $balance_str = balanceUser($balance);
-    nikStatusUser($nik);
-
-    $time  = statisticsTimePlayer($minutesPlayed)['time'];
-    $title = statisticsTimePlayer($minutesPlayed)['title'];
-    $width_style = statisticsTimePlayer($minutesPlayed)['width_style'];
-
-    $privilege_status = privilegeStatusPlayer($privilege);
+    $balance_str = CheckBalanceUser($balance);
+    getUserStatus($nik);
+    $timeUser  = getTimeUser($minutesUser)['timeUser'];
+    $title = getTimeUser($minutesUser)['titleUser'];
+    $privilege_status = getPrivilegeStatus($privilege);
 ?>
 
 <!DOCTYPE html>
@@ -37,7 +34,6 @@
     <title>Ваш профиль</title>
 </head>
 <body>
-
     <div class="preloader" id="preloader">
         <div class="bubblingG">
             <span id="bubblingG_1"></span>
@@ -132,7 +128,7 @@
                 <div class="info">
                     <div class="info_user">
                         <p class="info__user margin_right">НИК: </p>
-                        <p class="user__info"><?php echo $nik; ?></p>
+                        <p class="user__info"><?php echo $userName; ?></p>
                     </div>
                     <div class="info_user height_29">
                         <p class="infoUserDataRegistration margin_right">ДАТА  РЕГИСТРАЦИИ:</p>
@@ -163,21 +159,21 @@
                         <div class="column_1">
                             <div class="day">
                                 <p class="text_information_1">кол-во времени в игре</p>
-                                <h2 class="h2_information width_181 cursor_pointer" title="<?php echo $title;?>"> <?php echo $time;?> </h2>
+                                <span class="h2_information cursor_pointer" title="<?php echo $title;?>"> <?php echo $timeUser;?> </span>
                             </div>
                             <div class="score">
                                 <p class="text_information_1">счетов в банке</p>
-                                <h2 class="h2_information width_31">1</h2>
+                                <span class="h2_information">1</span>
                             </div>
                         </div>
                         <div class="column_2">
                             <div class="apartments">
                                 <p class="text_information_1">квартир</p>
-                                <h2 class="h2_information width_21 height_61">1</h2>
+                                <span class="h2_information">1</span>
                             </div>
                             <div class="auto">
                                 <p class="text_information_1 margin_0">машин</p>
-                                <h2 class="h2_information width_21 height_61">1</h2>
+                                <span class="h2_information">1</span>
                             </div>
                         </div>
                     </div>
@@ -190,21 +186,21 @@
                         <div class="column_1">
                             <div class="day">
                                 <p class="text_information_1">кольчиство дней в игре</p>
-                                <h2 class="h2_information">12д.</h2>
+                                <span class="h2_information">12д.</span>
                             </div>
                             <div class="score">
                                 <p class="text_information_1">счетов в банке</p>
-                                <h2 class="h2_information width_31">1</h2>
+                                <span class="h2_information">1</span>
                             </div>
                         </div>
                         <div class="column_2">
                             <div class="apartments">
                                 <p class="text_information_1">квартир</p>
-                                <h2 class="h2_information width_21 height_61">1</h2>
+                                <span class="h2_information">1</span>
                             </div>
                             <div class="auto">
                                 <p class="text_information_1 margin_0">машин</p>
-                                <h2 class="h2_information width_21 height_61">1</h2>
+                                <span class="h2_information">1</span>
                             </div>
                         </div>
                     </div>
@@ -337,16 +333,6 @@
             <a target="_blank" href="https://vk.me/mcperp" class="button_ban">напишите нам!</a>
         </div>
     </div>
-
-    <style>
-        .width_181 {
-            width: <?php print_r($width_style); ?>;
-        }
-        .InfarmationBan {
-            display: <?php print_r($style_ban)?>;
-        }
-    </style>
-
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="assets/js/popup.js"></script>
     <script src="assets/js/preloader.js"></script>

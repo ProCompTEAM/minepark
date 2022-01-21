@@ -3,7 +3,7 @@
     {
         $dataJson = array(
             "Address" => "127.0.0.1:19000",
-            "AccessToken" => "xxxxxxxxx-yyyy-zzzz-a012-b3456789cde",
+            "AccessToken" => "",
             "UnitId" => "MilkyWay"
         );
         $dataJson = json_encode($dataJson);
@@ -19,4 +19,8 @@
     $token = $fileJson['AccessToken'];
     $unitId = $fileJson['UnitId'];
     $urlAddress = $fileJson['Address'];
+
+    if ($token == '') {
+        exit('Error Token. Please enter the token');
+    }
 ?>

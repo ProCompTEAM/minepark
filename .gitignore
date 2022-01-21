@@ -147,4 +147,4 @@ Desktop.ini
 # Recycle Bin used on file shares
 $RECYCLE.BIN/
 
-/web/profile/assets/json/config.json
+config.json

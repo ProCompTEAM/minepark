@@ -370,6 +370,7 @@ h1 {
 .info_user_1 {
 	display: flex;
 	align-items: center;
+	text-align: center;
 }
 
 .column_1 {
@@ -384,6 +385,7 @@ h1 {
 	width: 212px;
 	height: 89px;
 	margin-right: 145px;
+	text-align: center;
 }
 
 .information_user_1 {
@@ -409,7 +411,6 @@ h1 {
 	font-weight: 900;
 	font-size: 50px;
 	line-height: 61px;
-	width: 104px;
 	height: 61px;
 	margin: 0 auto;
 	color: #F4F4F4;
@@ -435,14 +436,6 @@ h1 {
 
 .width_31 {
 	width: 31px;
-}
-
-.width_21 {
-	width: 21px;
-}
-
-.height_61 {
-	height: 61px;
 }
 
 .apartments {

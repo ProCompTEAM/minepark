@@ -1,9 +1,12 @@
 <?php
-    function balanceUser($balance) 
+    function CheckBalanceUser($balance) 
     {
-        if($balance >= 1000000) {
-            $balance_sum = $balance / 1000000;
-            $remains = $balance % 1000000;
+        define('MAX_BALANCE_VALUE', 1000000);
+        define('MIN_BALANCE_VALUE', 1000);
+
+        if($balance >= MAX_BALANCE_VALUE) {
+            $balance_sum = $balance / MAX_BALANCE_VALUE;
+            $remains = $balance % MAX_BALANCE_VALUE;
             $balance = round($balance_sum, 1);
             $balance = floor($balance);
             if($remains == 0) {
@@ -12,12 +15,12 @@
                 $balance_str = $balance . ' млн. ' . $remains . ' руб.';   
             }
             return $balance_str;
-        } elseif ($balance < 1000) {
+        } elseif ($balance < MIN_BALANCE_VALUE) {
             $balance_str = $balance . 'руб';
             return $balance_str;
-        } elseif ($balance < 1000000) {
-            $balance_sum = $balance / 1000;
-            $remains = $balance % 1000;
+        } elseif ($balance < MAX_BALANCE_VALUE) {
+            $balance_sum = $balance / MIN_BALANCE_VALUE;
+            $remains = $balance % MIN_BALANCE_VALUE;
             $balance = round($balance_sum, 1);
             $balance = floor($balance);
             if($remains == 0){
@@ -30,16 +33,7 @@
         }
     }
 
-    function banUser()
-    {
-        if($ban) {
-            $style_ban = "block";
-        } else {
-            $style_ban = "none";
-        }
-    }
-
-    function nikStatusUser($nik) 
+    function getUserStatus($nik) 
     {
         $nik_number_characters = strlen($nik);
         
@@ -50,79 +44,85 @@
         }
     }
 
-    function statisticsTimePlayer($minutesPlayed) 
+    function getTimeUser($minutesUser) 
     {
-        if($minutesPlayed >= 0 && $minutesPlayed < 60){
-            $time = $minutesPlayed . 'мин.';
-            $temp = $minutesPlayed;
-            $TEMP = 1;
-            $title = $temp . ' минут';
+        define('NUMBERS_MAX', 52560000);
+        define('NUMBERS_ABOVE_MAX', 525600);
+        define('NUMBERS_BELOW_MAX', 1440);
+        define('NUMBERS_MIN', 60);
 
-        } elseif ($minutesPlayed <= 1439) {
-            $temp = floor($minutesPlayed / 60);
-            $time = $temp . 'ч.';
-            $title = $temp . " часов";
+        if($minutesUser >= 0 && $minutesUser < 60){
+            $timeUser = $minutesUser . 'мин.';
+            $titleUser = $minutesUser . ' минут';
 
-        } elseif ($minutesPlayed >= 1439 && $minutesPlayed < 525600) {
-            $temp = floor($minutesPlayed / 1440);
-            $time = $temp . 'д.';
-            $title = $temp . " дней/дня";
+        } elseif ($minutesUser <= 1439) {
+            $tempСalculation = floor($minutesUser / 60);
+            $timeUser = $tempСalculation . 'ч.';
+            $titleUser = $tempСalculation . " часов";
 
-        } elseif ($minutesPlayed >= 525600 && $minutesPlayed < 52560000) {
-            $temp = floor($minutesPlayed / 525600);
-            $time = $temp . 'г.';
-            $title = $temp . " год/лет";
+        } elseif ($minutesUser >= 1439 && $minutesUser < 525600) {
+            $tempСalculation = floor($minutesUser / 1440);
+            $timeUser = $tempСalculation . 'д.';
+            $titleUser = $tempСalculation . " дней/дня";
 
-        } elseif ($minutesPlayed >= 52560000) {
-            $temp = floor($minutesPlayed / 52560000);
-            $time = $temp . 'в.';
-            $title = $temp . " века/веков";
+        } elseif ($minutesUser >= 525600 && $minutesUser < 52560000) {
+            $tempСalculation = floor($minutesUser / 525600);
+            $timeUser = $tempСalculation . 'г.';
+            $titleUser = $tempСalculation . " год/лет";
+
+        } elseif ($minutesUser >= 52560000) {
+            $tempСalculation = floor($minutesUser / 52560000);
+            $timeUser = $tempСalculation . 'в.';
+            $titleUser = $tempСalculation . " века/веков";
         }
     
-        if ($temp == 0) {
-            $width_style = "166px";
-        } elseif ($TEMP == 1) {
-            $width_style = "151px";
-            if ($minutesPlayed >= 20 && $minutesPlayed < 60) {
-                $width_style = "194px";
-            } elseif ($minutesPlayed >= 10 && $minutesPlayed < 20) {
-                $width_style = "185px";
-            }
-        } elseif ($temp == 1) {
-            $width_style = "74px";
-        } elseif ($temp <= 9 && $temp > 0) {
-            $width_style = "86px";
-        } elseif ($temp >= 10 && $temp < 20) {
-            $width_style = "111px";
-        } elseif ($temp >= 20 && $temp < 40) {
-            $width_style = "123px";
-        } elseif  ($temp >= 40 && $temp < 100) {
-            $width_style = "111px";
-        } elseif ($temp >= 100) {
-            $width_style = "146px";
-        }
 
         return array(
-            'time' => $time,
-            'title' => $title,
-            'width_style' => $width_style
+            'timeUser' => $timeUser,
+            'titleUser' => $titleUser,
         );
     }
 
-    function privilegeStatusPlayer($privilege) 
+    function createJsonDataPrivilege($location) 
     {
+        $dataJson = array(
+            "PrivilegeName_0" => "Отсутствует",
+            "PrivilegeName_1" => "Вип",
+            "PrivilegeName_2" => "Админ",
+            "PrivilegeName_3" => "Билдер",
+            "PrivilegeName_4" => "Риэлтор"
+        );
+        $dataJson = json_encode($dataJson);
+        file_put_contents($location, $dataJson);
+    }
+
+    function getPrivilegeStatus($privilege) 
+    {
+        if(!file_exists('assets/json/privilegeData.json')) {
+            createJsonDataPrivilege('assets/json/privilegeData.json');
+            exit('WARNING! The file "privilegeData.json" was not found. A file has been created, but with default values. Please refresh the page');
+        }
+        $fileJsonOpen = file_get_contents('assets/json/privilegeData.json');
+        $fileJson = json_decode($fileJsonOpen, true);
+
+        $PrivilegeName_0 = $fileJson['PrivilegeName_0'];
+        $PrivilegeName_1 = $fileJson['PrivilegeName_1'];
+        $PrivilegeName_2 = $fileJson['PrivilegeName_2'];
+        $PrivilegeName_3 = $fileJson['PrivilegeName_3'];
+        $PrivilegeName_4 = $fileJson['PrivilegeName_4'];
+
         switch($privilege)
         {
             case 0:
-                return 'нету';
+                return $PrivilegeName_0;
             case 1:
-                return 'Вип';
+                return $PrivilegeName_1;
             case 2:
-                return 'Админ';
+                return $PrivilegeName_2;
             case 3:
-                return 'Билдер';
+                return $PrivilegeName_3;
             case 4:
-                return 'Риэлтор';
+                return $PrivilegeName_4;
         }
     }
 ?>
