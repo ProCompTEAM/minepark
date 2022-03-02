@@ -4,7 +4,7 @@ __Copyright http://vk.com/mcperp__
 ____
 
 ## Environment & Tools:
-- Minecraft BE Client support 1.18
+- Minecraft BE Client support 1.17
 - PocketMine-MP API 4
 - PHP 8.x, .NET 5.0
 - MySQL (10.5.12-MariaDB) > dbo.minepark
