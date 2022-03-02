@@ -1,6 +1,7 @@
 <?php
 namespace minepark\commands;
 
+use minepark\components\vehicles\Trains;
 use minepark\Tasks;
 use minepark\Components;
 use pocketmine\event\Event;
@@ -18,9 +19,13 @@ class TransportCommand extends Command
 
     private Vehicles $vehicles;
 
+    private Trains $trains;
+
     public function __construct()
     {
         $this->vehicles = Components::getComponent(Vehicles::class);
+
+        $this->trains = Components::getComponent(Trains::class);
     }
 
     public function getCommand() : array
@@ -60,7 +65,7 @@ class TransportCommand extends Command
                 return;
             }
 
-            if(!$this->spawnCar($player, $args[1])) {
+            if(!$this->spawnCar($player, $args[1]) and !$this->spawnTrain($player, $args[1])) {
                 $player->sendMessage("CommandTransportErrorSpawnModel");
 
                 return;
@@ -106,5 +111,10 @@ class TransportCommand extends Command
     private function spawnCar(MineParkPlayer $player, string $model) : bool
     {
         return $this->vehicles->createVehicle($model, $player->getWorld(), $player->getLocation(), $player->getLocation()->getYaw());
+    }
+
+    private function spawnTrain(MineParkPlayer $player, string $model) : bool
+    {
+        return $this->trains->spawnTrain($model, $player->getLocation());
     }
 }

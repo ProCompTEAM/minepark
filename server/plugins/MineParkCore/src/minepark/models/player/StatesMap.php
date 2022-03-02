@@ -1,6 +1,7 @@
 <?php
 namespace minepark\models\player;
 
+use minepark\components\vehicles\models\base\BaseVehicle;
 use pocketmine\world\Position;
 use minepark\common\player\MineParkPlayer;
 use minepark\components\vehicles\models\base\BaseCar;
@@ -33,7 +34,7 @@ class StatesMap
 
     public int $lastTap;
 
-    public ?BaseCar $ridingVehicle;
+    public ?BaseVehicle $ridingVehicle;
 
     public ?BaseCar $rentedVehicle;
 

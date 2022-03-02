@@ -1,7 +1,11 @@
 <?php
 namespace minepark\components\vehicles;
 
+use minepark\components\vehicles\models\base\BaseVehicle;
 use minepark\Events;
+use pocketmine\network\mcpe\protocol\PlayerAuthInputPacket;
+use pocketmine\network\mcpe\protocol\types\InputMode;
+use pocketmine\network\mcpe\protocol\types\PlayerAuthInputFlags;
 use pocketmine\world\World;
 use pocketmine\entity\Location;
 use minepark\defaults\EventList;
@@ -86,7 +90,18 @@ class Vehicles extends Component
 
     public function handleDataPacketReceive(DataPacketReceiveEvent $event)
     {
+        $packet = $event->getPacket();
+
+        if($packet instanceof PlayerAuthInputPacket) {
+            $this->getCore()->getLogger()->info($packet->getMoveVecX() . " and " . $packet->getMoveVecZ());
+            return;
+        }
+
+        return;
+
         if ($event->getPacket() instanceof PlayerInputPacket) {
+            $this->getCore()->getLogger()->info("hehe");
+
             if ($event->getPacket()->motionX === 0 and $event->getPacket()->motionY === 0) {
                 return;
             }
@@ -99,7 +114,7 @@ class Vehicles extends Component
             }
 
             $vehicle = $event->getOrigin()->getPlayer()->getWorld()->getEntity($event->getPacket()->targetActorRuntimeId);
-            if ($vehicle instanceof BaseCar) {
+            if ($vehicle instanceof BaseVehicle) {
                 $vehicle->tryToRemovePlayer($event->getOrigin()->getPlayer());
                 $event->cancel();
             }

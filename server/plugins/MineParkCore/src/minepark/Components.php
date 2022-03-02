@@ -15,6 +15,7 @@ use minepark\components\map\ClearLagg;
 use minepark\components\base\Component;
 use minepark\components\chat\ChatAudit;
 use minepark\components\map\Navigation;
+use minepark\components\vehicles\Trains;
 use minepark\components\WorldProtector;
 use minepark\components\map\FloatingTexts;
 use minepark\components\map\TrafficLights;
@@ -61,7 +62,8 @@ class Components
             new FloatingTexts,
             new ATM,
             new ClearLagg,
-            new BanSystem
+            new BanSystem,
+            new Trains
         ];
 
         foreach(self::$components as $component) {

@@ -2,7 +2,9 @@
 namespace minepark\components\organisations;
 
 use minepark\Events;
+use pocketmine\block\BaseRail;
 use pocketmine\block\BaseSign;
+use pocketmine\block\Rail;
 use pocketmine\block\utils\SignText;
 use pocketmine\item\ItemFactory;
 use pocketmine\utils\Config;
@@ -40,6 +42,10 @@ class Shop extends Component
     public function onInteract(PlayerInteractEvent $event)
     {
         $block = $event->getBlock();
+
+        if($block instanceof Rail) {
+            $event->getPlayer()->sendMessage("shape is " . $block->getShape() . " and coordinates " . $block->getPosition()->getX() . ", " . $block->getPosition()->getY() . " and " . $block->getPosition()->getZ());
+        }
 
         if($block instanceof BaseSign) {
             $format = $block->getPosition()->getX() . "_" . $block->getPosition()->getY() . "_" . $block->getPosition()->getZ();
