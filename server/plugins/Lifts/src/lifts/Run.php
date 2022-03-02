@@ -26,7 +26,7 @@ class Run {
         $wname = $pos->getWorld()->getDisplayName();
         file_put_contents($file, "$x $y $z $wname");
         $this->loadAll();
-        $this->cs->move($pos, BlockFactory::getInstance()->get(BlockLegacyIds::IRON_BLOCK));
+        $this->cs->move($pos, BlockFactory::getInstance()->get(BlockLegacyIds::IRON_BLOCK, 1));
     }
     
     public function remove($id) 
@@ -87,7 +87,7 @@ class Run {
                 if($block->getName() != "Air") break;
             } 
 
-            $endpos = new Position($block->getPosition()->getX(), $block->getPosition()->getX(), $block->getPosition()->getX(), $pos->getWorld());
+            $endpos = new Position($block->getPosition()->getX(), $block->getPosition()->getY(), $block->getPosition()->getZ(), $pos->getWorld());
             array_push($this->cs->lifts, array($pos, $endpos, 0, false, 2));
             $this->cs->work->reload();
         }

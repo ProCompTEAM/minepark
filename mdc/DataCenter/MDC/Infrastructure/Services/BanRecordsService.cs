@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
+
 using MDC.Data.Dtos;
 using MDC.Data.Models;
 using MDC.Infrastructure.Providers;
 using MDC.Infrastructure.Providers.Interfaces;
 using MDC.Infrastructure.Services.Interfaces;
+
 using System;
 using System.Threading.Tasks;
 
@@ -15,11 +17,10 @@ namespace MDC.Infrastructure.Services
 
         private readonly IMapper mapper;
 
-        public BanRecordsService()
+        public BanRecordsService(DatabaseProvider databaseProvider, Mapper mapper)
         {
-            databaseProvider = Store.GetProvider<DatabaseProvider>();
-
-            mapper = Store.GetMapper();
+            this.databaseProvider = databaseProvider;
+            this.mapper = mapper;
         }
 
         public async Task<UserBanRecordDto> GetUserBanRecordDto(string userName)

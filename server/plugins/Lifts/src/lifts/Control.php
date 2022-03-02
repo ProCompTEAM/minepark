@@ -1,6 +1,7 @@
 <?php  
 namespace lifts; 
 
+use minepark\common\player\MineParkPlayer;
 use pocketmine\block\BlockFactory;
 use pocketmine\block\BlockLegacyIds;
 use pocketmine\player\Player;
@@ -56,15 +57,15 @@ class Control extends PluginBase implements Listener
             new Position($x+1, $y, $z+1, $w), 
             new Position($x-1, $y, $z-1, $w), 
             new Position($x-1, $y, $z+1, $w), 
-            new Position($x+1, $y, $z-1, $w)); 
+            new Position($x+1, $y, $z-1, $w));
 
         foreach($allpos as $i) { 
-            $w->setBlock(new Vector3($i->getX(), $i->getY(), $i->getZ()), BlockFactory::getInstance()->get(BlockLegacyIds::QUARTZ_BLOCK));
+            $w->setBlock(new Vector3($i->getX(), $i->getY(), $i->getZ()), BlockFactory::getInstance()->get(BlockLegacyIds::QUARTZ_BLOCK, 0));
         }
-        $w->setBlock(new Vector3($x, $y, $z), BlockFactory::getInstance()->get(BlockLegacyIds::IRON_BLOCK));
+        $w->setBlock(new Vector3($x, $y, $z), BlockFactory::getInstance()->get(BlockLegacyIds::IRON_BLOCK, 0));
         
-        foreach($allpos as $i) { $w->setBlock(new Vector3($i->getX(), $i->getY()+1, $i->getZ()), BlockFactory::getInstance()->get(BlockLegacyIds::AIR)); }
-        foreach($allpos as $i) { $w->setBlock(new Vector3($i->getX(), $i->getY()-1, $i->getZ()), BlockFactory::getInstance()->get(BlockLegacyIds::AIR)); }
+        foreach($allpos as $i) { $w->setBlock(new Vector3($i->getX(), $i->getY()+1, $i->getZ()), BlockFactory::getInstance()->get(BlockLegacyIds::AIR, 0)); }
+        foreach($allpos as $i) { $w->setBlock(new Vector3($i->getX(), $i->getY()-1, $i->getZ()), BlockFactory::getInstance()->get(BlockLegacyIds::AIR, 0)); }
     } 
     
     public function clear(Position $pos) 
@@ -87,7 +88,7 @@ class Control extends PluginBase implements Listener
         );
 
         foreach($allpos as $i){
-            $w->setBlock(new Vector3($i->getX(), $i->getY(), $i->getZ()), BlockFactory::getInstance()->get(BlockLegacyIds::AIR));
+            $w->setBlock(new Vector3($i->getX(), $i->getY(), $i->getZ()), BlockFactory::getInstance()->get(BlockLegacyIds::AIR, 0));
         }
     } 
     
@@ -188,7 +189,7 @@ class Control extends PluginBase implements Listener
 
             $mpos = new Position($block->getPosition()->getX(), $block->getPosition()->getY()+1, $block->getPosition()->getZ(), $p->getWorld());
 
-            foreach($list as $i) { 
+            foreach($list as $i) {
                 if($i->getX() == $mpos->getX() and $i->getY() == $mpos->getY() and $i->getZ() == $mpos->getZ() 
                     and $i->getWorld()->getDisplayName() == $mpos->getWorld()->getDisplayName())
                 { 
@@ -280,11 +281,12 @@ class Work extends Task
         } 
     } 
     
-    public function liftControl(Position $pos) 
+    public function liftControl(Position $liftPosition)
     { 
-        foreach($this->p->getLocalPlayers($pos) as $p) { 
-            $p->teleport(new Vector3($p->x, $p->y + 1.1, $p->z));
-        } 
-        
+        foreach($this->p->getLocalPlayers($liftPosition) as $player) {
+            $player = MineParkPlayer::cast($player);
+            $position = $player->getPosition();
+            $player->teleport($position->add(0, 1, 0));
+        }
     } 
 }  

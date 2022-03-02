@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,7 +39,15 @@ namespace MDC.Common.Network.HttpWeb
                     await HandleRequest(context.Request, context.Response);
                 }
 
-                context.Response.Close();
+                // TODO #543
+                try
+                {
+                    context.Response.Close();
+                }
+                catch(AggregateException aggregateException)
+                {
+                    General.Error(aggregateException.ToString());
+                }
             }
 
             httpListener.Stop();
@@ -61,6 +70,7 @@ namespace MDC.Common.Network.HttpWeb
             RequestContext requestContext = CreateRequestContext(request);
 
             ExecutionResult executionResult = Router.Execute(requestContext, data, request.Url.LocalPath[1..]);
+
             await SendResponse(response, executionResult, request.ContentEncoding);
 
             General.Log($"{request.HttpMethod} request -> {request.Url.LocalPath}");

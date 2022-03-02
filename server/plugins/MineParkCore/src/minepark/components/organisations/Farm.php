@@ -52,7 +52,7 @@ class Farm extends Component
 
         $this->giveSlownessEffect($player);
 
-        $this->chat->sendLocalMessage($player, "FarmHarvestIn", "§d : ", 12);
+        $this->chat->sendLocalMessage($player, "{FarmHarvestIn}", "§d : ", 12);
         $player->getStatesMap()->bar = "§eДонесите корзину на пункт сбора около фермы";
         $player->getStatesMap()->loadWeight = 1;
     }
@@ -78,7 +78,7 @@ class Farm extends Component
     {
         $player->getEffects()->clear();
 
-        $this->chat->sendLocalMessage($player, "FarmHarvestOut", "§d ", 12);
+        $this->chat->sendLocalMessage($player, "{FarmHarvestOut}", "§d ", 12);
         $this->bankingProvider->givePlayerMoney($player, 150);
 
         $player->getStatesMap()->loadWeight = null; 

@@ -126,7 +126,7 @@ class Workers extends Component
         
         $player->sendMessage("WorkersSearchPalace");
         
-        $this->chat->sendLocalMessage($player, "WorkersBoxInArm", "§d : ", 12);
+        $this->chat->sendLocalMessage($player, "{WorkersBoxInArm}", "§d : ", 12);
     
         $player->getStatesMap()->bar = "§aВ руках ящик около " . $player->getStatesMap()->loadWeight . " кг";
     }

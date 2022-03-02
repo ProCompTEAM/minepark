@@ -22,7 +22,7 @@ class StatusBar extends Component
     {
         foreach($this->getServer()->getOnlinePlayers() as $player) {
             if(isset($player->getStatesMap()->bar)) {
-                $player->sendTip($player->getStatesMap()->bar);
+                $player->sendLocalizedTip($player->getStatesMap()->bar);
             }
         }
     }

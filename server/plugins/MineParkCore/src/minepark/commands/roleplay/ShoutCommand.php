@@ -52,7 +52,7 @@ class ShoutCommand extends Command
 
         $message = implode(self::ARGUMENTS_SEPERATOR, $args);
         
-        $this->chat->sendLocalMessage($player, $message, " §3крикнул(а) §7>", self::DISTANCE);
+        $this->chat->sendLocalMessage($player, $message, "{CommandRolePlayShoutDo}", self::DISTANCE);
         $player->sendSound(Sounds::ROLEPLAY);
 
         $this->tracking->actionRP($player, $message, self::DISTANCE, "[SHOUT]");

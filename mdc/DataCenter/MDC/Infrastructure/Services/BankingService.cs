@@ -1,13 +1,16 @@
-using System;
-
 using MDC.Data.Models;
+
 using MDC.Infrastructure.Providers;
 using MDC.Infrastructure.Providers.Interfaces;
 using MDC.Infrastructure.Services.Interfaces;
 using MDC.Infrastructure.Services.Audit;
 using MDC.Infrastructure.Services.Audit.Interfaces;
+
 using MDC.Data.Enums;
+
 using MDC.Common;
+
+using System;
 using System.Threading.Tasks;
 
 namespace MDC.Infrastructure.Services
@@ -18,11 +21,12 @@ namespace MDC.Infrastructure.Services
 
         private readonly IMoneyTransactionsAuditService moneyTransactionsAuditService;
 
-        public BankingService()
+        public BankingService(
+            DatabaseProvider databaseProvider,
+            MoneyTransactionsAuditService moneyTransactionsAuditService)
         {
-            databaseProvider = Store.GetProvider<DatabaseProvider>();
-
-            moneyTransactionsAuditService = Store.GetService<MoneyTransactionsAuditService>();
+            this.databaseProvider = databaseProvider;
+            this.moneyTransactionsAuditService = moneyTransactionsAuditService;
         }
 
         public async Task<double> GetCash(string unitId, string userName)

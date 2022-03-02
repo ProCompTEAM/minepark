@@ -45,7 +45,7 @@
     "AdminCmdArestPart2": " арестовал ",
     "AdminCmdSetTag": "Тег игрока изменен на <TRUE>!",
     "AdminCmdRemoveTag": "Тег игрока изменен на <FALSE>!",
-    "AdminCmsHide": "Теперь вы невидимый! Возврат: /a show",
+    "AdminCmdHide": "Теперь вы невидимый! Возврат: /a show",
     "AdminCmdShow": "Вас снова видят все игроки!",
 
     "TrackerPlayerNotExists": "§eДанного игрока не существует!",
@@ -100,6 +100,7 @@
     "CommandRolePlayTryUnsucces": "§7[§cНеудачно§7]",
     "CommandRolePlayWhisperUse": "Использование: /w <сообщение всем, кто рядом ...>",
     "CommandRolePlayWhisperDo": " §8прошептал(а) §7>",
+    "CommandRolePlayShoutDo": " §3крикнул(а) §7>",
 
 
     "CommandCasinoWin": "§aПоздравляем с выйгрышем! Теперь эти деньги Ваши!",

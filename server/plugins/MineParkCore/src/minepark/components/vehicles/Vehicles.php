@@ -2,6 +2,7 @@
 namespace minepark\components\vehicles;
 
 use minepark\Events;
+use pocketmine\network\mcpe\protocol\PlayerAuthInputPacket;
 use pocketmine\world\World;
 use pocketmine\entity\Location;
 use minepark\defaults\EventList;
@@ -86,20 +87,22 @@ class Vehicles extends Component
 
     public function handleDataPacketReceive(DataPacketReceiveEvent $event)
     {
-        if ($event->getPacket() instanceof PlayerInputPacket) {
-            if ($event->getPacket()->motionX === 0 and $event->getPacket()->motionY === 0) {
+        $packet = $event->getPacket();
+
+        if($packet instanceof PlayerAuthInputPacket) {
+            if($packet->getMoveVecX() === 0.0 and $packet->getMoveVecZ() === 0.0) {
                 return;
             }
 
-            $event->cancel();
             $this->handleVehicleMove($event);
-        } else if ($event->getPacket() instanceof InteractPacket) {
-            if ($event->getPacket()->action !== InteractPacket::ACTION_LEAVE_VEHICLE) {
+        } else if($packet instanceof InteractPacket) {
+            if($packet->action !== InteractPacket::ACTION_LEAVE_VEHICLE) {
                 return;
             }
 
-            $vehicle = $event->getOrigin()->getPlayer()->getWorld()->getEntity($event->getPacket()->targetActorRuntimeId);
-            if ($vehicle instanceof BaseCar) {
+            $vehicle = $event->getOrigin()->getPlayer()->getWorld()->getEntity($packet->targetActorRuntimeId);
+
+            if($vehicle instanceof BaseCar) {
                 $vehicle->tryToRemovePlayer($event->getOrigin()->getPlayer());
                 $event->cancel();
             }
@@ -108,13 +111,17 @@ class Vehicles extends Component
 
     protected function handleVehicleMove(DataPacketReceiveEvent $event)
     {
-        if ($event->getOrigin()->getPlayer()->getStatesMap()->ridingVehicle?->getDriver()?->getName() !== $event->getOrigin()->getPlayer()->getName()) {
+        $player = $event->getOrigin()->getPlayer();
+
+        if($player->getStatesMap()->ridingVehicle === null) {
             return;
         }
 
-        $vehicle = $event->getOrigin()->getPlayer()->getStatesMap()->ridingVehicle;
+        if($player->getStatesMap()->ridingVehicle?->getDriver()?->getName() !== $player->getName()) {
+            return;
+        }
 
-        $vehicle->updateSpeed($event->getPacket()->motionX, $event->getPacket()->motionY);
+        $player->getStatesMap()->ridingVehicle->updateSpeed($event->getPacket()->getMoveVecX(), $event->getPacket()->getMoveVecZ());
     }
 
     private function loadVehicles()

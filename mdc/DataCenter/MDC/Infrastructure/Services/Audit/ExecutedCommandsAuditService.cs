@@ -2,9 +2,12 @@
 using MDC.Infrastructure.Services.Interfaces;
 using MDC.Infrastructure.Providers;
 using MDC.Infrastructure.Providers.Interfaces;
-using System.Threading.Tasks;
+
 using MDC.Data.Models.Audit;
+
 using MDC.Common;
+
+using System.Threading.Tasks;
 
 namespace MDC.Infrastructure.Services.Audit
 {
@@ -12,9 +15,9 @@ namespace MDC.Infrastructure.Services.Audit
     {
         private readonly IDatabaseProvider databaseProvider;
 
-        public ExecutedCommandsAuditService()
+        public ExecutedCommandsAuditService(DatabaseProvider databaseProvider)
         {
-            databaseProvider = Store.GetProvider<DatabaseProvider>();
+            this.databaseProvider = databaseProvider;
         }
 
         public async Task SaveExecutedCommandAuditRecord(string unitId, string userName, string command)

@@ -1,24 +1,22 @@
-﻿using MDC.Data.Dtos;
-using MDC.Infrastructure.Controllers.Interfaces;
+﻿using MDC.Common.Network.HttpWeb.Attributes;
+
+using MDC.Data.Dtos;
+
 using MDC.Infrastructure.Services;
 using MDC.Infrastructure.Services.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+
 using System.Threading.Tasks;
 
 namespace MDC.Infrastructure.Controllers
 {
-    public class BanRecordsController : IController
+    [WebRoute("bans")]
+    public class BanRecordsController
     {
-        public string Route { get; set; } = "bans";
-
         private readonly IBanRecordsService banRecordsService;
 
-        public BanRecordsController()
+        public BanRecordsController(BanRecordsService banRecordsService)
         {
-            banRecordsService = Store.GetService<BanRecordsService>();
+            this.banRecordsService = banRecordsService;
         }
 
         public Task<UserBanRecordDto> GetUserBanRecord(string playerName)

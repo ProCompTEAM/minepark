@@ -1,22 +1,24 @@
 using MDC.Common.Network.HttpWeb;
+using MDC.Common.Network.HttpWeb.Attributes;
+
 using MDC.Data.Dtos;
 using MDC.Data.Dtos.Audit;
-using MDC.Infrastructure.Controllers.Interfaces;
+
 using MDC.Infrastructure.Services;
 using MDC.Infrastructure.Services.Interfaces;
+
 using System.Threading.Tasks;
 
 namespace MDC.Infrastructure.Controllers
 {
-    public class BankingController : IController
+    [WebRoute("banking")]
+    public class BankingController
     {
-        public string Route { get; set; } = "banking";
-
         private readonly IBankingService bankingService;
 
-        public BankingController()
+        public BankingController(BankingService bankingService)
         {
-            bankingService = Store.GetService<BankingService>();
+            this.bankingService = bankingService;
         }
         
         public async Task<double> GetCash(string userName, RequestContext requestContext)

@@ -71,7 +71,7 @@ class FastFood extends Component
     
     public function giveItem($player, $goodId)
     {
-        $this->chat->sendLocalMessage($player, "FastFoodSound", "§d : ", 18);
+        $this->chat->sendLocalMessage($player, "{FastFoodSound}", "§d : ", 18);
         
         $item = ItemFactory::getInstance()->get(0); //ItemFactory::getInstance()->get(<id>)->setCount(<count)
         switch($goodId) {
@@ -90,7 +90,7 @@ class FastFood extends Component
         }
 
         $label = $this->getAllGoods()[$goodId];
-        $this->chat->sendLocalMessage($player, "FastFoodItemInArm".$label." §8)", "§d : ", 10);
+        $this->chat->sendLocalMessage($player, "{FastFoodItemInArm}".$label." §8)", "§d : ", 10);
 
         $player->getInventory()->addItem($item);
     }

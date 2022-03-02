@@ -1,21 +1,22 @@
 ﻿using MDC.Common.Network.HttpWeb;
+using MDC.Common.Network.HttpWeb.Attributes;
 using MDC.Data.Dtos;
-using MDC.Infrastructure.Controllers.Interfaces;
+
 using MDC.Infrastructure.Services;
 using MDC.Infrastructure.Services.Interfaces;
+
 using System.Threading.Tasks;
 
 namespace MDC.Infrastructure.Controllers
 {
-    public class WebController : IController
+    [WebRoute("web")]
+    public class WebController
     {
-        public string Route { get; set; } = "web";
-
         private readonly IWebService webService;
 
-        public WebController()
+        public WebController(WebService webService)
         {
-            webService = Store.GetService<WebService>();
+            this.webService = webService;
         }
 
         public async Task<UserWebProfileDto> GetUserProfile(string userName, RequestContext requestContext)

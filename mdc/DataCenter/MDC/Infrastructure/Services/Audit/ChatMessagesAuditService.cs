@@ -4,6 +4,7 @@ using MDC.Infrastructure.Providers;
 using MDC.Infrastructure.Providers.Interfaces;
 using MDC.Infrastructure.Services.Audit.Interfaces;
 using MDC.Infrastructure.Services.Interfaces;
+
 using System.Threading.Tasks;
 
 namespace MDC.Infrastructure.Services.Audit
@@ -12,9 +13,9 @@ namespace MDC.Infrastructure.Services.Audit
     {
         private readonly IDatabaseProvider databaseProvider;
 
-        public ChatMessagesAuditService()
+        public ChatMessagesAuditService(DatabaseProvider databaseProvider)
         {
-            databaseProvider = Store.GetProvider<DatabaseProvider>();
+            this.databaseProvider = databaseProvider;
         }
 
         public async Task SaveChatMessageAuditRecord(string unitId, string userName, string message)

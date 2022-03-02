@@ -1,9 +1,12 @@
 ﻿using MDC.Data.Enums;
+
 using MDC.Data.Models.Audit;
+
 using MDC.Infrastructure.Providers;
 using MDC.Infrastructure.Providers.Interfaces;
 using MDC.Infrastructure.Services.Audit.Interfaces;
 using MDC.Infrastructure.Services.Interfaces;
+
 using System.Threading.Tasks;
 
 namespace MDC.Infrastructure.Services.Audit
@@ -12,9 +15,9 @@ namespace MDC.Infrastructure.Services.Audit
     {
         private readonly IDatabaseProvider databaseProvider;
 
-        public UserTrafficAuditService()
+        public UserTrafficAuditService(DatabaseProvider databaseProvider)
         {
-            databaseProvider = Store.GetProvider<DatabaseProvider>();
+            this.databaseProvider = databaseProvider;
         }
 
         public async Task SaveUserJoinAttempt(string unitId, string userName)

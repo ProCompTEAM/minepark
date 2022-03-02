@@ -10,9 +10,9 @@ namespace MDC.Infrastructure.Providers
 
         private List<string> tokens = new List<string>();
 
-        public AuthorizationProvider()
+        public AuthorizationProvider(DatabaseProvider databaseProvider)
         {
-            databaseProvider = Store.GetProvider<DatabaseProvider>();
+            this.databaseProvider = databaseProvider;
         }
 
         public void RestoreCredentials()

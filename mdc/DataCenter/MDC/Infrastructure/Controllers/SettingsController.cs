@@ -1,22 +1,24 @@
 ﻿using MDC.Common;
+using MDC.Common.Network.HttpWeb.Attributes;
+
 using MDC.Data.Dtos;
-using MDC.Infrastructure.Controllers.Interfaces;
+
 using MDC.Infrastructure.Services;
 using MDC.Infrastructure.Services.Interfaces;
+
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace MDC.Infrastructure.Controllers
 {
-    public class SettingsController : IController
+    [WebRoute("settings")]
+    public class SettingsController
     {
-        public string Route { get; set; } = "settings";
-
         private readonly ITokenService tokenService;
 
-        public SettingsController()
+        public SettingsController(TokenService tokenService)
         {
-            tokenService = Store.GetService<TokenService>();
+            this.tokenService = tokenService;
         }
 
         public int GetProtocolVersion()

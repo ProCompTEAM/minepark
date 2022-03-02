@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
+
 using MDC.Data.Dtos;
 using MDC.Data.Models;
 using MDC.Infrastructure.Providers;
 using MDC.Infrastructure.Providers.Interfaces;
 using MDC.Infrastructure.Services.Interfaces;
 using MDC.Utilities;
+
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,10 +19,10 @@ namespace MDC.Infrastructure.Services
 
         private readonly IMapper mapper;
 
-        public MapService()
+        public MapService(DatabaseProvider databaseProvider, Mapper mapper)
         {
-            databaseProvider = Store.GetProvider<DatabaseProvider>();
-            mapper = Store.GetMapper();
+            this.databaseProvider = databaseProvider;
+            this.mapper = mapper;
         }
 
         public async Task<MapPoint> GetPoint(string unitId, string name)

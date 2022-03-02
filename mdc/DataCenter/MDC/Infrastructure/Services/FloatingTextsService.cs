@@ -1,9 +1,11 @@
 using AutoMapper;
+
 using MDC.Data.Dtos;
 using MDC.Data.Models;
 using MDC.Infrastructure.Providers;
 using MDC.Infrastructure.Providers.Interfaces;
 using MDC.Infrastructure.Services.Interfaces;
+
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -15,10 +17,10 @@ namespace MDC.Infrastructure.Services
 
         private readonly IMapper mapper;
 
-        public FloatingTextsService()
+        public FloatingTextsService(DatabaseProvider databaseProvider, Mapper mapper)
         {
-            databaseProvider = Store.GetProvider<DatabaseProvider>();
-            mapper = Store.GetMapper();
+            this.databaseProvider = databaseProvider;
+            this.mapper = mapper;
         }
 
         public List<FloatingTextDto> GetAll(string unitId)

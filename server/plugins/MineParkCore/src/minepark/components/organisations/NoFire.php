@@ -67,7 +67,7 @@ class NoFire extends Component
 
     public function putOutFire(MineParkPlayer $player)
     {
-        $this->chat->sendLocalMessage($player, "FireExtinguisher", "§d : ", 10);
+        $this->chat->sendLocalMessage($player, "{FireExtinguisher}", "§d : ", 10);
             
         if($this->tryToPutOutFire($player->getPosition(), 5)) {
             $this->bankingProvider->givePlayerMoney($player, 2000);
