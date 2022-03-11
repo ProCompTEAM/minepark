@@ -1,7 +1,6 @@
 # MinePark Software - Release v1.10
 
-__Copyright http://vk.com/mcperp__
-____
+Copyright http://vk.com/mineparkrp
 
 ## Environment & Tools:
 - Minecraft BE Client support 1.18
